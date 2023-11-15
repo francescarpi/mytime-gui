@@ -96,9 +96,9 @@ const sendHandler = () => {
       </q-card-section>
 
       <q-card-section class="row q-gutter-md justify-end">
-        <q-btn color="primary" @click="sendHandler" :disable="isSending" :loading="isSending" v-if="!finished">Send to
+        <q-btn color="primary" @click="sendHandler" :disable="isSending" :loading="isSending" v-if="!finished && tasks.length">Send to
           {{ (getIntegration(settings.integration) as Option).label }}</q-btn>
-        <q-btn color="primary" @click="beforeClose" v-if="finished">Close</q-btn>
+        <q-btn color="primary" @click="beforeClose" v-if="finished || tasks.length === 0">Close</q-btn>
       </q-card-section>
     </q-card>
   </q-dialog>
