@@ -1,5 +1,5 @@
+use platform_dirs::AppDirs;
 use rusqlite::Connection;
-use std::path::Path;
 use std::{env, fs};
 
 #[derive(Debug)]
@@ -26,15 +26,8 @@ impl Db {
     }
 
     fn db_path() -> String {
-        let home = env::var("HOME").unwrap();
-        Path::new(&home)
-            .join(".local")
-            .join("share")
-            .join("mytime")
-            .join("mytime.db")
-            .to_str()
-            .unwrap()
-            .to_string()
+        let app_dirs = AppDirs::new(Some("mytime"), true).unwrap();
+        app_dirs.data_dir.join("mytime.db").to_str().unwrap().to_string()
     }
 
     pub fn create_tables(&self) {
