@@ -5,9 +5,11 @@ import { useTasksStore, today } from "@/stores/tasks";
 import { invoke } from "@tauri-apps/api";
 import { dateToStrTime, formatDuration } from "@/utils/dates";
 import { columns } from "@/constants/tasks_table";
-import { pagination } from "@/constants/tables"
+import { pagination } from "@/constants/tables";
 
 import type { Task } from "@/types/task";
+
+const emit = defineEmits(["click-column"]);
 
 const tasksStore = useTasksStore();
 const {
@@ -113,6 +115,21 @@ const editHandler = (task: Task) => {
           :disable="filterDate === today"
         />
       </div>
+    </template>
+    <template v-slot:body-cell-project="props">
+      <q-td :props="props" @click="emit('click-column', 'project', props.row.project)">
+        {{ props.row.project }}
+      </q-td>
+    </template>
+    <template v-slot:body-cell-description="props">
+      <q-td :props="props" @click="emit('click-column', 'description', props.row.desc)">
+        {{ props.row.desc }}
+      </q-td>
+    </template>
+    <template v-slot:body-cell-external_id="props">
+      <q-td :props="props" @click="emit('click-column', 'external_id', props.row.external_id)">
+        {{ props.row.external_id }}
+      </q-td>
     </template>
     <template v-slot:body-cell-reported="props">
       <q-td :props="props">
