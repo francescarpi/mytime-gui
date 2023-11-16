@@ -17,6 +17,7 @@ const tasks: Ref<IntegrationTask[]> = ref([]);
 const isSending: Ref<boolean> = ref(false);
 const tasksDone: Ref<string[]> = ref([]);
 const finished: Ref<boolean> = ref(false);
+const totalDuration: Ref<number> = ref(0);
 
 const settingsStore = useSettingsStore();
 const { settings } = storeToRefs(settingsStore);
@@ -39,6 +40,7 @@ const beforeShow = () => {
   finished.value = false;
   groupTasks().then((tsks: IntegrationTask[]) => {
     tasks.value = tsks;
+    totalDuration.value = tsks.reduce((acc, obj) => acc + obj.duration, 0);
   });
 };
 
@@ -73,7 +75,7 @@ const sendHandler = () => {
     <q-card>
       <q-card-section class="row items-center q-pb-none">
         <div class="text-h6">
-          Sync with {{ (getIntegration(settings.integration) as Option).label }}
+          Sync with {{ (getIntegration(settings.integration) as Option).label }} ({{ formatDuration(totalDuration) }})
         </div>
         <q-space />
         <q-btn icon="close" flat round dense v-close-popup :disable="isSending" />
