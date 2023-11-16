@@ -27,6 +27,7 @@ impl Db {
 
     fn db_path() -> String {
         let app_dirs = AppDirs::new(Some("mytime"), true).unwrap();
+        fs::create_dir_all(&app_dirs.data_dir).unwrap();
         app_dirs.data_dir.join("mytime.db").to_str().unwrap().to_string()
     }
 
