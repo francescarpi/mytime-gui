@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="500"
+   height="500"
+   viewBox="0 0 132.29166 132.29167"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2 (dc2aeda, 2022-05-15)"
+   sodipodi:docname="original.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     showguides="true"
+     inkscape:zoom="0.457453"
+     inkscape:cx="-194.55551"
+     inkscape:cy="216.41567"
+     inkscape:window-width="1955"
+     inkscape:window-height="1274"
+     inkscape:window-x="1483"
+     inkscape:window-y="82"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1">
+    <sodipodi:guide
+       position="13.229166,105.10764"
+       orientation="-1,0"
+       id="guide132"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+    <sodipodi:guide
+       position="118.39941,119.0625"
+       orientation="0,1"
+       id="guide184"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+    <sodipodi:guide
+       position="-29.446486,13.229166"
+       orientation="0,1"
+       id="guide186"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+    <sodipodi:guide
+       position="119.0625,37.408541"
+       orientation="-1,0"
+       id="guide188"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient2475">
+      <stop
+         style="stop-color:#00819d;stop-opacity:1;"
+         offset="0"
+         id="stop2471" />
+      <stop
+         style="stop-color:#00819d;stop-opacity:0.70588231;"
+         offset="0.99999994"
+         id="stop2473" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2475"
+       id="linearGradient2477"
+       x1="13.229166"
+       y1="66.145838"
+       x2="111.08742"
+       y2="17.272846"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-4.4504802e-6)" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:url(#linearGradient2477);fill-opacity:1;stroke:#00819e;stroke-width:3.96875;stroke-linecap:butt;stroke-dasharray:none;stroke-opacity:0.698039"
+       id="rect282"
+       width="105.75803"
+       height="105.75803"
+       x="13.266816"
+       y="13.266816"
+       ry="28.01506" />
+    <text
+       xml:space="preserve"
+       style="font-size:50.0896px;text-align:center;text-anchor:middle;fill:#ffffff;stroke:#00819e;stroke-width:1;stroke-linecap:butt;stroke-dasharray:none;stroke-opacity:0.698039"
+       x="64.758385"
+       y="84.354675"
+       id="text3016"><tspan
+         sodipodi:role="line"
+         id="tspan3014"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, ';fill:#ffffff;stroke-width:1;stroke-dasharray:none"
+         x="64.758385"
+         y="84.354675">MT</tspan></text>
+  </g>
+</svg>
