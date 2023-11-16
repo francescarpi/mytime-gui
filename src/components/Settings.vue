@@ -64,7 +64,7 @@ const saveHandler = () => {
           :options="integrations"
         />
         <q-input filled label="URL" v-model="integration_url" />
-        <q-input filled label="Token" v-model="integration_token" />
+        <q-input filled label="Token" v-model="integration_token" type="password" />
       </q-card-section>
 
       <q-card-section class="row q-gutter-md justify-end">
