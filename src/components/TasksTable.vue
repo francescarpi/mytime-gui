@@ -134,7 +134,7 @@ const editHandler = (task: Task) => {
     <template v-slot:body-cell-reported="props">
       <q-td :props="props">
         <q-icon
-          name="radio_button_checked"
+          name="cloud"
           :class="props.row.reported ? 'text-green' : 'text-red'"
         ></q-icon>
       </q-td>
@@ -163,7 +163,7 @@ const editHandler = (task: Task) => {
           flat
           icon="edit"
           round
-          size="xs"
+          size="sm"
           color="secondary"
           v-if="!props.row.reported"
           @click="editHandler(props.row)"
@@ -172,7 +172,7 @@ const editHandler = (task: Task) => {
           flat
           icon="play_circle"
           round
-          size="xs"
+          size="sm"
           v-if="props.row.end"
           color="primary"
           @click="startTask(props.row)"
@@ -181,9 +181,9 @@ const editHandler = (task: Task) => {
           flat
           icon="pause"
           round
-          size="xs"
+          size="sm"
           v-else
-          color="primary"
+          color="red"
           @click="stopTask(props.row.id)"
         />
       </q-td>
