@@ -85,10 +85,10 @@ fn send_to_integration(
     duration: &str,
     external_id: &str,
     ids: &str,
-) {
+) -> bool {
     let db = Db::new();
     let im = IntegrationManager::new(&db.connection);
-    im.send(description, date, duration, external_id, ids);
+    im.send(description, date, duration, external_id, ids)
 }
 
 #[tauri::command]
