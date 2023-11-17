@@ -119,7 +119,7 @@ const deleteHandler = (task: Task) => {
     </template>
     <template v-slot:body-cell-reported="props">
       <q-td :props="props">
-        <q-icon name="cloud" :class="props.row.reported ? 'text-green' : 'text-red'"></q-icon>
+        <q-icon :name="props.row.reported ? 'cloud_done' : 'cloud'" :class="props.row.reported ? 'text-black' : 'text-grey-5'"></q-icon>
       </q-td>
     </template>
     <template v-slot:body-cell-started_at="props">
@@ -144,7 +144,7 @@ const deleteHandler = (task: Task) => {
       <q-td :props="props">
         <q-btn flat icon="delete" round size="sm" color="red" v-if="!props.row.reported"
           @click="deleteHandler(props.row)" />
-        <q-btn flat icon="edit" round size="sm" color="secondary" v-if="!props.row.reported"
+        <q-btn flat icon="edit" round size="sm" color="primary" v-if="!props.row.reported"
           @click="editHandler(props.row)" />
         <q-btn flat icon="play_circle" round size="sm" v-if="props.row.end" color="primary"
           @click="startTask(props.row)" />
