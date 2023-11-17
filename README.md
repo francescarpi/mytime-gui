@@ -10,7 +10,7 @@ See running and tasks done:
 ![Screenshot 2](./captures/cap2.jpeg)
 
 Synchronize your tasks:
-![Screenshot 3](./captures/cap2.jpeg)
+![Screenshot 3](./captures/cap3.jpeg)
 
 ## Database
 
