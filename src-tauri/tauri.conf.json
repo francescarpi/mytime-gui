@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.farpi.dev",
+      "identifier": "com.farpi.mytime",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
