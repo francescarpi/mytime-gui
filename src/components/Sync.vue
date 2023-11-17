@@ -16,6 +16,7 @@ import type { IntegrationTask } from "@/types/integration";
 const tasks: Ref<IntegrationTask[]> = ref([]);
 const isSending: Ref<boolean> = ref(false);
 const tasksDone: Ref<string[]> = ref([]);
+const tasksWithError: Ref<string[]> = ref([]);
 const finished: Ref<boolean> = ref(false);
 const totalDuration: Ref<number> = ref(0);
 
@@ -37,6 +38,7 @@ const beforeClose = () => {
 };
 const beforeShow = () => {
   tasksDone.value = [];
+  tasksWithError.value = [];
   finished.value = false;
   groupTasks().then((tsks: IntegrationTask[]) => {
     tasks.value = tsks;
@@ -55,8 +57,12 @@ const sendHandler = () => {
         formatDuration(task.duration),
         task.external_id,
         task.ids,
-      ).then(() => {
-        tasksDone.value.push(task.external_id);
+      ).then((success: unknown) => {
+        if (success as boolean) {
+          tasksDone.value.push(task.external_id);
+        } else {
+          tasksWithError.value.push(task.external_id);
+        }
       }),
     );
   });
@@ -75,7 +81,10 @@ const sendHandler = () => {
     <q-card>
       <q-card-section class="row items-center q-pb-none">
         <div class="text-h6">
-          Sync with {{ (getIntegration(settings.integration) as Option).label }} ({{ formatDuration(totalDuration) }})
+          Sync with
+          {{ (getIntegration(settings.integration) as Option).label }} ({{
+            formatDuration(totalDuration)
+          }})
         </div>
         <q-space />
         <q-btn icon="close" flat round dense v-close-popup :disable="isSending" />
@@ -90,15 +99,21 @@ const sendHandler = () => {
           </template>
           <template v-slot:body-cell-status="props">
             <q-td :props="props">
-              <q-icon name="check_box" v-if="tasksDone.includes(props.row.external_id)" />
-              <q-icon name="check_box_outline_blank" v-else />
+              <q-icon name="warning" v-if="tasksWithError.includes(props.row.external_id)" color="red">
+                <q-tooltip>Error sending the task. Please, check its external id.</q-tooltip>
+              </q-icon>
+              <div v-else>
+                <q-icon name="check_box" v-if="tasksDone.includes(props.row.external_id)" />
+                <q-icon name="check_box_outline_blank" v-else />
+              </div>
             </q-td>
           </template>
         </q-table>
       </q-card-section>
 
       <q-card-section class="row q-gutter-md justify-end">
-        <q-btn color="primary" @click="sendHandler" :disable="isSending" :loading="isSending" v-if="!finished && tasks.length">Send to
+        <q-btn color="primary" @click="sendHandler" :disable="isSending" :loading="isSending"
+          v-if="!finished && tasks.length">Send to
           {{ (getIntegration(settings.integration) as Option).label }}</q-btn>
         <q-btn color="primary" @click="beforeClose" v-if="finished || tasks.length === 0">Close</q-btn>
       </q-card-section>
