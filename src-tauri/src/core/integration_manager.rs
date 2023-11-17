@@ -41,7 +41,7 @@ impl<'a> IntegrationManager<'a> {
                     AND external_id IS NOT NULL
                     AND external_id != ''
                 GROUP BY
-                    external_id",
+                    external_id, desc",
             )
             .unwrap();
 
