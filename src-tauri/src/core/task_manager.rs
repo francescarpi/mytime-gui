@@ -153,4 +153,8 @@ impl<'a> TasksManager<'a> {
             duration: row.get(7)?,
         })
     }
+
+    pub fn delete_task(&self, id: u64) {
+        self.connection.execute("DELETE FROM tasks WHERE id = ?", params![id]).unwrap();
+    }
 }

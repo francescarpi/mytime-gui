@@ -15,7 +15,7 @@ export const columns: any[] = [
     name: "description",
     label: "Description",
     field: "desc",
-    align: "left",
+    align: "left"
   },
   {
     name: "external_id",
@@ -49,5 +49,6 @@ export const columns: any[] = [
   {
     name: "actions",
     label: "Actions",
+    style: "width: 130px"
   },
 ];

@@ -6,10 +6,12 @@ import { invoke } from "@tauri-apps/api";
 import { dateToStrTime, formatDuration } from "@/utils/dates";
 import { columns } from "@/constants/tasks_table";
 import { pagination } from "@/constants/tables";
+import { useQuasar } from "quasar";
 
 import type { Task } from "@/types/task";
 
 const emit = defineEmits(["click-column"]);
+const $q = useQuasar();
 
 const tasksStore = useTasksStore();
 const {
@@ -61,59 +63,43 @@ const startTask = (task: Task) => {
 const editHandler = (task: Task) => {
   setTaskToEdit(task);
 };
+
+const deleteHandler = (task: Task) => {
+  $q.dialog({
+    title: "Delete task",
+    message: `Would you like to delete the task ${task.id}?`,
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    invoke("delete_task", { id: task.id }).then(() => {
+      refresh();
+      $q.notify({
+        message: "Task deleted successfully",
+        position: "top",
+      });
+    });
+  });
+};
 </script>
 
 <template>
-  <q-table
-    title="Tasks"
-    :rows="tasks"
-    :columns="columns"
-    :pagination="pagination"
-    row-key="id"
-    bordered
-    flat
-  >
+  <q-table title="Tasks" :rows="tasks" :columns="columns" :pagination="pagination" row-key="id" bordered flat wrap-cells>
     <template v-slot:top-left="">
       <div class="col-2 q-table__title items-center">
         Tasks of day {{ filterDate }}
-        <q-btn
-          icon="arrow_back"
-          round
-          color="primary"
-          size="xs"
-          class="q-ml-sm"
-          @click="previousFilterDate"
-        />
+        <q-btn icon="arrow_back" round color="primary" size="xs" class="q-ml-sm" @click="previousFilterDate" />
         <q-btn icon="event" round color="primary" size="xs" class="q-mx-sm">
           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-            <q-date
-              v-model="filterDate"
-              mask="YYYY-MM-DD"
-              first-day-of-week="1"
-              today-btn
-              :options="dateLimits"
-            >
+            <q-date v-model="filterDate" mask="YYYY-MM-DD" first-day-of-week="1" today-btn :options="dateLimits">
               <div class="row items-center justify-end q-gutter-sm">
                 <q-btn label="Cancel" color="primary" flat v-close-popup />
-                <q-btn
-                  label="OK"
-                  color="primary"
-                  flat
-                  v-close-popup
-                  @click="refresh"
-                />
+                <q-btn label="OK" color="primary" flat v-close-popup @click="refresh" />
               </div>
             </q-date>
           </q-popup-proxy>
         </q-btn>
-        <q-btn
-          icon="arrow_forward"
-          round
-          color="primary"
-          size="xs"
-          @click="nextFilterDate"
-          :disable="filterDate === today"
-        />
+        <q-btn icon="arrow_forward" round color="primary" size="xs" @click="nextFilterDate"
+          :disable="filterDate === today" />
       </div>
     </template>
     <template v-slot:body-cell-project="props">
@@ -133,10 +119,7 @@ const editHandler = (task: Task) => {
     </template>
     <template v-slot:body-cell-reported="props">
       <q-td :props="props">
-        <q-icon
-          name="cloud"
-          :class="props.row.reported ? 'text-green' : 'text-red'"
-        ></q-icon>
+        <q-icon name="cloud" :class="props.row.reported ? 'text-green' : 'text-red'"></q-icon>
       </q-td>
     </template>
     <template v-slot:body-cell-started_at="props">
@@ -159,33 +142,13 @@ const editHandler = (task: Task) => {
     </template>
     <template v-slot:body-cell-actions="props">
       <q-td :props="props">
-        <q-btn
-          flat
-          icon="edit"
-          round
-          size="sm"
-          color="secondary"
-          v-if="!props.row.reported"
-          @click="editHandler(props.row)"
-        />
-        <q-btn
-          flat
-          icon="play_circle"
-          round
-          size="sm"
-          v-if="props.row.end"
-          color="primary"
-          @click="startTask(props.row)"
-        />
-        <q-btn
-          flat
-          icon="pause"
-          round
-          size="sm"
-          v-else
-          color="red"
-          @click="stopTask(props.row.id)"
-        />
+        <q-btn flat icon="delete" round size="sm" color="red" v-if="!props.row.reported"
+          @click="deleteHandler(props.row)" />
+        <q-btn flat icon="edit" round size="sm" color="secondary" v-if="!props.row.reported"
+          @click="editHandler(props.row)" />
+        <q-btn flat icon="play_circle" round size="sm" v-if="props.row.end" color="primary"
+          @click="startTask(props.row)" />
+        <q-btn flat icon="pause" round size="sm" v-else color="red" @click="stopTask(props.row.id)" />
       </q-td>
     </template>
   </q-table>

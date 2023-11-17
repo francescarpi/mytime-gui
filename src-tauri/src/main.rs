@@ -91,6 +91,12 @@ fn send_to_integration(
     im.send(description, date, duration, external_id, ids);
 }
 
+#[tauri::command]
+fn delete_task(id: u64) {
+    let db = Db::new();
+    TasksManager::new(&db.connection).delete_task(id);
+}
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -104,6 +110,7 @@ fn main() {
             save_settings,
             group_tasks,
             send_to_integration,
+            delete_task,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
