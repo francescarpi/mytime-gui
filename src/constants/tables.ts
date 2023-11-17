@@ -1,3 +1,3 @@
 export const pagination = {
-  rowsPerPage: 50,
+  rowsPerPage: 5,
 };
