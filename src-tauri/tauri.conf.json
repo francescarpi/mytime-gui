@@ -7,7 +7,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "mytime-gui",
+    "productName": "mytime",
     "version": "0.0.5"
   },
   "tauri": {
