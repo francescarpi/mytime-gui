@@ -87,11 +87,11 @@ fn send_to_integration(
     duration: &str,
     external_id: &str,
     ids: &str,
-) -> Result<String, String> {
+) -> Result<(), String> {
     let db = Db::new();
     let im = IntegrationManager::new(&db.connection);
     match im.send(description, date, duration, external_id, ids) {
-        Ok(_) => Ok("".to_string()),
+        Ok(_) => Ok(()),
         Err(err) => Err(err.to_string()),
     }
 }
