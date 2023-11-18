@@ -30,10 +30,12 @@ fn tasks(date: &str) -> String {
 fn summary(date: &str) -> String {
     let db = Db::new();
     let tm = TasksManager::new(&db.connection);
+    let im = IntegrationManager::new(&db.connection);
     serde_json::to_string(&Summary {
         this_week: tm.worked_week(&date),
         today: tm.worked_day(&date),
         is_running: tm.is_running(),
+        pending_sync_tasks: im.group_tasks().len(),
     })
     .unwrap()
 }

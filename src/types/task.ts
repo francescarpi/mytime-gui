@@ -22,4 +22,5 @@ export interface Summary {
   today: number
   this_week: number
   is_running: boolean
+  pending_sync_tasks: number
 }

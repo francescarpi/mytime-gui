@@ -17,4 +17,5 @@ pub struct Summary {
     pub this_week: u64,
     pub today: u64,
     pub is_running: bool,
+    pub pending_sync_tasks: usize,
 }
