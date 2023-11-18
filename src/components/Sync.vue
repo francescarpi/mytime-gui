@@ -57,13 +57,13 @@ const sendHandler = () => {
         formatDuration(task.duration),
         task.external_id,
         task.ids,
-      ).then((success: unknown) => {
-        if (success as boolean) {
+      )
+        .then(() => {
           tasksDone.value.push(task.external_id);
-        } else {
+        })
+        .catch(() => {
           tasksWithError.value.push(task.external_id);
-        }
-      }),
+        }),
     );
   });
 
@@ -76,8 +76,13 @@ const sendHandler = () => {
 </script>
 
 <template>
-  <q-dialog :model-value="props.show" :persistent="isSending" @before-hide="beforeClose" @before-show="beforeShow"
-    full-width>
+  <q-dialog
+    :model-value="props.show"
+    :persistent="isSending"
+    @before-hide="beforeClose"
+    @before-show="beforeShow"
+    full-width
+  >
     <q-card>
       <q-card-section class="row items-center q-pb-none">
         <div class="text-h6">
@@ -87,11 +92,25 @@ const sendHandler = () => {
           }})
         </div>
         <q-space />
-        <q-btn icon="close" flat round dense v-close-popup :disable="isSending" />
+        <q-btn
+          icon="close"
+          flat
+          round
+          dense
+          v-close-popup
+          :disable="isSending"
+        />
       </q-card-section>
 
       <q-card-section class="q-gutter-md">
-        <q-table :columns="columns" :rows="tasks" :pagination="pagination" row-key="external_id" bordered flat>
+        <q-table
+          :columns="columns"
+          :rows="tasks"
+          :pagination="pagination"
+          row-key="external_id"
+          bordered
+          flat
+        >
           <template v-slot:body-cell-duration="props">
             <q-td :props="props">
               <span>{{ formatDuration(props.row.duration) }}</span>
@@ -99,11 +118,20 @@ const sendHandler = () => {
           </template>
           <template v-slot:body-cell-status="props">
             <q-td :props="props">
-              <q-icon name="warning" v-if="tasksWithError.includes(props.row.external_id)" color="red">
-                <q-tooltip>Error sending the task. Please, check its external id.</q-tooltip>
+              <q-icon
+                name="warning"
+                v-if="tasksWithError.includes(props.row.external_id)"
+                color="red"
+              >
+                <q-tooltip
+                  >Error sending task. Please, check its external id.</q-tooltip
+                >
               </q-icon>
               <div v-else>
-                <q-icon name="check_box" v-if="tasksDone.includes(props.row.external_id)" />
+                <q-icon
+                  name="check_box"
+                  v-if="tasksDone.includes(props.row.external_id)"
+                />
                 <q-icon name="check_box_outline_blank" v-else />
               </div>
             </q-td>
@@ -112,10 +140,21 @@ const sendHandler = () => {
       </q-card-section>
 
       <q-card-section class="row q-gutter-md justify-end">
-        <q-btn color="primary" @click="sendHandler" :disable="isSending" :loading="isSending"
-          v-if="!finished && tasks.length">Send to
-          {{ (getIntegration(settings.integration) as Option).label }}</q-btn>
-        <q-btn color="primary" @click="beforeClose" v-if="finished || tasks.length === 0">Close</q-btn>
+        <q-btn
+          color="primary"
+          @click="sendHandler"
+          :disable="isSending"
+          :loading="isSending"
+          v-if="!finished && tasks.length"
+          >Send to
+          {{ (getIntegration(settings.integration) as Option).label }}</q-btn
+        >
+        <q-btn
+          color="primary"
+          @click="beforeClose"
+          v-if="finished || tasks.length === 0"
+          >Close</q-btn
+        >
       </q-card-section>
     </q-card>
   </q-dialog>
