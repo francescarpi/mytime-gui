@@ -25,7 +25,7 @@ export const columns: any[] = [
   },
   {
     name: "ids",
-    label: "Taks Ids",
+    label: "Task Ids",
     field: "ids",
     format: (val: string[], _: IntegrationTask) => val.join(", "),
   },
