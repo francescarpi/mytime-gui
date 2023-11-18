@@ -1,6 +1,5 @@
 use crate::core::settings_manager::SettingsManager;
-use oxhttp::model::{Method, Request, Status};
-use oxhttp::Client;
+use crate::integrations::{get_integration, Error, Integration};
 use rusqlite::Connection;
 use serde::Serialize;
 
@@ -65,52 +64,6 @@ impl<'a> IntegrationManager<'a> {
         rows.map(|row| row.unwrap()).collect()
     }
 
-    pub fn send(
-        &self,
-        desc: &str,
-        date: &str,
-        duration: &str,
-        external_id: &str,
-        ids: &str,
-    ) -> bool {
-        let sm = SettingsManager::new(&self.connection);
-        let settings = sm.settings();
-        let url = format!("{}time_entries.json", settings.integration_url);
-        let body = serde_json::json!({
-            "time_entry": {
-                "issue_id": external_id,
-                "hours": duration,
-                "comments": desc,
-                "spent_on": date,
-            }
-        });
-
-        let client = Client::new();
-        let response = client
-            .request(Self::prepare_request(
-                &url,
-                &body.to_string(),
-                &settings.integration_token,
-            ))
-            .unwrap();
-
-        if response.status() == Status::CREATED {
-            self.mark_tasks_as_reported(ids);
-            return true;
-        }
-        false
-    }
-
-    fn prepare_request(url: &str, body: &str, token: &str) -> Request {
-        let mut request =
-            Request::builder(Method::POST, url.parse().unwrap()).with_body(body.to_string());
-        request
-            .append_header("Content-Type", "application/json")
-            .unwrap();
-        request.append_header("X-Redmine-API-Key", token).unwrap();
-        request
-    }
-
     fn mark_tasks_as_reported(&self, ids: &str) {
         let ids_list: Vec<u64> = ids
             .split(',')
@@ -127,5 +80,33 @@ impl<'a> IntegrationManager<'a> {
         );
 
         self.connection.execute(&query, []).unwrap();
+    }
+
+    pub fn send(
+        &self,
+        desc: &str,
+        date: &str,
+        duration: &str,
+        external_id: &str,
+        ids: &str,
+    ) -> Result<(), Error> {
+        let sm = SettingsManager::new(&self.connection);
+        let settings = sm.settings();
+
+        let integration = get_integration(&settings);
+        if integration.is_none() {
+            return Err(Error::IntegrationDoesNotExistError);
+        }
+
+        match integration
+            .unwrap()
+            .send_task(&settings, desc, date, duration, external_id)
+        {
+            Ok(_) => {
+                self.mark_tasks_as_reported(ids);
+                Ok(())
+            }
+            Err(err) => Err(err),
+        }
     }
 }

@@ -2,29 +2,31 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 pub mod core;
+pub mod integrations;
 
-use core::task::Summary;
-
-use crate::core::db::Db;
-use crate::core::integration_manager::IntegrationManager;
-use crate::core::settings_manager::SettingsManager;
-use crate::core::task_manager::TasksManager;
 use serde_json;
+use tauri::command;
 
-#[tauri::command]
+use core::db::Db;
+use core::integration_manager::IntegrationManager;
+use core::settings_manager::SettingsManager;
+use core::task::Summary;
+use core::task_manager::TasksManager;
+
+#[command]
 fn config_ready() {
     let db = Db::new();
     db.init();
 }
 
-#[tauri::command]
+#[command]
 fn tasks(date: &str) -> String {
     let db = Db::new();
     let tm = TasksManager::new(&db.connection);
     serde_json::to_string(&tm.tasks(date)).unwrap()
 }
 
-#[tauri::command]
+#[command]
 fn summary(date: &str) -> String {
     let db = Db::new();
     let tm = TasksManager::new(&db.connection);
@@ -36,62 +38,65 @@ fn summary(date: &str) -> String {
     .unwrap()
 }
 
-#[tauri::command]
+#[command]
 fn create_task(project: &str, description: &str, external_id: &str) {
     let db = Db::new();
     let tm = TasksManager::new(&db.connection);
     tm.create_task(&project, &description, &external_id);
 }
 
-#[tauri::command]
+#[command]
 fn stop_task(id: u64) {
     let db = Db::new();
     let tm = TasksManager::new(&db.connection);
     tm.stop_task(id);
 }
 
-#[tauri::command]
+#[command]
 fn edit_task(id: u64, project: &str, desc: &str, external_id: &str, start: &str, end: &str) {
     let db = Db::new();
     let tm = TasksManager::new(&db.connection);
     tm.edit_task(id, project, desc, external_id, start, end);
 }
 
-#[tauri::command]
+#[command]
 fn settings() -> String {
     let db = Db::new();
     let sm = SettingsManager::new(&db.connection);
     serde_json::to_string(&sm.settings()).unwrap()
 }
 
-#[tauri::command]
+#[command]
 fn save_settings(integration: &str, url: &str, token: &str) {
     let db = Db::new();
     let sm = SettingsManager::new(&db.connection);
     sm.save(integration, url, token);
 }
 
-#[tauri::command]
+#[command]
 fn group_tasks() -> String {
     let db = Db::new();
     let im = IntegrationManager::new(&db.connection);
     serde_json::to_string(&im.group_tasks()).unwrap()
 }
 
-#[tauri::command]
+#[command]
 fn send_to_integration(
     description: &str,
     date: &str,
     duration: &str,
     external_id: &str,
     ids: &str,
-) -> bool {
+) -> Result<String, String> {
     let db = Db::new();
     let im = IntegrationManager::new(&db.connection);
-    im.send(description, date, duration, external_id, ids)
+    match im.send(description, date, duration, external_id, ids) {
+        Ok(_) => Ok("".to_string()),
+        Err(err) => Err(err.to_string()),
+    }
 }
 
-#[tauri::command]
+#[command]
 fn delete_task(id: u64) {
     let db = Db::new();
     TasksManager::new(&db.connection).delete_task(id);
