@@ -9,7 +9,7 @@
    id="svg5"
    inkscape:version="1.3 (0e150ed, 2023-07-21)"
    sodipodi:docname="original.svg"
-   inkscape:export-filename="icon.png"
+   inkscape:export-filename="../../app-icon.png"
    inkscape:export-xdpi="59.52"
    inkscape:export-ydpi="59.52"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -29,13 +29,13 @@
      inkscape:document-units="mm"
      showgrid="false"
      showguides="true"
-     inkscape:zoom="0.914906"
-     inkscape:cx="208.21811"
-     inkscape:cy="329.54205"
-     inkscape:window-width="1968"
-     inkscape:window-height="1274"
-     inkscape:window-x="535"
-     inkscape:window-y="56"
+     inkscape:zoom="1.2922416"
+     inkscape:cx="234.08935"
+     inkscape:cy="222.86854"
+     inkscape:window-width="1472"
+     inkscape:window-height="997"
+     inkscape:window-x="210"
+     inkscape:window-y="25"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1">
     <sodipodi:guide
@@ -73,7 +73,7 @@
        inkscape:collect="always"
        id="linearGradient2475">
       <stop
-         style="stop-color:#00819d;stop-opacity:1;"
+         style="stop-color:#d1f9ff;stop-opacity:1;"
          offset="0"
          id="stop2471" />
       <stop
@@ -97,7 +97,7 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:url(#linearGradient2477);fill-opacity:1;stroke:#00819e;stroke-width:3.96875;stroke-linecap:butt;stroke-dasharray:none;stroke-opacity:0.698039"
+       style="fill:url(#linearGradient2477);fill-opacity:1;stroke:#00819e;stroke-width:10.31874962;stroke-linecap:butt;stroke-dasharray:none;stroke-opacity:0.698039"
        id="rect282"
        width="105.75803"
        height="105.75803"
@@ -106,14 +106,14 @@
        ry="28.01506" />
     <text
        xml:space="preserve"
-       style="font-size:50.0896px;text-align:center;text-anchor:middle;fill:#ffffff;stroke:#00819e;stroke-width:1;stroke-linecap:butt;stroke-dasharray:none;stroke-opacity:0.698039"
-       x="64.758385"
-       y="84.354675"
+       style="font-size:45.2674px;text-align:center;text-anchor:middle;fill:#006072;stroke:#00819e;stroke-width:0.271119;stroke-linecap:butt;stroke-dasharray:none;stroke-opacity:0.698039;fill-opacity:0.92941177"
+       x="65.151184"
+       y="82.347496"
        id="text3016"><tspan
          sodipodi:role="line"
          id="tspan3014"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, ';fill:#ffffff;stroke-width:1;stroke-dasharray:none"
-         x="64.758385"
-         y="84.354675">MT</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, ';fill:#006072;stroke-width:0.271119;stroke-dasharray:none;fill-opacity:0.92941177"
+         x="65.151184"
+         y="82.347496">MT</tspan></text>
   </g>
 </svg>
