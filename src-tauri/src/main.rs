@@ -17,6 +17,7 @@ use core::task_manager::{Summary, TasksManager};
 fn init(version: &str) {
     let db = DbManager::new();
     db.init(version);
+    db.migrate(version);
 }
 
 #[command]
