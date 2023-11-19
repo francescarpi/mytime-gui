@@ -3,32 +3,32 @@
 
 pub mod core;
 pub mod integrations;
+pub mod utils;
 
 use serde_json;
 use tauri::command;
 
-use core::db::Db;
+use core::db_manager::DbManager;
 use core::integration_manager::IntegrationManager;
 use core::settings_manager::SettingsManager;
-use core::task::Summary;
-use core::task_manager::TasksManager;
+use core::task_manager::{Summary, TasksManager};
 
 #[command]
 fn config_ready() {
-    let db = Db::new();
+    let db = DbManager::new();
     db.init();
 }
 
 #[command]
 fn tasks(date: &str) -> String {
-    let db = Db::new();
+    let db = DbManager::new();
     let tm = TasksManager::new(&db.connection);
     serde_json::to_string(&tm.tasks(date)).unwrap()
 }
 
 #[command]
 fn summary(date: &str) -> String {
-    let db = Db::new();
+    let db = DbManager::new();
     let tm = TasksManager::new(&db.connection);
     let im = IntegrationManager::new(&db.connection);
     serde_json::to_string(&Summary {
@@ -42,42 +42,42 @@ fn summary(date: &str) -> String {
 
 #[command]
 fn create_task(project: &str, description: &str, external_id: &str) {
-    let db = Db::new();
+    let db = DbManager::new();
     let tm = TasksManager::new(&db.connection);
     tm.create_task(&project, &description, &external_id);
 }
 
 #[command]
 fn stop_task(id: u64) {
-    let db = Db::new();
+    let db = DbManager::new();
     let tm = TasksManager::new(&db.connection);
     tm.stop_task(id);
 }
 
 #[command]
 fn edit_task(id: u64, project: &str, desc: &str, external_id: &str, start: &str, end: &str) {
-    let db = Db::new();
+    let db = DbManager::new();
     let tm = TasksManager::new(&db.connection);
     tm.edit_task(id, project, desc, external_id, start, end);
 }
 
 #[command]
 fn settings() -> String {
-    let db = Db::new();
+    let db = DbManager::new();
     let sm = SettingsManager::new(&db.connection);
     serde_json::to_string(&sm.settings()).unwrap()
 }
 
 #[command]
 fn save_settings(integration: &str, url: &str, token: &str) {
-    let db = Db::new();
+    let db = DbManager::new();
     let sm = SettingsManager::new(&db.connection);
     sm.save(integration, url, token);
 }
 
 #[command]
 fn group_tasks() -> String {
-    let db = Db::new();
+    let db = DbManager::new();
     let im = IntegrationManager::new(&db.connection);
     serde_json::to_string(&im.group_tasks()).unwrap()
 }
@@ -90,7 +90,7 @@ fn send_to_integration(
     external_id: &str,
     ids: &str,
 ) -> Result<(), String> {
-    let db = Db::new();
+    let db = DbManager::new();
     let im = IntegrationManager::new(&db.connection);
     match im.send(description, date, duration, external_id, ids) {
         Ok(_) => Ok(()),
@@ -100,7 +100,7 @@ fn send_to_integration(
 
 #[command]
 fn delete_task(id: u64) {
-    let db = Db::new();
+    let db = DbManager::new();
     TasksManager::new(&db.connection).delete_task(id);
 }
 

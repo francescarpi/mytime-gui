@@ -3,19 +3,19 @@ use rusqlite::Connection;
 use std::{env, fs};
 
 #[derive(Debug)]
-pub struct Db {
+pub struct DbManager {
     pub connection: Connection,
     pub is_new: bool,
 }
 
-impl Db {
+impl DbManager {
     pub fn new() -> Self {
         let is_new;
-        match fs::metadata(Db::db_path()) {
+        match fs::metadata(DbManager::db_path()) {
             Ok(_) => is_new = false,
             Err(_) => is_new = true,
         }
-        let connection = Connection::open(Db::db_path()).unwrap();
+        let connection = Connection::open(DbManager::db_path()).unwrap();
         Self { connection, is_new }
     }
 
