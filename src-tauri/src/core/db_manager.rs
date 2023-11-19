@@ -1,6 +1,13 @@
 use platform_dirs::AppDirs;
 use rusqlite::Connection;
 use std::fs;
+use version_compare::Version;
+
+#[derive(Debug)]
+struct Migration {
+    version: String,
+    query: String,
+}
 
 #[derive(Debug)]
 pub struct DbManager {
@@ -26,6 +33,33 @@ impl DbManager {
         }
     }
 
+    fn db_version(&self) -> String {
+        let mut stmt = self
+            .connection
+            .prepare("SELECT version FROM app LIMIT 1")
+            .unwrap();
+        stmt.query_row([], |row| Ok(row.get(0)?)).unwrap()
+    }
+
+    pub fn migrate(&self, app_version: &str) {
+        let db_version = self.db_version();
+        let db_version = Version::from(&db_version).unwrap();
+        let app_version = Version::from(app_version).unwrap();
+
+        let migrations: Vec<Migration> = vec![];
+
+        if app_version != db_version {
+            for migration in migrations {
+                let migration_version = Version::from(&migration.version).unwrap();
+                if migration_version > db_version {
+                    self.connection.execute(&migration.query, ()).unwrap();
+                }
+            }
+
+            self.update_version(&app_version.to_string());
+        }
+    }
+
     fn db_path() -> String {
         let app_dirs = AppDirs::new(Some("mytime"), true).unwrap();
         fs::create_dir_all(&app_dirs.data_dir).unwrap();
@@ -42,14 +76,14 @@ impl DbManager {
         self.connection
             .execute(
                 "CREATE TABLE tasks (
-                id          INTEGER PRIMARY KEY AUTOINCREMENT,
-                desc        TEXT NOT NULL,
-                start       INTEGER NOT NULL,
-                end         INTEGER DEFAULT NULL,
-                reported    INTEGER NOT NULL DEFAULT 0,
-                external_id TEXT DEFAULT NULL,
-                project     TEXT NOT NULL
-            )",
+                    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                    desc        TEXT NOT NULL,
+                    start       INTEGER NOT NULL,
+                    end         INTEGER DEFAULT NULL,
+                    reported    INTEGER NOT NULL DEFAULT 0,
+                    external_id TEXT DEFAULT NULL,
+                    project     TEXT NOT NULL
+                )",
                 (),
             )
             .unwrap();
@@ -66,9 +100,9 @@ impl DbManager {
         self.connection
             .execute(
                 "CREATE TABLE settings (
-                integration         TEXT DEFAULT NULL,
-                integration_url     TEXT DEFAULT NULL,
-                integration_token   TEXT DEFAULT NULL
+                    integration         TEXT DEFAULT NULL,
+                    integration_url     TEXT DEFAULT NULL,
+                    integration_token   TEXT DEFAULT NULL
                 )",
                 (),
             )
@@ -82,6 +116,8 @@ impl DbManager {
     }
 
     fn update_version(&self, version: &str) {
-        self.connection.execute("UPDATE app SET version = ?", [version]).unwrap();
+        self.connection
+            .execute("UPDATE app SET version = ?", [version])
+            .unwrap();
     }
 }
