@@ -41,7 +41,9 @@ onMounted(() => {
         <q-toolbar-title> MyTime </q-toolbar-title>
         <q-chip color="red" text-color="white" icon="directions_run" v-if="summary.is_running" class="q-mr-xl">Running</q-chip>
         <q-chip color="green" text-color="white" icon="airline_seat_recline_normal" v-else class="q-mr-xl">Stopped</q-chip>
-        <q-btn flat round dense icon="cloud_upload" @click="showSync = true" v-if="isValid" class="q-mr-md" />
+        <q-btn flat round dense icon="cloud_upload" @click="showSync = true" v-if="isValid" class="q-mr-md">
+          <q-badge color="red" floating rounded v-if="summary.pending_sync_tasks > 0">{{ summary.pending_sync_tasks }}</q-badge>
+        </q-btn>
         <q-btn flat round dense icon="settings" @click="showSettings = true" />
       </q-toolbar>
     </q-header>

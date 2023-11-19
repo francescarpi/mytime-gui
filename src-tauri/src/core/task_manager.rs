@@ -1,9 +1,30 @@
+use serde::Serialize;
+
 use chrono::{Datelike, Local, NaiveDate, Utc};
 use rusqlite::params;
 use rusqlite::{Connection, Result, Row};
 
-use super::task::Task;
-use super::utils::dates::change_time;
+use crate::utils::dates::change_time;
+
+#[derive(Debug, Clone, Serialize)]
+pub struct Task {
+    pub id: i64,
+    pub desc: String,
+    pub start: String,
+    pub end: Option<String>,
+    pub reported: bool,
+    pub external_id: Option<String>,
+    pub project: String,
+    pub duration: u64,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct Summary {
+    pub this_week: u64,
+    pub today: u64,
+    pub is_running: bool,
+    pub pending_sync_tasks: usize,
+}
 
 #[derive(Debug, Clone)]
 pub struct TasksManager<'a> {

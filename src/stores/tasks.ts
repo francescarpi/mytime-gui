@@ -17,7 +17,7 @@ export const useTasksStore = defineStore("tasks", () => {
 
   const filterDate: Ref<string> = ref(today);
 
-  const summary: Ref<Summary> = ref({ today: 0, this_week: 0, is_running: false });
+  const summary: Ref<Summary> = ref({ today: 0, this_week: 0, is_running: false, pending_sync_tasks: 0 });
 
   const taskToEdit: Ref<Task | null> = ref(null);
 
