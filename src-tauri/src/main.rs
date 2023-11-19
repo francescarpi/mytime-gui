@@ -14,9 +14,9 @@ use core::settings_manager::SettingsManager;
 use core::task_manager::{Summary, TasksManager};
 
 #[command]
-fn config_ready() {
+fn init(version: &str) {
     let db = DbManager::new();
-    db.init();
+    db.init(version);
 }
 
 #[command]
@@ -107,7 +107,7 @@ fn delete_task(id: u64) {
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            config_ready,
+            init,
             tasks,
             create_task,
             stop_task,

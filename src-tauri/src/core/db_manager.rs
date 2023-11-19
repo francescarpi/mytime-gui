@@ -1,6 +1,6 @@
 use platform_dirs::AppDirs;
 use rusqlite::Connection;
-use std::{env, fs};
+use std::fs;
 
 #[derive(Debug)]
 pub struct DbManager {
@@ -19,16 +19,22 @@ impl DbManager {
         Self { connection, is_new }
     }
 
-    pub fn init(&self) {
+    pub fn init(&self, version: &str) {
         if self.is_new {
-            self.create_tables()
+            self.create_tables();
+            self.update_version(version);
         }
     }
 
     fn db_path() -> String {
         let app_dirs = AppDirs::new(Some("mytime"), true).unwrap();
         fs::create_dir_all(&app_dirs.data_dir).unwrap();
-        app_dirs.data_dir.join("mytime.db").to_str().unwrap().to_string()
+        app_dirs
+            .data_dir
+            .join("mytime.db")
+            .to_str()
+            .unwrap()
+            .to_string()
     }
 
     pub fn create_tables(&self) {
@@ -49,12 +55,11 @@ impl DbManager {
             .unwrap();
 
         // app
-        const VERSION: &str = env!("CARGO_PKG_VERSION");
         self.connection
-            .execute("CREATE TABLE app (version TEXT NOT NULL)", ())
+            .execute("CREATE TABLE app (version TEXT DEFAULT NULL)", ())
             .unwrap();
         self.connection
-            .execute("INSERT INTO app VALUES (?)", [VERSION])
+            .execute("INSERT INTO app VALUES (NULL)", [])
             .unwrap();
 
         // settings
@@ -74,5 +79,9 @@ impl DbManager {
                 ["".to_string(), "".to_string(), "".to_string()],
             )
             .unwrap();
+    }
+
+    fn update_version(&self, version: &str) {
+        self.connection.execute("UPDATE app SET version = ?", [version]).unwrap();
     }
 }
