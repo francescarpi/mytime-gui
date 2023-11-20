@@ -25,6 +25,11 @@ export const useTasksStore = defineStore("tasks", () => {
     return Boolean(tasks.value.filter((task) => task.end === null).length);
   });
 
+  const refresh = () => {
+    loadTasks();
+    loadSummary();
+  }
+
   const loadTasks = async () => {
     return invoke("tasks", { date: filterDate.value }).then(
       (response: unknown) => {
@@ -63,8 +68,7 @@ export const useTasksStore = defineStore("tasks", () => {
     date.setDate(date.getDate() + 1);
     if (date < new Date()) {
       filterDate.value = dateToStrDate(date);
-      loadTasks();
-      loadSummary();
+      refresh();
     }
   };
 
@@ -72,13 +76,12 @@ export const useTasksStore = defineStore("tasks", () => {
     const date = new Date(filterDate.value);
     date.setDate(date.getDate() - 1);
     filterDate.value = dateToStrDate(date);
-    loadTasks();
-    loadSummary();
+    refresh();
   };
 
-  const refresh = () => {
-    loadTasks();
-    loadSummary();
+  const todayFilterDate = () => {
+    filterDate.value = today;
+    refresh();
   }
 
   return {
@@ -97,5 +100,6 @@ export const useTasksStore = defineStore("tasks", () => {
     nextFilterDate,
     previousFilterDate,
     refresh,
+    todayFilterDate,
   };
 });

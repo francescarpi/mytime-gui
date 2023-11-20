@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useSettingsStore } from "@/stores/settings";
 import { integrations, getIntegration } from "@/utils/settings";
+import { useQuasar } from "quasar";
 
 import type { Settings, Option } from "@/types/settings";
 import type { Ref } from "vue";
@@ -10,6 +11,16 @@ import type { Ref } from "vue";
 const settingsStore = useSettingsStore();
 const { settings } = storeToRefs(settingsStore);
 const { save } = settingsStore;
+const $q = useQuasar();
+
+const activeTab = ref("integrations");
+const workHoursMonday = ref(0);
+const workHoursTuesday = ref(0);
+const workHoursWednesday = ref(0);
+const workHoursThursday = ref(0);
+const workHoursFriday = ref(0);
+const workHoursSaturday = ref(0);
+const workHoursSunday = ref(0);
 
 const props = defineProps({
   show: Boolean,
@@ -30,6 +41,14 @@ const beforeShow = () => {
   integration.value = getIntegration(set.integration);
   integration_url.value = set.integration_url;
   integration_token.value = set.integration_token;
+  workHoursMonday.value = set.work_hours_monday;
+  workHoursTuesday.value = set.work_hours_tuesday;
+  workHoursWednesday.value = set.work_hours_wednesday;
+  workHoursThursday.value = set.work_hours_thursday;
+  workHoursFriday.value = set.work_hours_friday;
+  workHoursSaturday.value = set.work_hours_saturday;
+  workHoursSunday.value = set.work_hours_sunday;
+  activeTab.value = "integrations";
 };
 
 const saveHandler = () => {
@@ -37,7 +56,18 @@ const saveHandler = () => {
     integration.value?.value || "",
     integration_url.value || "",
     integration_token.value || "",
+    workHoursMonday.value,
+    workHoursTuesday.value,
+    workHoursWednesday.value,
+    workHoursThursday.value,
+    workHoursFriday.value,
+    workHoursSaturday.value,
+    workHoursSunday.value,
   ).then(() => {
+    $q.notify({
+      message: "Settings saved successfully",
+      position: "top",
+    });
     beforeClose();
   });
 };
@@ -50,22 +80,63 @@ const saveHandler = () => {
     @before-show="beforeShow"
   >
     <q-card>
-      <q-card-section class="row items-center q-pb-none" style="width: 300px">
+      <q-card-section class="row items-center q-pb-none">
         <div class="text-h6">Settings</div>
         <q-space />
         <q-btn icon="close" flat round dense v-close-popup />
       </q-card-section>
 
-      <q-card-section class="q-gutter-md">
-        <q-select
-          filled
-          label="Integration"
-          v-model="integration"
-          :options="integrations"
-        />
-        <q-input filled label="URL" v-model="integration_url" />
-        <q-input filled label="Token" v-model="integration_token" type="password" />
+      <q-card-section>
+        <q-tabs
+          v-model="activeTab"
+          dense
+          class="text-grey"
+          active-color="primary"
+          indicator-color="primary"
+          align="justify"
+        >
+          <q-tab name="integrations" label="Integrations" />
+          <q-tab name="calendar" label="Work hours" />
+        </q-tabs>
       </q-card-section>
+
+      <q-tab-panels v-model="activeTab" animated class="shadow-2">
+        <q-tab-panel name="integrations">
+          <q-card-section class="q-gutter-md">
+            <q-select
+              filled
+              label="Integration"
+              v-model="integration"
+              :options="integrations"
+            />
+            <q-input filled label="URL" v-model="integration_url" />
+            <q-input
+              filled
+              label="Token"
+              v-model="integration_token"
+              type="password"
+            />
+          </q-card-section>
+        </q-tab-panel>
+
+        <q-tab-panel name="calendar" class="q-gutter-xs">
+          <div class="row q-gutter-xs">
+            <q-input v-model.number="workHoursMonday" class="col" filled label="On Monday" type="number" />
+            <q-input v-model.number="workHoursTuesday" class="col" filled label="On Tuesday" type="number" />
+          </div>
+          <div class="row q-gutter-xs">
+            <q-input v-model.number="workHoursWednesday" class="col" filled label="On Wednesday" type="number" />
+            <q-input v-model.number="workHoursThursday" class="col" filled label="On Thursday" type="number" />
+          </div>
+          <div class="row q-gutter-xs">
+            <q-input v-model.number="workHoursFriday" class="col" filled label="On Friday" type="number" />
+            <q-input v-model.number="workHoursSaturday" class="col" filled label="On Saturaday" type="number" />
+          </div>
+          <div class="row q-gutter-xs">
+            <q-input v-model.number="workHoursSunday" class="col-6" filled label="On Sunday" type="number" />
+          </div>
+        </q-tab-panel>
+      </q-tab-panels>
 
       <q-card-section class="row q-gutter-md justify-end">
         <q-btn color="primary" @click="saveHandler">Save</q-btn>

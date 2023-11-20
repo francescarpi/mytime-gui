@@ -27,7 +27,7 @@ const integrationStore = useIntegrationStore();
 const { groupTasks, sendToIntegration } = integrationStore;
 
 const tasksStore = useTasksStore();
-const { loadTasks } = tasksStore;
+const { refresh, loadSummary } = tasksStore;
 
 const emit = defineEmits(["close"]);
 const props = defineProps({
@@ -70,7 +70,8 @@ const sendHandler = () => {
   Promise.all(promises).then(() => {
     isSending.value = false;
     finished.value = true;
-    loadTasks();
+    refresh();
+    loadSummary();
   });
 };
 </script>
