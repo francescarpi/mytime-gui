@@ -17,8 +17,30 @@ export const useSettingsStore = defineStore("settings", () => {
     });
   };
 
-  const save = async (integration: string, url: string, token: string) => {
-    return invoke("save_settings", { integration, url, token }).then(() => {
+  const save = async (
+    integration: string,
+    url: string,
+    token: string,
+    workHoursMonday: number,
+    workHoursTuesday: number,
+    workHoursWednesday: number,
+    workHoursThursday: number,
+    workHoursFriday: number,
+    workHoursSaturday: number,
+    workHoursSunday: number,
+  ) => {
+    return invoke("save_settings", {
+      integration,
+      url,
+      token,
+      workHoursMonday,
+      workHoursTuesday,
+      workHoursWednesday,
+      workHoursThursday,
+      workHoursFriday,
+      workHoursSaturday,
+      workHoursSunday,
+    }).then(() => {
       load();
     });
   };

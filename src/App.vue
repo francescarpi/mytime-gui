@@ -9,6 +9,7 @@ import { useSettingsStore } from "@/stores/settings";
 import { formatDuration } from "@/utils/dates";
 import Settings from "@/components/Settings.vue";
 import Sync from "@/components/Sync.vue";
+import WeekProgress from "@/components/WeekProgress.vue";
 
 import type { Ref } from "vue";
 
@@ -70,6 +71,7 @@ getVersion().then((version) => {
               formatDuration(summary.this_week)
             }}</span>
           </div>
+          <WeekProgress />
         </div>
       </q-toolbar>
     </q-footer>
