@@ -70,10 +70,32 @@ fn settings() -> String {
 }
 
 #[command]
-fn save_settings(integration: &str, url: &str, token: &str) {
+fn save_settings(
+    integration: &str,
+    url: &str,
+    token: &str,
+    work_hours_monday: u64,
+    work_hours_tuesday: u64,
+    work_hours_wednesday: u64,
+    work_hours_thursday: u64,
+    work_hours_friday: u64,
+    work_hours_saturday: u64,
+    work_hours_sunday: u64,
+) {
     let db = DbManager::new();
     let sm = SettingsManager::new(&db.connection);
-    sm.save(integration, url, token);
+    sm.save(
+        integration,
+        url,
+        token,
+        work_hours_monday,
+        work_hours_tuesday,
+        work_hours_wednesday,
+        work_hours_thursday,
+        work_hours_friday,
+        work_hours_saturday,
+        work_hours_sunday,
+    );
 }
 
 #[command]

@@ -6,7 +6,7 @@ use version_compare::Version;
 #[derive(Debug)]
 struct Migration {
     version: String,
-    query: String,
+    queries: Vec<String>,
 }
 
 #[derive(Debug)]
@@ -46,13 +46,33 @@ impl DbManager {
         let db_version = Version::from(&db_version).unwrap();
         let app_version = Version::from(app_version).unwrap();
 
-        let migrations: Vec<Migration> = vec![];
+        let migrations: Vec<Migration> = vec![Migration {
+            version: "0.0.9".to_string(),
+            queries: vec![
+                "ALTER TABLE settings ADD working_hours_monday INTEGER NOT NULL DEFAULT 8;"
+                    .to_string(),
+                "ALTER TABLE settings ADD working_hours_tuesday INTEGER NOT NULL DEFAULT 8;"
+                    .to_string(),
+                "ALTER TABLE settings ADD working_hours_wednesday INTEGER NOT NULL DEFAULT 8;"
+                    .to_string(),
+                "ALTER TABLE settings ADD working_hours_thursday INTEGER NOT NULL DEFAULT 8;"
+                    .to_string(),
+                "ALTER TABLE settings ADD working_hours_friday INTEGER NOT NULL DEFAULT 8;"
+                    .to_string(),
+                "ALTER TABLE settings ADD working_hours_saturday INTEGER NOT NULL DEFAULT 0;"
+                    .to_string(),
+                "ALTER TABLE settings ADD working_hours_sunday INTEGER NOT NULL DEFAULT 0;"
+                    .to_string(),
+            ],
+        }];
 
         if app_version != db_version {
             for migration in migrations {
                 let migration_version = Version::from(&migration.version).unwrap();
                 if migration_version > db_version {
-                    self.connection.execute(&migration.query, ()).unwrap();
+                    for query in migration.queries {
+                        self.connection.execute(&query, ()).unwrap();
+                    }
                 }
             }
 

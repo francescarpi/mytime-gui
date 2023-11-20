@@ -2,7 +2,7 @@
 import { RouterView } from "vue-router";
 import { invoke } from "@tauri-apps/api";
 import { getVersion } from "@tauri-apps/api/app";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useTasksStore } from "@/stores/tasks";
 import { useSettingsStore } from "@/stores/settings";
@@ -20,7 +20,7 @@ const tasksStore = useTasksStore();
 const { summary } = storeToRefs(tasksStore);
 
 const settingsStore = useSettingsStore();
-const { isValid } = storeToRefs(settingsStore);
+const { isValid, goalToday, goalWeek } = storeToRefs(settingsStore);
 const { load } = settingsStore;
 
 getVersion().then((version) => {
@@ -39,13 +39,38 @@ getVersion().then((version) => {
           <q-icon name="timer" />
         </q-avatar>
         <q-toolbar-title> MyTime </q-toolbar-title>
-        <q-chip color="red" text-color="white" icon="directions_run" v-if="summary.is_running"
-          class="q-mr-xl">Running</q-chip>
-        <q-chip color="green" text-color="white" icon="airline_seat_recline_normal" v-else
-          class="q-mr-xl">Stopped</q-chip>
-        <q-btn flat round dense icon="cloud_upload" @click="showSync = true" v-if="isValid" class="q-mr-md">
-          <q-badge color="red" floating rounded v-if="summary.pending_sync_tasks > 0">{{ summary.pending_sync_tasks
-          }}</q-badge>
+        <q-chip
+          color="red"
+          text-color="white"
+          icon="directions_run"
+          v-if="summary.is_running"
+          class="q-mr-xl"
+          >Running</q-chip
+        >
+        <q-chip
+          color="green"
+          text-color="white"
+          icon="airline_seat_recline_normal"
+          v-else
+          class="q-mr-xl"
+          >Stopped</q-chip
+        >
+        <q-btn
+          flat
+          round
+          dense
+          icon="cloud_upload"
+          @click="showSync = true"
+          v-if="isValid"
+          class="q-mr-md"
+        >
+          <q-badge
+            color="red"
+            floating
+            rounded
+            v-if="summary.pending_sync_tasks > 0"
+            >{{ summary.pending_sync_tasks }}</q-badge
+          >
         </q-btn>
         <q-btn flat round dense icon="settings" @click="showSettings = true" />
       </q-toolbar>
@@ -62,11 +87,15 @@ getVersion().then((version) => {
         <div class="row q-gutter-md full-width">
           <div>
             Worked on date:
-            <span class="text-bold">{{ formatDuration(summary.today) }}</span>
+            <span
+              class="text-bold q-pl-xs"
+              :class="summary.today - goalToday < 0 ? 'text-pink-3' : 'text-green-3'"
+              >{{ formatDuration(summary.today) }}</span
+            >
           </div>
-          <div>
+          <div class="q-pl-xl">
             Worked on date's week:
-            <span class="text-bold">{{
+            <span class="text-bold" :class="summary.this_week - goalWeek < 0 ? 'text-pink-3' : 'text-green-3'">{{
               formatDuration(summary.this_week)
             }}</span>
           </div>
