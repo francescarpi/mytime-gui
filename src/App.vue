@@ -89,15 +89,25 @@ getVersion().then((version) => {
             Worked on date:
             <span
               class="text-bold q-pl-xs"
-              :class="summary.today - goalToday < 0 ? 'text-pink-3' : 'text-green-3'"
-              >{{ formatDuration(summary.today) }}</span
+              :class="
+                summary.today - goalToday < 0 ? 'text-pink-3' : 'text-green-3'
+              "
             >
+              {{ formatDuration(summary.today) }}
+            </span>
           </div>
           <div class="q-pl-xl">
             Worked on date's week:
-            <span class="text-bold" :class="summary.this_week - goalWeek < 0 ? 'text-pink-3' : 'text-green-3'">{{
-              formatDuration(summary.this_week)
-            }}</span>
+            <span
+              class="text-bold"
+              :class="
+                summary.this_week - goalWeek < 0
+                  ? 'text-pink-3'
+                  : 'text-green-3'
+              "
+            >
+              {{ formatDuration(summary.this_week) }}
+            </span>
           </div>
         </div>
       </q-toolbar>
