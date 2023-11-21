@@ -2,6 +2,8 @@ import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import { invoke } from "@tauri-apps/api";
 import { dayOfTheWeek } from "@/utils/dates";
+import { setCssVar } from "quasar";
+import { THEMES } from "@/constants/themes";
 
 import type { Ref } from "vue";
 import type { Settings } from "@/types/settings";
@@ -18,11 +20,17 @@ export const useSettingsStore = defineStore("settings", () => {
     work_hours_friday: 8,
     work_hours_saturday: 0,
     work_hours_sunday: 0,
+    theme: THEMES[0].hex,
   });
+
+  const applyTheme = () => {
+    setCssVar("primary", settings.value.theme);
+  };
 
   const load = () => {
     invoke("settings").then((response: unknown) => {
       settings.value = JSON.parse(response as string) as Settings;
+      applyTheme();
     });
   };
 
@@ -37,6 +45,7 @@ export const useSettingsStore = defineStore("settings", () => {
     workHoursFriday: number,
     workHoursSaturday: number,
     workHoursSunday: number,
+    theme: string,
   ) => {
     return invoke("save_settings", {
       integration,
@@ -49,6 +58,7 @@ export const useSettingsStore = defineStore("settings", () => {
       workHoursFriday,
       workHoursSaturday,
       workHoursSunday,
+      theme,
     }).then(() => {
       load();
     });
@@ -69,10 +79,15 @@ export const useSettingsStore = defineStore("settings", () => {
   });
 
   const goalWeek = computed(() => {
-    const work_hours_attrs = Object.keys(settings.value).filter(key => key.includes('work_hours_'));
-    const total = work_hours_attrs.reduce((acc, attr) => acc + (settings as any).value[attr], 0);
+    const work_hours_attrs = Object.keys(settings.value).filter((key) =>
+      key.includes("work_hours_"),
+    );
+    const total = work_hours_attrs.reduce(
+      (acc, attr) => acc + (settings as any).value[attr],
+      0,
+    );
     return total * 3600;
-  })
+  });
 
   return {
     load,

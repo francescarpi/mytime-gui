@@ -4,6 +4,7 @@ import { storeToRefs } from "pinia";
 import { useSettingsStore } from "@/stores/settings";
 import { integrations, getIntegration } from "@/utils/settings";
 import { useQuasar } from "quasar";
+import { THEMES } from "@/constants/themes";
 
 import type { Settings, Option } from "@/types/settings";
 import type { Ref } from "vue";
@@ -13,7 +14,7 @@ const { settings } = storeToRefs(settingsStore);
 const { save } = settingsStore;
 const $q = useQuasar();
 
-const activeTab = ref("integrations");
+const activeTab = ref("general");
 const workHoursMonday = ref(0);
 const workHoursTuesday = ref(0);
 const workHoursWednesday = ref(0);
@@ -21,6 +22,7 @@ const workHoursThursday = ref(0);
 const workHoursFriday = ref(0);
 const workHoursSaturday = ref(0);
 const workHoursSunday = ref(0);
+const theme: Ref<string> = ref(THEMES[0].hex);
 
 const props = defineProps({
   show: Boolean,
@@ -48,7 +50,7 @@ const beforeShow = () => {
   workHoursFriday.value = set.work_hours_friday;
   workHoursSaturday.value = set.work_hours_saturday;
   workHoursSunday.value = set.work_hours_sunday;
-  activeTab.value = "integrations";
+  activeTab.value = "general";
 };
 
 const saveHandler = () => {
@@ -63,6 +65,7 @@ const saveHandler = () => {
     workHoursFriday.value,
     workHoursSaturday.value,
     workHoursSunday.value,
+    theme.value,
   ).then(() => {
     $q.notify({
       message: "Settings saved successfully",
@@ -71,14 +74,14 @@ const saveHandler = () => {
     beforeClose();
   });
 };
+
+const changeTheme = (color: string) => {
+  theme.value = color;
+};
 </script>
 
 <template>
-  <q-dialog
-    :model-value="props.show"
-    @before-hide="beforeClose"
-    @before-show="beforeShow"
-  >
+  <q-dialog :model-value="props.show" @before-hide="beforeClose" @before-show="beforeShow">
     <q-card>
       <q-card-section class="row items-center q-pb-none">
         <div class="text-h6">Settings</div>
@@ -87,35 +90,27 @@ const saveHandler = () => {
       </q-card-section>
 
       <q-card-section>
-        <q-tabs
-          v-model="activeTab"
-          dense
-          class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
-          align="justify"
-        >
+        <q-tabs v-model="activeTab" dense class="text-grey" active-color="primary" indicator-color="primary"
+          align="justify">
+          <q-tab name="general" label="General" />
           <q-tab name="integrations" label="Integrations" />
           <q-tab name="calendar" label="Work hours" />
         </q-tabs>
       </q-card-section>
 
       <q-tab-panels v-model="activeTab" animated class="shadow-2">
+        <q-tab-panel name="general">
+          <p>Select you theme</p>
+          <div class="row q-gutter-sm">
+            <q-btn :color="th.color" :icon="theme === th.hex ? 'check' : ''" @click="changeTheme(th.hex)"
+              v-for="th in THEMES"></q-btn>
+          </div>
+        </q-tab-panel>
         <q-tab-panel name="integrations">
           <q-card-section class="q-gutter-md">
-            <q-select
-              filled
-              label="Integration"
-              v-model="integration"
-              :options="integrations"
-            />
+            <q-select filled label="Integration" v-model="integration" :options="integrations" />
             <q-input filled label="URL" v-model="integration_url" />
-            <q-input
-              filled
-              label="Token"
-              v-model="integration_token"
-              type="password"
-            />
+            <q-input filled label="Token" v-model="integration_token" type="password" />
           </q-card-section>
         </q-tab-panel>
 

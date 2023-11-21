@@ -81,6 +81,7 @@ fn save_settings(
     work_hours_friday: u64,
     work_hours_saturday: u64,
     work_hours_sunday: u64,
+    theme: &str,
 ) {
     let db = DbManager::new();
     let sm = SettingsManager::new(&db.connection);
@@ -95,6 +96,7 @@ fn save_settings(
         work_hours_friday,
         work_hours_saturday,
         work_hours_sunday,
+        theme,
     );
 }
 

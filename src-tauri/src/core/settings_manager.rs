@@ -13,6 +13,7 @@ pub struct Settings {
     pub work_hours_friday: u64,
     pub work_hours_saturday: u64,
     pub work_hours_sunday: u64,
+    pub theme: String,
 }
 
 #[derive(Debug, Clone)]
@@ -43,6 +44,7 @@ impl<'a> SettingsManager<'a> {
                 work_hours_friday: row.get(7)?,
                 work_hours_saturday: row.get(8)?,
                 work_hours_sunday: row.get(9)?,
+                theme: row.get(10)?,
             })
         }) {
             Ok(resp) => resp,
@@ -57,6 +59,7 @@ impl<'a> SettingsManager<'a> {
                 work_hours_friday: 8,
                 work_hours_saturday: 0,
                 work_hours_sunday: 0,
+                theme: "#1976d2".to_string(),
             },
         }
     }
@@ -73,6 +76,7 @@ impl<'a> SettingsManager<'a> {
         work_hours_friday: u64,
         work_hours_saturday: u64,
         work_hours_sunday: u64,
+        theme: &str,
     ) {
         self.connection
             .execute(
@@ -86,7 +90,8 @@ impl<'a> SettingsManager<'a> {
                     working_hours_thursday = ?,
                     working_hours_friday = ?,
                     working_hours_saturday = ?,
-                    working_hours_sunday = ?;
+                    working_hours_sunday = ?,
+                    theme = ?;
                 ",
                 params![
                     integration,
@@ -99,6 +104,7 @@ impl<'a> SettingsManager<'a> {
                     work_hours_friday,
                     work_hours_saturday,
                     work_hours_sunday,
+                    theme
                 ],
             )
             .unwrap();

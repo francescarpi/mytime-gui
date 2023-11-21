@@ -46,25 +46,31 @@ impl DbManager {
         let db_version = Version::from(&db_version).unwrap();
         let app_version = Version::from(app_version).unwrap();
 
-        let migrations: Vec<Migration> = vec![Migration {
-            version: "0.0.9".to_string(),
-            queries: vec![
-                "ALTER TABLE settings ADD working_hours_monday INTEGER NOT NULL DEFAULT 8;"
-                    .to_string(),
-                "ALTER TABLE settings ADD working_hours_tuesday INTEGER NOT NULL DEFAULT 8;"
-                    .to_string(),
-                "ALTER TABLE settings ADD working_hours_wednesday INTEGER NOT NULL DEFAULT 8;"
-                    .to_string(),
-                "ALTER TABLE settings ADD working_hours_thursday INTEGER NOT NULL DEFAULT 8;"
-                    .to_string(),
-                "ALTER TABLE settings ADD working_hours_friday INTEGER NOT NULL DEFAULT 8;"
-                    .to_string(),
-                "ALTER TABLE settings ADD working_hours_saturday INTEGER NOT NULL DEFAULT 0;"
-                    .to_string(),
-                "ALTER TABLE settings ADD working_hours_sunday INTEGER NOT NULL DEFAULT 0;"
-                    .to_string(),
-            ],
-        }];
+        let migrations: Vec<Migration> = vec![
+            Migration {
+                version: "0.0.9".to_string(),
+                queries: vec![
+                    "ALTER TABLE settings ADD working_hours_monday INTEGER NOT NULL DEFAULT 8;"
+                        .to_string(),
+                    "ALTER TABLE settings ADD working_hours_tuesday INTEGER NOT NULL DEFAULT 8;"
+                        .to_string(),
+                    "ALTER TABLE settings ADD working_hours_wednesday INTEGER NOT NULL DEFAULT 8;"
+                        .to_string(),
+                    "ALTER TABLE settings ADD working_hours_thursday INTEGER NOT NULL DEFAULT 8;"
+                        .to_string(),
+                    "ALTER TABLE settings ADD working_hours_friday INTEGER NOT NULL DEFAULT 8;"
+                        .to_string(),
+                    "ALTER TABLE settings ADD working_hours_saturday INTEGER NOT NULL DEFAULT 0;"
+                        .to_string(),
+                    "ALTER TABLE settings ADD working_hours_sunday INTEGER NOT NULL DEFAULT 0;"
+                        .to_string(),
+                ],
+            },
+            Migration {
+                version: "0.0.10".to_string(),
+                queries: vec!["ALTER TABLE settings ADD theme TEXT NOT NULL DEFAULT '#1976d2';".to_string()],
+            },
+        ];
 
         if app_version != db_version {
             for migration in migrations {

@@ -90,7 +90,7 @@ getVersion().then((version) => {
             <span
               class="text-bold q-pl-xs"
               :class="
-                summary.today - goalToday < 0 ? 'text-pink-6' : 'text-green-8'
+                summary.today - goalToday < 0 ? 'text-red-7' : 'text-green-8'
               "
             >
               {{ formatDuration(summary.today) }}
@@ -102,7 +102,7 @@ getVersion().then((version) => {
               class="text-bold"
               :class="
                 summary.this_week - goalWeek < 0
-                  ? 'text-pink-6'
+                  ? 'text-red-7'
                   : 'text-green-8'
               "
             >
