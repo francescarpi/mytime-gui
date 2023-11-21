@@ -82,7 +82,7 @@ getVersion().then((version) => {
       </div>
     </q-page-container>
 
-    <q-footer bordered class="bg-grey-4 text-black">
+    <q-footer bordered class="bg-grey-2 text-black">
       <q-toolbar>
         <div class="row q-gutter-md full-width">
           <div>
