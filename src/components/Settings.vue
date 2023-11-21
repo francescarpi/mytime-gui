@@ -104,7 +104,7 @@ const changeTheme = (color: string) => {
           <p>Theme:</p>
           <div class="row q-gutter-sm">
             <q-btn :color="th.color" :icon="theme === th.hex ? 'check' : ''" @click="changeTheme(th.hex)"
-              v-for="th in THEMES"></q-btn>
+              v-for="th in THEMES" class="col"></q-btn>
           </div>
         </q-tab-panel>
         <q-tab-panel name="integrations">

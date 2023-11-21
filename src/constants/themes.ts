@@ -29,4 +29,19 @@ export const THEMES: Theme[] = [
     color: "blue-grey-7",
     hex: "#546e7a",
   },
+  {
+    display: "grey",
+    color: "grey-7",
+    hex: "#757575",
+  },
+  {
+    display: "orange",
+    color: "deep-orange-6",
+    hex: "#ff5722",
+  },
+  {
+    display: "pink",
+    color: "pink-5",
+    hex: "#ec407a",
+  },
 ];
