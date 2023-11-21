@@ -213,6 +213,7 @@ const copyToClipboard = (content: string) => {
             size="xs"
             round
             flat
+            v-if="props.row.external_id"
             @click="emit('click-column', 'external_id', props.row.external_id)"
           />
           <q-btn
@@ -220,6 +221,7 @@ const copyToClipboard = (content: string) => {
             size="xs"
             round
             flat
+            v-if="props.row.external_id"
             @click="copyToClipboard(props.row.external_id)"
           />
         </div>
