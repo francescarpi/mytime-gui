@@ -82,7 +82,7 @@ getVersion().then((version) => {
       </div>
     </q-page-container>
 
-    <q-footer bordered class="bg-grey-8 text-white">
+    <q-footer bordered class="bg-grey-4 text-black">
       <q-toolbar>
         <div class="row q-gutter-md full-width">
           <div>
@@ -90,7 +90,7 @@ getVersion().then((version) => {
             <span
               class="text-bold q-pl-xs"
               :class="
-                summary.today - goalToday < 0 ? 'text-pink-3' : 'text-green-3'
+                summary.today - goalToday < 0 ? 'text-pink-6' : 'text-green-8'
               "
             >
               {{ formatDuration(summary.today) }}
@@ -102,8 +102,8 @@ getVersion().then((version) => {
               class="text-bold"
               :class="
                 summary.this_week - goalWeek < 0
-                  ? 'text-pink-3'
-                  : 'text-green-3'
+                  ? 'text-pink-6'
+                  : 'text-green-8'
               "
             >
               {{ formatDuration(summary.this_week) }}
