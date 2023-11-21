@@ -98,6 +98,14 @@ const deleteHandler = (task: Task) => {
     });
   });
 };
+
+const copyToClipboard = (content: string) => {
+  navigator.clipboard.writeText(content);
+  $q.notify({
+    message: "Copied to clipboard",
+    position: "top"
+  })
+}
 </script>
 
 <template>
@@ -155,27 +163,66 @@ const deleteHandler = (task: Task) => {
       </div>
     </template>
     <template v-slot:body-cell-project="props">
-      <q-td
-        :props="props"
-        @click="emit('click-column', 'project', props.row.project)"
-      >
-        {{ props.row.project }}
+      <q-td :props="props">
+        <div class="row no-wrap items-center">
+          {{ props.row.project }}
+          <q-btn
+            icon="arrow_upward"
+            size="xs"
+            round
+            flat
+            @click="emit('click-column', 'project', props.row.project)"
+          />
+          <q-btn
+            icon="file_copy"
+            size="xs"
+            round
+            flat
+            @click="copyToClipboard(props.row.project)"
+          />
+        </div>
       </q-td>
     </template>
     <template v-slot:body-cell-description="props">
-      <q-td
-        :props="props"
-        @click="emit('click-column', 'description', props.row.desc)"
-      >
-        {{ props.row.desc }}
+      <q-td :props="props">
+        <div class="row no-wrap items-center">
+          {{ props.row.desc }}
+          <q-btn
+            icon="arrow_upward"
+            size="xs"
+            round
+            flat
+            @click="emit('click-column', 'description', props.row.desc)"
+          />
+          <q-btn
+            icon="file_copy"
+            size="xs"
+            round
+            flat
+            @click="copyToClipboard(props.row.desc)"
+          />
+        </div>
       </q-td>
     </template>
     <template v-slot:body-cell-external_id="props">
-      <q-td
-        :props="props"
-        @click="emit('click-column', 'external_id', props.row.external_id)"
-      >
-        {{ props.row.external_id }}
+      <q-td :props="props">
+        <div class="row no-wrap items-center">
+          {{ props.row.external_id }}
+          <q-btn
+            icon="arrow_upward"
+            size="xs"
+            round
+            flat
+            @click="emit('click-column', 'external_id', props.row.external_id)"
+          />
+          <q-btn
+            icon="file_copy"
+            size="xs"
+            round
+            flat
+            @click="copyToClipboard(props.row.external_id)"
+          />
+        </div>
       </q-td>
     </template>
     <template v-slot:body-cell-reported="props">
