@@ -50,6 +50,7 @@ const beforeShow = () => {
   workHoursFriday.value = set.work_hours_friday;
   workHoursSaturday.value = set.work_hours_saturday;
   workHoursSunday.value = set.work_hours_sunday;
+  theme.value = set.theme;
   activeTab.value = "general";
 };
 
