@@ -101,7 +101,7 @@ const changeTheme = (color: string) => {
 
       <q-tab-panels v-model="activeTab" animated class="shadow-2">
         <q-tab-panel name="general">
-          <p>Select you theme</p>
+          <p>Theme:</p>
           <div class="row q-gutter-sm">
             <q-btn :color="th.color" :icon="theme === th.hex ? 'check' : ''" @click="changeTheme(th.hex)"
               v-for="th in THEMES"></q-btn>
