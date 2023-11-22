@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount } from "vue";
+import { onMounted, onBeforeUnmount, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useTasksStore, today } from "@/stores/tasks";
 import { invoke } from "@tauri-apps/api";
@@ -12,6 +12,7 @@ import type { Task } from "@/types/task";
 
 const emit = defineEmits(["click-column"]);
 const $q = useQuasar();
+const table = ref();
 
 const tasksStore = useTasksStore();
 const {
@@ -74,6 +75,7 @@ const stopTask = (id: number) => {
 const startTask = (task: Task) => {
   createTask(task.project, task.desc, task.external_id).then(() => {
     setTaskFilterDateToToday();
+    table.value.firstPage();
     refresh();
   });
 };
@@ -118,6 +120,7 @@ const copyToClipboard = (content: string) => {
     bordered
     flat
     wrap-cells
+    ref="table"
   >
     <template v-slot:top-left="">
       <div class="col-2 q-table__title items-center">
