@@ -37,17 +37,24 @@ export const useTasksStore = defineStore("tasks", () => {
 
     if (settings.view_type === "grouped") {
       const grouped: Task[] = tasksCopy.reduce((acc: Task[], task: Task) => {
-        const existingTask: Task | undefined = acc.find(
+        let existingTask: Task | undefined = acc.find(
           (t: Task) =>
             t.desc === task.desc &&
             t.project === task.project &&
             t.external_id === task.external_id,
         );
         if (existingTask === undefined) {
-          acc.push({ ...task, total_tasks: 1 });
+          acc.push({
+            ...task,
+            total_tasks: 1,
+            has_runing_tasks: task.end === null,
+          });
         } else {
-          (existingTask as Task).duration += task.duration;
-          ((existingTask as Task).total_tasks as number) += 1;
+          existingTask.duration += task.duration;
+          (existingTask.total_tasks as number) += 1;
+          if (task.end === null) {
+            existingTask.has_runing_tasks = true;
+          }
         }
         return acc;
       }, []);

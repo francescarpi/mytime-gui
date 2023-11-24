@@ -91,6 +91,11 @@ const columnsGrouped: any[] = [
     field: "total_tasks",
     align: "center",
   },
+  {
+    name: "actions_grouped",
+    label: "Actions",
+    style: "width: 130px",
+  },
 ];
 
 export function useColumns() {

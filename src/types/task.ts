@@ -9,6 +9,7 @@ export interface Task {
   number: number | null;
   duration: number;
   total_tasks?: number;
+  has_runing_tasks?: boolean;
 }
 
 export interface Project {

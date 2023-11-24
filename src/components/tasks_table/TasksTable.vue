@@ -244,5 +244,27 @@ onBeforeUnmount(() => {
         <q-chip size="sm">{{ props.row.total_tasks }}</q-chip>
       </q-td>
     </template>
+    <template #body-cell-actions_grouped="props">
+      <q-td :props="props">
+        <q-btn
+          flat
+          icon="play_circle"
+          round
+          size="sm"
+          v-if="!props.row.has_runing_tasks"
+          color="primary"
+          @click="startTask(props.row)"
+        />
+        <q-btn
+          flat
+          icon="pause"
+          round
+          size="sm"
+          v-else
+          color="red"
+          @click="stopTask(props.row.id)"
+        />
+      </q-td>
+    </template>
   </q-table>
 </template>
