@@ -15,9 +15,15 @@ const types: BtnOption[] = [
 
 const change = (value: string) => {
   saveViewType(value);
-}
+};
 </script>
 
 <template>
-  <q-btn-toggle :options="types" v-model="settings.view_type" rounded size="sm" @update:model-value="change" />
+  <q-btn-toggle
+    :options="types"
+    v-model="settings.view_type"
+    rounded
+    size="sm"
+    @update:model-value="change"
+  />
 </template>

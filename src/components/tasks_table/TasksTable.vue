@@ -20,7 +20,7 @@ const { dateLimits } = useCalendar();
 const { copyToClipboard } = useClipboard();
 const tasksStore = useTasksStore();
 const { nextFilterDate, previousFilterDate, refresh } = tasksStore;
-const { tasksWithCounter, filterDate } = storeToRefs(tasksStore);
+const { tasks, filterDate } = storeToRefs(tasksStore);
 
 let interval: number | null = null;
 
@@ -45,7 +45,7 @@ onBeforeUnmount(() => {
 <template>
   <q-table
     title="Tasks"
-    :rows="tasksWithCounter"
+    :rows="tasks"
     :columns="columns"
     :pagination="pagination"
     row-key="id"
@@ -97,9 +97,9 @@ onBeforeUnmount(() => {
         />
       </div>
     </template>
-    <!-- <template #top-right> -->
-    <!--   <TableViewType /> -->
-    <!-- </template> -->
+    <template #top-right>
+      <TableViewType />
+    </template>
     <template #header-cell-shortcut>
       <q-th>
         <q-icon name="keyboard_command_key">

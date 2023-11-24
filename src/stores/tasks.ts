@@ -2,6 +2,7 @@ import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import { invoke } from "@tauri-apps/api";
 import { dateToStrDate } from "@/utils/dates";
+import { useSettingsStore } from "@/stores/settings";
 
 import type { Ref } from "vue";
 import type { Task, Project, ExternalID, Summary } from "../types/task";
@@ -9,7 +10,7 @@ import type { Task, Project, ExternalID, Summary } from "../types/task";
 export const today = new Date().toISOString().split("T")[0];
 
 export const useTasksStore = defineStore("tasks", () => {
-  const tasks: Ref<Task[]> = ref([]);
+  const rawTasks: Ref<Task[]> = ref([]);
 
   const projects: Ref<Project[]> = ref([]);
 
@@ -27,15 +28,32 @@ export const useTasksStore = defineStore("tasks", () => {
   const taskToEdit: Ref<Task | null> = ref(null);
 
   const isRunning = computed(() => {
-    return Boolean(tasks.value.filter((task) => task.end === null).length);
+    return Boolean(rawTasks.value.filter((task) => task.end === null).length);
   });
 
-  const tasksWithCounter = computed(() =>
-    (tasks.value as Task[]).map((task: Task, index: number) => ({
+  const tasks = computed(() => {
+    const tasksCopy = [...rawTasks.value];
+    const { settings } = useSettingsStore();
+
+    if (settings.view_type === "grouped") {
+      tasksCopy.sort((a: Task, b: Task) => {
+        let fa = a.desc.toLowerCase(),
+          fb = b.desc.toLowerCase();
+        if (fa < fb) {
+          return -1;
+        }
+        if (fa > fb) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+
+    return (tasksCopy as Task[]).map((task: Task, index: number) => ({
       ...task,
       number: index <= 8 ? index + 1 : null,
-    })),
-  );
+    }));
+  });
 
   const refresh = () => {
     loadTasks();
@@ -46,7 +64,7 @@ export const useTasksStore = defineStore("tasks", () => {
     return invoke("tasks", { date: filterDate.value }).then(
       (response: unknown) => {
         const tasksJson = JSON.parse(response as string) as Task[];
-        tasks.value = tasksJson;
+        rawTasks.value = tasksJson;
       },
     );
   };
@@ -98,7 +116,6 @@ export const useTasksStore = defineStore("tasks", () => {
 
   return {
     isRunning,
-    tasks,
     projects,
     externalIDs,
     loadTasks,
@@ -113,6 +130,6 @@ export const useTasksStore = defineStore("tasks", () => {
     previousFilterDate,
     refresh,
     todayFilterDate,
-    tasksWithCounter,
+    tasks,
   };
 });

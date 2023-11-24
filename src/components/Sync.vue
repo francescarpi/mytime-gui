@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
+import { ref, nextTick } from "vue";
 import { useSettingsStore } from "@/stores/settings";
 import { useIntegrationStore } from "@/stores/integration";
 import { useTasksStore } from "@/stores/tasks";
@@ -48,30 +48,32 @@ const beforeShow = () => {
 
 const sendHandler = () => {
   isSending.value = true;
-  const promises: any[] = [];
-  tasks.value.forEach((task) => {
-    promises.push(
-      sendToIntegration(
-        task.desc,
-        task.date,
-        formatDuration(task.duration),
-        task.external_id,
-        task.ids,
-      )
-        .then(() => {
-          tasksDone.value.push(task.external_id);
-        })
-        .catch(() => {
-          tasksWithError.value.push(task.external_id);
-        }),
-    );
-  });
+  nextTick(() => {
+    const promises: any[] = [];
+    tasks.value.forEach((task) => {
+      promises.push(
+        sendToIntegration(
+          task.desc,
+          task.date,
+          formatDuration(task.duration),
+          task.external_id,
+          task.ids,
+        )
+          .then(() => {
+            tasksDone.value.push(task.external_id);
+          })
+          .catch(() => {
+            tasksWithError.value.push(task.external_id);
+          }),
+      );
+    });
 
-  Promise.all(promises).then(() => {
-    isSending.value = false;
-    finished.value = true;
-    refresh();
-    loadSummary();
+    Promise.all(promises).then(() => {
+      isSending.value = false;
+      finished.value = true;
+      refresh();
+      loadSummary();
+    });
   });
 };
 </script>
