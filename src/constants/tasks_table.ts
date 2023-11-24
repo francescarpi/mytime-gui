@@ -1,5 +1,10 @@
 export const columns: any[] = [
   {
+    name: "shortcut",
+    align: "center",
+    field: "number"
+  },
+  {
     name: "id",
     label: "#",
     field: "id",

@@ -6,6 +6,7 @@ export interface Task {
   start: string
   end: string | null
   reported: boolean
+  number: number | null
 }
 
 export interface Project {

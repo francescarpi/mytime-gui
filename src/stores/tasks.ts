@@ -17,7 +17,12 @@ export const useTasksStore = defineStore("tasks", () => {
 
   const filterDate: Ref<string> = ref(today);
 
-  const summary: Ref<Summary> = ref({ today: 0, this_week: 0, is_running: false, pending_sync_tasks: 0 });
+  const summary: Ref<Summary> = ref({
+    today: 0,
+    this_week: 0,
+    is_running: false,
+    pending_sync_tasks: 0,
+  });
 
   const taskToEdit: Ref<Task | null> = ref(null);
 
@@ -25,10 +30,17 @@ export const useTasksStore = defineStore("tasks", () => {
     return Boolean(tasks.value.filter((task) => task.end === null).length);
   });
 
+  const tasksWithCounter = computed(() =>
+    (tasks.value as Task[]).map((task: Task, index: number) => ({
+      ...task,
+      number: index <= 8 ? index + 1 : null,
+    })),
+  );
+
   const refresh = () => {
     loadTasks();
     loadSummary();
-  }
+  };
 
   const loadTasks = async () => {
     return invoke("tasks", { date: filterDate.value }).then(
@@ -82,7 +94,7 @@ export const useTasksStore = defineStore("tasks", () => {
   const todayFilterDate = () => {
     filterDate.value = today;
     refresh();
-  }
+  };
 
   return {
     isRunning,
@@ -101,5 +113,6 @@ export const useTasksStore = defineStore("tasks", () => {
     previousFilterDate,
     refresh,
     todayFilterDate,
+    tasksWithCounter,
   };
 });
