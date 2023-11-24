@@ -97,9 +97,9 @@ onBeforeUnmount(() => {
         />
       </div>
     </template>
-    <template #top-right>
-      <TableViewType />
-    </template>
+    <!-- <template #top-right> -->
+    <!--   <TableViewType /> -->
+    <!-- </template> -->
     <template #header-cell-shortcut>
       <q-th>
         <q-icon name="keyboard_command_key">
