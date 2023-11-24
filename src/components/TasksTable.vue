@@ -24,12 +24,12 @@ const {
   refresh,
   todayFilterDate,
 } = tasksStore;
-const { tasks, filterDate } = storeToRefs(tasksStore);
+const { tasksWithCounter, filterDate } = storeToRefs(tasksStore);
 
 let interval: number | null = null;
 
 const listenKeyDown = (e: KeyboardEvent) => {
-  switch (e.key) {
+  switch (e.code) {
     case "ArrowLeft":
       previousFilterDate();
       break;
@@ -38,6 +38,33 @@ const listenKeyDown = (e: KeyboardEvent) => {
       break;
     case "ArrowDown":
       todayFilterDate();
+      break;
+    case "Digit1":
+      openTaskNumber(1);
+      break;
+    case "Digit2":
+      openTaskNumber(2);
+      break;
+    case "Digit3":
+      openTaskNumber(3);
+      break;
+    case "Digit4":
+      openTaskNumber(4);
+      break;
+    case "Digit5":
+      openTaskNumber(5);
+      break;
+    case "Digit6":
+      openTaskNumber(6);
+      break;
+    case "Digit7":
+      openTaskNumber(7);
+      break;
+    case "Digit8":
+      openTaskNumber(8);
+      break;
+    case "Digit9":
+      openTaskNumber(9);
       break;
   }
 };
@@ -58,6 +85,15 @@ onBeforeUnmount(() => {
   }
   window.removeEventListener("keydown", listenKeyDown);
 });
+
+const openTaskNumber = (num: number) => {
+  const task: Task | undefined = tasksWithCounter.value.find(
+    (task: Task) => task.number === num,
+  );
+  if (task !== undefined) {
+    startTask(task);
+  }
+};
 
 const dateLimits = (date: string) => {
   const today = new Date();
@@ -105,84 +141,45 @@ const copyToClipboard = (content: string) => {
   navigator.clipboard.writeText(content);
   $q.notify({
     message: "Copied to clipboard",
-    position: "top"
-  })
-}
+    position: "top",
+  });
+};
 </script>
 
 <template>
-  <q-table
-    title="Tasks"
-    :rows="tasks"
-    :columns="columns"
-    :pagination="pagination"
-    row-key="id"
-    bordered
-    flat
-    wrap-cells
-    ref="table"
-  >
+  <q-table title="Tasks" :rows="tasksWithCounter" :columns="columns" :pagination="pagination" row-key="id" bordered flat
+    wrap-cells ref="table">
     <template v-slot:top-left="">
       <div class="col-2 q-table__title items-center">
         Tasks of day {{ filterDate }} ({{ dayOfTheWeek(new Date(filterDate)) }})
-        <q-btn
-          icon="arrow_back"
-          round
-          color="primary"
-          size="xs"
-          class="q-ml-sm"
-          @click="previousFilterDate"
-        />
+        <q-btn icon="arrow_back" round color="primary" size="xs" class="q-ml-sm" @click="previousFilterDate" />
         <q-btn icon="event" round color="primary" size="xs" class="q-mx-sm">
           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-            <q-date
-              v-model="filterDate"
-              mask="YYYY-MM-DD"
-              first-day-of-week="1"
-              today-btn
-              :options="dateLimits"
-            >
+            <q-date v-model="filterDate" mask="YYYY-MM-DD" first-day-of-week="1" today-btn :options="dateLimits">
               <div class="row items-center justify-end q-gutter-sm">
                 <q-btn label="Cancel" color="primary" flat v-close-popup />
-                <q-btn
-                  label="OK"
-                  color="primary"
-                  flat
-                  v-close-popup
-                  @click="refresh"
-                />
+                <q-btn label="OK" color="primary" flat v-close-popup @click="refresh" />
               </div>
             </q-date>
           </q-popup-proxy>
         </q-btn>
-        <q-btn
-          icon="arrow_forward"
-          round
-          color="primary"
-          size="xs"
-          @click="nextFilterDate"
-          :disable="filterDate === today"
-        />
+        <q-btn icon="arrow_forward" round color="primary" size="xs" @click="nextFilterDate"
+          :disable="filterDate === today" />
       </div>
+    </template>
+    <template #header-cell-shortcut>
+      <q-th>
+        <q-icon name="keyboard_command_key">
+          <q-tooltip>Press Alt+number to open task</q-tooltip>
+        </q-icon>
+      </q-th>
     </template>
     <template v-slot:body-cell-project="props">
       <q-td :props="props">
         <div class="row no-wrap items-center">
           {{ props.row.project }}
-          <q-btn
-            icon="arrow_upward"
-            size="xs"
-            round
-            flat
-            @click="emit('click-column', 'project', props.row.project)"
-          />
-          <q-btn
-            icon="file_copy"
-            size="xs"
-            round
-            flat
-            @click="copyToClipboard(props.row.project)"
-          />
+          <q-btn icon="arrow_upward" size="xs" round flat @click="emit('click-column', 'project', props.row.project)" />
+          <q-btn icon="file_copy" size="xs" round flat @click="copyToClipboard(props.row.project)" />
         </div>
       </q-td>
     </template>
@@ -190,20 +187,8 @@ const copyToClipboard = (content: string) => {
       <q-td :props="props">
         <div class="row no-wrap items-center">
           {{ props.row.desc }}
-          <q-btn
-            icon="arrow_upward"
-            size="xs"
-            round
-            flat
-            @click="emit('click-column', 'description', props.row.desc)"
-          />
-          <q-btn
-            icon="file_copy"
-            size="xs"
-            round
-            flat
-            @click="copyToClipboard(props.row.desc)"
-          />
+          <q-btn icon="arrow_upward" size="xs" round flat @click="emit('click-column', 'description', props.row.desc)" />
+          <q-btn icon="file_copy" size="xs" round flat @click="copyToClipboard(props.row.desc)" />
         </div>
       </q-td>
     </template>
@@ -211,31 +196,17 @@ const copyToClipboard = (content: string) => {
       <q-td :props="props">
         <div class="row no-wrap items-center">
           {{ props.row.external_id }}
-          <q-btn
-            icon="arrow_upward"
-            size="xs"
-            round
-            flat
-            v-if="props.row.external_id"
-            @click="emit('click-column', 'external_id', props.row.external_id)"
-          />
-          <q-btn
-            icon="file_copy"
-            size="xs"
-            round
-            flat
-            v-if="props.row.external_id"
-            @click="copyToClipboard(props.row.external_id)"
-          />
+          <q-btn icon="arrow_upward" size="xs" round flat v-if="props.row.external_id"
+            @click="emit('click-column', 'external_id', props.row.external_id)" />
+          <q-btn icon="file_copy" size="xs" round flat v-if="props.row.external_id"
+            @click="copyToClipboard(props.row.external_id)" />
         </div>
       </q-td>
     </template>
     <template v-slot:body-cell-reported="props">
       <q-td :props="props">
-        <q-icon
-          :name="props.row.reported ? 'cloud_done' : 'cloud'"
-          :class="props.row.reported ? 'text-black' : 'text-grey-5'"
-        ></q-icon>
+        <q-icon :name="props.row.reported ? 'cloud_done' : 'cloud'"
+          :class="props.row.reported ? 'text-black' : 'text-grey-5'"></q-icon>
       </q-td>
     </template>
     <template v-slot:body-cell-started_at="props">
@@ -258,42 +229,13 @@ const copyToClipboard = (content: string) => {
     </template>
     <template v-slot:body-cell-actions="props">
       <q-td :props="props">
-        <q-btn
-          flat
-          icon="delete"
-          round
-          size="sm"
-          color="red"
-          v-if="!props.row.reported"
-          @click="deleteHandler(props.row)"
-        />
-        <q-btn
-          flat
-          icon="edit"
-          round
-          size="sm"
-          color="primary"
-          v-if="!props.row.reported"
-          @click="editHandler(props.row)"
-        />
-        <q-btn
-          flat
-          icon="play_circle"
-          round
-          size="sm"
-          v-if="props.row.end"
-          color="primary"
-          @click="startTask(props.row)"
-        />
-        <q-btn
-          flat
-          icon="pause"
-          round
-          size="sm"
-          v-else
-          color="red"
-          @click="stopTask(props.row.id)"
-        />
+        <q-btn flat icon="delete" round size="sm" color="red" v-if="!props.row.reported"
+          @click="deleteHandler(props.row)" />
+        <q-btn flat icon="edit" round size="sm" color="primary" v-if="!props.row.reported"
+          @click="editHandler(props.row)" />
+        <q-btn flat icon="play_circle" round size="sm" v-if="props.row.end" color="primary"
+          @click="startTask(props.row)" />
+        <q-btn flat icon="pause" round size="sm" v-else color="red" @click="stopTask(props.row.id)" />
       </q-td>
     </template>
   </q-table>
