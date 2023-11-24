@@ -1,0 +1,66 @@
+import { useTasksStore } from "@/stores/tasks";
+import { invoke } from "@tauri-apps/api";
+import { storeToRefs } from "pinia";
+import { useQuasar } from "quasar";
+
+import type { Task } from "@/types/task";
+
+export function useTaskActions(table: any) {
+  const tasksStore = useTasksStore();
+  const { createTask, setTaskFilterDateToToday, refresh, setTaskToEdit } =
+    tasksStore;
+  const { tasksWithCounter } = storeToRefs(tasksStore);
+  const $q = useQuasar();
+
+  const openTaskNumber = (num: number) => {
+    const task: Task | undefined = tasksWithCounter.value.find(
+      (task: Task) => task.number === num,
+    );
+    if (task !== undefined) {
+      startTask(task);
+    }
+  };
+
+  const startTask = (task: Task) => {
+    createTask(task.project, task.desc, task.external_id).then(() => {
+      setTaskFilterDateToToday();
+      table.value.firstPage();
+      refresh();
+    });
+  };
+
+  const stopTask = (id: number) => {
+    invoke("stop_task", { id }).then(() => {
+      refresh();
+    });
+  };
+
+  const deleteTask = (task: Task) => {
+    $q.dialog({
+      title: "Delete task",
+      message: `Would you like to delete the task ${task.id}?`,
+      cancel: true,
+      persistent: true,
+    }).onOk(() => {
+      invoke("delete_task", { id: task.id }).then(() => {
+        refresh();
+        $q.notify({
+          message: "Task deleted successfully",
+          position: "top",
+        });
+      });
+    });
+  };
+
+  const editTask = (task: Task) => {
+    setTaskToEdit(task);
+  };
+
+  return {
+    openTaskNumber,
+    startTask,
+    stopTask,
+    deleteTask,
+    editTask,
+  };
+}

@@ -49,7 +49,7 @@ const save = () => {
 </script>
 
 <template>
-  <q-dialog :model-value="Boolean(taskToEdit)" @before-show="beforeShow" full-width>
+  <q-dialog :model-value="Boolean(taskToEdit)" @before-show="beforeShow" full-width @before-hide="cancel">
     <q-card class="q-px-sm q-pb-md">
       <q-card-section>
         <div class="text-h6 q-mb-xl">Task edition</div>

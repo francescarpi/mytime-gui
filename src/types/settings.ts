@@ -10,6 +10,7 @@ export interface Settings {
   work_hours_saturday: number;
   work_hours_sunday: number;
   theme: string;
+  view_type: string;
 }
 
 export interface Option {

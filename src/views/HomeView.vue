@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import TasksTable from "@/components/TasksTable.vue";
+import TasksTable from "@/components/tasks_table/TasksTable.vue";
 import NewTask from "@/components/NewTask.vue";
 import EditTask from "@/components/EditTask.vue";
 

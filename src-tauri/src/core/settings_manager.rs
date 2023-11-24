@@ -14,6 +14,7 @@ pub struct Settings {
     pub work_hours_saturday: u64,
     pub work_hours_sunday: u64,
     pub theme: String,
+    pub view_type: String,
 }
 
 #[derive(Debug, Clone)]
@@ -45,6 +46,7 @@ impl<'a> SettingsManager<'a> {
                 work_hours_saturday: row.get(8)?,
                 work_hours_sunday: row.get(9)?,
                 theme: row.get(10)?,
+                view_type: row.get(11)?,
             })
         }) {
             Ok(resp) => resp,
@@ -60,6 +62,7 @@ impl<'a> SettingsManager<'a> {
                 work_hours_saturday: 0,
                 work_hours_sunday: 0,
                 theme: "#1976d2".to_string(),
+                view_type: "chronological".to_string(),
             },
         }
     }
@@ -107,6 +110,12 @@ impl<'a> SettingsManager<'a> {
                     theme
                 ],
             )
+            .unwrap();
+    }
+
+    pub fn save_view_type(&self, view_type: &str) {
+        self.connection
+            .execute("UPDATE settings SET view_type = ?", params![view_type])
             .unwrap();
     }
 }
