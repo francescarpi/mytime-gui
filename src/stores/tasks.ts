@@ -36,17 +36,22 @@ export const useTasksStore = defineStore("tasks", () => {
     const { settings } = useSettingsStore();
 
     if (settings.view_type === "grouped") {
-      tasksCopy.sort((a: Task, b: Task) => {
-        let fa = a.desc.toLowerCase(),
-          fb = b.desc.toLowerCase();
-        if (fa < fb) {
-          return -1;
+      const grouped: Task[] = tasksCopy.reduce((acc: Task[], task: Task) => {
+        const existingTask: Task | undefined = acc.find(
+          (t: Task) =>
+            t.desc === task.desc &&
+            t.project === task.project &&
+            t.external_id === task.external_id,
+        );
+        if (existingTask === undefined) {
+          acc.push({ ...task, total_tasks: 1 });
+        } else {
+          (existingTask as Task).duration += task.duration;
+          ((existingTask as Task).total_tasks as number) += 1;
         }
-        if (fa > fb) {
-          return 1;
-        }
-        return 0;
-      });
+        return acc;
+      }, []);
+      return grouped;
     }
 
     return (tasksCopy as Task[]).map((task: Task, index: number) => ({

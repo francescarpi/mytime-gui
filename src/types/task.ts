@@ -7,6 +7,8 @@ export interface Task {
   end: string | null;
   reported: boolean;
   number: number | null;
+  duration: number;
+  total_tasks?: number;
 }
 
 export interface Project {

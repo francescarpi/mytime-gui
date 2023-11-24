@@ -3,12 +3,12 @@ import { onMounted, onBeforeUnmount, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useTasksStore, today } from "@/stores/tasks";
 import { dateToStrTime, formatDuration, dayOfTheWeek } from "@/utils/dates";
-import { columns } from "@/constants/tasks_table";
 import { pagination } from "@/constants/tables";
 import { useNavigation } from "./navigation";
 import { useTaskActions } from "./task_actions";
 import { useCalendar } from "./calendar";
 import { useClipboard } from "./clipboard";
+import { useColumns } from "./columns";
 
 import TableViewType from "@/components/TableViewType.vue";
 
@@ -21,6 +21,7 @@ const { copyToClipboard } = useClipboard();
 const tasksStore = useTasksStore();
 const { nextFilterDate, previousFilterDate, refresh } = tasksStore;
 const { tasks, filterDate } = storeToRefs(tasksStore);
+const { getColumns } = useColumns();
 
 let interval: number | null = null;
 
@@ -46,7 +47,7 @@ onBeforeUnmount(() => {
   <q-table
     title="Tasks"
     :rows="tasks"
-    :columns="columns"
+    :columns="getColumns()"
     :pagination="pagination"
     row-key="id"
     bordered
@@ -54,7 +55,7 @@ onBeforeUnmount(() => {
     wrap-cells
     ref="table"
   >
-    <template v-slot:top-left="">
+    <template #top-left="">
       <div class="col-2 q-table__title items-center">
         Tasks of day {{ filterDate }} ({{ dayOfTheWeek(new Date(filterDate)) }})
         <q-btn
@@ -107,7 +108,7 @@ onBeforeUnmount(() => {
         </q-icon>
       </q-th>
     </template>
-    <template v-slot:body-cell-project="props">
+    <template #body-cell-project="props">
       <q-td :props="props">
         <div class="row no-wrap items-center">
           {{ props.row.project }}
@@ -128,7 +129,7 @@ onBeforeUnmount(() => {
         </div>
       </q-td>
     </template>
-    <template v-slot:body-cell-description="props">
+    <template #body-cell-description="props">
       <q-td :props="props">
         <div class="row no-wrap items-center">
           {{ props.row.desc }}
@@ -149,7 +150,7 @@ onBeforeUnmount(() => {
         </div>
       </q-td>
     </template>
-    <template v-slot:body-cell-external_id="props">
+    <template #body-cell-external_id="props">
       <q-td :props="props">
         <div class="row no-wrap items-center">
           {{ props.row.external_id }}
@@ -172,7 +173,7 @@ onBeforeUnmount(() => {
         </div>
       </q-td>
     </template>
-    <template v-slot:body-cell-reported="props">
+    <template #body-cell-reported="props">
       <q-td :props="props">
         <q-icon
           :name="props.row.reported ? 'cloud_done' : 'cloud'"
@@ -180,12 +181,12 @@ onBeforeUnmount(() => {
         ></q-icon>
       </q-td>
     </template>
-    <template v-slot:body-cell-started_at="props">
+    <template #body-cell-started_at="props">
       <q-td :props="props">
         <span>{{ dateToStrTime(new Date(props.row.start)) }}</span>
       </q-td>
     </template>
-    <template v-slot:body-cell-ended_at="props">
+    <template #body-cell-ended_at="props">
       <q-td :props="props">
         <span v-if="props.row.end">{{
           dateToStrTime(new Date(props.row.end))
@@ -193,12 +194,12 @@ onBeforeUnmount(() => {
         <q-icon name="directions_run" v-else size="xs" color="red"></q-icon>
       </q-td>
     </template>
-    <template v-slot:body-cell-duration="props">
+    <template #body-cell-duration="props">
       <q-td :props="props">
         <span>{{ formatDuration(props.row.duration) }}</span>
       </q-td>
     </template>
-    <template v-slot:body-cell-actions="props">
+    <template #body-cell-actions="props">
       <q-td :props="props">
         <q-btn
           flat
@@ -236,6 +237,11 @@ onBeforeUnmount(() => {
           color="red"
           @click="stopTask(props.row.id)"
         />
+      </q-td>
+    </template>
+    <template #body-cell-total_tasks="props">
+      <q-td :props="props">
+        <q-chip size="sm">{{ props.row.total_tasks }}</q-chip>
       </q-td>
     </template>
   </q-table>
