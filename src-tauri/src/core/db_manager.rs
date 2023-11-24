@@ -68,7 +68,16 @@ impl DbManager {
             },
             Migration {
                 version: "0.0.10".to_string(),
-                queries: vec!["ALTER TABLE settings ADD theme TEXT NOT NULL DEFAULT '#1976d2';".to_string()],
+                queries: vec![
+                    "ALTER TABLE settings ADD theme TEXT NOT NULL DEFAULT '#1976d2';".to_string(),
+                ],
+            },
+            Migration {
+                version: "0.0.11".to_string(),
+                queries: vec![
+                    "ALTER TABLE settings ADD view_type TEXT NOT NULL DEFAULT 'chronological';"
+                        .to_string(),
+                ],
             },
         ];
 
@@ -126,17 +135,39 @@ impl DbManager {
         self.connection
             .execute(
                 "CREATE TABLE settings (
-                    integration         TEXT DEFAULT NULL,
-                    integration_url     TEXT DEFAULT NULL,
-                    integration_token   TEXT DEFAULT NULL
+                    integration             TEXT DEFAULT NULL,
+                    integration_url         TEXT DEFAULT NULL,
+                    integration_token       TEXT DEFAULT NULL,
+                    working_hours_monday    INTEGER NOT NULL DEFAULT 8,
+                    working_hours_tuesday   INTEGER NOT NULL DEFAULT 8,
+                    working_hours_wednesday INTEGER NOT NULL DEFAULT 8,
+                    working_hours_thursday  INTEGER NOT NULL DEFAULT 8,
+                    working_hours_friday    INTEGER NOT NULL DEFAULT 8,
+                    working_hours_saturday  INTEGER NOT NULL DEFAULT 0,
+                    working_hours_sunday    INTEGER NOT NULL DEFAULT 0,
+                    theme                   TEXT NOT NULL DEFAULT '#1976d2',
+                    view_type               TEXT NOT NULL DEFAULT 'chronological'
                 )",
                 (),
             )
             .unwrap();
         self.connection
             .execute(
-                "INSERT INTO settings VALUES (?, ?, ?)",
-                ["".to_string(), "".to_string(), "".to_string()],
+                "INSERT INTO settings VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                [
+                    "".to_string(),
+                    "".to_string(),
+                    "".to_string(),
+                    "8".to_string(),
+                    "8".to_string(),
+                    "8".to_string(),
+                    "8".to_string(),
+                    "8".to_string(),
+                    "0".to_string(),
+                    "0".to_string(),
+                    "#1976d2".to_string(),
+                    "chronological".to_string(),
+                ],
             )
             .unwrap();
     }

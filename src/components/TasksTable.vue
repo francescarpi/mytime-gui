@@ -7,6 +7,8 @@ import { dateToStrTime, formatDuration, dayOfTheWeek } from "@/utils/dates";
 import { columns } from "@/constants/tasks_table";
 import { pagination } from "@/constants/tables";
 import { useQuasar } from "quasar";
+import TableViewType from "@/components/TableViewType.vue";
+
 
 import type { Task } from "@/types/task";
 
@@ -166,6 +168,9 @@ const copyToClipboard = (content: string) => {
         <q-btn icon="arrow_forward" round color="primary" size="xs" @click="nextFilterDate"
           :disable="filterDate === today" />
       </div>
+    </template>
+    <template #top-right>
+      <TableViewType />
     </template>
     <template #header-cell-shortcut>
       <q-th>

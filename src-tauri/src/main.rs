@@ -129,6 +129,13 @@ fn delete_task(id: u64) {
     TasksManager::new(&db.connection).delete_task(id);
 }
 
+#[command]
+fn save_view_type(view_type: &str) {
+    let db = DbManager::new();
+    let sm = SettingsManager::new(&db.connection);
+    sm.save_view_type(view_type);
+}
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -143,6 +150,7 @@ fn main() {
             group_tasks,
             send_to_integration,
             delete_task,
+            save_view_type,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

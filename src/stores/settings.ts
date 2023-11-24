@@ -21,6 +21,7 @@ export const useSettingsStore = defineStore("settings", () => {
     work_hours_saturday: 0,
     work_hours_sunday: 0,
     theme: THEMES[0].hex,
+    view_type: "chronological",
   });
 
   const applyTheme = () => {
@@ -64,6 +65,12 @@ export const useSettingsStore = defineStore("settings", () => {
     });
   };
 
+  const saveViewType = (viewType: string) => {
+    invoke("save_view_type", { viewType }).then(() => {
+      load();
+    });
+  };
+
   const isValid = computed(() => {
     const s = settings.value;
     return (
@@ -96,5 +103,6 @@ export const useSettingsStore = defineStore("settings", () => {
     isValid,
     goalToday,
     goalWeek,
+    saveViewType,
   };
 });
