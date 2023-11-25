@@ -31,6 +31,12 @@ export const useTasksStore = defineStore("tasks", () => {
     return Boolean(rawTasks.value.filter((task) => task.end === null).length);
   });
 
+  const addShortcut = (tasks: Task[]) =>
+    tasks.map((task, index: number) => ({
+      ...task,
+      shortcut: index <= 8 ? index + 1 : null,
+    }));
+
   const tasks = computed(() => {
     const tasksCopy = [...rawTasks.value];
     const { settings } = useSettingsStore();
@@ -58,13 +64,10 @@ export const useTasksStore = defineStore("tasks", () => {
         }
         return acc;
       }, []);
-      return grouped;
+      return addShortcut(grouped);
     }
 
-    return (tasksCopy as Task[]).map((task: Task, index: number) => ({
-      ...task,
-      number: index <= 8 ? index + 1 : null,
-    }));
+    return addShortcut(tasksCopy);
   });
 
   const refresh = () => {

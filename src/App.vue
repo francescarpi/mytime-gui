@@ -50,7 +50,7 @@ getVersion().then((version) => {
         <q-chip
           color="green"
           text-color="white"
-          icon="airline_seat_recline_normal"
+          icon="local_cafe"
           v-else
           class="q-mr-xl"
           >Stopped</q-chip

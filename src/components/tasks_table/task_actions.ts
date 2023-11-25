@@ -9,12 +9,12 @@ export function useTaskActions(table: any) {
   const tasksStore = useTasksStore();
   const { createTask, setTaskFilterDateToToday, refresh, setTaskToEdit } =
     tasksStore;
-  const { tasksWithCounter } = storeToRefs(tasksStore);
+  const { tasks } = storeToRefs(tasksStore);
   const $q = useQuasar();
 
   const openTaskNumber = (num: number) => {
-    const task: Task | undefined = tasksWithCounter.value.find(
-      (task: Task) => task.number === num,
+    const task: Task | undefined = tasks.value.find(
+      (task: Task) => task.shortcut === num,
     );
     if (task !== undefined) {
       startTask(task);

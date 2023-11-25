@@ -5,7 +5,7 @@ const columnsNotGrouped: any[] = [
   {
     name: "shortcut",
     align: "center",
-    field: "number",
+    field: "shortcut",
   },
   {
     name: "id",
@@ -62,6 +62,11 @@ const columnsNotGrouped: any[] = [
 ];
 
 const columnsGrouped: any[] = [
+  {
+    name: "shortcut",
+    align: "center",
+    field: "shortcut",
+  },
   {
     name: "project",
     label: "Project",
