@@ -8,8 +8,8 @@ export interface Task {
   reported: boolean;
   shortcut: number | null;
   duration: number;
-  total_tasks?: number;
   has_runing_tasks?: boolean;
+  children?: Task[];
 }
 
 export interface Project {

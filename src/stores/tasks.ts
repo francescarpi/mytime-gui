@@ -52,12 +52,12 @@ export const useTasksStore = defineStore("tasks", () => {
         if (existingTask === undefined) {
           acc.push({
             ...task,
-            total_tasks: 1,
             has_runing_tasks: task.end === null,
+            children: [task],
           });
         } else {
           existingTask.duration += task.duration;
-          (existingTask.total_tasks as number) += 1;
+          (existingTask.children as Task[]).push(task);
           if (task.end === null) {
             existingTask.has_runing_tasks = true;
           }

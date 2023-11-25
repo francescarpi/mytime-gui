@@ -1,5 +1,6 @@
 import { storeToRefs } from "pinia";
 import { useSettingsStore } from "@/stores/settings";
+import type { Task } from "@/types/task";
 
 const columnsNotGrouped: any[] = [
   {
@@ -91,9 +92,8 @@ const columnsGrouped: any[] = [
     field: "duration",
   },
   {
-    name: "total_tasks",
+    name: "tasks",
     label: "Tasks",
-    field: "total_tasks",
     align: "center",
   },
   {

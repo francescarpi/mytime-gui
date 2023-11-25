@@ -10,7 +10,11 @@ import { useCalendar } from "./calendar";
 import { useClipboard } from "./clipboard";
 import { useColumns } from "./columns";
 
+import type { Ref } from "vue";
+import type { Task } from "@/types/task";
+
 import TableViewType from "@/components/TableViewType.vue";
+import ChildrenTasks from "./ChildrenTasks.vue";
 
 const emit = defineEmits(["click-column"]);
 const table = ref();
@@ -22,6 +26,7 @@ const tasksStore = useTasksStore();
 const { nextFilterDate, previousFilterDate, refresh } = tasksStore;
 const { tasks, filterDate } = storeToRefs(tasksStore);
 const { getColumns } = useColumns();
+const childrenTasks: Ref<Task[]> = ref([]);
 
 let interval: number | null = null;
 
@@ -41,9 +46,18 @@ onBeforeUnmount(() => {
   }
   window.removeEventListener("keydown", listenKeyDown);
 });
+
+const closeChildren = () => {
+  childrenTasks.value = [];
+};
 </script>
 
 <template>
+  <ChildrenTasks
+    v-if="childrenTasks.values.length > 0"
+    :tasks="childrenTasks.values"
+    @close="closeChildren"
+  />
   <q-table
     title="Tasks"
     :rows="tasks"
@@ -239,9 +253,18 @@ onBeforeUnmount(() => {
         />
       </q-td>
     </template>
-    <template #body-cell-total_tasks="props">
+    <template #body-cell-tasks="props">
       <q-td :props="props">
-        <q-chip size="sm">{{ props.row.total_tasks }}</q-chip>
+        <q-btn
+          size="xs"
+          round
+          color="primary"
+          unelevated
+          dense
+          @click="childrenTasks.values = props.row.children"
+        >
+          {{ props.row.children.length }}
+        </q-btn>
       </q-td>
     </template>
     <template #body-cell-actions_grouped="props">
