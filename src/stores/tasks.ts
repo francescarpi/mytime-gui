@@ -61,6 +61,9 @@ export const useTasksStore = defineStore("tasks", () => {
           if (task.end === null) {
             existingTask.has_runing_tasks = true;
           }
+          if (!task.reported) {
+            existingTask.reported = false;
+          }
         }
         return acc;
       }, []);
@@ -84,7 +87,7 @@ export const useTasksStore = defineStore("tasks", () => {
     );
   };
 
-  const createTask = (
+  const createTask = async (
     project: string,
     description: string,
     externalId: string,

@@ -51,6 +51,7 @@ const columnsNotGrouped: any[] = [
     label: "Duration",
     field: "duration",
     format: (value: number) => formatDuration(value),
+    align: "right",
   },
   {
     name: "reported",
@@ -93,6 +94,14 @@ const columnsGrouped: any[] = [
     name: "duration",
     label: "Duration",
     field: "duration",
+    format: (value: number) => formatDuration(value),
+    align: "right",
+  },
+  {
+    name: "reported",
+    label: "Reported",
+    field: "reported",
+    align: "center",
   },
   {
     name: "tasks",

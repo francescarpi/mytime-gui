@@ -17,7 +17,7 @@ import Reported from "./Reported.vue";
 
 const table = ref();
 const emit = defineEmits(["click-column"]);
-const { listenKeyDown } = useNavigation(table);
+const { listenKeyDown } = useNavigation();
 const { copyToClipboard } = useClipboard();
 const tasksStore = useTasksStore();
 const { refresh } = tasksStore;
@@ -42,6 +42,11 @@ onBeforeUnmount(() => {
   }
   window.removeEventListener("keydown", listenKeyDown);
 });
+
+const firstPage = () => {
+  table.value.firstPage();
+}
+
 </script>
 
 <template>
@@ -99,7 +104,7 @@ onBeforeUnmount(() => {
     </template>
     <template #body-cell-actions="props">
       <q-td :props="props">
-        <Actions :task="props.row" :table="table" />
+        <Actions :task="props.row" @created="firstPage" />
       </q-td>
     </template>
     <template #body-cell-tasks="props">
@@ -109,7 +114,7 @@ onBeforeUnmount(() => {
     </template>
     <template #body-cell-actions_grouped="props">
       <q-td :props="props">
-        <GroupedActions :task="props.row" :table="table" />
+        <GroupedActions :task="props.row" @created="firstPage" />
       </q-td>
     </template>
   </q-table>

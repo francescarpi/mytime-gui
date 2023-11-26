@@ -5,7 +5,7 @@ import { useQuasar } from "quasar";
 
 import type { Task } from "@/types/task";
 
-export function useTaskActions(table: any) {
+export function useTaskActions() {
   const tasksStore = useTasksStore();
   const { createTask, setTaskFilterDateToToday, refresh, setTaskToEdit } =
     tasksStore;
@@ -21,10 +21,9 @@ export function useTaskActions(table: any) {
     }
   };
 
-  const startTask = (task: Task) => {
-    createTask(task.project, task.desc, task.external_id).then(() => {
+  const startTask = async (task: Task) => {
+    return createTask(task.project, task.desc, task.external_id).then(() => {
       setTaskFilterDateToToday();
-      table.value.firstPage();
       refresh();
     });
   };

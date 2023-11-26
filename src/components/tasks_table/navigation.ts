@@ -1,10 +1,10 @@
 import { useTasksStore } from "@/stores/tasks";
 import { useTaskActions } from "./task_actions";
 
-export function useNavigation(table: any) {
+export function useNavigation() {
   const { nextFilterDate, previousFilterDate, todayFilterDate } =
     useTasksStore();
-  const { openTaskNumber } = useTaskActions(table);
+  const { openTaskNumber } = useTaskActions();
 
   const listenKeyDown = (e: KeyboardEvent) => {
     switch (e.code) {
