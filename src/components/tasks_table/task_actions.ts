@@ -5,26 +5,25 @@ import { useQuasar } from "quasar";
 
 import type { Task } from "@/types/task";
 
-export function useTaskActions(table: any) {
+export function useTaskActions() {
   const tasksStore = useTasksStore();
   const { createTask, setTaskFilterDateToToday, refresh, setTaskToEdit } =
     tasksStore;
-  const { tasksWithCounter } = storeToRefs(tasksStore);
+  const { tasks } = storeToRefs(tasksStore);
   const $q = useQuasar();
 
   const openTaskNumber = (num: number) => {
-    const task: Task | undefined = tasksWithCounter.value.find(
-      (task: Task) => task.number === num,
+    const task: Task | undefined = tasks.value.find(
+      (task: Task) => task.shortcut === num,
     );
     if (task !== undefined) {
       startTask(task);
     }
   };
 
-  const startTask = (task: Task) => {
-    createTask(task.project, task.desc, task.external_id).then(() => {
+  const startTask = async (task: Task) => {
+    return createTask(task.project, task.desc, task.external_id).then(() => {
       setTaskFilterDateToToday();
-      table.value.firstPage();
       refresh();
     });
   };

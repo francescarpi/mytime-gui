@@ -6,7 +6,10 @@ export interface Task {
   start: string;
   end: string | null;
   reported: boolean;
-  number: number | null;
+  shortcut: number | null;
+  duration: number;
+  has_runing_tasks?: boolean;
+  children?: Task[];
 }
 
 export interface Project {

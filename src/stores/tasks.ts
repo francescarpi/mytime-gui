@@ -31,28 +31,46 @@ export const useTasksStore = defineStore("tasks", () => {
     return Boolean(rawTasks.value.filter((task) => task.end === null).length);
   });
 
+  const addShortcut = (tasks: Task[]) =>
+    tasks.map((task, index: number) => ({
+      ...task,
+      shortcut: index <= 8 ? index + 1 : null,
+    }));
+
   const tasks = computed(() => {
     const tasksCopy = [...rawTasks.value];
     const { settings } = useSettingsStore();
 
     if (settings.view_type === "grouped") {
-      tasksCopy.sort((a: Task, b: Task) => {
-        let fa = a.desc.toLowerCase(),
-          fb = b.desc.toLowerCase();
-        if (fa < fb) {
-          return -1;
+      const grouped: Task[] = tasksCopy.reduce((acc: Task[], task: Task) => {
+        let existingTask: Task | undefined = acc.find(
+          (t: Task) =>
+            t.desc === task.desc &&
+            t.project === task.project &&
+            t.external_id === task.external_id,
+        );
+        if (existingTask === undefined) {
+          acc.push({
+            ...task,
+            has_runing_tasks: task.end === null,
+            children: [task],
+          });
+        } else {
+          existingTask.duration += task.duration;
+          (existingTask.children as Task[]).push(task);
+          if (task.end === null) {
+            existingTask.has_runing_tasks = true;
+          }
+          if (!task.reported) {
+            existingTask.reported = false;
+          }
         }
-        if (fa > fb) {
-          return 1;
-        }
-        return 0;
-      });
+        return acc;
+      }, []);
+      return addShortcut(grouped);
     }
 
-    return (tasksCopy as Task[]).map((task: Task, index: number) => ({
-      ...task,
-      number: index <= 8 ? index + 1 : null,
-    }));
+    return addShortcut(tasksCopy);
   });
 
   const refresh = () => {
@@ -69,7 +87,7 @@ export const useTasksStore = defineStore("tasks", () => {
     );
   };
 
-  const createTask = (
+  const createTask = async (
     project: string,
     description: string,
     externalId: string,
