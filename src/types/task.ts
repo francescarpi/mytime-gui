@@ -25,6 +25,7 @@ export interface ExternalID {
 export interface Summary {
   today: number;
   this_week: number;
+  this_month: number;
   is_running: boolean;
   pending_sync_tasks: number;
 }

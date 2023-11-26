@@ -101,12 +101,16 @@ getVersion().then((version) => {
             <span
               class="text-bold"
               :class="
-                summary.this_week - goalWeek < 0
-                  ? 'text-red-7'
-                  : 'text-green-8'
+                summary.this_week - goalWeek < 0 ? 'text-red-7' : 'text-green-8'
               "
             >
               {{ formatDuration(summary.this_week) }}
+            </span>
+          </div>
+          <div class="q-pl-xl">
+            Worked on date's month:
+            <span class="text-bold">
+              {{ formatDuration(summary.this_month) }}
             </span>
           </div>
         </div>

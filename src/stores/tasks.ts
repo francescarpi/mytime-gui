@@ -21,6 +21,7 @@ export const useTasksStore = defineStore("tasks", () => {
   const summary: Ref<Summary> = ref({
     today: 0,
     this_week: 0,
+    this_month: 0,
     is_running: false,
     pending_sync_tasks: 0,
   });

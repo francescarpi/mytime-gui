@@ -22,6 +22,7 @@ pub struct Task {
 pub struct Summary {
     pub this_week: u64,
     pub today: u64,
+    pub this_month: u64,
     pub is_running: bool,
     pub pending_sync_tasks: usize,
 }
@@ -111,6 +112,26 @@ impl<'a> TasksManager<'a> {
 
         this_week_statement
             .query_row(params![week_number], |row| Ok(row.get(0)?))
+            .unwrap()
+    }
+
+    pub fn worked_month(&self, date: &str) -> u64 {
+        let naive_date = NaiveDate::parse_from_str(date, "%Y-%m-%d").unwrap();
+        let month_number = (naive_date.month0() + 1).to_string();
+        let mut this_week_statement = self
+            .connection
+            .prepare(
+                "SELECT COALESCE(
+                    SUM(
+                        COALESCE(strftime('%s', end), strftime('%s', 'now')) - strftime('%s', start)
+                    ),
+                0)
+                FROM tasks WHERE strftime('%m', start) = ?",
+            )
+            .unwrap();
+
+        this_week_statement
+            .query_row(params![month_number], |row| Ok(row.get(0)?))
             .unwrap()
     }
 

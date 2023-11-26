@@ -35,6 +35,7 @@ fn summary(date: &str) -> String {
     serde_json::to_string(&Summary {
         this_week: tm.worked_week(&date),
         today: tm.worked_day(&date),
+        this_month: tm.worked_month(&date),
         is_running: tm.is_running(),
         pending_sync_tasks: im.group_tasks().len(),
     })
