@@ -1,6 +1,6 @@
 import { storeToRefs } from "pinia";
 import { useSettingsStore } from "@/stores/settings";
-import type { Task } from "@/types/task";
+import { dateToStrTime, formatDuration } from "@/utils/dates";
 
 const columnsNotGrouped: any[] = [
   {
@@ -37,17 +37,20 @@ const columnsNotGrouped: any[] = [
     label: "Started",
     field: "start",
     align: "center",
+    format: (value: string) => dateToStrTime(new Date(value)),
   },
   {
     name: "ended_at",
     label: "Ended",
     field: "end",
     align: "center",
+    format: (value: string) => (value ? dateToStrTime(new Date(value)) : "---"),
   },
   {
     name: "duration",
     label: "Duration",
     field: "duration",
+    format: (value: number) => formatDuration(value),
   },
   {
     name: "reported",
