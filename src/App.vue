@@ -39,12 +39,39 @@ getVersion().then((version) => {
           <q-icon name="timer" />
         </q-avatar>
         <q-toolbar-title> MyTime </q-toolbar-title>
-        <q-chip color="red" text-color="white" icon="directions_run" v-if="summary.is_running"
-          class="q-mr-xl">Running</q-chip>
-        <q-chip color="green" text-color="white" icon="local_cafe" v-else class="q-mr-xl">Stopped</q-chip>
-        <q-btn flat round dense icon="cloud_upload" @click="showSync = true" v-if="isValid" class="q-mr-md">
-          <q-badge color="red" floating rounded v-if="summary.pending_sync_tasks > 0">{{ summary.pending_sync_tasks
-          }}</q-badge>
+        <q-chip
+          color="red"
+          text-color="white"
+          icon="directions_run"
+          v-if="summary.is_running"
+          class="q-mr-xl"
+          >Running</q-chip
+        >
+        <q-chip
+          color="green"
+          text-color="white"
+          icon="local_cafe"
+          v-else
+          class="q-mr-xl"
+          >Stopped</q-chip
+        >
+        <q-btn
+          flat
+          round
+          dense
+          icon="cloud_upload"
+          @click="showSync = true"
+          v-if="isValid"
+          class="q-mr-md"
+        >
+          <q-badge
+            color="red"
+            floating
+            rounded
+            v-if="summary.pending_sync_tasks > 0"
+          >
+            {{ summary.pending_sync_tasks }}
+          </q-badge>
         </q-btn>
         <q-btn flat round dense icon="settings" @click="showSettings = true" />
       </q-toolbar>
@@ -59,9 +86,20 @@ getVersion().then((version) => {
     <q-footer bordered class="bg-grey-2 text-black">
       <q-toolbar>
         <div class="row q-gutter-md full-width">
-          <SummaryGoal title="Worked on date" :value="summary.worked_today" :goal="summary.goal_today" />
-          <SummaryGoal title="Worked on date's week" :value="summary.worked_week" :goal="summary.goal_week" />
-          <SummaryGoal title="Worked on date's month" :value="summary.worked_month" />
+          <SummaryGoal
+            title="Worked on date"
+            :value="summary.worked_today"
+            :goal="summary.goal_today"
+          />
+          <SummaryGoal
+            title="Worked on date's week"
+            :value="summary.worked_week"
+            :goal="summary.goal_week"
+          />
+          <SummaryGoal
+            title="Worked on date's month"
+            :value="summary.worked_month"
+          />
         </div>
       </q-toolbar>
     </q-footer>
