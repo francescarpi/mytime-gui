@@ -19,9 +19,11 @@ export const useTasksStore = defineStore("tasks", () => {
   const filterDate: Ref<string> = ref(today);
 
   const summary: Ref<Summary> = ref({
-    today: 0,
-    this_week: 0,
-    this_month: 0,
+    worked_today: 0,
+    worked_week: 0,
+    worked_month: 0,
+    goal_today: 0,
+    goal_week: 0,
     is_running: false,
     pending_sync_tasks: 0,
   });

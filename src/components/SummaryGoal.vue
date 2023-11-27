@@ -12,6 +12,7 @@ const className = computed(() => {
   if (!goal) {
     return "";
   }
+
   return value - goal < 0 ? "text-red-7" : "text-green-8";
 });
 </script>
