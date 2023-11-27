@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { pagination } from "@/constants/tables";
 import { dateToStrTime, formatDuration } from "@/utils/dates";
 import Reported from "./Reported.vue";
+import BasicActions from "./BasicActions.vue";
 
 import type { Ref } from "vue";
 
@@ -46,6 +47,11 @@ const columns: any[] = [
     field: "reported",
     align: "center",
   },
+  {
+    name: "actions",
+    label: "Actions",
+    style: "width: 130px",
+  },
 ];
 </script>
 
@@ -63,6 +69,11 @@ const columns: any[] = [
           <template #body-cell-reported="props">
             <q-td :props="props">
               <Reported :task="props.row" />
+            </q-td>
+          </template>
+          <template #body-cell-actions="props">
+            <q-td :props="props">
+              <BasicActions :task="props.row" />
             </q-td>
           </template>
         </q-table>
