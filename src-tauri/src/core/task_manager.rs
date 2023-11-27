@@ -8,6 +8,9 @@ use crate::utils::dates::change_time;
 
 use super::settings_manager::Settings;
 
+const DURATION_SQL: &'static str =
+    "COALESCE(strftime('%s', end), strftime('%s', 'now')) - strftime('%s', start)";
+
 #[derive(Debug, Clone, Serialize)]
 pub struct Task {
     pub id: i64,
@@ -66,13 +69,12 @@ impl<'a> TasksManager<'a> {
     }
 
     pub fn tasks(&self, date: &str) -> Vec<Task> {
-        let mut stmt = self
-            .connection
-            .prepare(
-                "SELECT *, (COALESCE(strftime('%s', end), strftime('%s', 'now')) - strftime('%s', start)) AS duration 
-                FROM tasks WHERE strftime('%Y-%m-%d', start) = ? ORDER BY start DESC, id",
-            )
-            .unwrap();
+        let sql = format!(
+            "SELECT *, ({}) AS duration FROM tasks WHERE strftime('%Y-%m-%d', start) = ? ORDER BY start DESC, id",
+            DURATION_SQL
+        );
+
+        let mut stmt = self.connection.prepare(&sql).unwrap();
 
         let rows = stmt
             .query_map(params![date.to_string()], |row| self.row_to_task(row))
@@ -81,18 +83,11 @@ impl<'a> TasksManager<'a> {
     }
 
     pub fn worked_day(&self, date: &str) -> u64 {
-        let mut today_statement = self
-            .connection
-            .prepare(
-                "SELECT 
-                    COALESCE(
-                        SUM(
-                            COALESCE(strftime('%s', end), strftime('%s', 'now')) - strftime('%s', start)
-                        ),
-                    0)
-                FROM tasks WHERE strftime('%Y-%m-%d', start) = ?",
-            )
-            .unwrap();
+        let sql = format!(
+            "SELECT COALESCE(SUM({}), 0) FROM tasks WHERE strftime('%Y-%m-%d', start) = ?",
+            DURATION_SQL
+        );
+        let mut today_statement = self.connection.prepare(&sql).unwrap();
 
         today_statement
             .query_row(params![date], |row| Ok(row.get(0)?))
@@ -102,17 +97,12 @@ impl<'a> TasksManager<'a> {
     pub fn worked_week(&self, date: &str) -> u64 {
         let naive_date = NaiveDate::parse_from_str(date, "%Y-%m-%d").unwrap();
         let week_number = naive_date.iso_week().week().to_string();
-        let mut this_week_statement = self
-            .connection
-            .prepare(
-                "SELECT COALESCE(
-                    SUM(
-                        COALESCE(strftime('%s', end), strftime('%s', 'now')) - strftime('%s', start)
-                    ),
-                0)
-                FROM tasks WHERE strftime('%W', start) = ?",
-            )
-            .unwrap();
+        let sql = format!(
+            "SELECT COALESCE(SUM({}), 0) FROM tasks WHERE strftime('%W', start) = ?",
+            DURATION_SQL
+        );
+
+        let mut this_week_statement = self.connection.prepare(&sql).unwrap();
 
         this_week_statement
             .query_row(params![week_number], |row| Ok(row.get(0)?))
@@ -122,17 +112,12 @@ impl<'a> TasksManager<'a> {
     pub fn worked_month(&self, date: &str) -> u64 {
         let naive_date = NaiveDate::parse_from_str(date, "%Y-%m-%d").unwrap();
         let month_number = (naive_date.month0() + 1).to_string();
-        let mut this_week_statement = self
-            .connection
-            .prepare(
-                "SELECT COALESCE(
-                    SUM(
-                        COALESCE(strftime('%s', end), strftime('%s', 'now')) - strftime('%s', start)
-                    ),
-                0)
-                FROM tasks WHERE strftime('%m', start) = ?",
-            )
-            .unwrap();
+        let sql = format!(
+            "SELECT COALESCE(SUM({}), 0) FROM tasks WHERE strftime('%m', start) = ?",
+            DURATION_SQL
+        );
+
+        let mut this_week_statement = self.connection.prepare(&sql).unwrap();
 
         this_week_statement
             .query_row(params![month_number], |row| Ok(row.get(0)?))
@@ -140,13 +125,11 @@ impl<'a> TasksManager<'a> {
     }
 
     pub fn task(&self, id: u64) -> Task {
-        let mut stmt = self
-            .connection
-            .prepare(
-                "SELECT *, (COALESCE(strftime('%s', end), strftime('%s', 'now')) - strftime('%s', start)) AS duration 
-                FROM tasks WHERE id = ?",
-            )
-            .unwrap();
+        let sql = format!(
+            "SELECT *, ({}) AS duration FROM tasks WHERE id = ?",
+            DURATION_SQL
+        );
+        let mut stmt = self.connection.prepare(&sql).unwrap();
 
         stmt.query_row(params![id], |row| Ok(self.row_to_task(row)))
             .unwrap()
@@ -154,7 +137,10 @@ impl<'a> TasksManager<'a> {
     }
 
     pub fn is_running(&self) -> bool {
-        let mut stmt = self.connection.prepare("SELECT count(*) FROM tasks WHERE end IS NULL").unwrap();
+        let mut stmt = self
+            .connection
+            .prepare("SELECT count(*) FROM tasks WHERE end IS NULL")
+            .unwrap();
         stmt.query_row([], |row| Ok(row.get(0)?)).unwrap()
     }
 
@@ -201,7 +187,9 @@ impl<'a> TasksManager<'a> {
     }
 
     pub fn delete_task(&self, id: u64) {
-        self.connection.execute("DELETE FROM tasks WHERE id = ?", params![id]).unwrap();
+        self.connection
+            .execute("DELETE FROM tasks WHERE id = ?", params![id])
+            .unwrap();
     }
 
     pub fn goal_today(&self, settings: &Settings, date: &str) -> u32 {
