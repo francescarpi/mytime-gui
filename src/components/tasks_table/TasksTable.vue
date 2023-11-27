@@ -21,7 +21,7 @@ const { listenKeyDown } = useNavigation();
 const { copyToClipboard } = useClipboard();
 const tasksStore = useTasksStore();
 const { refresh } = tasksStore;
-const { tasks, filterDate } = storeToRefs(tasksStore);
+const { tasks, filterDate, isSearchEnabled, searchResult } = storeToRefs(tasksStore);
 const { getColumns } = useColumns();
 
 let interval: number | null = null;
@@ -54,7 +54,8 @@ const firstPage = () => {
     wrap-cells ref="table">
     <template #top-left="">
       <div class="col-2 q-table__title items-center">
-        Tasks of day {{ filterDate }} ({{ dayOfTheWeek(new Date(filterDate)) }})
+        <p v-if="isSearchEnabled">{{ searchResult.length }} tasks found</p>
+        <span v-else>Tasks of day {{ filterDate }} ({{ dayOfTheWeek(new Date(filterDate)) }})</span>
       </div>
     </template>
     <template #top-right>

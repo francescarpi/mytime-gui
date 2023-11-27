@@ -1,6 +1,7 @@
-import { storeToRefs } from "pinia";
-import { useSettingsStore } from "@/stores/settings";
-import { dateToStrTime, formatDuration } from "@/utils/dates";
+import { storeToRefs } from "pinia"
+import { useSettingsStore } from "@/stores/settings"
+import { useTasksStore } from "@/stores/tasks"
+import { dateToStrTime, formatDuration } from "@/utils/dates"
 
 const columnsNotGrouped: any[] = [
   {
@@ -64,7 +65,7 @@ const columnsNotGrouped: any[] = [
     label: "Actions",
     style: "width: 130px",
   },
-];
+]
 
 const columnsGrouped: any[] = [
   {
@@ -113,18 +114,16 @@ const columnsGrouped: any[] = [
     label: "Actions",
     style: "width: 130px",
   },
-];
+]
 
 export function useColumns() {
-  const { settings } = storeToRefs(useSettingsStore());
+  const { settings } = storeToRefs(useSettingsStore())
+  const { isSearchEnabled } = storeToRefs(useTasksStore())
 
-  const getColumns = () => {
-    return settings.value.view_type === "grouped"
-      ? columnsGrouped
-      : columnsNotGrouped;
-  };
+  const getColumns = () =>
+    settings.value.view_type === "grouped" && !isSearchEnabled.value ? columnsGrouped : columnsNotGrouped
 
   return {
     getColumns,
-  };
+  }
 }

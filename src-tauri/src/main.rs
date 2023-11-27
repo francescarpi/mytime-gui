@@ -35,7 +35,7 @@ fn summary(date: &str) -> String {
     let sm = SettingsManager::new(&db.connection);
 
     let settings = sm.settings();
-    
+
     serde_json::to_string(&Summary {
         worked_week: tm.worked_week(&date),
         worked_today: tm.worked_day(&date),
@@ -119,6 +119,13 @@ fn save_view_type(view_type: &str) {
     sm.save_view_type(view_type);
 }
 
+#[command]
+fn search(query: &str) -> String {
+    let db = DbManager::new();
+    let tm = TasksManager::new(&db.connection);
+    serde_json::to_string(&tm.search(query)).unwrap()
+}
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -134,6 +141,7 @@ fn main() {
             send_to_integration,
             delete_task,
             save_view_type,
+            search,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
