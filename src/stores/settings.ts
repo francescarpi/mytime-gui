@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 import { invoke } from "@tauri-apps/api";
 import { dayOfTheWeek } from "@/utils/dates";
 import { setCssVar } from "quasar";
-import { THEMES } from "@/constants/themes";
 
 import type { Ref } from "vue";
 import type { Settings } from "@/types/settings";
@@ -20,7 +19,7 @@ export const useSettingsStore = defineStore("settings", () => {
     work_hours_friday: 8,
     work_hours_saturday: 0,
     work_hours_sunday: 0,
-    theme: THEMES[0].hex,
+    theme: "#1976d2",
     view_type: "chronological",
   });
 

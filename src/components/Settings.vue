@@ -3,8 +3,7 @@ import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useSettingsStore } from "@/stores/settings";
 import { integrations, getIntegration } from "@/utils/settings";
-import { useQuasar } from "quasar";
-import { THEMES } from "@/constants/themes";
+import { useQuasar, setCssVar } from "quasar";
 
 import type { Settings, Option } from "@/types/settings";
 import type { Ref } from "vue";
@@ -22,7 +21,7 @@ const workHoursThursday = ref(0);
 const workHoursFriday = ref(0);
 const workHoursSaturday = ref(0);
 const workHoursSunday = ref(0);
-const theme: Ref<string> = ref(THEMES[0].hex);
+const theme: Ref<string> = ref("");
 
 const props = defineProps({
   show: Boolean,
@@ -31,6 +30,7 @@ const props = defineProps({
 const emit = defineEmits(["close"]);
 
 const beforeClose = () => {
+  setCssVar("primary", settings.value.theme);
   emit("close");
 };
 
@@ -77,7 +77,7 @@ const saveHandler = () => {
 };
 
 const changeTheme = (color: string) => {
-  theme.value = color;
+  setCssVar("primary", color);
 };
 </script>
 
@@ -102,10 +102,7 @@ const changeTheme = (color: string) => {
       <q-tab-panels v-model="activeTab" animated class="shadow-2">
         <q-tab-panel name="general">
           <p>Theme:</p>
-          <div class="row q-gutter-sm">
-            <q-btn :color="th.color" :icon="theme === th.hex ? 'check' : ''" @click="changeTheme(th.hex)"
-              v-for="th in THEMES" class="col"></q-btn>
-          </div>
+          <q-color v-model="theme" no-header no-footer @change="changeTheme" />
         </q-tab-panel>
         <q-tab-panel name="integrations">
           <q-card-section class="q-gutter-md">
