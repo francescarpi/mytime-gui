@@ -1,21 +1,23 @@
 <script setup lang="ts">
-import { useSettingsStore } from "@/stores/settings";
-import { storeToRefs } from "pinia";
+import { useSettingsStore } from "@/stores/settings"
+import { useTasksStore } from "@/stores/tasks"
+import { storeToRefs } from "pinia"
 
-import type { BtnOption } from "@/types/task";
+import type { BtnOption } from "@/types/task"
 
-const settingsStore = useSettingsStore();
-const { settings } = storeToRefs(settingsStore);
-const { saveViewType } = settingsStore;
+const settingsStore = useSettingsStore()
+const { settings } = storeToRefs(settingsStore)
+const { saveViewType } = settingsStore
+const { isSearchEnabled } = storeToRefs(useTasksStore())
 
 const types: BtnOption[] = [
   { label: "Chronological", value: "chronological" },
   { label: "Grouped", value: "grouped" },
-];
+]
 
 const change = (value: string) => {
-  saveViewType(value);
-};
+  saveViewType(value)
+}
 </script>
 
 <template>
@@ -25,5 +27,5 @@ const change = (value: string) => {
     rounded
     size="sm"
     @update:model-value="change"
-  />
+    :disable="isSearchEnabled" />
 </template>

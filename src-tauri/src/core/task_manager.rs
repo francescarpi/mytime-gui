@@ -10,6 +10,7 @@ use super::settings_manager::Settings;
 
 const DURATION_SQL: &'static str =
     "COALESCE(strftime('%s', end), strftime('%s', 'now')) - strftime('%s', start)";
+const DEFAULT_TASKS_ORDER: &'static str = "start DESC, id";
 
 #[derive(Debug, Clone, Serialize)]
 pub struct Task {
@@ -70,8 +71,8 @@ impl<'a> TasksManager<'a> {
 
     pub fn tasks(&self, date: &str) -> Vec<Task> {
         let sql = format!(
-            "SELECT *, ({}) AS duration FROM tasks WHERE strftime('%Y-%m-%d', start) = ? ORDER BY start DESC, id",
-            DURATION_SQL
+            "SELECT *, {} FROM tasks WHERE strftime('%Y-%m-%d', start) = ? ORDER BY {}",
+            DURATION_SQL, DEFAULT_TASKS_ORDER
         );
 
         let mut stmt = self.connection.prepare(&sql).unwrap();
@@ -79,6 +80,22 @@ impl<'a> TasksManager<'a> {
         let rows = stmt
             .query_map(params![date.to_string()], |row| self.row_to_task(row))
             .unwrap();
+        rows.map(|row| row.unwrap()).collect()
+    }
+
+    pub fn search(&self, query: &str) -> Vec<Task> {
+        let sql = format!(
+            "SELECT *, {} FROM tasks WHERE desc LIKE ? ORDER BY {}",
+            DURATION_SQL, DEFAULT_TASKS_ORDER
+        );
+
+        let mut stmt = self.connection.prepare(&sql).unwrap();
+        let query = format!("%{}%", query);
+        
+        let rows = stmt
+            .query_map(params![query], |row| self.row_to_task(row))
+            .unwrap();
+
         rows.map(|row| row.unwrap()).collect()
     }
 
@@ -125,10 +142,7 @@ impl<'a> TasksManager<'a> {
     }
 
     pub fn task(&self, id: u64) -> Task {
-        let sql = format!(
-            "SELECT *, ({}) AS duration FROM tasks WHERE id = ?",
-            DURATION_SQL
-        );
+        let sql = format!("SELECT *, {} FROM tasks WHERE id = ?", DURATION_SQL);
         let mut stmt = self.connection.prepare(&sql).unwrap();
 
         stmt.query_row(params![id], |row| Ok(self.row_to_task(row)))
