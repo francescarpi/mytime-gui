@@ -20,7 +20,7 @@ const tasksStore = useTasksStore();
 const { summary } = storeToRefs(tasksStore);
 
 const settingsStore = useSettingsStore();
-const { isValid, goalToday, goalWeek } = storeToRefs(settingsStore);
+const { isValid } = storeToRefs(settingsStore);
 const { load } = settingsStore;
 
 getVersion().then((version) => {
@@ -59,9 +59,9 @@ getVersion().then((version) => {
     <q-footer bordered class="bg-grey-2 text-black">
       <q-toolbar>
         <div class="row q-gutter-md full-width">
-          <SummaryGoal title="Worked on date" :value="summary.today" :goal="goalToday" />
-          <SummaryGoal title="Worked on date's week" :value="summary.this_week" :goal="goalWeek" />
-          <SummaryGoal title="Worked on date's month" :value="summary.this_month" />
+          <SummaryGoal title="Worked on date" :value="summary.worked_today" :goal="summary.goal_today" />
+          <SummaryGoal title="Worked on date's week" :value="summary.worked_week" :goal="summary.goal_week" />
+          <SummaryGoal title="Worked on date's month" :value="summary.worked_month" />
         </div>
       </q-toolbar>
     </q-footer>

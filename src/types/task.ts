@@ -23,9 +23,11 @@ export interface ExternalID {
 }
 
 export interface Summary {
-  today: number;
-  this_week: number;
-  this_month: number;
+  worked_today: number;
+  worked_week: number;
+  worked_month: number;
+  goal_today: number;
+  goal_week: number;
   is_running: boolean;
   pending_sync_tasks: number;
 }

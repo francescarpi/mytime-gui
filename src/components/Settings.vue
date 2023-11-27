@@ -43,13 +43,15 @@ const beforeShow = () => {
   integration.value = getIntegration(set.integration);
   integration_url.value = set.integration_url;
   integration_token.value = set.integration_token;
-  workHoursMonday.value = set.work_hours_monday;
-  workHoursTuesday.value = set.work_hours_tuesday;
-  workHoursWednesday.value = set.work_hours_wednesday;
-  workHoursThursday.value = set.work_hours_thursday;
-  workHoursFriday.value = set.work_hours_friday;
-  workHoursSaturday.value = set.work_hours_saturday;
-  workHoursSunday.value = set.work_hours_sunday;
+
+  workHoursMonday.value = set.work_hours[0];
+  workHoursTuesday.value = set.work_hours[1];
+  workHoursWednesday.value = set.work_hours[2];
+  workHoursThursday.value = set.work_hours[3];
+  workHoursFriday.value = set.work_hours[4];
+  workHoursSaturday.value = set.work_hours[5];
+  workHoursSunday.value = set.work_hours[6];
+
   theme.value = set.theme;
   activeTab.value = "general";
 };

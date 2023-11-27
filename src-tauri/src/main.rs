@@ -32,10 +32,16 @@ fn summary(date: &str) -> String {
     let db = DbManager::new();
     let tm = TasksManager::new(&db.connection);
     let im = IntegrationManager::new(&db.connection);
+    let sm = SettingsManager::new(&db.connection);
+
+    let settings = sm.settings();
+    
     serde_json::to_string(&Summary {
-        this_week: tm.worked_week(&date),
-        today: tm.worked_day(&date),
-        this_month: tm.worked_month(&date),
+        worked_week: tm.worked_week(&date),
+        worked_today: tm.worked_day(&date),
+        worked_month: tm.worked_month(&date),
+        goal_today: tm.goal_today(&settings, &date),
+        goal_week: tm.goal_week(&settings),
         is_running: tm.is_running(),
         pending_sync_tasks: im.group_tasks().len(),
     })
@@ -71,34 +77,10 @@ fn settings() -> String {
 }
 
 #[command]
-fn save_settings(
-    integration: &str,
-    url: &str,
-    token: &str,
-    work_hours_monday: u64,
-    work_hours_tuesday: u64,
-    work_hours_wednesday: u64,
-    work_hours_thursday: u64,
-    work_hours_friday: u64,
-    work_hours_saturday: u64,
-    work_hours_sunday: u64,
-    theme: &str,
-) {
+fn save_settings(integration: &str, url: &str, token: &str, work_hours: Vec<u32>, theme: &str) {
     let db = DbManager::new();
     let sm = SettingsManager::new(&db.connection);
-    sm.save(
-        integration,
-        url,
-        token,
-        work_hours_monday,
-        work_hours_tuesday,
-        work_hours_wednesday,
-        work_hours_thursday,
-        work_hours_friday,
-        work_hours_saturday,
-        work_hours_sunday,
-        theme,
-    );
+    sm.save(integration, url, token, work_hours, theme);
 }
 
 #[command]

@@ -48,37 +48,18 @@ impl DbManager {
 
         let migrations: Vec<Migration> = vec![
             Migration {
-                version: "0.0.9".to_string(),
+                version: "0.0.12".to_string(),
                 queries: vec![
-                    "ALTER TABLE settings ADD working_hours_monday INTEGER NOT NULL DEFAULT 8;"
-                        .to_string(),
-                    "ALTER TABLE settings ADD working_hours_tuesday INTEGER NOT NULL DEFAULT 8;"
-                        .to_string(),
-                    "ALTER TABLE settings ADD working_hours_wednesday INTEGER NOT NULL DEFAULT 8;"
-                        .to_string(),
-                    "ALTER TABLE settings ADD working_hours_thursday INTEGER NOT NULL DEFAULT 8;"
-                        .to_string(),
-                    "ALTER TABLE settings ADD working_hours_friday INTEGER NOT NULL DEFAULT 8;"
-                        .to_string(),
-                    "ALTER TABLE settings ADD working_hours_saturday INTEGER NOT NULL DEFAULT 0;"
-                        .to_string(),
-                    "ALTER TABLE settings ADD working_hours_sunday INTEGER NOT NULL DEFAULT 0;"
-                        .to_string(),
+                    "ALTER TABLE settings DROP working_hours_monday".to_string(),
+                    "ALTER TABLE settings DROP working_hours_tuesday".to_string(),
+                    "ALTER TABLE settings DROP working_hours_wednesday".to_string(),
+                    "ALTER TABLE settings DROP working_hours_thursday".to_string(),
+                    "ALTER TABLE settings DROP working_hours_friday".to_string(),
+                    "ALTER TABLE settings DROP working_hours_saturday".to_string(),
+                    "ALTER TABLE settings DROP working_hours_sunday".to_string(),
+                    "ALTER TABLE settings ADD work_hours TEXT NOT NULL DEFAULT '8,8,8,8,8,0,0'".to_string(),
                 ],
-            },
-            Migration {
-                version: "0.0.10".to_string(),
-                queries: vec![
-                    "ALTER TABLE settings ADD theme TEXT NOT NULL DEFAULT '#1976d2';".to_string(),
-                ],
-            },
-            Migration {
-                version: "0.0.11".to_string(),
-                queries: vec![
-                    "ALTER TABLE settings ADD view_type TEXT NOT NULL DEFAULT 'chronological';"
-                        .to_string(),
-                ],
-            },
+            }
         ];
 
         if app_version != db_version {
@@ -138,13 +119,7 @@ impl DbManager {
                     integration             TEXT DEFAULT NULL,
                     integration_url         TEXT DEFAULT NULL,
                     integration_token       TEXT DEFAULT NULL,
-                    working_hours_monday    INTEGER NOT NULL DEFAULT 8,
-                    working_hours_tuesday   INTEGER NOT NULL DEFAULT 8,
-                    working_hours_wednesday INTEGER NOT NULL DEFAULT 8,
-                    working_hours_thursday  INTEGER NOT NULL DEFAULT 8,
-                    working_hours_friday    INTEGER NOT NULL DEFAULT 8,
-                    working_hours_saturday  INTEGER NOT NULL DEFAULT 0,
-                    working_hours_sunday    INTEGER NOT NULL DEFAULT 0,
+                    work_hours              TEXT NOT NULL DEFAULT '8,8,8,8,8,0,0',
                     theme                   TEXT NOT NULL DEFAULT '#1976d2',
                     view_type               TEXT NOT NULL DEFAULT 'chronological'
                 )",
@@ -153,18 +128,12 @@ impl DbManager {
             .unwrap();
         self.connection
             .execute(
-                "INSERT INTO settings VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO settings VALUES (?, ?, ?, ?, ?, ?)",
                 [
                     "".to_string(),
                     "".to_string(),
                     "".to_string(),
-                    "8".to_string(),
-                    "8".to_string(),
-                    "8".to_string(),
-                    "8".to_string(),
-                    "8".to_string(),
-                    "0".to_string(),
-                    "0".to_string(),
+                    "8,8,8,8,8,0,0".to_string(),
                     "#1976d2".to_string(),
                     "chronological".to_string(),
                 ],

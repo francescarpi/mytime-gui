@@ -6,13 +6,7 @@ pub struct Settings {
     pub integration: String,
     pub integration_url: String,
     pub integration_token: String,
-    pub work_hours_monday: u64,
-    pub work_hours_tuesday: u64,
-    pub work_hours_wednesday: u64,
-    pub work_hours_thursday: u64,
-    pub work_hours_friday: u64,
-    pub work_hours_saturday: u64,
-    pub work_hours_sunday: u64,
+    pub work_hours: Vec<u32>,
     pub theme: String,
     pub view_type: String,
 }
@@ -33,38 +27,23 @@ impl<'a> SettingsManager<'a> {
             .prepare("SELECT * FROM settings LIMIT 1")
             .unwrap();
 
-        match stmt.query_row([], |row| {
+        stmt.query_row([], |row| {
+            let work_days: String = row.get(5)?;
+            let work_days_list: Vec<u32> = work_days
+                .split(',')
+                .map(|col| col.parse::<u32>().unwrap())
+                .collect();
+
             Ok(Settings {
                 integration: row.get(0)?,
                 integration_url: row.get(1)?,
                 integration_token: row.get(2)?,
-                work_hours_monday: row.get(3)?,
-                work_hours_tuesday: row.get(4)?,
-                work_hours_wednesday: row.get(5)?,
-                work_hours_thursday: row.get(6)?,
-                work_hours_friday: row.get(7)?,
-                work_hours_saturday: row.get(8)?,
-                work_hours_sunday: row.get(9)?,
-                theme: row.get(10)?,
-                view_type: row.get(11)?,
+                theme: row.get(3)?,
+                view_type: row.get(4)?,
+                work_hours: work_days_list,
             })
-        }) {
-            Ok(resp) => resp,
-            Err(_) => Settings {
-                integration: "".to_string(),
-                integration_url: "".to_string(),
-                integration_token: "".to_string(),
-                work_hours_monday: 8,
-                work_hours_tuesday: 8,
-                work_hours_wednesday: 8,
-                work_hours_thursday: 8,
-                work_hours_friday: 8,
-                work_hours_saturday: 0,
-                work_hours_sunday: 0,
-                theme: "#1976d2".to_string(),
-                view_type: "chronological".to_string(),
-            },
-        }
+        })
+        .unwrap()
     }
 
     pub fn save(
@@ -72,41 +51,28 @@ impl<'a> SettingsManager<'a> {
         integration: &str,
         url: &str,
         token: &str,
-        work_hours_monday: u64,
-        work_hours_tuesday: u64,
-        work_hours_wednesday: u64,
-        work_hours_thursday: u64,
-        work_hours_friday: u64,
-        work_hours_saturday: u64,
-        work_hours_sunday: u64,
+        work_hours: Vec<u32>,
         theme: &str,
     ) {
+        let works_hours_strings: Vec<String> = work_hours
+            .iter()
+            .map(|weekday| weekday.to_string())
+            .collect();
+
         self.connection
             .execute(
                 "UPDATE settings SET 
                     integration = ?,
                     integration_url = ?, 
                     integration_token = ?,
-                    working_hours_monday = ?,
-                    working_hours_tuesday = ?,
-                    working_hours_wednesday = ?,
-                    working_hours_thursday = ?,
-                    working_hours_friday = ?,
-                    working_hours_saturday = ?,
-                    working_hours_sunday = ?,
+                    work_hours = ?,
                     theme = ?;
                 ",
                 params![
                     integration,
                     url,
                     token,
-                    work_hours_monday,
-                    work_hours_tuesday,
-                    work_hours_wednesday,
-                    work_hours_thursday,
-                    work_hours_friday,
-                    work_hours_saturday,
-                    work_hours_sunday,
+                    works_hours_strings.join(","),
                     theme
                 ],
             )

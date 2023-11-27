@@ -6,6 +6,8 @@ use rusqlite::{Connection, Result, Row};
 
 use crate::utils::dates::change_time;
 
+use super::settings_manager::Settings;
+
 #[derive(Debug, Clone, Serialize)]
 pub struct Task {
     pub id: i64,
@@ -20,9 +22,11 @@ pub struct Task {
 
 #[derive(Debug, Clone, Serialize)]
 pub struct Summary {
-    pub this_week: u64,
-    pub today: u64,
-    pub this_month: u64,
+    pub worked_today: u64,
+    pub worked_week: u64,
+    pub worked_month: u64,
+    pub goal_today: u32,
+    pub goal_week: u32,
     pub is_running: bool,
     pub pending_sync_tasks: usize,
 }
@@ -198,5 +202,16 @@ impl<'a> TasksManager<'a> {
 
     pub fn delete_task(&self, id: u64) {
         self.connection.execute("DELETE FROM tasks WHERE id = ?", params![id]).unwrap();
+    }
+
+    pub fn goal_today(&self, settings: &Settings, date: &str) -> u32 {
+        let naive_date = NaiveDate::parse_from_str(date, "%Y-%m-%d").unwrap();
+        let day_of_week = naive_date.weekday().number_from_monday();
+        let index = (day_of_week - 1) as usize;
+        settings.work_hours[index] * 3600
+    }
+
+    pub fn goal_week(&self, settings: &Settings) -> u32 {
+        settings.work_hours.iter().sum::<u32>() * 3600
     }
 }
