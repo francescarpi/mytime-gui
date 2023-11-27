@@ -6,9 +6,9 @@ import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useTasksStore } from "@/stores/tasks";
 import { useSettingsStore } from "@/stores/settings";
-import { formatDuration } from "@/utils/dates";
 import Settings from "@/components/Settings.vue";
 import Sync from "@/components/Sync.vue";
+import SummaryGoal from "@/components/SummaryGoal.vue";
 
 import type { Ref } from "vue";
 
@@ -39,38 +39,12 @@ getVersion().then((version) => {
           <q-icon name="timer" />
         </q-avatar>
         <q-toolbar-title> MyTime </q-toolbar-title>
-        <q-chip
-          color="red"
-          text-color="white"
-          icon="directions_run"
-          v-if="summary.is_running"
-          class="q-mr-xl"
-          >Running</q-chip
-        >
-        <q-chip
-          color="green"
-          text-color="white"
-          icon="local_cafe"
-          v-else
-          class="q-mr-xl"
-          >Stopped</q-chip
-        >
-        <q-btn
-          flat
-          round
-          dense
-          icon="cloud_upload"
-          @click="showSync = true"
-          v-if="isValid"
-          class="q-mr-md"
-        >
-          <q-badge
-            color="red"
-            floating
-            rounded
-            v-if="summary.pending_sync_tasks > 0"
-            >{{ summary.pending_sync_tasks }}</q-badge
-          >
+        <q-chip color="red" text-color="white" icon="directions_run" v-if="summary.is_running"
+          class="q-mr-xl">Running</q-chip>
+        <q-chip color="green" text-color="white" icon="local_cafe" v-else class="q-mr-xl">Stopped</q-chip>
+        <q-btn flat round dense icon="cloud_upload" @click="showSync = true" v-if="isValid" class="q-mr-md">
+          <q-badge color="red" floating rounded v-if="summary.pending_sync_tasks > 0">{{ summary.pending_sync_tasks
+          }}</q-badge>
         </q-btn>
         <q-btn flat round dense icon="settings" @click="showSettings = true" />
       </q-toolbar>
@@ -85,34 +59,9 @@ getVersion().then((version) => {
     <q-footer bordered class="bg-grey-2 text-black">
       <q-toolbar>
         <div class="row q-gutter-md full-width">
-          <div>
-            Worked on date:
-            <span
-              class="text-bold q-pl-xs"
-              :class="
-                summary.today - goalToday < 0 ? 'text-red-7' : 'text-green-8'
-              "
-            >
-              {{ formatDuration(summary.today) }}
-            </span>
-          </div>
-          <div class="q-pl-xl">
-            Worked on date's week:
-            <span
-              class="text-bold"
-              :class="
-                summary.this_week - goalWeek < 0 ? 'text-red-7' : 'text-green-8'
-              "
-            >
-              {{ formatDuration(summary.this_week) }}
-            </span>
-          </div>
-          <div class="q-pl-xl">
-            Worked on date's month:
-            <span class="text-bold">
-              {{ formatDuration(summary.this_month) }}
-            </span>
-          </div>
+          <SummaryGoal title="Worked on date" :value="summary.today" :goal="goalToday" />
+          <SummaryGoal title="Worked on date's week" :value="summary.this_week" :goal="goalWeek" />
+          <SummaryGoal title="Worked on date's month" :value="summary.this_month" />
         </div>
       </q-toolbar>
     </q-footer>
