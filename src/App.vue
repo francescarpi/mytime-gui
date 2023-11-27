@@ -2,7 +2,7 @@
 import { RouterView } from "vue-router";
 import { invoke } from "@tauri-apps/api";
 import { getVersion } from "@tauri-apps/api/app";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useTasksStore } from "@/stores/tasks";
 import { useSettingsStore } from "@/stores/settings";
@@ -23,10 +23,12 @@ const settingsStore = useSettingsStore();
 const { isValid } = storeToRefs(settingsStore);
 const { load } = settingsStore;
 
-getVersion().then((version) => {
-  invoke("init", { version }).then(() => {
-    configReady.value = true;
-    load();
+onMounted(() => {
+  getVersion().then((version) => {
+    invoke("init", { version }).then(() => {
+      configReady.value = true;
+      load();
+    });
   });
 });
 </script>
