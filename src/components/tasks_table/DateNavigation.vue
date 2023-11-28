@@ -10,7 +10,13 @@ const { dateLimits } = useCalendar()
 </script>
 
 <template>
-  <q-btn icon="arrow_back" round color="primary" size="xs" class="q-ml-sm" @click="previousFilterDate"
+  <q-btn
+    icon="arrow_back"
+    round
+    color="primary"
+    size="xs"
+    class="q-ml-sm"
+    @click="previousFilterDate"
     :disable="isSearchEnabled" />
   <q-btn icon="event" round color="primary" size="xs" class="q-mx-sm" :disable="isSearchEnabled">
     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -22,6 +28,11 @@ const { dateLimits } = useCalendar()
       </q-date>
     </q-popup-proxy>
   </q-btn>
-  <q-btn icon="arrow_forward" round color="primary" size="xs" @click="nextFilterDate"
+  <q-btn
+    icon="arrow_forward"
+    round
+    color="primary"
+    size="xs"
+    @click="nextFilterDate"
     :disable="filterDate === today || isSearchEnabled" />
 </template>

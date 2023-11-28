@@ -1,57 +1,64 @@
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, ref } from "vue";
-import { storeToRefs } from "pinia";
-import { useTasksStore } from "@/stores/tasks";
-import { dayOfTheWeek } from "@/utils/dates";
-import { pagination } from "@/constants/tables";
-import { useNavigation } from "./navigation";
-import { useClipboard } from "./clipboard";
-import { useColumns } from "./columns";
+import { onMounted, onBeforeUnmount, ref } from "vue"
+import { storeToRefs } from "pinia"
+import { useTasksStore } from "@/stores/tasks"
+import { dayOfTheWeek } from "@/utils/dates"
+import { pagination } from "@/constants/tables"
+import { useNavigation } from "./navigation"
+import { useClipboard } from "./clipboard"
+import { useColumns } from "./columns"
 
-import TableViewType from "@/components/TableViewType.vue";
-import Actions from "./Actions.vue";
-import GroupedActions from "./GroupedActions.vue";
-import DateNavigation from "./DateNavigation.vue";
-import ChildrenTasks from "./ChildrenTasks.vue";
-import Reported from "./Reported.vue";
+import TableViewType from "@/components/TableViewType.vue"
+import Actions from "./Actions.vue"
+import GroupedActions from "./GroupedActions.vue"
+import DateNavigation from "./DateNavigation.vue"
+import ChildrenTasks from "./ChildrenTasks.vue"
+import Reported from "./Reported.vue"
 
-const table = ref();
-const emit = defineEmits(["click-column"]);
-const { listenKeyDown } = useNavigation();
-const { copyToClipboard } = useClipboard();
-const tasksStore = useTasksStore();
-const { refresh } = tasksStore;
-const { tasks, filterDate, isSearchEnabled, searchResult } = storeToRefs(tasksStore);
-const { getColumns } = useColumns();
+const table = ref()
+const emit = defineEmits(["click-column"])
+const { listenKeyDown } = useNavigation()
+const { copyToClipboard } = useClipboard()
+const tasksStore = useTasksStore()
+const { refresh } = tasksStore
+const { tasks, filterDate, isSearchEnabled, searchResult } = storeToRefs(tasksStore)
+const { getColumns } = useColumns()
 
-let interval: number | null = null;
+let interval: number | null = null
 
 onMounted(() => {
-  refresh();
+  refresh()
 
   interval = window.setInterval(() => {
-    refresh();
-  }, 30000);
+    refresh()
+  }, 30000)
 
-  window.addEventListener("keydown", listenKeyDown);
-});
+  window.addEventListener("keydown", listenKeyDown)
+})
 
 onBeforeUnmount(() => {
   if (interval) {
-    clearInterval(interval);
+    clearInterval(interval)
   }
-  window.removeEventListener("keydown", listenKeyDown);
-});
+  window.removeEventListener("keydown", listenKeyDown)
+})
 
 const firstPage = () => {
-  table.value.firstPage();
+  table.value.firstPage()
 }
-
 </script>
 
 <template>
-  <q-table title="Tasks" :rows="tasks" :columns="getColumns()" :pagination="pagination" row-key="id" bordered flat
-    wrap-cells ref="table">
+  <q-table
+    title="Tasks"
+    :rows="tasks"
+    :columns="getColumns()"
+    :pagination="pagination"
+    row-key="id"
+    bordered
+    flat
+    wrap-cells
+    ref="table">
     <template #top-left="">
       <div class="col-2 q-table__title items-center">
         <p v-if="isSearchEnabled">{{ searchResult.length }} tasks found</p>
@@ -82,7 +89,12 @@ const firstPage = () => {
       <q-td :props="props">
         <div class="row no-wrap items-center">
           {{ props.row.desc }}
-          <q-btn icon="arrow_upward" size="xs" round flat @click="emit('click-column', 'description', props.row.desc)" />
+          <q-btn
+            icon="arrow_upward"
+            size="xs"
+            round
+            flat
+            @click="emit('click-column', 'description', props.row.desc)" />
           <q-btn icon="file_copy" size="xs" round flat @click="copyToClipboard(props.row.desc)" />
         </div>
       </q-td>
@@ -91,9 +103,19 @@ const firstPage = () => {
       <q-td :props="props">
         <div class="row no-wrap items-center">
           {{ props.row.external_id }}
-          <q-btn icon="arrow_upward" size="xs" round flat v-if="props.row.external_id"
+          <q-btn
+            icon="arrow_upward"
+            size="xs"
+            round
+            flat
+            v-if="props.row.external_id"
             @click="emit('click-column', 'external_id', props.row.external_id)" />
-          <q-btn icon="file_copy" size="xs" round flat v-if="props.row.external_id"
+          <q-btn
+            icon="file_copy"
+            size="xs"
+            round
+            flat
+            v-if="props.row.external_id"
             @click="copyToClipboard(props.row.external_id)" />
         </div>
       </q-td>

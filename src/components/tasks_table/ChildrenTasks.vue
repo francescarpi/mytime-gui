@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { pagination } from "@/constants/tables";
-import { dateToStrTime, formatDuration } from "@/utils/dates";
-import Reported from "./Reported.vue";
-import BasicActions from "./BasicActions.vue";
+import { ref } from "vue"
+import { pagination } from "@/constants/tables"
+import { dateToStrTime, formatDuration } from "@/utils/dates"
+import Reported from "./Reported.vue"
+import BasicActions from "./BasicActions.vue"
 
-import type { Ref } from "vue";
+import type { Ref } from "vue"
 
-const { task } = defineProps(["task"]);
-const show: Ref<boolean> = ref(false);
+const { task } = defineProps(["task"])
+const show: Ref<boolean> = ref(false)
 
 const toggle = () => {
-  show.value = !show.value;
-};
+  show.value = !show.value
+}
 
 const columns: any[] = [
   {
@@ -52,7 +52,7 @@ const columns: any[] = [
     label: "Actions",
     style: "width: 130px",
   },
-];
+]
 </script>
 
 <template>
@@ -62,10 +62,15 @@ const columns: any[] = [
   <q-dialog :model-value="show">
     <q-card class="q-px-sm q-pb-md">
       <q-card-section>
-        <div class="text-h6 q-mb-xl">
-          [{{ task.project }}] {{ task.desc }} ({{ task.external_id }})
-        </div>
-        <q-table :rows="task.children" :columns="columns" :pagination="pagination" row-key="id" bordered flat wrap-cells>
+        <div class="text-h6 q-mb-xl">[{{ task.project }}] {{ task.desc }} ({{ task.external_id }})</div>
+        <q-table
+          :rows="task.children"
+          :columns="columns"
+          :pagination="pagination"
+          row-key="id"
+          bordered
+          flat
+          wrap-cells>
           <template #body-cell-reported="props">
             <q-td :props="props">
               <Reported :task="props.row" />

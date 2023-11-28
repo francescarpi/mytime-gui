@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { formatDuration } from "@/utils/dates";
+import { formatDuration } from "@/utils/dates"
 
 const { title, value, goal } = defineProps<{
-  title: string;
-  value: number;
-  goal?: number;
-}>();
-
+  title: string
+  value: number
+  goal?: number
+}>()
 </script>
 
 <template>

@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { useTaskActions } from "./task_actions";
+import { useTaskActions } from "./task_actions"
 
-const { task } = defineProps(["task"]);
-const { startTask, stopTask } = useTaskActions();
-const emit = defineEmits(["created"]);
+const { task } = defineProps(["task"])
+const { startTask, stopTask } = useTaskActions()
+const emit = defineEmits(["created"])
 
 const play = () => {
   startTask(task).then(() => {
-    emit("created");
-  });
-};
+    emit("created")
+  })
+}
 </script>
 
 <template>

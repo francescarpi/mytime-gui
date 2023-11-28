@@ -1,38 +1,35 @@
-import { useTasksStore } from "@/stores/tasks";
-import { invoke } from "@tauri-apps/api";
-import { storeToRefs } from "pinia";
-import { useQuasar } from "quasar";
+import { useTasksStore } from "@/stores/tasks"
+import { invoke } from "@tauri-apps/api"
+import { storeToRefs } from "pinia"
+import { useQuasar } from "quasar"
 
-import type { Task } from "@/types/task";
+import type { Task } from "@/types/task"
 
 export function useTaskActions() {
-  const tasksStore = useTasksStore();
-  const { createTask, setTaskFilterDateToToday, refresh, setTaskToEdit } =
-    tasksStore;
-  const { tasks } = storeToRefs(tasksStore);
-  const $q = useQuasar();
+  const tasksStore = useTasksStore()
+  const { createTask, setTaskFilterDateToToday, refresh, setTaskToEdit } = tasksStore
+  const { tasks } = storeToRefs(tasksStore)
+  const $q = useQuasar()
 
   const openTaskNumber = (num: number) => {
-    const task: Task | undefined = tasks.value.find(
-      (task: Task) => task.shortcut === num,
-    );
+    const task: Task | undefined = tasks.value.find((task: Task) => task.shortcut === num)
     if (task !== undefined) {
-      startTask(task);
+      startTask(task)
     }
-  };
+  }
 
   const startTask = async (task: Task) => {
     return createTask(task.project, task.desc, task.external_id).then(() => {
-      setTaskFilterDateToToday();
-      refresh();
-    });
-  };
+      setTaskFilterDateToToday()
+      refresh()
+    })
+  }
 
   const stopTask = (id: number) => {
     invoke("stop_task", { id }).then(() => {
-      refresh();
-    });
-  };
+      refresh()
+    })
+  }
 
   const deleteTask = (task: Task) => {
     $q.dialog({
@@ -42,18 +39,18 @@ export function useTaskActions() {
       persistent: true,
     }).onOk(() => {
       invoke("delete_task", { id: task.id }).then(() => {
-        refresh();
+        refresh()
         $q.notify({
           message: "Task deleted successfully",
           position: "top",
-        });
-      });
-    });
-  };
+        })
+      })
+    })
+  }
 
   const editTask = (task: Task) => {
-    setTaskToEdit(task);
-  };
+    setTaskToEdit(task)
+  }
 
   return {
     openTaskNumber,
@@ -61,5 +58,5 @@ export function useTaskActions() {
     stopTask,
     deleteTask,
     editTask,
-  };
+  }
 }
