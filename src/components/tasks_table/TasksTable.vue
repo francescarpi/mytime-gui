@@ -62,7 +62,7 @@ const firstPage = () => {
     <template #top-left="">
       <div class="col-2 q-table__title items-center">
         <p v-if="isSearchEnabled">{{ searchResult.length }} tasks found</p>
-        <span v-else>Tasks of day {{ filterDate }} ({{ dayOfTheWeek(new Date(filterDate)) }})</span>
+        <span v-else>{{ filterDate }} ({{ dayOfTheWeek(new Date(filterDate)) }})</span>
       </div>
     </template>
     <template #top-right>
