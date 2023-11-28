@@ -21,7 +21,7 @@ const color = (value: number, goal: number | undefined): string => {
 </script>
 
 <template>
-  <q-linear-progress size="25px" :value="percent(value, goal)" :color="color(value, goal)" track-color="black">
+  <q-linear-progress size="25px" :value="percent(value, goal)" :color="color(value, goal)" track-color="primary">
     <div class="absolute-full flex flex-center">
       <q-badge color="white" text-color="black" :label="title + ': ' + formatDuration(value)" />
     </div>
