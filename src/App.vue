@@ -6,15 +6,18 @@ import { ref, onMounted } from "vue"
 import { storeToRefs } from "pinia"
 import { useTasksStore } from "@/stores/tasks"
 import { useSettingsStore } from "@/stores/settings"
+import { useQuasar } from "quasar"
 import Settings from "@/components/Settings.vue"
 import Sync from "@/components/Sync.vue"
 import SummaryGoal from "@/components/SummaryGoal.vue"
 
 import type { Ref } from "vue"
 
+const $q = useQuasar()
 const configReady: Ref<unknown> = ref(false)
 const showSettings: Ref<boolean> = ref(false)
 const showSync: Ref<boolean> = ref(false)
+const darkMode: Ref<boolean> = ref(false)
 
 const tasksStore = useTasksStore()
 const { summary, searchQuery } = storeToRefs(tasksStore)
@@ -25,6 +28,7 @@ const { isValid } = storeToRefs(settingsStore)
 const { load } = settingsStore
 
 onMounted(() => {
+  $q.dark.set(darkMode.value)
   getVersion().then((version) => {
     invoke("init", { version }).then(() => {
       configReady.value = true
@@ -32,6 +36,10 @@ onMounted(() => {
     })
   })
 })
+
+const setDarkMode = () => {
+  $q.dark.set(darkMode.value)
+}
 </script>
 
 <template>
@@ -67,13 +75,14 @@ onMounted(() => {
       </div>
     </q-page-container>
 
-    <q-footer bordered class="bg-grey-2 text-black">
+    <q-footer bordered class="bg-grey-4 text-black">
       <q-toolbar>
         <div class="row q-gutter-md full-width">
           <SummaryGoal title="Worked on date" :value="summary.worked_today" :goal="summary.goal_today" />
           <SummaryGoal title="Worked on date's week" :value="summary.worked_week" :goal="summary.goal_week" />
           <SummaryGoal title="Worked on date's month" :value="summary.worked_month" />
         </div>
+        <q-toggle v-model="darkMode" icon="dark_mode" @update:model-value="setDarkMode" />
       </q-toolbar>
     </q-footer>
   </q-layout>
