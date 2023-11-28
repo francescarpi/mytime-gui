@@ -24,21 +24,25 @@ const { summary, searchQuery } = storeToRefs(tasksStore)
 const { startSearch } = tasksStore
 
 const settingsStore = useSettingsStore()
-const { isValid } = storeToRefs(settingsStore)
-const { load } = settingsStore
+const { isValid, settings } = storeToRefs(settingsStore)
+const { load, saveDarkMode } = settingsStore
 
 onMounted(() => {
-  $q.dark.set(darkMode.value)
   getVersion().then((version) => {
     invoke("init", { version }).then(() => {
       configReady.value = true
-      load()
+
+      load().then(() => {
+        darkMode.value = settings.value.dark_mode
+        $q.dark.set(darkMode.value)
+      })
     })
   })
 })
 
 const setDarkMode = () => {
   $q.dark.set(darkMode.value)
+  saveDarkMode(darkMode.value)
 }
 </script>
 

@@ -126,6 +126,13 @@ fn search(query: &str) -> String {
     serde_json::to_string(&tm.search(query)).unwrap()
 }
 
+#[command]
+fn save_dark_mode(dark_mode: bool) {
+    let db = DbManager::new();
+    let sm = SettingsManager::new(&db.connection);
+    sm.save_dark_mode(dark_mode);
+}
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -142,6 +149,7 @@ fn main() {
             delete_task,
             save_view_type,
             search,
+            save_dark_mode,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -1,10 +1,10 @@
-import { ref, computed } from "vue";
-import { defineStore } from "pinia";
-import { invoke } from "@tauri-apps/api";
-import { setCssVar } from "quasar";
+import { ref, computed } from "vue"
+import { defineStore } from "pinia"
+import { invoke } from "@tauri-apps/api"
+import { setCssVar } from "quasar"
 
-import type { Ref } from "vue";
-import type { Settings } from "@/types/settings";
+import type { Ref } from "vue"
+import type { Settings } from "@/types/settings"
 
 export const useSettingsStore = defineStore("settings", () => {
   const settings: Ref<Settings> = ref({
@@ -14,18 +14,19 @@ export const useSettingsStore = defineStore("settings", () => {
     work_hours: [8, 8, 8, 8, 8, 0, 0],
     theme: "#1976d2",
     view_type: "chronological",
-  });
+    dark_mode: false,
+  })
 
   const applyTheme = () => {
-    setCssVar("primary", settings.value.theme);
-  };
+    setCssVar("primary", settings.value.theme)
+  }
 
-  const load = () => {
-    invoke("settings").then((response: unknown) => {
-      settings.value = JSON.parse(response as string) as Settings;
-      applyTheme();
-    });
-  };
+  const load = async () => {
+    return invoke("settings").then((response: unknown) => {
+      settings.value = JSON.parse(response as string) as Settings
+      applyTheme()
+    })
+  }
 
   const save = async (
     integration: string,
@@ -38,7 +39,7 @@ export const useSettingsStore = defineStore("settings", () => {
     workHoursFriday: number,
     workHoursSaturday: number,
     workHoursSunday: number,
-    theme: string,
+    theme: string
   ) => {
     return invoke("save_settings", {
       integration,
@@ -55,24 +56,26 @@ export const useSettingsStore = defineStore("settings", () => {
       ],
       theme,
     }).then(() => {
-      load();
-    });
-  };
+      load()
+    })
+  }
 
   const saveViewType = (viewType: string) => {
     invoke("save_view_type", { viewType }).then(() => {
-      load();
-    });
-  };
+      load()
+    })
+  }
+
+  const saveDarkMode = (darkMode: boolean) => {
+    invoke("save_dark_mode", { darkMode }).then(() => {
+      load()
+    })
+  }
 
   const isValid = computed(() => {
-    const s = settings.value;
-    return (
-      s.integration !== "" &&
-      s.integration_url !== "" &&
-      s.integration_token !== ""
-    );
-  });
+    const s = settings.value
+    return s.integration !== "" && s.integration_url !== "" && s.integration_token !== ""
+  })
 
   return {
     load,
@@ -80,5 +83,6 @@ export const useSettingsStore = defineStore("settings", () => {
     save,
     isValid,
     saveViewType,
-  };
-});
+    saveDarkMode,
+  }
+})

@@ -9,6 +9,7 @@ pub struct Settings {
     pub work_hours: Vec<u32>,
     pub theme: String,
     pub view_type: String,
+    pub dark_mode: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -41,6 +42,7 @@ impl<'a> SettingsManager<'a> {
                 theme: row.get(4)?,
                 view_type: row.get(5)?,
                 work_hours: work_days_list,
+                dark_mode: row.get(6)?,
             })
         })
         .unwrap()
@@ -82,6 +84,12 @@ impl<'a> SettingsManager<'a> {
     pub fn save_view_type(&self, view_type: &str) {
         self.connection
             .execute("UPDATE settings SET view_type = ?", params![view_type])
+            .unwrap();
+    }
+
+    pub fn save_dark_mode(&self, dark_mode: bool) {
+        self.connection
+            .execute("UPDATE settings SET dark_mode = ?", params![dark_mode])
             .unwrap();
     }
 }
