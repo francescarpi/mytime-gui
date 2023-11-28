@@ -2,12 +2,7 @@ use platform_dirs::AppDirs;
 use rusqlite::Connection;
 use std::fs;
 use version_compare::Version;
-
-#[derive(Debug)]
-struct Migration {
-    version: String,
-    queries: Vec<String>,
-}
+use crate::core::db_migrations::MIGRATIONS;
 
 #[derive(Debug)]
 pub struct DbManager {
@@ -46,24 +41,9 @@ impl DbManager {
         let db_version = Version::from(&db_version).unwrap();
         let app_version = Version::from(app_version).unwrap();
 
-        let migrations: Vec<Migration> = vec![
-            Migration {
-                version: "0.0.12".to_string(),
-                queries: vec![
-                    "ALTER TABLE settings DROP working_hours_monday".to_string(),
-                    "ALTER TABLE settings DROP working_hours_tuesday".to_string(),
-                    "ALTER TABLE settings DROP working_hours_wednesday".to_string(),
-                    "ALTER TABLE settings DROP working_hours_thursday".to_string(),
-                    "ALTER TABLE settings DROP working_hours_friday".to_string(),
-                    "ALTER TABLE settings DROP working_hours_saturday".to_string(),
-                    "ALTER TABLE settings DROP working_hours_sunday".to_string(),
-                    "ALTER TABLE settings ADD work_hours TEXT NOT NULL DEFAULT '8,8,8,8,8,0,0'".to_string(),
-                ],
-            }
-        ];
 
         if app_version != db_version {
-            for migration in migrations {
+            for migration in MIGRATIONS {
                 let migration_version = Version::from(&migration.version).unwrap();
                 if migration_version > db_version {
                     for query in migration.queries {
