@@ -92,7 +92,7 @@ fn group_tasks() -> String {
 }
 
 #[command]
-fn send_to_integration(
+async fn send_to_integration(
     description: &str,
     date: &str,
     duration: &str,
