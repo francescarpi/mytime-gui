@@ -81,11 +81,12 @@ const setDarkMode = () => {
 
     <q-footer bordered class="bg-grey-4 text-black">
       <q-toolbar>
-        <div class="row q-gutter-md full-width">
-          <SummaryGoal title="Worked on date" :value="summary.worked_today" :goal="summary.goal_today" />
-          <SummaryGoal title="Worked on date's week" :value="summary.worked_week" :goal="summary.goal_week" />
-          <SummaryGoal title="Worked on date's month" :value="summary.worked_month" />
+        <div class="row q-gutter-md col-6">
+          <SummaryGoal title="Day" :value="summary.worked_today" :goal="summary.goal_today" class="col" />
+          <SummaryGoal title="Week" :value="summary.worked_week" :goal="summary.goal_week" class="col" />
+          <SummaryGoal title="Month" :value="summary.worked_month" class="col" />
         </div>
+        <q-space />
         <q-toggle v-model="darkMode" icon="dark_mode" @update:model-value="setDarkMode" />
       </q-toolbar>
     </q-footer>

@@ -6,13 +6,24 @@ const { title, value, goal } = defineProps<{
   value: number
   goal?: number
 }>()
+
+const percent = (value: number, goal: number | undefined): number => {
+  if (goal === undefined || goal === 0) {
+    return 1
+  }
+  return value / goal
+}
+
+const color = (value: number, goal: number | undefined): string => {
+  const per = percent(value, goal)
+  return per ===1 ? "green-8" : "red-8"
+}
 </script>
 
 <template>
-  <div>
-    {{ title }}:
-    <span class="text-bold q-pl-xs" :class="!goal ? '' : value - goal < 0 ? 'text-red-7' : 'text-green-8'">
-      {{ formatDuration(value) }}
-    </span>
-  </div>
+  <q-linear-progress size="25px" :value="percent(value, goal)" :color="color(value, goal)" track-color="black">
+    <div class="absolute-full flex flex-center">
+      <q-badge color="white" text-color="black" :label="title + ': ' + formatDuration(value)" />
+    </div>
+  </q-linear-progress>
 </template>
