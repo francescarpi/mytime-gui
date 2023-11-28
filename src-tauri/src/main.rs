@@ -14,10 +14,11 @@ use core::settings_manager::SettingsManager;
 use core::task_manager::{Summary, TasksManager};
 
 #[command]
-fn init(version: &str) {
+async fn init(version: &str) -> Result<(), ()> {
     let db = DbManager::new();
     db.init(version);
     db.migrate(version);
+    Ok(())
 }
 
 #[command]
