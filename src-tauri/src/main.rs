@@ -6,7 +6,7 @@ pub mod integrations;
 pub mod utils;
 
 use serde_json;
-use tauri::command;
+use tauri::{command, SystemTray};
 
 use core::db_manager::DbManager;
 use core::integration_manager::IntegrationManager;
@@ -135,6 +135,7 @@ fn save_dark_mode(dark_mode: bool) {
 }
 
 fn main() {
+    let system_tray = SystemTray::new();
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             init,
@@ -152,6 +153,7 @@ fn main() {
             search,
             save_dark_mode,
         ])
+        .system_tray(system_tray)
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
