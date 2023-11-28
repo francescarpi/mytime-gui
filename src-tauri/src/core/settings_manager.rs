@@ -28,7 +28,7 @@ impl<'a> SettingsManager<'a> {
             .unwrap();
 
         stmt.query_row([], |row| {
-            let work_days: String = row.get(5)?;
+            let work_days: String = row.get(3)?;
             let work_days_list: Vec<u32> = work_days
                 .split(',')
                 .map(|col| col.parse::<u32>().unwrap())
@@ -38,8 +38,8 @@ impl<'a> SettingsManager<'a> {
                 integration: row.get(0)?,
                 integration_url: row.get(1)?,
                 integration_token: row.get(2)?,
-                theme: row.get(3)?,
-                view_type: row.get(4)?,
+                theme: row.get(4)?,
+                view_type: row.get(5)?,
                 work_hours: work_days_list,
             })
         })

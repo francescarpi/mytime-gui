@@ -1,8 +1,8 @@
+use crate::core::db_migrations::{INITIAL_MIGRATION, MIGRATIONS};
 use platform_dirs::AppDirs;
 use rusqlite::Connection;
 use std::fs;
 use version_compare::Version;
-use crate::core::db_migrations::MIGRATIONS;
 
 #[derive(Debug)]
 pub struct DbManager {
@@ -23,7 +23,7 @@ impl DbManager {
 
     pub fn init(&self, version: &str) {
         if self.is_new {
-            self.create_tables();
+            self.initial_migration();
             self.update_version(version);
         }
     }
@@ -40,7 +40,6 @@ impl DbManager {
         let db_version = self.db_version();
         let db_version = Version::from(&db_version).unwrap();
         let app_version = Version::from(app_version).unwrap();
-
 
         if app_version != db_version {
             for migration in MIGRATIONS {
@@ -67,58 +66,10 @@ impl DbManager {
             .to_string()
     }
 
-    pub fn create_tables(&self) {
-        // tasks
-        self.connection
-            .execute(
-                "CREATE TABLE tasks (
-                    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-                    desc        TEXT NOT NULL,
-                    start       INTEGER NOT NULL,
-                    end         INTEGER DEFAULT NULL,
-                    reported    INTEGER NOT NULL DEFAULT 0,
-                    external_id TEXT DEFAULT NULL,
-                    project     TEXT NOT NULL
-                )",
-                (),
-            )
-            .unwrap();
-
-        // app
-        self.connection
-            .execute("CREATE TABLE app (version TEXT DEFAULT NULL)", ())
-            .unwrap();
-        self.connection
-            .execute("INSERT INTO app VALUES (NULL)", [])
-            .unwrap();
-
-        // settings
-        self.connection
-            .execute(
-                "CREATE TABLE settings (
-                    integration             TEXT DEFAULT NULL,
-                    integration_url         TEXT DEFAULT NULL,
-                    integration_token       TEXT DEFAULT NULL,
-                    work_hours              TEXT NOT NULL DEFAULT '8,8,8,8,8,0,0',
-                    theme                   TEXT NOT NULL DEFAULT '#1976d2',
-                    view_type               TEXT NOT NULL DEFAULT 'chronological'
-                )",
-                (),
-            )
-            .unwrap();
-        self.connection
-            .execute(
-                "INSERT INTO settings VALUES (?, ?, ?, ?, ?, ?)",
-                [
-                    "".to_string(),
-                    "".to_string(),
-                    "".to_string(),
-                    "8,8,8,8,8,0,0".to_string(),
-                    "#1976d2".to_string(),
-                    "chronological".to_string(),
-                ],
-            )
-            .unwrap();
+    pub fn initial_migration(&self) {
+        for sql in INITIAL_MIGRATION {
+            self.connection.execute(sql, []).unwrap();
+        }
     }
 
     fn update_version(&self, version: &str) {
