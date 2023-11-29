@@ -9,7 +9,7 @@ const { title, value, goal } = defineProps<{
 
 const percent = (value: number, goal: number | undefined): number => {
   if (goal === undefined || goal === 0) {
-    return 1
+    return 0
   }
   return value / goal
 }
