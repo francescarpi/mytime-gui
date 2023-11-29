@@ -79,7 +79,7 @@ const setDarkMode = () => {
       </div>
     </q-page-container>
 
-    <q-footer bordered class="bg-grey-4 text-black">
+    <q-footer bordered class="text-black" :class="darkMode ? 'bg-grey-8' : 'bg-grey-4'">
       <q-toolbar>
         <div class="row q-gutter-md col-6">
           <SummaryGoal title="Day" :value="summary.worked_today" :goal="summary.goal_today" class="col" />
