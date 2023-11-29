@@ -7,6 +7,7 @@ import { storeToRefs } from "pinia"
 import { useTasksStore } from "@/stores/tasks"
 import { useSettingsStore } from "@/stores/settings"
 import { useQuasar } from "quasar"
+import { formatDuration } from "@/utils/dates"
 import Settings from "@/components/Settings.vue"
 import Sync from "@/components/Sync.vue"
 import SummaryGoal from "@/components/SummaryGoal.vue"
@@ -81,10 +82,10 @@ const setDarkMode = () => {
 
     <q-footer bordered class="text-black" :class="darkMode ? 'bg-grey-8' : 'bg-grey-4'">
       <q-toolbar>
-        <div class="row q-gutter-md col-6">
+        <div class="row q-gutter-md col-6 items-center">
           <SummaryGoal title="Day" :value="summary.worked_today" :goal="summary.goal_today" class="col" />
           <SummaryGoal title="Week" :value="summary.worked_week" :goal="summary.goal_week" class="col" />
-          <SummaryGoal title="Month" :value="summary.worked_month" class="col" />
+          <div :class="darkMode ? 'text-white' : 'text-black'">Month: {{ formatDuration(summary.worked_month) }}</div>
         </div>
         <q-space />
         <q-toggle v-model="darkMode" icon="dark_mode" @update:model-value="setDarkMode" />
