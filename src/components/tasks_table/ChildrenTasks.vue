@@ -63,14 +63,7 @@ const columns: any[] = [
     <q-card class="q-px-sm q-pb-md">
       <q-card-section>
         <div class="text-h6 q-mb-xl">[{{ task.project }}] {{ task.desc }} ({{ task.external_id }})</div>
-        <q-table
-          :rows="task.children"
-          :columns="columns"
-          :pagination="pagination"
-          row-key="id"
-          bordered
-          flat
-          wrap-cells>
+        <q-table :rows="task.children" :columns="columns" :pagination="pagination" row-key="id" bordered flat wrap-cells>
           <template #body-cell-reported="props">
             <q-td :props="props">
               <Reported :task="props.row" />

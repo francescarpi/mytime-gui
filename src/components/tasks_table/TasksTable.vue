@@ -49,16 +49,8 @@ const firstPage = () => {
 </script>
 
 <template>
-  <q-table
-    title="Tasks"
-    :rows="tasks"
-    :columns="getColumns()"
-    :pagination="pagination"
-    row-key="id"
-    bordered
-    flat
-    wrap-cells
-    ref="table">
+  <q-table title="Tasks" :rows="tasks" :columns="getColumns()" :pagination="pagination" row-key="id" bordered flat
+    wrap-cells ref="table">
     <template #top-left="">
       <div class="col-2 q-table__title items-center">
         <p v-if="isSearchEnabled">{{ searchResult.length }} tasks found</p>
@@ -89,12 +81,7 @@ const firstPage = () => {
       <q-td :props="props">
         <div class="row no-wrap items-center">
           {{ props.row.desc }}
-          <q-btn
-            icon="arrow_upward"
-            size="xs"
-            round
-            flat
-            @click="emit('click-column', 'description', props.row.desc)" />
+          <q-btn icon="arrow_upward" size="xs" round flat @click="emit('click-column', 'description', props.row.desc)" />
           <q-btn icon="file_copy" size="xs" round flat @click="copyToClipboard(props.row.desc)" />
         </div>
       </q-td>
@@ -103,19 +90,9 @@ const firstPage = () => {
       <q-td :props="props">
         <div class="row no-wrap items-center">
           {{ props.row.external_id }}
-          <q-btn
-            icon="arrow_upward"
-            size="xs"
-            round
-            flat
-            v-if="props.row.external_id"
+          <q-btn icon="arrow_upward" size="xs" round flat v-if="props.row.external_id"
             @click="emit('click-column', 'external_id', props.row.external_id)" />
-          <q-btn
-            icon="file_copy"
-            size="xs"
-            round
-            flat
-            v-if="props.row.external_id"
+          <q-btn icon="file_copy" size="xs" round flat v-if="props.row.external_id"
             @click="copyToClipboard(props.row.external_id)" />
         </div>
       </q-td>
