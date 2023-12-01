@@ -14,14 +14,23 @@ const percent = (value: number, goal: number | undefined): number => {
   return value / goal
 }
 
-const color = (value: number, goal: number | undefined): string => {
+const success = (value: number, goal: number | undefined): boolean => {
   const per = percent(value, goal)
-  return per >= 1 ? "green" : "red"
+  return per >= 1
+}
+
+const color = (value: number, goal: number | undefined): string => {
+  return success(value, goal) ? "green" : "red"
 }
 </script>
 
 <template>
-  <q-linear-progress size="25px" :value="percent(value, goal)" :color="color(value, goal)" track-color="primary" rounded>
+  <q-linear-progress
+    size="25px"
+    :value="percent(value, goal)"
+    :color="color(value, goal)"
+    track-color="primary"
+    rounded>
     <div class="absolute-full flex flex-center">
       <q-badge color="white" text-color="black" :label="title + ': ' + formatDuration(value)" outline />
     </div>
