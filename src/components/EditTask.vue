@@ -53,17 +53,9 @@ const save = () => {
       <q-card-section>
         <div class="text-h6 q-mb-xl">Task edition</div>
         <div class="row q-gutter-md">
-          <q-input
-            v-model="project"
-            filled
-            class="col-2"
-            label="Project"
+          <q-input v-model="project" filled class="col-2" label="Project"
             :rules="[(val) => !!val || 'Field is required']" />
-          <q-input
-            v-model="description"
-            filled
-            class="col"
-            label="Description"
+          <q-input v-model="description" filled class="col" label="Description"
             :rules="[(val) => !!val || 'Field is required']" />
           <q-input v-model="externalId" filled label="External ID" class="col" />
         </div>

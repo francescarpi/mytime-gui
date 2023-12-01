@@ -93,12 +93,7 @@ const changeTheme = (color: string) => {
       </q-card-section>
 
       <q-card-section>
-        <q-tabs
-          v-model="activeTab"
-          dense
-          class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
+        <q-tabs v-model="activeTab" dense class="text-grey" active-color="primary" indicator-color="primary"
           align="justify">
           <q-tab name="general" label="General" />
           <q-tab name="integrations" label="Integrations" />
