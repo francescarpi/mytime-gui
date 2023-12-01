@@ -63,7 +63,7 @@ const columnsNotGrouped: any[] = [
   {
     name: "actions",
     label: "Actions",
-    style: "width: 130px",
+    style: "width: 150px",
   },
 ]
 

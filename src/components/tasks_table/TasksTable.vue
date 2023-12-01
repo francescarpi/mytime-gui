@@ -5,7 +5,6 @@ import { useTasksStore } from "@/stores/tasks"
 import { dayOfTheWeek } from "@/utils/dates"
 import { pagination } from "@/constants/tables"
 import { useNavigation } from "./navigation"
-import { useClipboard } from "./clipboard"
 import { useColumns } from "./columns"
 
 import TableViewType from "@/components/TableViewType.vue"
@@ -18,7 +17,6 @@ import Reported from "./Reported.vue"
 const table = ref()
 const emit = defineEmits(["click-column"])
 const { listenKeyDown } = useNavigation()
-const { copyToClipboard } = useClipboard()
 const tasksStore = useTasksStore()
 const { refresh } = tasksStore
 const { tasks, filterDate, isSearchEnabled, searchResult } = storeToRefs(tasksStore)
@@ -81,7 +79,6 @@ const firstPage = () => {
         <div class="row no-wrap items-center">
           {{ props.row.project }}
           <q-btn icon="arrow_upward" size="xs" round flat @click="emit('click-column', 'project', props.row.project)" />
-          <q-btn icon="file_copy" size="xs" round flat @click="copyToClipboard(props.row.project)" />
         </div>
       </q-td>
     </template>
@@ -95,7 +92,6 @@ const firstPage = () => {
             round
             flat
             @click="emit('click-column', 'description', props.row.desc)" />
-          <q-btn icon="file_copy" size="xs" round flat @click="copyToClipboard(props.row.desc)" />
         </div>
       </q-td>
     </template>
@@ -110,13 +106,6 @@ const firstPage = () => {
             flat
             v-if="props.row.external_id"
             @click="emit('click-column', 'external_id', props.row.external_id)" />
-          <q-btn
-            icon="file_copy"
-            size="xs"
-            round
-            flat
-            v-if="props.row.external_id"
-            @click="copyToClipboard(props.row.external_id)" />
         </div>
       </q-td>
     </template>
