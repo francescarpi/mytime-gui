@@ -25,6 +25,8 @@ impl DbManager {
         if self.is_new {
             self.initial_migration();
             self.update_version(version);
+        } else {
+            self.migrate(version);
         }
     }
 

@@ -17,7 +17,6 @@ use core::task_manager::{Summary, TasksManager};
 async fn init(version: &str) -> Result<(), ()> {
     let db = DbManager::new();
     db.init(version);
-    db.migrate(version);
     Ok(())
 }
 
