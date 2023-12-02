@@ -6,6 +6,7 @@ export interface Settings {
   theme: string
   view_type: string
   dark_mode: boolean
+  tour_completed: boolean
 }
 
 export interface Option {

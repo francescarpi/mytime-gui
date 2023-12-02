@@ -17,6 +17,7 @@
     "@quasar/extras": "^1.16.8",
     "pinia": "^2.1.7",
     "quasar": "^2.13.1",
+    "shepherd.js": "^11.2.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"
   },

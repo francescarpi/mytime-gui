@@ -21,6 +21,8 @@ const change = (value: string) => {
 </script>
 
 <template>
-  <q-btn-toggle :options="types" v-model="settings.view_type" rounded size="sm" @update:model-value="change"
-    :disable="isSearchEnabled" />
+  <div id="view_type">
+    <q-btn-toggle :options="types" v-model="settings.view_type" rounded size="sm" @update:model-value="change"
+      :disable="isSearchEnabled" />
+  </div>
 </template>

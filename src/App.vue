@@ -11,6 +11,7 @@ import { formatDuration } from "@/utils/dates"
 import Settings from "@/components/Settings.vue"
 import Sync from "@/components/Sync.vue"
 import SummaryGoal from "@/components/SummaryGoal.vue"
+import { tour } from "@/utils/tour"
 
 import type { Ref } from "vue"
 
@@ -55,22 +56,35 @@ const setDarkMode = () => {
           <q-icon name="timer" />
         </q-avatar>
         <q-toolbar-title> MyTime </q-toolbar-title>
-        <q-input dark dense standout v-model="searchQuery" class="q-mr-xl" @update:model-value="startSearch">
-          <template v-slot:append>
-            <q-icon v-if="searchQuery === ''" name="search" />
-            <q-icon v-else name="clear" class="cursor-pointer" @click="searchQuery = ''" />
-          </template>
-        </q-input>
-        <q-chip color="red" text-color="white" icon="directions_run" v-if="summary.is_running" class="q-mr-xl">
-          Running
-        </q-chip>
-        <q-chip color="green" text-color="white" icon="local_cafe" v-else class="q-mr-xl">Stopped</q-chip>
-        <q-btn flat round dense icon="cloud_upload" @click="showSync = true" v-if="isValid" class="q-mr-md">
+        <div id="search_field">
+          <q-input dark dense standout v-model="searchQuery" class="q-mr-xl" @update:model-value="startSearch">
+            <template v-slot:append>
+              <q-icon v-if="searchQuery === ''" name="search" />
+              <q-icon v-else name="clear" class="cursor-pointer" @click="searchQuery = ''" />
+            </template>
+          </q-input>
+        </div>
+        <div id="task_status">
+          <q-chip color="red" text-color="white" icon="directions_run" v-if="summary.is_running" class="q-mr-xl">
+            Running
+          </q-chip>
+          <q-chip color="green" text-color="white" icon="local_cafe" v-else class="q-mr-xl">Stopped</q-chip>
+        </div>
+        <q-btn flat round dense icon="help" @click="tour.start()" class="q-mr-md" v-if="!settings.tour_completed" />
+        <q-btn
+          flat
+          round
+          dense
+          icon="cloud_upload"
+          @click="showSync = true"
+          v-if="isValid"
+          class="q-mr-md"
+          id="sync_btn">
           <q-badge color="red" floating rounded v-if="summary.pending_sync_tasks > 0">
             {{ summary.pending_sync_tasks }}
           </q-badge>
         </q-btn>
-        <q-btn flat round dense icon="settings" @click="showSettings = true" />
+        <q-btn flat round dense icon="settings" @click="showSettings = true" id="settings_btn" />
       </q-toolbar>
     </q-header>
 
@@ -82,13 +96,13 @@ const setDarkMode = () => {
 
     <q-footer bordered class="text-black" :class="darkMode ? 'bg-grey-8' : 'bg-grey-4'">
       <q-toolbar>
-        <div class="row q-gutter-md col-6 items-center">
+        <div class="row q-gutter-md col-6 items-center" id="summary">
           <SummaryGoal title="Day" :value="summary.worked_today" :goal="summary.goal_today" class="col" />
           <SummaryGoal title="Week" :value="summary.worked_week" :goal="summary.goal_week" class="col" />
           <div :class="darkMode ? 'text-white' : 'text-black'">Month: {{ formatDuration(summary.worked_month) }}</div>
         </div>
         <q-space />
-        <q-toggle v-model="darkMode" icon="dark_mode" @update:model-value="setDarkMode" />
+        <q-toggle v-model="darkMode" icon="dark_mode" @update:model-value="setDarkMode" id="dark_mode" />
       </q-toolbar>
     </q-footer>
   </q-layout>
