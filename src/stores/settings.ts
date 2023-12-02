@@ -15,6 +15,7 @@ export const useSettingsStore = defineStore("settings", () => {
     theme: "#1976d2",
     view_type: "chronological",
     dark_mode: false,
+    tour_completed: true,
   })
 
   const applyTheme = () => {
@@ -39,7 +40,8 @@ export const useSettingsStore = defineStore("settings", () => {
     workHoursFriday: number,
     workHoursSaturday: number,
     workHoursSunday: number,
-    theme: string
+    theme: string,
+    tourCompleted: boolean
   ) => {
     return invoke("save_settings", {
       integration,
@@ -55,6 +57,7 @@ export const useSettingsStore = defineStore("settings", () => {
         workHoursSunday,
       ],
       theme,
+      tourCompleted,
     }).then(() => {
       load()
     })
@@ -72,6 +75,12 @@ export const useSettingsStore = defineStore("settings", () => {
     })
   }
 
+  const markTourCompleted = () => {
+    invoke("mark_tour_completed").then(() => {
+      load()
+    })
+  }
+
   const isValid = computed(() => {
     const s = settings.value
     return s.integration !== "" && s.integration_url !== "" && s.integration_token !== ""
@@ -84,5 +93,6 @@ export const useSettingsStore = defineStore("settings", () => {
     isValid,
     saveViewType,
     saveDarkMode,
+    markTourCompleted,
   }
 })

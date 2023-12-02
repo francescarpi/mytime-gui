@@ -47,17 +47,9 @@ const firstPage = () => {
 </script>
 
 <template>
-  <q-table
-    title="Tasks"
-    :rows="tasks"
-    :columns="getColumns()"
-    :pagination="pagination"
-    row-key="id"
-    bordered
-    flat
-    wrap-cells
-    ref="table">
-    <template #top-left="">
+  <q-table title="Tasks" :rows="tasks" :columns="getColumns()" :pagination="pagination" row-key="id" bordered flat
+    wrap-cells id="task_table" ref="table">
+    <template #top-left>
       <div class="col-2 q-table__title items-center">
         <p v-if="isSearchEnabled">{{ searchResult.length }} tasks found</p>
         <span v-else>{{ filterDate }} ({{ dayOfTheWeek(new Date(filterDate)) }})</span>
@@ -68,7 +60,7 @@ const firstPage = () => {
       <TableViewType class="q-ml-md" />
     </template>
     <template #header-cell-shortcut>
-      <q-th>
+      <q-th id="col_shortcut">
         <q-icon name="keyboard_command_key">
           <q-tooltip>Press Alt+number to open task</q-tooltip>
         </q-icon>
@@ -86,12 +78,7 @@ const firstPage = () => {
       <q-td :props="props">
         <div class="row no-wrap items-center">
           {{ props.row.desc }}
-          <q-btn
-            icon="arrow_upward"
-            size="xs"
-            round
-            flat
-            @click="emit('click-column', 'description', props.row.desc)" />
+          <q-btn icon="arrow_upward" size="xs" round flat @click="emit('click-column', 'description', props.row.desc)" />
         </div>
       </q-td>
     </template>
@@ -99,12 +86,7 @@ const firstPage = () => {
       <q-td :props="props">
         <div class="row no-wrap items-center">
           {{ props.row.external_id }}
-          <q-btn
-            icon="arrow_upward"
-            size="xs"
-            round
-            flat
-            v-if="props.row.external_id"
+          <q-btn icon="arrow_upward" size="xs" round flat v-if="props.row.external_id"
             @click="emit('click-column', 'external_id', props.row.external_id)" />
         </div>
       </q-td>

@@ -10,6 +10,7 @@ pub struct Settings {
     pub theme: String,
     pub view_type: String,
     pub dark_mode: bool,
+    pub tour_completed: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -43,6 +44,7 @@ impl<'a> SettingsManager<'a> {
                 view_type: row.get(5)?,
                 work_hours: work_days_list,
                 dark_mode: row.get(6)?,
+                tour_completed: row.get(7)?,
             })
         })
         .unwrap()
@@ -55,6 +57,7 @@ impl<'a> SettingsManager<'a> {
         token: &str,
         work_hours: Vec<u32>,
         theme: &str,
+        tour_completed: bool,
     ) {
         let works_hours_strings: Vec<String> = work_hours
             .iter()
@@ -68,14 +71,16 @@ impl<'a> SettingsManager<'a> {
                     integration_url = ?, 
                     integration_token = ?,
                     work_hours = ?,
-                    theme = ?;
+                    theme = ?,
+                    tour_completed = ?;
                 ",
                 params![
                     integration,
                     url,
                     token,
                     works_hours_strings.join(","),
-                    theme
+                    theme,
+                    tour_completed,
                 ],
             )
             .unwrap();
@@ -90,6 +95,12 @@ impl<'a> SettingsManager<'a> {
     pub fn save_dark_mode(&self, dark_mode: bool) {
         self.connection
             .execute("UPDATE settings SET dark_mode = ?", params![dark_mode])
+            .unwrap();
+    }
+
+    pub fn save_tour_completed(&self, completed: bool) {
+        self.connection
+            .execute("UPDATE settings SET tour_completed = ?", params![completed])
             .unwrap();
     }
 }

@@ -22,6 +22,7 @@ const workHoursFriday = ref(0)
 const workHoursSaturday = ref(0)
 const workHoursSunday = ref(0)
 const theme: Ref<string> = ref("")
+const tourCompleted: Ref<boolean> = ref(true)
 
 const props = defineProps({
   show: Boolean,
@@ -54,6 +55,7 @@ const beforeShow = () => {
 
   theme.value = set.theme
   activeTab.value = "general"
+  tourCompleted.value = set.tour_completed
 }
 
 const saveHandler = () => {
@@ -68,7 +70,8 @@ const saveHandler = () => {
     workHoursFriday.value,
     workHoursSaturday.value,
     workHoursSunday.value,
-    theme.value
+    theme.value,
+    tourCompleted.value
   ).then(() => {
     $q.notify({
       message: "Settings saved successfully",
@@ -103,8 +106,15 @@ const changeTheme = (color: string) => {
 
       <q-tab-panels v-model="activeTab" animated class="shadow-2">
         <q-tab-panel name="general">
-          <p>Theme:</p>
-          <q-color v-model="theme" no-header no-footer @change="changeTheme" />
+          <div class="row q-gutter-md">
+            <div class="col">
+              <q-toggle v-model="tourCompleted" label="Help tour completed?" class="q-mt-md" />
+            </div>
+            <div class="col">
+              <span>Theme:</span>
+              <q-color v-model="theme" no-header no-footer @change="changeTheme" />
+            </div>
+          </div>
         </q-tab-panel>
         <q-tab-panel name="integrations">
           <q-card-section class="q-gutter-md">

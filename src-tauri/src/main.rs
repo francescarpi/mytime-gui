@@ -78,10 +78,17 @@ fn settings() -> String {
 }
 
 #[command]
-fn save_settings(integration: &str, url: &str, token: &str, work_hours: Vec<u32>, theme: &str) {
+fn save_settings(
+    integration: &str,
+    url: &str,
+    token: &str,
+    work_hours: Vec<u32>,
+    theme: &str,
+    tour_completed: bool,
+) {
     let db = DbManager::new();
     let sm = SettingsManager::new(&db.connection);
-    sm.save(integration, url, token, work_hours, theme);
+    sm.save(integration, url, token, work_hours, theme, tour_completed);
 }
 
 #[command]
@@ -134,6 +141,13 @@ fn save_dark_mode(dark_mode: bool) {
     sm.save_dark_mode(dark_mode);
 }
 
+#[command]
+fn mark_tour_completed() {
+    let db = DbManager::new();
+    let sm = SettingsManager::new(&db.connection);
+    sm.save_tour_completed(true);
+}
+
 fn main() {
     let system_tray = SystemTray::new();
     tauri::Builder::default()
@@ -152,6 +166,7 @@ fn main() {
             save_view_type,
             search,
             save_dark_mode,
+            mark_tour_completed,
         ])
         .system_tray(system_tray)
         .run(tauri::generate_context!())

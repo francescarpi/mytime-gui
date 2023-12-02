@@ -47,13 +47,30 @@ const resetHandler = () => {
 </script>
 
 <template>
-  <q-form autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" @submit.prevent="submitHandler"
-    @reset="resetHandler" ref="form">
+  <q-form
+    autocorrect="off"
+    autocapitalize="off"
+    autocomplete="off"
+    spellcheck="false"
+    @submit.prevent="submitHandler"
+    @reset="resetHandler"
+    ref="form"
+    id="new_task">
     <div class="q-gutter-md row items-start">
-      <q-input v-model="project" filled class="col-2" label="Project" :rules="[(val) => !!val || 'Field is required']"
+      <q-input
+        v-model="project"
+        filled
+        class="col-2"
+        label="Project"
+        :rules="[(val) => !!val || 'Field is required']"
         :disable="!formEnabled" />
-      <q-input v-model="description" filled class="col" label="Description"
-        :rules="[(val) => !!val || 'Field is required']" :disable="!formEnabled" />
+      <q-input
+        v-model="description"
+        filled
+        class="col"
+        label="Description"
+        :rules="[(val) => !!val || 'Field is required']"
+        :disable="!formEnabled" />
       <q-input v-model="externalId" filled label="External ID" :disable="!formEnabled" class="col-2" />
       <q-btn type="reset" size="lg" :disable="!formEnabled" flat>Reset</q-btn>
       <q-btn type="submit" size="lg" color="primary" :disable="!formEnabled">Add</q-btn>
