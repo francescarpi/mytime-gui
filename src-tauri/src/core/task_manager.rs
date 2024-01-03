@@ -113,7 +113,7 @@ impl<'a> TasksManager<'a> {
 
     pub fn worked_week(&self, date: &str) -> u64 {
         let naive_date = NaiveDate::parse_from_str(date, "%Y-%m-%d").unwrap();
-        let week_number = naive_date.iso_week().week().to_string();
+        let week_number = format!("{:02}", naive_date.iso_week().week());
         let sql = format!(
             "SELECT COALESCE(SUM({}), 0) FROM tasks WHERE strftime('%W', start) = ?",
             DURATION_SQL
@@ -128,7 +128,7 @@ impl<'a> TasksManager<'a> {
 
     pub fn worked_month(&self, date: &str) -> u64 {
         let naive_date = NaiveDate::parse_from_str(date, "%Y-%m-%d").unwrap();
-        let month_number = (naive_date.month0() + 1).to_string();
+        let month_number = format!("{:02}", naive_date.month0() + 1);
         let sql = format!(
             "SELECT COALESCE(SUM({}), 0) FROM tasks WHERE strftime('%m', start) = ?",
             DURATION_SQL
