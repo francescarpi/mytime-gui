@@ -171,8 +171,8 @@ impl<'a> TasksManager<'a> {
         let new_start = change_time(&task.start, &start);
 
         match task.end {
-            Some(end_date) => {
-                let new_end = change_time(&end_date, &end);
+            Some(_) => {
+                let new_end = change_time(&task.start, &end);
                 self.connection.execute(
                     "UPDATE tasks SET project = ?, desc = ?, external_id = ?, start = ?, end = ? WHERE id = ?",
                     params![project, desc, external_id, new_start, new_end, id],
