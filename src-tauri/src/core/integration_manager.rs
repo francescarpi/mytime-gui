@@ -40,7 +40,11 @@ impl<'a> IntegrationManager<'a> {
                     AND external_id IS NOT NULL
                     AND external_id != ''
                 GROUP BY
-                    external_id, desc",
+                    external_id,
+                    desc,
+                    strftime('%Y-%m-%d', start)
+                ORDER BY
+                    strftime('%Y-%m-%d', start) DESC",
             )
             .unwrap();
 
