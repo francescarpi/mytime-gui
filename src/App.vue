@@ -65,7 +65,8 @@ const setDarkMode = () => {
           </q-input>
         </div>
         <div id="task_status">
-          <q-chip color="red" text-color="white" icon="directions_run" v-if="summary.is_running" class="q-mr-xl">
+          <q-chip color="red" text-color="white" v-if="summary.is_running" class="q-mr-xl">
+            <q-spinner-clock class="q-mr-sm" />
             Running
           </q-chip>
           <q-chip color="green" text-color="white" icon="local_cafe" v-else class="q-mr-xl">Stopped</q-chip>
