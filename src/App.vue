@@ -38,7 +38,7 @@ const listenKeysPressed = (e: KeyboardEvent) =>  {
     }
   } else if (e.key === "Escape") {
     if (e.target && (e.target as InputHTMLAttributes).name === "search") {
-      (e.target as HTMLElement).blur()
+      (e.target as HTMLElement).dispatchEvent(new CustomEvent("blur-search"))
     }
   }
 }
@@ -78,7 +78,7 @@ const setDarkMode = () => {
         <div id="search_field">
           <q-input dark dense standout v-model="searchQuery" class="q-mr-xl"
             @update:model-value="startSearch" ref="searchInput" name="search"
-            autocomplete="off" @blur="resetSearch">
+            autocomplete="off" @blur-search="resetSearch">
             <template v-slot:append>
               <q-icon v-if="searchQuery === ''" name="search" />
               <q-icon v-else name="clear" class="cursor-pointer" @click="searchQuery = ''" />
