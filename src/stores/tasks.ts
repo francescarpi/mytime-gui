@@ -152,6 +152,10 @@ export const useTasksStore = defineStore("tasks", () => {
     })
   }
 
+  const resetSearch = () => {
+    searchQuery.value = ""
+  }
+
   return {
     isRunning,
     projects,
@@ -173,5 +177,6 @@ export const useTasksStore = defineStore("tasks", () => {
     startSearch,
     isSearchEnabled,
     searchResult,
+    resetSearch,
   }
 })

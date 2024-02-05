@@ -85,7 +85,7 @@ impl<'a> TasksManager<'a> {
 
     pub fn search(&self, query: &str) -> Vec<Task> {
         let sql = format!(
-            "SELECT *, {} FROM tasks WHERE desc LIKE ? ORDER BY {}",
+            "SELECT *, {} FROM tasks WHERE (desc LIKE ?) OR (project LIKE ?) ORDER BY {}",
             DURATION_SQL, DEFAULT_TASKS_ORDER
         );
 
@@ -93,7 +93,7 @@ impl<'a> TasksManager<'a> {
         let query = format!("%{}%", query);
         
         let rows = stmt
-            .query_map(params![query], |row| self.row_to_task(row))
+            .query_map(params![query, query], |row| self.row_to_task(row))
             .unwrap();
 
         rows.map(|row| row.unwrap()).collect()
