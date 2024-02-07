@@ -38,7 +38,8 @@ const listenKeysPressed = (e: KeyboardEvent) =>  {
     }
   } else if (e.key === "Escape") {
     if (e.target && (e.target as InputHTMLAttributes).name === "search") {
-      (e.target as HTMLElement).dispatchEvent(new CustomEvent("blur-search"))
+      (e.target as HTMLElement).dispatchEvent(new CustomEvent("blur-search"));
+      (e.target as HTMLElement).blur();
     }
   }
 }
