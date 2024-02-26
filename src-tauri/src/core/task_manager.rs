@@ -29,8 +29,8 @@ pub struct Summary {
     pub worked_today: u64,
     pub worked_week: u64,
     pub worked_month: u64,
-    pub goal_today: u32,
-    pub goal_week: u32,
+    pub goal_today: f32,
+    pub goal_week: f32,
     pub is_running: bool,
     pub pending_sync_tasks: usize,
 }
@@ -206,14 +206,14 @@ impl<'a> TasksManager<'a> {
             .unwrap();
     }
 
-    pub fn goal_today(&self, settings: &Settings, date: &str) -> u32 {
+    pub fn goal_today(&self, settings: &Settings, date: &str) -> f32 {
         let naive_date = NaiveDate::parse_from_str(date, "%Y-%m-%d").unwrap();
         let day_of_week = naive_date.weekday().number_from_monday();
         let index = (day_of_week - 1) as usize;
-        settings.work_hours[index] * 3600
+        settings.work_hours[index] * 3600.
     }
 
-    pub fn goal_week(&self, settings: &Settings) -> u32 {
-        settings.work_hours.iter().sum::<u32>() * 3600
+    pub fn goal_week(&self, settings: &Settings) -> f32 {
+        settings.work_hours.iter().sum::<f32>() * 3600.
     }
 }

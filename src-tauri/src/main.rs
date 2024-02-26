@@ -81,7 +81,7 @@ fn save_settings(
     integration: &str,
     url: &str,
     token: &str,
-    work_hours: Vec<u32>,
+    work_hours: Vec<f32>,
     theme: &str,
     tour_completed: bool,
 ) {

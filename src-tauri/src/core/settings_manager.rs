@@ -6,7 +6,7 @@ pub struct Settings {
     pub integration: String,
     pub integration_url: String,
     pub integration_token: String,
-    pub work_hours: Vec<u32>,
+    pub work_hours: Vec<f32>,
     pub theme: String,
     pub view_type: String,
     pub dark_mode: bool,
@@ -31,9 +31,9 @@ impl<'a> SettingsManager<'a> {
 
         stmt.query_row([], |row| {
             let work_days: String = row.get(3)?;
-            let work_days_list: Vec<u32> = work_days
+            let work_days_list: Vec<f32> = work_days
                 .split(',')
-                .map(|col| col.parse::<u32>().unwrap())
+                .map(|col| col.parse::<f32>().unwrap())
                 .collect();
 
             Ok(Settings {
@@ -55,7 +55,7 @@ impl<'a> SettingsManager<'a> {
         integration: &str,
         url: &str,
         token: &str,
-        work_hours: Vec<u32>,
+        work_hours: Vec<f32>,
         theme: &str,
         tour_completed: bool,
     ) {

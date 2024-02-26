@@ -136,6 +136,9 @@ const changeTheme = (color: string) => {
             <q-input v-model.number="workHoursSaturday" class="col" filled label="Saturaday" type="number" />
             <q-input v-model.number="workHoursSunday" class="col-6" filled label="Sunday" type="number" />
           </div>
+          <div class="row q-gutter-xs text-caption">
+            <span>You can use decimals. For instance: 8.75 = 8h45m</span>
+          </div>
         </q-tab-panel>
       </q-tab-panels>
 
