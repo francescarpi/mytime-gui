@@ -6,6 +6,7 @@ import { dayOfTheWeek } from "@/utils/dates"
 import { pagination } from "@/constants/tables"
 import { useNavigation } from "./navigation"
 import { useColumns } from "./columns"
+import { formatDuration } from "@/utils/dates"
 
 import TableViewType from "@/components/TableViewType.vue"
 import Actions from "./Actions.vue"
@@ -19,7 +20,7 @@ const emit = defineEmits(["click-column"])
 const { listenKeyDown } = useNavigation()
 const tasksStore = useTasksStore()
 const { refresh } = tasksStore
-const { tasks, filterDate, isSearchEnabled, searchResult } = storeToRefs(tasksStore)
+const { tasks, filterDate, isSearchEnabled, searchResult, searchTotalWorked } = storeToRefs(tasksStore)
 const { getColumns } = useColumns()
 
 let interval: number | null = null
@@ -47,11 +48,20 @@ const firstPage = () => {
 </script>
 
 <template>
-  <q-table title="Tasks" :rows="tasks" :columns="getColumns()" :pagination="pagination" row-key="id" bordered flat
-    wrap-cells id="task_table" ref="table">
+  <q-table
+    title="Tasks"
+    :rows="tasks"
+    :columns="getColumns()"
+    :pagination="pagination"
+    row-key="id"
+    bordered
+    flat
+    wrap-cells
+    id="task_table"
+    ref="table">
     <template #top-left>
       <div class="col-2 q-table__title items-center">
-        <p v-if="isSearchEnabled">{{ searchResult.length }} tasks found</p>
+        <p v-if="isSearchEnabled">{{ searchResult.length }} tasks found ({{ formatDuration(searchTotalWorked) }})</p>
         <span v-else>{{ filterDate }} ({{ dayOfTheWeek(new Date(filterDate)) }})</span>
       </div>
     </template>
@@ -78,7 +88,12 @@ const firstPage = () => {
       <q-td :props="props">
         <div class="row no-wrap items-center">
           {{ props.row.desc }}
-          <q-btn icon="arrow_upward" size="xs" round flat @click="emit('click-column', 'description', props.row.desc)" />
+          <q-btn
+            icon="arrow_upward"
+            size="xs"
+            round
+            flat
+            @click="emit('click-column', 'description', props.row.desc)" />
         </div>
       </q-td>
     </template>
@@ -86,7 +101,12 @@ const firstPage = () => {
       <q-td :props="props">
         <div class="row no-wrap items-center">
           {{ props.row.external_id }}
-          <q-btn icon="arrow_upward" size="xs" round flat v-if="props.row.external_id"
+          <q-btn
+            icon="arrow_upward"
+            size="xs"
+            round
+            flat
+            v-if="props.row.external_id"
             @click="emit('click-column', 'external_id', props.row.external_id)" />
         </div>
       </q-td>

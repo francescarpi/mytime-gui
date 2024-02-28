@@ -5,7 +5,7 @@ import { dateToStrDate } from "@/utils/dates"
 import { useSettingsStore } from "@/stores/settings"
 
 import type { Ref } from "vue"
-import type { Task, Project, ExternalID, Summary } from "../types/task"
+import type { Task, Project, ExternalID, Summary, SearchResult } from "../types/task"
 
 export const today = new Date().toISOString().split("T")[0]
 
@@ -32,6 +32,7 @@ export const useTasksStore = defineStore("tasks", () => {
 
   const searchQuery: Ref<string> = ref("")
   const searchResult: Ref<Task[]> = ref([])
+  const searchTotalWorked: Ref<number> = ref(0)
 
   const isRunning = computed(() => {
     return Boolean(rawTasks.value.filter((task) => task.end === null).length)
@@ -148,7 +149,9 @@ export const useTasksStore = defineStore("tasks", () => {
 
   const startSearch = () => {
     invoke("search", { query: searchQuery.value }).then((response: unknown) => {
-      searchResult.value = JSON.parse(response as string) as Task[]
+      const result = JSON.parse(response as string) as SearchResult
+      searchResult.value = result.tasks
+      searchTotalWorked.value = result.total_worked
     })
   }
 
@@ -178,5 +181,6 @@ export const useTasksStore = defineStore("tasks", () => {
     isSearchEnabled,
     searchResult,
     resetSearch,
+    searchTotalWorked,
   }
 })

@@ -35,6 +35,12 @@ pub struct Summary {
     pub pending_sync_tasks: usize,
 }
 
+#[derive(Debug, Clone, Serialize)]
+pub struct SearchResult {
+    pub total_worked: u64,
+    pub tasks: Vec<Task>,
+}
+
 #[derive(Debug, Clone)]
 pub struct TasksManager<'a> {
     pub connection: &'a Connection,
@@ -83,7 +89,7 @@ impl<'a> TasksManager<'a> {
         rows.map(|row| row.unwrap()).collect()
     }
 
-    pub fn search(&self, query: &str) -> Vec<Task> {
+    pub fn search(&self, query: &str) -> SearchResult {
         let sql = format!(
             "SELECT *, {} FROM tasks WHERE (desc LIKE ?) OR (project LIKE ?) ORDER BY {}",
             DURATION_SQL, DEFAULT_TASKS_ORDER
@@ -91,12 +97,17 @@ impl<'a> TasksManager<'a> {
 
         let mut stmt = self.connection.prepare(&sql).unwrap();
         let query = format!("%{}%", query);
-        
+
         let rows = stmt
             .query_map(params![query, query], |row| self.row_to_task(row))
             .unwrap();
 
-        rows.map(|row| row.unwrap()).collect()
+        let tasks: Vec<Task> = rows.map(|row| row.unwrap()).collect();
+
+        SearchResult {
+            total_worked: tasks.iter().map(|task| task.duration).sum::<u64>(),
+            tasks,
+        }
     }
 
     pub fn worked_day(&self, date: &str) -> u64 {
