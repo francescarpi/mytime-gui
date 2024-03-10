@@ -49,3 +49,8 @@ export const dayOfTheWeek = (date: Date): string =>
     weekday: "long",
     timeZone: "Europe/Madrid",
   }).format(date)
+
+export const hourToSeconds = (hour: String): Number => {
+  const [hours, minutes] = hour.split(":")
+  return parseInt(hours, 10) * 3600 + parseInt(minutes, 10) * 60
+}
