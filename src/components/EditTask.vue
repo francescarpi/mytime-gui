@@ -31,7 +31,8 @@ const beforeShow = () => {
   end.value = task.end ? dateToStrTime(new Date(task.end)) : ""
 }
 
-const startIsValid = (startHour: String) => hourToSeconds(startHour) < hourToSeconds(end.value)
+const startIsValid = (startHour: String, endHour: String | undefined) =>
+  endHour === null || hourToSeconds(startHour) < hourToSeconds(end.value)
 const endIsValid = (endHour: String) => hourToSeconds(endHour) > hourToSeconds(start.value)
 
 const save = () => {
@@ -79,7 +80,7 @@ const save = () => {
               v-model="start"
               label="Start"
               readonly
-              :rules="[(val) => startIsValid(val) || 'It must be less than the end']">
+              :rules="[(val) => startIsValid(val, taskToEdit?.end) || 'It must be less than the end']">
               <template v-slot:append>
                 <q-icon name="access_time" class="cursor-pointer">
                   <q-popup-proxy cover transition-show="scale" transition-hide="scale">

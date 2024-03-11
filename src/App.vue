@@ -31,15 +31,15 @@ const { load, saveDarkMode } = settingsStore
 
 const searchInput = ref(null)
 
-const listenKeysPressed = (e: KeyboardEvent) =>  {
+const listenKeysPressed = (e: KeyboardEvent) => {
   if (e.ctrlKey && e.key === "f") {
     if (searchInput.value) {
-      (searchInput.value as HTMLElement).focus()
+      ;(searchInput.value as HTMLElement).focus()
     }
   } else if (e.key === "Escape") {
     if (e.target && (e.target as InputHTMLAttributes).name === "search") {
-      (e.target as HTMLElement).dispatchEvent(new CustomEvent("blur-search"));
-      (e.target as HTMLElement).blur();
+      ;(e.target as HTMLElement).dispatchEvent(new CustomEvent("blur-search"))
+      ;(e.target as HTMLElement).blur()
     }
   }
 }
@@ -77,9 +77,20 @@ const setDarkMode = () => {
         </q-avatar>
         <q-toolbar-title> MyTime </q-toolbar-title>
         <div id="search_field">
-          <q-input dark dense standout v-model="searchQuery" class="q-mr-xl"
-            @update:model-value="startSearch" ref="searchInput" name="search"
-            autocomplete="off" @blur-search="resetSearch">
+          <q-input
+            dark
+            dense
+            standout
+            v-model="searchQuery"
+            class="q-mr-xl"
+            @update:model-value="startSearch"
+            ref="searchInput"
+            name="search"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            @blur-search="resetSearch">
             <template v-slot:append>
               <q-icon v-if="searchQuery === ''" name="search" />
               <q-icon v-else name="clear" class="cursor-pointer" @click="searchQuery = ''" />
