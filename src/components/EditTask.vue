@@ -31,20 +31,20 @@ const beforeShow = () => {
   end.value = task.end ? dateToStrTime(new Date(task.end)) : ""
 }
 
-const endIsValid = () => {
-  return hourToSeconds(end.value) > hourToSeconds(start.value)
-}
+const startIsValid = (startHour) => hourToSeconds(startHour) < hourToSeconds(end.value)
+const endIsValid = (endHour) => hourToSeconds(endHour) > hourToSeconds(start.value)
 
 const save = () => {
   const task: Task = taskToEdit.value as Task
-  invoke("edit_task", {
+  const payload = {
     id: task.id,
     project: project.value,
     desc: description.value,
     externalId: externalId.value,
     start: start.value,
     end: end.value,
-  }).then(() => {
+  }
+  invoke("edit_task", payload).then(() => {
     refresh()
     setTaskToEdit(null)
   })
@@ -54,7 +54,7 @@ const save = () => {
 <template>
   <q-dialog :model-value="Boolean(taskToEdit)" @before-show="beforeShow" full-width @before-hide="cancel">
     <q-card class="q-px-sm q-pb-md">
-      <q-form @submit.prevent="save">
+      <q-form @submit.prevent="save" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false">
         <q-card-section>
           <div class="text-h6 q-mb-xl">Task edition</div>
           <div class="row q-gutter-md">
@@ -74,7 +74,12 @@ const save = () => {
           </div>
 
           <div class="row q-gutter-md">
-            <q-input filled v-model="start" label="Start" readonly>
+            <q-input
+              filled
+              v-model="start"
+              label="Start"
+              readonly
+              :rules="[(val) => startIsValid(val) || 'It must be less than the end']">
               <template v-slot:append>
                 <q-icon name="access_time" class="cursor-pointer">
                   <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -94,8 +99,7 @@ const save = () => {
               label="End"
               readonly
               v-if="Boolean(taskToEdit?.end)"
-              :error="!endIsValid()"
-              error-message="End hour cannot be less than start">
+              :rules="[(val) => endIsValid(val) || 'It must be greater than the start']">
               <template v-slot:append>
                 <q-icon name="access_time" class="cursor-pointer">
                   <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -112,7 +116,7 @@ const save = () => {
 
           <div class="row q-gutter-md justify-end">
             <q-btn type="button" icon="cancel" color="red" @click="cancel">Cancel</q-btn>
-            <q-btn type="submit" icon="save" color="primary" :disable="!endIsValid()">Save</q-btn>
+            <q-btn type="submit" icon="save" color="primary">Save</q-btn>
           </div>
         </q-card-section>
       </q-form>
