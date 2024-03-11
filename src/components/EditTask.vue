@@ -31,7 +31,7 @@ const beforeShow = () => {
   end.value = task.end ? dateToStrTime(new Date(task.end)) : ""
 }
 
-const startIsValid = (startHour: String, endHour: String | null) =>
+const startIsValid = (startHour: String, endHour: String | null | undefined) =>
   endHour === null || hourToSeconds(startHour) < hourToSeconds(end.value)
 const endIsValid = (endHour: String) => hourToSeconds(endHour) > hourToSeconds(start.value)
 
