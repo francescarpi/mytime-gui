@@ -10,13 +10,15 @@ pub struct DbManager {
     pub is_new: bool,
 }
 
+impl Default for DbManager {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl DbManager {
     pub fn new() -> Self {
-        let is_new;
-        match fs::metadata(DbManager::db_path()) {
-            Ok(_) => is_new = false,
-            Err(_) => is_new = true,
-        }
+        let is_new = fs::metadata(DbManager::db_path()).is_err();
         let connection = Connection::open(DbManager::db_path()).unwrap();
         Self { connection, is_new }
     }
@@ -35,7 +37,7 @@ impl DbManager {
             .connection
             .prepare("SELECT version FROM app LIMIT 1")
             .unwrap();
-        stmt.query_row([], |row| Ok(row.get(0)?)).unwrap()
+        stmt.query_row([], |row| row.get(0)).unwrap()
     }
 
     pub fn migrate(&self, app_version: &str) {
@@ -45,10 +47,10 @@ impl DbManager {
 
         if app_version != db_version {
             for migration in MIGRATIONS {
-                let migration_version = Version::from(&migration.version).unwrap();
+                let migration_version = Version::from(migration.version).unwrap();
                 if migration_version > db_version {
                     for query in migration.queries {
-                        self.connection.execute(&query, ()).unwrap();
+                        self.connection.execute(query, ()).unwrap();
                     }
                 }
             }

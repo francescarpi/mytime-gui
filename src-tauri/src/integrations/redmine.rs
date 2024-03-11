@@ -7,6 +7,12 @@ use oxhttp::Client;
 #[derive(Debug)]
 pub struct Redmine {}
 
+impl Default for Redmine {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Integration for Redmine {
     fn send_task(
         &self,

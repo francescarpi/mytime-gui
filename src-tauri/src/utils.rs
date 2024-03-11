@@ -6,9 +6,9 @@ pub mod dates {
             .unwrap()
             .with_timezone(&Local);
 
-        let parts = new_time.split(":");
+        let parts = new_time.split(':');
         let collection: Vec<&str> = parts.collect();
-        let hour = collection.get(0).unwrap().parse::<u32>().unwrap();
+        let hour = collection.first().unwrap().parse::<u32>().unwrap();
         let minutes = collection.get(1).unwrap().parse::<u32>().unwrap();
 
         let new_date = start.with_hour(hour).unwrap().with_minute(minutes).unwrap();

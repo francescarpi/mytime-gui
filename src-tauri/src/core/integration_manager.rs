@@ -94,7 +94,7 @@ impl<'a> IntegrationManager<'a> {
         external_id: &str,
         ids: &str,
     ) -> Result<(), Error> {
-        let sm = SettingsManager::new(&self.connection);
+        let sm = SettingsManager::new(self.connection);
         let settings = sm.settings();
 
         let integration = get_integration(&settings);

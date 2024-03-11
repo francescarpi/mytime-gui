@@ -4,7 +4,7 @@ pub struct Migration {
     pub queries: &'static [&'static str],
 }
 
-pub const INITIAL_MIGRATION: [&'static str; 5] = [
+pub const INITIAL_MIGRATION: [&str; 5] = [
     "CREATE TABLE tasks (
         id                  INTEGER PRIMARY KEY AUTOINCREMENT,
         desc                TEXT NOT NULL,

@@ -8,9 +8,9 @@ use crate::utils::dates::change_time;
 
 use super::settings_manager::Settings;
 
-const DURATION_SQL: &'static str =
+const DURATION_SQL: &str =
     "COALESCE(strftime('%s', end), strftime('%s', 'now')) - strftime('%s', start)";
-const DEFAULT_TASKS_ORDER: &'static str = "start DESC, id";
+const DEFAULT_TASKS_ORDER: &str = "start DESC, id";
 
 #[derive(Debug, Clone, Serialize)]
 pub struct Task {
@@ -118,7 +118,7 @@ impl<'a> TasksManager<'a> {
         let mut today_statement = self.connection.prepare(&sql).unwrap();
 
         today_statement
-            .query_row(params![date], |row| Ok(row.get(0)?))
+            .query_row(params![date], |row| row.get(0))
             .unwrap()
     }
 
@@ -133,7 +133,7 @@ impl<'a> TasksManager<'a> {
         let mut this_week_statement = self.connection.prepare(&sql).unwrap();
 
         this_week_statement
-            .query_row(params![week_number], |row| Ok(row.get(0)?))
+            .query_row(params![week_number], |row| row.get(0))
             .unwrap()
     }
 
@@ -148,7 +148,7 @@ impl<'a> TasksManager<'a> {
         let mut this_week_statement = self.connection.prepare(&sql).unwrap();
 
         this_week_statement
-            .query_row(params![month_number], |row| Ok(row.get(0)?))
+            .query_row(params![month_number], |row| row.get(0))
             .unwrap()
     }
 
@@ -166,7 +166,7 @@ impl<'a> TasksManager<'a> {
             .connection
             .prepare("SELECT count(*) FROM tasks WHERE end IS NULL")
             .unwrap();
-        stmt.query_row([], |row| Ok(row.get(0)?)).unwrap()
+        stmt.query_row([], |row| row.get(0)).unwrap()
     }
 
     pub fn edit_task(
@@ -179,11 +179,11 @@ impl<'a> TasksManager<'a> {
         end: &str,
     ) {
         let task = self.task(id);
-        let new_start = change_time(&task.start, &start);
+        let new_start = change_time(&task.start, start);
 
         match task.end {
             Some(_) => {
-                let new_end = change_time(&task.start, &end);
+                let new_end = change_time(&task.start, end);
                 self.connection.execute(
                     "UPDATE tasks SET project = ?, desc = ?, external_id = ?, start = ?, end = ? WHERE id = ?",
                     params![project, desc, external_id, new_start, new_end, id],

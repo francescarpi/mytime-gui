@@ -5,7 +5,6 @@ pub mod core;
 pub mod integrations;
 pub mod utils;
 
-use serde_json;
 use tauri::{command, SystemTray};
 
 use core::db_manager::DbManager;
@@ -37,10 +36,10 @@ fn summary(date: &str) -> String {
     let settings = sm.settings();
 
     serde_json::to_string(&Summary {
-        worked_week: tm.worked_week(&date),
-        worked_today: tm.worked_day(&date),
-        worked_month: tm.worked_month(&date),
-        goal_today: tm.goal_today(&settings, &date),
+        worked_week: tm.worked_week(date),
+        worked_today: tm.worked_day(date),
+        worked_month: tm.worked_month(date),
+        goal_today: tm.goal_today(&settings, date),
         goal_week: tm.goal_week(&settings),
         is_running: tm.is_running(),
         pending_sync_tasks: im.group_tasks().len(),
@@ -52,7 +51,7 @@ fn summary(date: &str) -> String {
 fn create_task(project: &str, description: &str, external_id: &str) {
     let db = DbManager::new();
     let tm = TasksManager::new(&db.connection);
-    tm.create_task(&project, &description, &external_id);
+    tm.create_task(project, description, external_id);
 }
 
 #[command]
