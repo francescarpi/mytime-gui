@@ -31,8 +31,8 @@ const beforeShow = () => {
   end.value = task.end ? dateToStrTime(new Date(task.end)) : ""
 }
 
-const startIsValid = (startHour) => hourToSeconds(startHour) < hourToSeconds(end.value)
-const endIsValid = (endHour) => hourToSeconds(endHour) > hourToSeconds(start.value)
+const startIsValid = (startHour: String) => hourToSeconds(startHour) < hourToSeconds(end.value)
+const endIsValid = (endHour: String) => hourToSeconds(endHour) > hourToSeconds(start.value)
 
 const save = () => {
   const task: Task = taskToEdit.value as Task
