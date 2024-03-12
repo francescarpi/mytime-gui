@@ -98,11 +98,8 @@ const setDarkMode = () => {
           </q-input>
         </div>
         <div id="task_status">
-          <q-chip color="red" text-color="white" v-if="summary.is_running" class="q-mr-xl">
-            <q-spinner-clock class="q-mr-sm" />
-            Running
-          </q-chip>
-          <q-chip color="green" text-color="white" icon="local_cafe" v-else class="q-mr-xl">Stopped</q-chip>
+          <q-chip color="red" text-color="white" v-if="summary.is_running" class="q-mr-xl" icon="timer"> On </q-chip>
+          <q-chip color="green" text-color="white" icon="timer_off" v-else class="q-mr-xl">Off</q-chip>
         </div>
         <q-btn flat round dense icon="help" @click="tour.start()" class="q-mr-md" v-if="!settings.tour_completed" />
         <q-btn
