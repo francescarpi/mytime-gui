@@ -1,8 +1,18 @@
+export interface WorkHours {
+  monday: number
+  tuesday: number
+  wednesday: number
+  thursday: number
+  friday: number
+  saturday: number
+  sunday: number
+}
+
 export interface Settings {
   integration: string
   integration_url: string
   integration_token: string
-  work_hours: number[]
+  work_hours: WorkHours
   theme: string
   view_type: string
   dark_mode: boolean
@@ -10,6 +20,6 @@ export interface Settings {
 }
 
 export interface Option {
-  value: string
+  value: string | null
   label: string
 }

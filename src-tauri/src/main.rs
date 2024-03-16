@@ -1,156 +1,172 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-
-pub mod core;
+pub mod db;
 pub mod integrations;
+pub mod models;
+pub mod repositories;
+pub mod schema;
 pub mod utils;
 
+use models::Setting;
 use tauri::{command, SystemTray};
 
-use core::db_manager::DbManager;
-use core::integration_manager::IntegrationManager;
-use core::settings_manager::SettingsManager;
-use core::task_manager::{Summary, TasksManager};
+use chrono::NaiveTime;
+use integrations::*;
+use repositories::{SettingsRepository, TasksRepository};
+use serde::Serialize;
+use serde_json::{json, Value};
 
-#[command]
-async fn init(version: &str) -> Result<(), ()> {
-    let db = DbManager::new();
-    db.init(version);
-    Ok(())
+#[derive(Debug, Clone, Serialize)]
+struct Summary {
+    pub worked_today: i32,
+    pub worked_week: i32,
+    pub worked_month: i32,
+    pub goal_today: f32,
+    pub goal_week: f32,
+    pub is_running: bool,
+    pub pending_sync_tasks: usize,
 }
 
 #[command]
-fn tasks(date: &str) -> String {
-    let db = DbManager::new();
-    let tm = TasksManager::new(&db.connection);
-    serde_json::to_string(&tm.tasks(date)).unwrap()
+fn tasks(date: &str) -> Result<Value, Value> {
+    let mut c = db::establish_connection();
+    let date = chrono::NaiveDate::parse_from_str(date, "%Y-%m-%d").unwrap();
+    TasksRepository::tasks_with_duration_by_date(&mut c, date)
+        .map(|tasks| json!(tasks))
+        .map_err(|_| json!([]))
 }
 
 #[command]
-fn summary(date: &str) -> String {
-    let db = DbManager::new();
-    let tm = TasksManager::new(&db.connection);
-    let im = IntegrationManager::new(&db.connection);
-    let sm = SettingsManager::new(&db.connection);
+fn summary(date: &str) -> Value {
+    let mut c = db::establish_connection();
+    let date = chrono::NaiveDate::parse_from_str(date, "%Y-%m-%d").unwrap();
 
-    let settings = sm.settings();
+    let worked_week = TasksRepository::worked_during_the_week(&mut c, date)
+        .map(|w| w.duration)
+        .unwrap();
+    let worked_today = TasksRepository::worked_during_the_day(&mut c, date)
+        .map(|w| w.duration)
+        .unwrap();
+    let worked_month = TasksRepository::worked_during_the_month(&mut c, date)
+        .map(|w| w.duration)
+        .unwrap();
+    let is_running = TasksRepository::are_tasks_running(&mut c);
 
-    serde_json::to_string(&Summary {
-        worked_week: tm.worked_week(date),
-        worked_today: tm.worked_day(date),
-        worked_month: tm.worked_month(date),
-        goal_today: tm.goal_today(&settings, date),
-        goal_week: tm.goal_week(&settings),
-        is_running: tm.is_running(),
-        pending_sync_tasks: im.group_tasks().len(),
+    let settings = SettingsRepository::get_settings(&mut c).unwrap();
+    let goal_today = settings.goal_by_date(date);
+    let goal_week = settings.week_goal();
+
+    let unreported_tasks = TasksRepository::grouped_tasks(&mut c).unwrap();
+
+    json!(Summary {
+        worked_week,
+        worked_today,
+        worked_month,
+        goal_today,
+        goal_week,
+        is_running,
+        pending_sync_tasks: unreported_tasks.len(),
     })
-    .unwrap()
 }
 
 #[command]
-fn create_task(project: &str, description: &str, external_id: &str) {
-    let db = DbManager::new();
-    let tm = TasksManager::new(&db.connection);
-    tm.create_task(project, description, external_id);
+fn create_task(desc: String, external_id: Option<String>, project: Option<String>) {
+    let mut c = db::establish_connection();
+    if let Some(task_id) = TasksRepository::get_current_working_task_id(&mut c) {
+        let _task = TasksRepository::stop(&mut c, task_id);
+    }
+
+    let _task = TasksRepository::add_task(&mut c, desc, external_id, project);
 }
 
 #[command]
-fn stop_task(id: u64) {
-    let db = DbManager::new();
-    let tm = TasksManager::new(&db.connection);
-    tm.stop_task(id);
+fn stop_task(id: i32) {
+    let mut c = db::establish_connection();
+    let _task = TasksRepository::stop(&mut c, id);
 }
 
 #[command]
-fn edit_task(id: u64, project: &str, desc: &str, external_id: &str, start: &str, end: &str) {
-    let db = DbManager::new();
-    let tm = TasksManager::new(&db.connection);
-    tm.edit_task(id, project, desc, external_id, start, end);
-}
-
-#[command]
-fn settings() -> String {
-    let db = DbManager::new();
-    let sm = SettingsManager::new(&db.connection);
-    serde_json::to_string(&sm.settings()).unwrap()
-}
-
-#[command]
-fn save_settings(
-    integration: &str,
-    url: &str,
-    token: &str,
-    work_hours: Vec<f32>,
-    theme: &str,
-    tour_completed: bool,
+fn edit_task(
+    id: i32,
+    project: Option<String>,
+    desc: String,
+    external_id: Option<String>,
+    start: String,
+    end: Option<String>,
 ) {
-    let db = DbManager::new();
-    let sm = SettingsManager::new(&db.connection);
-    sm.save(integration, url, token, work_hours, theme, tour_completed);
+    let mut c = db::establish_connection();
+    let new_start = NaiveTime::parse_from_str(&start, "%H:%M").unwrap();
+    let new_end = end.map(|end| NaiveTime::parse_from_str(&end, "%H:%M").unwrap());
+
+    let _task =
+        TasksRepository::edit(&mut c, id, desc, new_start, new_end, external_id, project).unwrap();
 }
 
 #[command]
-fn group_tasks() -> String {
-    let db = DbManager::new();
-    let im = IntegrationManager::new(&db.connection);
-    serde_json::to_string(&im.group_tasks()).unwrap()
+fn settings() -> Value {
+    let mut c = db::establish_connection();
+    json!(SettingsRepository::get_settings(&mut c).unwrap())
+}
+
+#[command]
+fn save_settings(settings: Setting) {
+    let mut c = db::establish_connection();
+    let _settings = SettingsRepository::update(&mut c, &settings).unwrap();
+}
+
+#[command]
+fn group_tasks() -> Value {
+    let mut c = db::establish_connection();
+    let tasks = TasksRepository::grouped_tasks(&mut c).unwrap();
+    json!(tasks)
 }
 
 #[command]
 async fn send_to_integration(
-    description: &str,
-    date: &str,
-    duration: &str,
-    external_id: &str,
-    ids: &str,
+    description: String,
+    date: String,
+    duration: String,
+    external_id: String,
+    ids: String,
 ) -> Result<(), String> {
-    let db = DbManager::new();
-    let im = IntegrationManager::new(&db.connection);
-    match im.send(description, date, duration, external_id, ids) {
-        Ok(_) => Ok(()),
-        Err(err) => Err(err.to_string()),
+    let mut c = db::establish_connection();
+    let settings = SettingsRepository::get_settings(&mut c).unwrap();
+
+    match get_integration(&settings) {
+        Some(integration) => {
+            match integration.send_task(&settings, description, date, duration, external_id) {
+                Ok(_) => {
+                    let _ = TasksRepository::mark_tasks_as_reported(&mut c, ids);
+                    Ok(())
+                }
+                Err(err) => Err(err.to_string()),
+            }
+        }
+        None => Err(integrations::Error::IntegrationDoesNotExistError.to_string()),
     }
 }
 
 #[command]
-fn delete_task(id: u64) {
-    let db = DbManager::new();
-    TasksManager::new(&db.connection).delete_task(id);
+fn delete_task(id: i32) {
+    let mut c = db::establish_connection();
+    let _task = TasksRepository::delete_task(&mut c, id);
 }
 
 #[command]
-fn save_view_type(view_type: &str) {
-    let db = DbManager::new();
-    let sm = SettingsManager::new(&db.connection);
-    sm.save_view_type(view_type);
-}
-
-#[command]
-fn search(query: &str) -> String {
-    let db = DbManager::new();
-    let tm = TasksManager::new(&db.connection);
-    serde_json::to_string(&tm.search(query)).unwrap()
-}
-
-#[command]
-fn save_dark_mode(dark_mode: bool) {
-    let db = DbManager::new();
-    let sm = SettingsManager::new(&db.connection);
-    sm.save_dark_mode(dark_mode);
-}
-
-#[command]
-fn mark_tour_completed() {
-    let db = DbManager::new();
-    let sm = SettingsManager::new(&db.connection);
-    sm.save_tour_completed(true);
+fn search(query: &str) -> Value {
+    let mut c = db::establish_connection();
+    let tasks = TasksRepository::search_tasks_with_duration(&mut c, query).unwrap();
+    json!(tasks)
 }
 
 fn main() {
     let system_tray = SystemTray::new();
     tauri::Builder::default()
+        .setup(|_app| {
+            db::init();
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
-            init,
             tasks,
             create_task,
             stop_task,
@@ -161,10 +177,7 @@ fn main() {
             group_tasks,
             send_to_integration,
             delete_task,
-            save_view_type,
             search,
-            save_dark_mode,
-            mark_tour_completed,
         ])
         .system_tray(system_tray)
         .run(tauri::generate_context!())

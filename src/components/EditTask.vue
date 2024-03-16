@@ -43,7 +43,7 @@ const save = () => {
     desc: description.value,
     externalId: externalId.value,
     start: start.value,
-    end: end.value,
+    end: end.value || null,
   }
   invoke("edit_task", payload).then(() => {
     refresh()

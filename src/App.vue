@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router"
 import { invoke } from "@tauri-apps/api"
-import { getVersion } from "@tauri-apps/api/app"
 import { ref, onMounted, onBeforeUnmount } from "vue"
 import { storeToRefs } from "pinia"
 import { useTasksStore } from "@/stores/tasks"
@@ -16,7 +15,6 @@ import { tour } from "@/utils/tour"
 import type { InputHTMLAttributes, Ref } from "vue"
 
 const $q = useQuasar()
-const configReady: Ref<unknown> = ref(false)
 const showSettings: Ref<boolean> = ref(false)
 const showSync: Ref<boolean> = ref(false)
 const darkMode: Ref<boolean> = ref(false)
@@ -45,15 +43,9 @@ const listenKeysPressed = (e: KeyboardEvent) => {
 }
 
 onMounted(() => {
-  getVersion().then((version) => {
-    invoke("init", { version }).then(() => {
-      configReady.value = true
-
-      load().then(() => {
-        darkMode.value = settings.value.dark_mode
-        $q.dark.set(darkMode.value)
-      })
-    })
+  load().then(() => {
+    darkMode.value = settings.value?.dark_mode || false
+    $q.dark.set(darkMode.value)
   })
   window.addEventListener("keydown", listenKeysPressed)
 })
@@ -69,7 +61,7 @@ const setDarkMode = () => {
 </script>
 
 <template>
-  <q-layout view="hHh lpr fFf" v-if="configReady">
+  <q-layout view="hHh lpr fFf">
     <q-header bordered class="bg-primary text-white">
       <q-toolbar>
         <q-avatar>
@@ -101,7 +93,14 @@ const setDarkMode = () => {
           <q-chip color="red" text-color="white" v-if="summary.is_running" class="q-mr-xl" icon="timer"> On </q-chip>
           <q-chip color="green" text-color="white" icon="timer_off" v-else class="q-mr-xl">Off</q-chip>
         </div>
-        <q-btn flat round dense icon="help" @click="tour.start()" class="q-mr-md" v-if="!settings.tour_completed" />
+        <q-btn
+          flat
+          round
+          dense
+          icon="help"
+          @click="tour.start()"
+          class="q-mr-md"
+          v-if="!settings?.tour_completed || false" />
         <q-btn
           flat
           round
@@ -137,9 +136,6 @@ const setDarkMode = () => {
       </q-toolbar>
     </q-footer>
   </q-layout>
-  <div v-else class="row justify-center q-pa-xl">
-    <span>Loading...</span>
-  </div>
   <Settings :show="showSettings" @close="showSettings = false" />
   <Sync :show="showSync" @close="showSync = false" />
 </template>

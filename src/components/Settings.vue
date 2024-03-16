@@ -31,7 +31,7 @@ const props = defineProps({
 const emit = defineEmits(["close"])
 
 const beforeClose = () => {
-  setCssVar("primary", settings.value.theme)
+  setCssVar("primary", (settings.value as Settings).theme)
   emit("close")
 }
 
@@ -45,13 +45,13 @@ const beforeShow = () => {
   integration_url.value = set.integration_url
   integration_token.value = set.integration_token
 
-  workHoursMonday.value = set.work_hours[0]
-  workHoursTuesday.value = set.work_hours[1]
-  workHoursWednesday.value = set.work_hours[2]
-  workHoursThursday.value = set.work_hours[3]
-  workHoursFriday.value = set.work_hours[4]
-  workHoursSaturday.value = set.work_hours[5]
-  workHoursSunday.value = set.work_hours[6]
+  workHoursMonday.value = set.work_hours.monday
+  workHoursTuesday.value = set.work_hours.tuesday
+  workHoursWednesday.value = set.work_hours.wednesday
+  workHoursThursday.value = set.work_hours.thursday
+  workHoursFriday.value = set.work_hours.friday
+  workHoursSaturday.value = set.work_hours.saturday
+  workHoursSunday.value = set.work_hours.sunday
 
   theme.value = set.theme
   activeTab.value = "general"
@@ -96,7 +96,12 @@ const changeTheme = (color: string) => {
       </q-card-section>
 
       <q-card-section>
-        <q-tabs v-model="activeTab" dense class="text-grey" active-color="primary" indicator-color="primary"
+        <q-tabs
+          v-model="activeTab"
+          dense
+          class="text-grey"
+          active-color="primary"
+          indicator-color="primary"
           align="justify">
           <q-tab name="general" label="General" />
           <q-tab name="integrations" label="Integrations" />

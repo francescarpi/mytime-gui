@@ -121,7 +121,7 @@ export function useColumns() {
   const { isSearchEnabled } = storeToRefs(useTasksStore())
 
   const getColumns = () =>
-    settings.value.view_type === "grouped" && !isSearchEnabled.value ? columnsGrouped : columnsNotGrouped
+    settings.value?.view_type === "Grouped" && !isSearchEnabled.value ? columnsGrouped : columnsNotGrouped
 
   return {
     getColumns,
