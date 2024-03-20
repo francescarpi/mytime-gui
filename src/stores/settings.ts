@@ -7,24 +7,15 @@ import type { Ref } from "vue"
 import type { Settings } from "@/types/settings"
 
 export const useSettingsStore = defineStore("settings", () => {
-  const settings: Ref<Settings> = ref({
-    integration: "",
-    integration_url: "",
-    integration_token: "",
-    work_hours: [8, 8, 8, 8, 8, 0, 0],
-    theme: "#1976d2",
-    view_type: "chronological",
-    dark_mode: false,
-    tour_completed: true,
-  })
+  const settings: Ref<Settings | null> = ref(null)
 
   const applyTheme = () => {
-    setCssVar("primary", settings.value.theme)
+    setCssVar("primary", settings.value?.theme || "#1976d2")
   }
 
   const load = async () => {
     return invoke("settings").then((response: unknown) => {
-      settings.value = JSON.parse(response as string) as Settings
+      settings.value = response as Settings
       applyTheme()
     })
   }
@@ -33,57 +24,62 @@ export const useSettingsStore = defineStore("settings", () => {
     integration: string,
     url: string,
     token: string,
-    workHoursMonday: number,
-    workHoursTuesday: number,
-    workHoursWednesday: number,
-    workHoursThursday: number,
-    workHoursFriday: number,
-    workHoursSaturday: number,
-    workHoursSunday: number,
+    monday: number,
+    tuesday: number,
+    wednesday: number,
+    thursday: number,
+    friday: number,
+    saturday: number,
+    sunday: number,
     theme: string,
-    tourCompleted: boolean
+    tour_completed: boolean
   ) => {
-    return invoke("save_settings", {
-      integration,
-      url,
-      token,
-      workHours: [
-        workHoursMonday,
-        workHoursTuesday,
-        workHoursWednesday,
-        workHoursThursday,
-        workHoursFriday,
-        workHoursSaturday,
-        workHoursSunday,
-      ],
+    const payload = {
+      ...settings.value,
+      integration: integration || null,
+      integration_url: url || null,
+      integration_token: token || null,
+      work_hours: {
+        monday,
+        tuesday,
+        wednesday,
+        thursday,
+        friday,
+        saturday,
+        sunday,
+      },
       theme,
-      tourCompleted,
-    }).then(() => {
+      tour_completed,
+    }
+    return invoke("save_settings", { settings: payload }).then(() => {
       load()
     })
   }
 
-  const saveViewType = (viewType: string) => {
-    invoke("save_view_type", { viewType }).then(() => {
+  const saveViewType = (view_type: string) => {
+    const payload = { ...settings.value, view_type }
+    invoke("save_settings", { settings: payload }).then(() => {
       load()
     })
   }
 
-  const saveDarkMode = (darkMode: boolean) => {
-    invoke("save_dark_mode", { darkMode }).then(() => {
+  const saveDarkMode = (dark_mode: boolean) => {
+    const payload = { ...settings.value, dark_mode }
+    invoke("save_settings", { settings: payload }).then(() => {
       load()
     })
   }
 
   const markTourCompleted = () => {
-    invoke("mark_tour_completed").then(() => {
+    const payload = { ...settings.value, tour_completed: true }
+    invoke("save_settings", { settings: payload }).then(() => {
       load()
     })
   }
 
   const isValid = computed(() => {
     const s = settings.value
-    return s.integration !== "" && s.integration_url !== "" && s.integration_token !== ""
+    return s?.integration !== null && s?.integration_url !== "" && s?.integration_token !== ""
   })
 
   return {

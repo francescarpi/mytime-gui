@@ -14,5 +14,5 @@ const color = (reported: boolean, darkMode: boolean) => {
 </script>
 
 <template>
-  <q-icon :name="reported ? 'cloud_done' : 'cloud'" :class="color(reported, settings.dark_mode)"></q-icon>
+  <q-icon :name="reported ? 'cloud_done' : 'cloud'" :class="color(reported, settings?.dark_mode || false)"></q-icon>
 </template>

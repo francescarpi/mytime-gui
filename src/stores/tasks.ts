@@ -54,7 +54,7 @@ export const useTasksStore = defineStore("tasks", () => {
       return addShortcut(searchResult.value)
     }
 
-    if (settings.view_type === "grouped") {
+    if (settings?.view_type === "Grouped") {
       const grouped: Task[] = tasksCopy.reduce((acc: Task[], task: Task) => {
         let existingTask: Task | undefined = acc.find(
           (t: Task) => t.desc === task.desc && t.project === task.project && t.external_id === task.external_id
@@ -90,19 +90,18 @@ export const useTasksStore = defineStore("tasks", () => {
 
   const loadTasks = async () => {
     return invoke("tasks", { date: filterDate.value }).then((response: unknown) => {
-      const tasksJson = JSON.parse(response as string) as Task[]
-      rawTasks.value = tasksJson
+      rawTasks.value = response as Task[]
     })
   }
 
-  const createTask = async (project: string, description: string, externalId: string) => {
+  const createTask = async (project: string, desc: string, externalId: string) => {
     searchQuery.value = ""
-    return invoke("create_task", { project, description, externalId })
+    return invoke("create_task", { desc, externalId, project })
   }
 
   const loadSummary = async () => {
     return invoke("summary", { date: filterDate.value }).then((response: unknown) => {
-      summary.value = JSON.parse(response as string) as Summary
+      summary.value = response as Summary
     })
   }
 
@@ -149,9 +148,10 @@ export const useTasksStore = defineStore("tasks", () => {
 
   const startSearch = () => {
     invoke("search", { query: searchQuery.value }).then((response: unknown) => {
-      const result = JSON.parse(response as string) as SearchResult
-      searchResult.value = result.tasks
-      searchTotalWorked.value = result.total_worked
+      const responseTasks = response as Task[]
+      const totalWorked = responseTasks.reduce((acc, task) => acc + task.duration, 0)
+      searchResult.value = responseTasks
+      searchTotalWorked.value = totalWorked
     })
   }
 

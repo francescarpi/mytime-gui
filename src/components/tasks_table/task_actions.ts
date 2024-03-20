@@ -19,7 +19,8 @@ export function useTaskActions() {
   }
 
   const startTask = async (task: Task) => {
-    return createTask(task.project, task.desc, task.external_id).then(() => {
+    const newTask = tasks.value.find((t: Task) => t.id === task.id) as Task
+    return createTask(newTask.project, newTask.desc, newTask.external_id).then(() => {
       setTaskFilterDateToToday()
       refresh()
     })

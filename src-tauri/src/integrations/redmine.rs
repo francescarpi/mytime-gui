@@ -1,8 +1,8 @@
-use crate::core::settings_manager::Settings;
-
 use super::{Error, Integration};
+use crate::models::Setting;
 use oxhttp::model::{Method, Request, Status};
 use oxhttp::Client;
+use serde_json::json;
 
 #[derive(Debug)]
 pub struct Redmine {}
@@ -16,14 +16,18 @@ impl Default for Redmine {
 impl Integration for Redmine {
     fn send_task(
         &self,
-        settings: &Settings,
-        desc: &str,
-        date: &str,
-        duration: &str,
-        external_id: &str,
+        settings: &Setting,
+        desc: String,
+        date: String,
+        duration: String,
+        external_id: String,
     ) -> Result<(), Error> {
-        let url = format!("{}time_entries.json", settings.integration_url);
-        let body = serde_json::json!({
+        let url = format!(
+            "{}time_entries.json",
+            &settings.integration_url.as_ref().unwrap()
+        );
+        let token = &settings.integration_token.as_ref().unwrap();
+        let body = json!({
             "time_entry": {
                 "issue_id": external_id,
                 "hours": duration,
@@ -34,11 +38,7 @@ impl Integration for Redmine {
 
         let client = Client::new();
         let response = client
-            .request(Self::prepare_request(
-                &url,
-                &body.to_string(),
-                &settings.integration_token,
-            ))
+            .request(Self::prepare_request(&url, &body.to_string(), token))
             .unwrap();
 
         if response.status() == Status::CREATED {

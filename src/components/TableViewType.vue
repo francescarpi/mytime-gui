@@ -11,8 +11,8 @@ const { saveViewType } = settingsStore
 const { isSearchEnabled } = storeToRefs(useTasksStore())
 
 const types: BtnOption[] = [
-  { label: "Chronological", value: "chronological" },
-  { label: "Grouped", value: "grouped" },
+  { label: "Chronological", value: "Chronological" },
+  { label: "Grouped", value: "Grouped" },
 ]
 
 const change = (value: string) => {
@@ -21,8 +21,13 @@ const change = (value: string) => {
 </script>
 
 <template>
-  <div id="view_type">
-    <q-btn-toggle :options="types" v-model="settings.view_type" rounded size="sm" @update:model-value="change"
+  <div id="view_type" v-if="settings">
+    <q-btn-toggle
+      :options="types"
+      v-model="settings.view_type"
+      rounded
+      size="sm"
+      @update:model-value="change"
       :disable="isSearchEnabled" />
   </div>
 </template>

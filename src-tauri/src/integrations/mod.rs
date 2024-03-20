@@ -1,16 +1,11 @@
-use std::fmt;
-use crate::core::settings_manager::Settings;
+use crate::models::integration::IntegrationType;
+use crate::models::Setting;
 use redmine::Redmine;
+use std::fmt;
 
 pub mod redmine;
 
-// Integrations enum //////////////////////////////////////////////////////////
-#[derive(Debug)]
-pub enum IntegrationType {
-    Redmine,
-}
-
-// Error struct ///////////////////////////////////////////////////////////////
+// Integration errors
 #[derive(Debug)]
 pub enum Error {
     IntegrationDoesNotExistError,
@@ -26,15 +21,21 @@ impl fmt::Display for Error {
     }
 }
 
-// Traits /////////////////////////////////////////////////////////////////////
+// Integration trait
 pub trait Integration {
-    fn send_task(&self, settings: &Settings, desc: &str, date: &str, duration: &str, external_id: &str) -> Result<(), Error>;
+    fn send_task(
+        &self,
+        settings: &Setting,
+        desc: String,
+        date: String,
+        duration: String,
+        external_id: String,
+    ) -> Result<(), Error>;
 }
 
-// Functions //////////////////////////////////////////////////////////////////
-pub fn get_integration(settings: &Settings) -> Option<impl Integration> {
-    match settings.integration.as_str() {
-        "redmine" => Some(Redmine::new()),
-        &_ => None,
+pub fn get_integration(settings: &Setting) -> Option<impl Integration> {
+    match settings.integration {
+        Some(IntegrationType::Redmine) => Some(Redmine::new()),
+        _ => None,
     }
 }
