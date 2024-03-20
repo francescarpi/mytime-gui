@@ -10,10 +10,21 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Update local toolchain
-        run: |
-          rustup update
-          sudo apt-get install libgtk-3-dev
+      - name: Tauri dependencies
+        run: >-
+          sudo apt-get update &&
+          sudo apt-get install -y
+          libgtk-3-dev
+          libayatana-appindicator3-dev
+          libwebkit2gtk-4.0-dev
+          webkit2gtk-driver
+          xvfb
+
+      # install the latest Rust stable
+      - name: Rust stable
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
 
       - name: Run tests
         run: |
