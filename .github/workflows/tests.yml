@@ -9,3 +9,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Update local toolchain
+        run: |
+          rustup update
