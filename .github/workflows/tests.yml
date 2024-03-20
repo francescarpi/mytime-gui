@@ -13,3 +13,8 @@ jobs:
       - name: Update local toolchain
         run: |
           rustup update
+
+      - name: Run tests
+        run: |
+          cd src-tauri
+          cargo test
