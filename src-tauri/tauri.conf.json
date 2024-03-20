@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "mytime",
-    "version": "0.1.00"
+    "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
