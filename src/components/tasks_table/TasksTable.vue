@@ -14,6 +14,7 @@ import GroupedActions from "./GroupedActions.vue"
 import DateNavigation from "./DateNavigation.vue"
 import ChildrenTasks from "./ChildrenTasks.vue"
 import Reported from "./Reported.vue"
+import VisualEditor from "./VisualEditor.vue"
 
 const table = ref()
 const emit = defineEmits(["click-column"])
@@ -67,7 +68,8 @@ const firstPage = () => {
     </template>
     <template #top-right>
       <DateNavigation />
-      <TableViewType class="q-ml-md" />
+      <VisualEditor />
+      <TableViewType />
     </template>
     <template #header-cell-shortcut>
       <q-th id="col_shortcut">
