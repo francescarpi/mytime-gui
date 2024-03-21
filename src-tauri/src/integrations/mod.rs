@@ -10,13 +10,15 @@ pub mod redmine;
 pub enum Error {
     IntegrationDoesNotExistError,
     CheckExternalIdError,
+    UnauthorizedError,
 }
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Error::IntegrationDoesNotExistError => write!(f, "Integration type does not exist"),
-            Error::CheckExternalIdError => write!(f, "Check external ID"),
+            Error::CheckExternalIdError => write!(f, "Invalid external ID"),
+            Error::UnauthorizedError => write!(f, "Unauthorized"),
         }
     }
 }
