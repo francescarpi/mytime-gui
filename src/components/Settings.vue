@@ -117,7 +117,7 @@ const changeTheme = (color: string) => {
             </div>
             <div class="col">
               <span>Theme:</span>
-              <q-color v-model="theme" no-header no-footer @change="changeTheme" />
+              <q-color v-model="theme" no-footer @change="changeTheme" />
             </div>
           </div>
         </q-tab-panel>
