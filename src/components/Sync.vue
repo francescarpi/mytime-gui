@@ -16,7 +16,7 @@ import type { IntegrationTask } from "@/types/integration"
 const tasks: Ref<IntegrationTask[]> = ref([])
 const isSending: Ref<boolean> = ref(false)
 const tasksDone: Ref<string[]> = ref([])
-const tasksWithError: Ref<string[]> = ref([])
+const tasksWithError: Ref<{ [key: string]: string }> = ref({})
 const finished: Ref<boolean> = ref(false)
 const totalDuration: Ref<number> = ref(0)
 
@@ -38,7 +38,7 @@ const beforeClose = () => {
 }
 const beforeShow = () => {
   tasksDone.value = []
-  tasksWithError.value = []
+  tasksWithError.value = {}
   finished.value = false
   groupTasks().then((tsks: IntegrationTask[]) => {
     tasks.value = tsks
@@ -56,8 +56,8 @@ const sendHandler = () => {
           .then(() => {
             tasksDone.value.push(task.external_id)
           })
-          .catch(() => {
-            tasksWithError.value.push(task.external_id)
+          .catch((e) => {
+            tasksWithError.value[task.external_id] = e as string
           })
       )
     })
@@ -97,8 +97,10 @@ const sendHandler = () => {
           </template>
           <template v-slot:body-cell-status="props">
             <q-td :props="props">
-              <q-icon name="warning" v-if="tasksWithError.includes(props.row.external_id)" color="red">
-                <q-tooltip>Error sending task. Please, check its external id.</q-tooltip>
+              <q-icon name="warning" v-if="tasksWithError[props.row.external_id]" color="red">
+                <q-tooltip>
+                  Error sending the task: <b>{{ tasksWithError[props.row.external_id] }}</b>
+                </q-tooltip>
               </q-icon>
               <div v-else>
                 <q-icon name="check_box" v-if="tasksDone.includes(props.row.external_id)" />

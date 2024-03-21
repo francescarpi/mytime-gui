@@ -53,7 +53,7 @@ const firstPage = () => {
     :rows="tasks"
     :columns="getColumns()"
     :pagination="pagination"
-    row-key="id"
+    :row-key="(row) => `${row.id}-${row.reported}-${row.end}`"
     bordered
     flat
     wrap-cells
