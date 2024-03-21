@@ -24,6 +24,7 @@ oxhttp = { version = "0.1.7", features = ["native-tls"] }
 platform-dirs = "0.3.0"
 diesel = { version = "2.1.5", features = ["chrono", "sqlite", "r2d2"] }
 diesel_migrations = "2.1.0"
+libsqlite3-sys = { version = "0.28.0", features = ["bundled"] }
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.
