@@ -3,6 +3,7 @@ use crate::models::Setting;
 use oxhttp::model::{Method, Request, Status};
 use oxhttp::Client;
 use serde_json::json;
+use url::Url;
 
 #[derive(Debug)]
 pub struct Redmine {}
@@ -22,10 +23,12 @@ impl Integration for Redmine {
         duration: String,
         external_id: String,
     ) -> Result<(), Error> {
-        let url = format!(
-            "{}time_entries.json",
-            &settings.integration_url.as_ref().unwrap()
-        );
+        let mut url = Url::parse(settings.integration_url.as_ref().unwrap()).unwrap();
+        if !url.path().ends_with('/') {
+            url.path_segments_mut().unwrap().push("");
+        }
+        url.path_segments_mut().unwrap().push("time_entries.json");
+
         let token = &settings.integration_token.as_ref().unwrap();
         let body = json!({
             "time_entry": {
@@ -38,11 +41,18 @@ impl Integration for Redmine {
 
         let client = Client::new();
         let response = client
-            .request(Self::prepare_request(&url, &body.to_string(), token))
+            .request(Self::prepare_request(
+                url.as_ref(),
+                &body.to_string(),
+                token,
+            ))
             .unwrap();
 
         if response.status() == Status::CREATED {
             return Ok(());
+        }
+        if response.status() == Status::UNAUTHORIZED {
+            return Err(Error::UnauthorizedError);
         }
         Err(Error::CheckExternalIdError)
     }
