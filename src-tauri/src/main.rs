@@ -7,10 +7,13 @@ pub mod repositories;
 pub mod schema;
 pub mod utils;
 
+use std::sync::Mutex;
+
 use models::Setting;
-use tauri::{command, SystemTray};
+use tauri::{command, State, SystemTray};
 
 use chrono::NaiveTime;
+use diesel::SqliteConnection;
 use integrations::*;
 use repositories::{SettingsRepository, TasksRepository};
 use serde::Serialize;
@@ -27,36 +30,39 @@ struct Summary {
     pub pending_sync_tasks: usize,
 }
 
+#[derive()]
+struct DbConn(Mutex<SqliteConnection>);
+
 #[command]
-fn tasks(date: &str) -> Result<Value, Value> {
-    let mut c = db::establish_connection();
+fn tasks(date: &str, conn: State<'_, DbConn>) -> Result<Value, Value> {
+    let mut db = conn.0.lock().unwrap();
     let date = chrono::NaiveDate::parse_from_str(date, "%Y-%m-%d").unwrap();
-    TasksRepository::tasks_with_duration_by_date(&mut c, date)
+    TasksRepository::tasks_with_duration_by_date(&mut db, date)
         .map(|tasks| json!(tasks))
         .map_err(|_| json!([]))
 }
 
 #[command]
-fn summary(date: &str) -> Value {
-    let mut c = db::establish_connection();
+fn summary(date: &str, conn: State<'_, DbConn>) -> Value {
+    let mut db = conn.0.lock().unwrap();
     let date = chrono::NaiveDate::parse_from_str(date, "%Y-%m-%d").unwrap();
 
-    let worked_week = TasksRepository::worked_during_the_week(&mut c, date)
+    let worked_week = TasksRepository::worked_during_the_week(&mut db, date)
         .map(|w| w.duration)
         .unwrap();
-    let worked_today = TasksRepository::worked_during_the_day(&mut c, date)
+    let worked_today = TasksRepository::worked_during_the_day(&mut db, date)
         .map(|w| w.duration)
         .unwrap();
-    let worked_month = TasksRepository::worked_during_the_month(&mut c, date)
+    let worked_month = TasksRepository::worked_during_the_month(&mut db, date)
         .map(|w| w.duration)
         .unwrap();
-    let is_running = TasksRepository::are_tasks_running(&mut c);
+    let is_running = TasksRepository::are_tasks_running(&mut db);
 
-    let settings = SettingsRepository::get_settings(&mut c).unwrap();
+    let settings = SettingsRepository::get_settings(&mut db).unwrap();
     let goal_today = settings.goal_by_date(date);
     let goal_week = settings.week_goal();
 
-    let unreported_tasks = TasksRepository::grouped_tasks(&mut c).unwrap();
+    let unreported_tasks = TasksRepository::grouped_tasks(&mut db).unwrap();
 
     json!(Summary {
         worked_week,
@@ -70,19 +76,24 @@ fn summary(date: &str) -> Value {
 }
 
 #[command]
-fn create_task(desc: String, external_id: Option<String>, project: Option<String>) {
-    let mut c = db::establish_connection();
-    if let Some(task_id) = TasksRepository::get_current_working_task_id(&mut c) {
-        let _task = TasksRepository::stop(&mut c, task_id);
+fn create_task(
+    desc: String,
+    external_id: Option<String>,
+    project: Option<String>,
+    conn: State<'_, DbConn>,
+) {
+    let mut db = conn.0.lock().unwrap();
+    if let Some(task_id) = TasksRepository::get_current_working_task_id(&mut db) {
+        let _task = TasksRepository::stop(&mut db, task_id);
     }
 
-    let _task = TasksRepository::add_task(&mut c, desc, external_id, project);
+    let _task = TasksRepository::add_task(&mut db, desc, external_id, project);
 }
 
 #[command]
-fn stop_task(id: i32) {
-    let mut c = db::establish_connection();
-    let _task = TasksRepository::stop(&mut c, id);
+fn stop_task(id: i32, conn: State<'_, DbConn>) {
+    let mut db = conn.0.lock().unwrap();
+    let _task = TasksRepository::stop(&mut db, id);
 }
 
 #[command]
@@ -93,31 +104,32 @@ fn edit_task(
     external_id: Option<String>,
     start: String,
     end: Option<String>,
+    conn: State<'_, DbConn>,
 ) {
-    let mut c = db::establish_connection();
+    let mut db = conn.0.lock().unwrap();
     let new_start = NaiveTime::parse_from_str(&start, "%H:%M").unwrap();
     let new_end = end.map(|end| NaiveTime::parse_from_str(&end, "%H:%M").unwrap());
 
     let _task =
-        TasksRepository::edit(&mut c, id, desc, new_start, new_end, external_id, project).unwrap();
+        TasksRepository::edit(&mut db, id, desc, new_start, new_end, external_id, project).unwrap();
 }
 
 #[command]
-fn settings() -> Value {
-    let mut c = db::establish_connection();
-    json!(SettingsRepository::get_settings(&mut c).unwrap())
+fn settings(conn: State<'_, DbConn>) -> Value {
+    let mut db = conn.0.lock().unwrap();
+    json!(SettingsRepository::get_settings(&mut db).unwrap())
 }
 
 #[command]
-fn save_settings(settings: Setting) {
-    let mut c = db::establish_connection();
-    let _settings = SettingsRepository::update(&mut c, &settings).unwrap();
+fn save_settings(settings: Setting, conn: State<'_, DbConn>) {
+    let mut db = conn.0.lock().unwrap();
+    let _settings = SettingsRepository::update(&mut db, &settings).unwrap();
 }
 
 #[command]
-fn group_tasks() -> Value {
-    let mut c = db::establish_connection();
-    let tasks = TasksRepository::grouped_tasks(&mut c).unwrap();
+fn group_tasks(conn: State<'_, DbConn>) -> Value {
+    let mut db = conn.0.lock().unwrap();
+    let tasks = TasksRepository::grouped_tasks(&mut db).unwrap();
     json!(tasks)
 }
 
@@ -128,15 +140,16 @@ async fn send_to_integration(
     duration: String,
     external_id: String,
     ids: String,
+    conn: State<'_, DbConn>,
 ) -> Result<(), String> {
-    let mut c = db::establish_connection();
-    let settings = SettingsRepository::get_settings(&mut c).unwrap();
+    let mut db = conn.0.lock().unwrap();
+    let settings = SettingsRepository::get_settings(&mut db).unwrap();
 
     match get_integration(&settings) {
         Some(integration) => {
             match integration.send_task(&settings, description, date, duration, external_id) {
                 Ok(_) => {
-                    let _ = TasksRepository::mark_tasks_as_reported(&mut c, ids);
+                    let _ = TasksRepository::mark_tasks_as_reported(&mut db, ids);
                     Ok(())
                 }
                 Err(err) => Err(err.to_string()),
@@ -147,21 +160,22 @@ async fn send_to_integration(
 }
 
 #[command]
-fn delete_task(id: i32) {
-    let mut c = db::establish_connection();
-    let _task = TasksRepository::delete_task(&mut c, id);
+fn delete_task(id: i32, conn: State<'_, DbConn>) {
+    let mut db = conn.0.lock().unwrap();
+    let _task = TasksRepository::delete_task(&mut db, id);
 }
 
 #[command]
-fn search(query: &str) -> Value {
-    let mut c = db::establish_connection();
-    let tasks = TasksRepository::search_tasks_with_duration(&mut c, query).unwrap();
+fn search(query: &str, conn: State<'_, DbConn>) -> Value {
+    let mut db = conn.0.lock().unwrap();
+    let tasks = TasksRepository::search_tasks_with_duration(&mut db, query).unwrap();
     json!(tasks)
 }
 
 fn main() {
     let system_tray = SystemTray::new();
     tauri::Builder::default()
+        .manage(DbConn(Mutex::new(db::establish_connection())))
         .setup(|_app| {
             db::init();
             Ok(())
