@@ -14,15 +14,18 @@ import Button from "@mui/material/Button";
 import { IconButton } from "@mui/material";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const Grouped = ({
   tasks,
   addTask,
   stopTask,
+  copyToClipboard,
 }: {
   tasks: Task[];
   addTask: CallableFunction;
   stopTask: CallableFunction;
+  copyToClipboard: CallableFunction;
 }) => {
   return (
     <TableContainer component={Paper} variant="outlined">
@@ -60,6 +63,9 @@ const Grouped = ({
                 </Button>
               </TableCell>
               <TableCell align="right">
+                <IconButton size="small" onClick={() => copyToClipboard(task)}>
+                  <ContentCopyIcon />
+                </IconButton>
                 {!task.has_running_tasks ? (
                   <IconButton
                     size="small"

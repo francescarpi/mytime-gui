@@ -15,7 +15,8 @@ import useTasks from "./hooks/useTasks";
 const App = () => {
   const { isIntegrationValid, setting, changeViewType } = useSettings();
   const { date, setDate, setPreviousDate, setNextDate } = useDate();
-  const { tasks, groupedTasks, addTask, stopTask } = useTasks(date);
+  const { tasks, groupedTasks, addTask, stopTask, copyToClipboard } =
+    useTasks(date);
   // const {} = useKeyboard();
 
   return (
@@ -42,6 +43,7 @@ const App = () => {
             groupedTasks={groupedTasks}
             addTask={addTask}
             stopTask={stopTask}
+            copyToClipboard={copyToClipboard}
           />
         </CardContent>
       </Card>

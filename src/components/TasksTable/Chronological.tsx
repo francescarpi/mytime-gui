@@ -13,15 +13,18 @@ import CloudOffIcon from "@mui/icons-material/CloudOff";
 import { IconButton } from "@mui/material";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const Chronological = ({
   tasks,
   addTask,
   stopTask,
+  copyToClipboard,
 }: {
   tasks: Task[];
   addTask: CallableFunction;
   stopTask: CallableFunction;
+  copyToClipboard: CallableFunction;
 }) => {
   return (
     <TableContainer component={Paper} variant="outlined">
@@ -61,6 +64,9 @@ const Chronological = ({
                 {task.reported ? <CloudDoneIcon /> : <CloudOffIcon />}
               </TableCell>
               <TableCell align="right">
+                <IconButton size="small" onClick={() => copyToClipboard(task)}>
+                  <ContentCopyIcon />
+                </IconButton>
                 {task.end ? (
                   <IconButton
                     size="small"

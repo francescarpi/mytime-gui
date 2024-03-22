@@ -73,7 +73,12 @@ const useTasks = (date: Dayjs) => {
     invoke("stop_task", { id }).then(() => refresh());
   };
 
-  return { tasks, groupedTasks, addTask, stopTask };
+  const copyToClipboard = (task: Task) => {
+    const content = `[${task.project}] ${task.desc}`;
+    navigator.clipboard.writeText(content);
+  };
+
+  return { tasks, groupedTasks, addTask, stopTask, copyToClipboard };
 };
 
 export default useTasks;
