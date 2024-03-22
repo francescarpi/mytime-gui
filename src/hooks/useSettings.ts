@@ -2,22 +2,22 @@ import { useState, useCallback, useEffect } from "react";
 import { invoke } from "@tauri-apps/api";
 
 interface Setting {
-  integration: string | null;
-  integration_url: string | null;
-  integration_token: string | null;
+  integration: String | null;
+  integration_url: String | null;
+  integration_token: String | null;
   work_hours: {
-    monday: number;
-    tuesday: number;
-    wednesday: number;
-    thursday: number;
-    friday: number;
-    saturday: number;
-    sunday: number;
+    monday: Number;
+    tuesday: Number;
+    wednesday: Number;
+    thursday: Number;
+    friday: Number;
+    saturday: Number;
+    sunday: Number;
   };
-  theme: string;
-  view_type: string;
-  dark_mode: boolean;
-  tour_completed: boolean;
+  theme: String;
+  view_type: "Grouped" | "Chronological";
+  dark_mode: Boolean;
+  tour_completed: Boolean;
 }
 
 const useSettings = () => {
