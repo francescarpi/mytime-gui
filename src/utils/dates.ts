@@ -4,7 +4,7 @@ const locale = "en-GB";
  * Given a duration represented in seconds and returns a string with hours and minutes.
  * Example: 7552 => 2h6m
  */
-export const formatDuration = (duration: number): string => {
+export const formatDuration = (duration: number): String => {
   const hours = Math.floor(duration / 3600);
   const minutes = Math.floor((duration % 3600) / 60);
   const parts = [`${hours}h`];
@@ -17,12 +17,14 @@ export const formatDuration = (duration: number): string => {
 /**
  * Given a date, returns a string with format: HH:mm
  */
-export const dateToStrTime = (date: Date): string =>
-  new Intl.DateTimeFormat("es-ES", {
+export const dateToStrTime = (date: Date | String): String => {
+  let newDate = typeof date === "string" ? new Date(date) : (date as Date);
+  return new Intl.DateTimeFormat("es-ES", {
     timeZone: "Europe/Madrid",
     hour: "2-digit",
     minute: "2-digit",
-  }).format(date);
+  }).format(newDate);
+};
 
 /**
  * Given a date, returns a string with format YYYY-MM-DD

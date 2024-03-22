@@ -21,7 +21,6 @@ const ViewTypeSelector = ({
 
   return (
     <ToggleButtonGroup
-      sx={{ ml: 2 }}
       size="small"
       color="primary"
       value={viewType}

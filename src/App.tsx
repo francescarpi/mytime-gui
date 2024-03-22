@@ -14,20 +14,24 @@ import useTasks from "./hooks/useTasks";
 const App = () => {
   const { isIntegrationValid, setting, changeViewType } = useSettings();
   const { date, setPreviousDate, setNextDate } = useDate();
-  const { tasks } = useTasks(date);
+  const { tasks, groupedTasks } = useTasks(date);
   // const {} = useKeyboard();
 
   return (
     <Layout showSendTasksIcon={isIntegrationValid}>
       <Grid container sx={{ mb: 1 }}>
-        <TitleDate date={date} />
         <DateSelector setPrevious={setPreviousDate} setNext={setNextDate} />
+        <TitleDate date={date} sx={{ ml: 2, mt: 0.5, flexGrow: 1 }} />
         <ViewTypeSelector
           viewType={setting?.view_type}
           changeViewType={changeViewType}
         />
       </Grid>
-      <TasksTable viewType={setting?.view_type} />
+      <TasksTable
+        viewType={setting?.view_type}
+        tasks={tasks}
+        groupedTasks={groupedTasks}
+      />
     </Layout>
   );
 };
