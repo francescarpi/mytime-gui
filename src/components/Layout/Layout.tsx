@@ -15,7 +15,7 @@ const Layout = ({
   showSendTasksIcon,
 }: {
   children: ReactNode;
-  showSendTasksIcon: boolean;
+  showSendTasksIcon: Boolean;
 }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
