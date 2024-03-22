@@ -40,21 +40,22 @@ impl Integration for Redmine {
         });
 
         let client = Client::new();
-        let response = client
-            .request(Self::prepare_request(
-                url.as_ref(),
-                &body.to_string(),
-                token,
-            ))
-            .unwrap();
-
-        if response.status() == Status::CREATED {
-            return Ok(());
+        match client.request(Self::prepare_request(
+            url.as_ref(),
+            &body.to_string(),
+            token,
+        )) {
+            Ok(response) => {
+                if response.status() == Status::CREATED {
+                    return Ok(());
+                }
+                if response.status() == Status::UNAUTHORIZED {
+                    return Err(Error::UnauthorizedError);
+                }
+                Err(Error::CheckExternalIdError)
+            }
+            Err(_) => Err(Error::UnkownHostError),
         }
-        if response.status() == Status::UNAUTHORIZED {
-            return Err(Error::UnauthorizedError);
-        }
-        Err(Error::CheckExternalIdError)
     }
 }
 
