@@ -1,21 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 
 const useDate = () => {
   const [date, setDate] = useState<Date>(new Date());
-  const [humanDate, setHumanDate] = useState<String>("");
 
-  useEffect(() => {
-    setDate(new Date());
-    setHumanDate(
-      new Intl.DateTimeFormat("fr-CA", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }).format(new Date()),
-    );
-  }, []);
+  const setPreviousDate = useCallback(() => {
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() - 1);
+    setDate(newDate);
+  }, [date]);
 
-  return { date, setDate, humanDate };
+  const setNextDate = useCallback(() => {
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + 1);
+    if (newDate < new Date()) {
+      setDate(newDate);
+    }
+  }, [date]);
+
+  return { date, setDate, setPreviousDate, setNextDate };
 };
 
 export default useDate;

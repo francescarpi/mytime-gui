@@ -1,6 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
 import { invoke } from "@tauri-apps/api";
 
+export type ViewType = "Grouped" | "Chronological";
+
 interface Setting {
   integration: String | null;
   integration_url: String | null;
@@ -15,7 +17,7 @@ interface Setting {
     sunday: Number;
   };
   theme: String;
-  view_type: "Grouped" | "Chronological";
+  view_type: ViewType;
   dark_mode: Boolean;
   tour_completed: Boolean;
 }
@@ -29,6 +31,15 @@ const useSettings = () => {
       setSetting(res as Setting);
     });
   }, []);
+
+  const changeViewType = useCallback(
+    (viewType: ViewType) => {
+      const payload = { ...(setting as Setting), view_type: viewType };
+      setSetting(payload);
+      invoke("save_settings", { settings: payload });
+    },
+    [setting],
+  );
 
   useEffect(() => {
     loadSettings();
@@ -45,6 +56,7 @@ const useSettings = () => {
   return {
     setting,
     isIntegrationValid,
+    changeViewType,
   };
 };
 

@@ -5,6 +5,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import KeyboardCommandKeyIcon from "@mui/icons-material/KeyboardCommandKey";
 
 const Chronological = () => {
   return (
@@ -12,15 +13,25 @@ const Chronological = () => {
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell>Column 1</TableCell>
-            <TableCell>Column 2</TableCell>
+            <TableCell>
+              <KeyboardCommandKeyIcon fontSize="small" />
+            </TableCell>
+            <TableCell>#</TableCell>
+            <TableCell>Project</TableCell>
+            <TableCell>Description</TableCell>
+            <TableCell>External Id</TableCell>
+            <TableCell>Started</TableCell>
+            <TableCell>Ended</TableCell>
+            <TableCell>Duration</TableCell>
+            <TableCell>Reported</TableCell>
+            <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow key="1">
-            <TableCell>val 1</TableCell>
-            <TableCell>val 2</TableCell>
-          </TableRow>
+          {/* <TableRow key="1"> */}
+          {/*   <TableCell>val 1</TableCell> */}
+          {/*   <TableCell>val 2</TableCell> */}
+          {/* </TableRow> */}
         </TableBody>
       </Table>
     </TableContainer>
