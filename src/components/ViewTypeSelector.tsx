@@ -14,7 +14,9 @@ const ViewTypeSelector = ({
 }) => {
   const handleChange = useCallback(
     (_: any, value: ViewType) => {
-      changeViewType(value);
+      if (value) {
+        changeViewType(value);
+      }
     },
     [changeViewType],
   );
