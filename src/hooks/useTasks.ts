@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { dateToStrDate } from "../utils/dates";
 import { invoke } from "@tauri-apps/api";
+import { Dayjs } from "dayjs";
 
 export interface Task {
   id: Number;
@@ -16,13 +16,14 @@ export interface Task {
   children?: Task[];
 }
 
-const useTasks = (date: Date) => {
+const useTasks = (date: Dayjs) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [groupedTasks, setGroupedTasks] = useState<Task[]>([]);
 
   useEffect(() => {
-    const humanDate = dateToStrDate(date);
-    invoke("tasks", { date: humanDate }).then((res) => setTasks(res as Task[]));
+    invoke("tasks", { date: date.format("YYYY-MM-DD") }).then((res) =>
+      setTasks(res as Task[]),
+    );
   }, [date]);
 
   useEffect(() => {

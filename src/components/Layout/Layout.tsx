@@ -19,7 +19,7 @@ const Layout = ({
 }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="fixed" sx={{ top: 0, bottom: "auto" }}>
         <Toolbar>
           <TimerIcon />
           <Typography variant="h6" sx={{ ml: 1, flexGrow: 1 }}>
@@ -44,7 +44,7 @@ const Layout = ({
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Box sx={{ height: "100vh", p: 2 }}>{children}</Box>
+      <Box sx={{ height: "100vh", p: 2, mt: 9 }}>{children}</Box>
       <AppBar position="fixed" sx={{ top: "auto", bottom: 0 }}>
         <Toolbar variant="dense">Footer</Toolbar>
       </AppBar>

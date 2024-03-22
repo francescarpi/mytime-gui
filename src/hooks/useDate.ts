@@ -1,18 +1,16 @@
 import { useState, useCallback } from "react";
+import dayjs, { Dayjs } from "dayjs";
 
 const useDate = () => {
-  const [date, setDate] = useState<Date>(new Date());
+  const [date, setDate] = useState<Dayjs>(dayjs());
 
   const setPreviousDate = useCallback(() => {
-    const newDate = new Date(date);
-    newDate.setDate(newDate.getDate() - 1);
-    setDate(newDate);
+    setDate(date.clone().subtract(1, "day"));
   }, [date]);
 
   const setNextDate = useCallback(() => {
-    const newDate = new Date(date);
-    newDate.setDate(newDate.getDate() + 1);
-    if (newDate < new Date()) {
+    const newDate = date.clone().add(1, "day");
+    if (newDate.isBefore(dayjs())) {
       setDate(newDate);
     }
   }, [date]);
