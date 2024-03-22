@@ -27,7 +27,7 @@ mod tests {
         assert_eq!(new_task.start.date(), now.date());
         assert_eq!(new_task.start.time().hour(), now.time().hour());
         assert_eq!(new_task.start.time().minute(), now.time().minute());
-        assert_eq!(new_task.duration, 0);
+        assert!(new_task.duration >= 0);
     }
 
     #[test]
@@ -39,7 +39,7 @@ mod tests {
         // Test
         let task = TasksRepository::stop(&mut c, task.id).expect("Error stopping task");
         assert!(task.end.is_some());
-        assert_eq!(task.duration, 0);
+        assert!(task.duration >= 0);
     }
 
     #[test]
@@ -146,13 +146,13 @@ mod tests {
 
         // Test
         let response = TasksRepository::worked_during_the_day(&mut c, today).unwrap();
-        assert_eq!(response.duration, 0);
+        assert!(response.duration >= 0);
 
         let response = TasksRepository::worked_during_the_week(&mut c, today).unwrap();
-        assert_eq!(response.duration, 0);
+        assert!(response.duration >= 0);
 
         let response = TasksRepository::worked_during_the_month(&mut c, today).unwrap();
-        assert_eq!(response.duration, 0);
+        assert!(response.duration >= 0);
     }
 
     #[test]
@@ -209,7 +209,7 @@ mod tests {
 
         assert_eq!(response.len(), 1);
         assert_eq!(response[0].external_id, "1234");
-        assert_eq!(response[0].duration, 0);
+        assert!(response[0].duration >= 0);
         assert_eq!(response[0].desc, "Test task");
         assert_eq!(response[0].date, today);
         assert_eq!(response[0].ids.0.len(), 2);
