@@ -14,8 +14,8 @@ import Button from "@mui/material/Button";
 
 const Grouped = ({ tasks }: { tasks: Task[] }) => {
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+    <TableContainer component={Paper} variant="outlined">
+      <Table sx={{ minWidth: 650 }} size="small">
         <TableHead>
           <TableRow>
             <TableCell align="center">

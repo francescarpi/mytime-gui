@@ -24,7 +24,7 @@ const DateSelector = ({
 }) => {
   return (
     <Box sx={sx}>
-      <IconButton onClick={() => setPrevious()}>
+      <IconButton onClick={() => setPrevious()} sx={{ mr: 1 }}>
         <ArrowLeftIcon />
       </IconButton>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -37,11 +37,11 @@ const DateSelector = ({
           slotProps={{ textField: { size: "small" } }}
         />
       </LocalizationProvider>
-      <IconButton onClick={() => setNext()}>
+      <IconButton onClick={() => setNext()} sx={{ mx: 1 }}>
         <ArrowRightIcon />
       </IconButton>
       <Typography variant="h6" sx={{ display: "inline" }}>
-        ({date.format("dddd")})
+        [{date.format("dddd")}]
       </Typography>
     </Box>
   );

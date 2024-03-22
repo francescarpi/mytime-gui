@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { invoke } from "@tauri-apps/api";
 import { Dayjs } from "dayjs";
 
@@ -20,11 +20,21 @@ const useTasks = (date: Dayjs) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [groupedTasks, setGroupedTasks] = useState<Task[]>([]);
 
-  useEffect(() => {
+  const refresh = useCallback(() => {
     invoke("tasks", { date: date.format("YYYY-MM-DD") }).then((res) =>
       setTasks(res as Task[]),
     );
   }, [date]);
+
+  useEffect(() => {
+    refresh();
+  }, [date, refresh]);
+
+  useEffect(() => {
+    setInterval(() => {
+      refresh();
+    }, 30000);
+  }, [refresh]);
 
   useEffect(() => {
     const grouped: Task[] = tasks.reduce((acc: Task[], task: Task) => {

@@ -1,9 +1,11 @@
 import Grid from "@mui/material/Grid";
+import { Card, CardContent } from "@mui/material";
 
 import Layout from "./components/Layout/Layout";
 import TasksTable from "./components/TasksTable/TasksTable";
 import DateSelector from "./components/DateSelector";
 import ViewTypeSelector from "./components/ViewTypeSelector";
+import AddTaskForm from "./components/AddTaskForm";
 
 import useSettings from "./hooks/useSettings";
 import useDate from "./hooks/useDate";
@@ -18,24 +20,29 @@ const App = () => {
 
   return (
     <Layout showSendTasksIcon={isIntegrationValid}>
-      <Grid container sx={{ mb: 1 }}>
-        <DateSelector
-          setPrevious={setPreviousDate}
-          setNext={setNextDate}
-          date={date}
-          onChange={setDate}
-          sx={{ flexGrow: 1 }}
-        />
-        <ViewTypeSelector
-          viewType={setting?.view_type}
-          changeViewType={changeViewType}
-        />
-      </Grid>
-      <TasksTable
-        viewType={setting?.view_type}
-        tasks={tasks}
-        groupedTasks={groupedTasks}
-      />
+      <AddTaskForm sx={{ mb: 2 }} />
+      <Card variant="outlined">
+        <CardContent>
+          <Grid container sx={{ mb: 2 }}>
+            <DateSelector
+              setPrevious={setPreviousDate}
+              setNext={setNextDate}
+              date={date}
+              onChange={setDate}
+              sx={{ flexGrow: 1 }}
+            />
+            <ViewTypeSelector
+              viewType={setting?.view_type}
+              changeViewType={changeViewType}
+            />
+          </Grid>
+          <TasksTable
+            viewType={setting?.view_type}
+            tasks={tasks}
+            groupedTasks={groupedTasks}
+          />
+        </CardContent>
+      </Card>
     </Layout>
   );
 };
