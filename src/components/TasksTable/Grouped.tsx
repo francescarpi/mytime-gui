@@ -11,8 +11,19 @@ import { formatDuration } from "../../utils/dates";
 import CloudDoneIcon from "@mui/icons-material/CloudDone";
 import CloudOffIcon from "@mui/icons-material/CloudOff";
 import Button from "@mui/material/Button";
+import { IconButton } from "@mui/material";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import StopCircleIcon from "@mui/icons-material/StopCircle";
 
-const Grouped = ({ tasks }: { tasks: Task[] }) => {
+const Grouped = ({
+  tasks,
+  addTask,
+  stopTask,
+}: {
+  tasks: Task[];
+  addTask: CallableFunction;
+  stopTask: CallableFunction;
+}) => {
   return (
     <TableContainer component={Paper} variant="outlined">
       <Table sx={{ minWidth: 650 }} size="small">
@@ -48,7 +59,22 @@ const Grouped = ({ tasks }: { tasks: Task[] }) => {
                   {(task.children as Task[]).length}
                 </Button>
               </TableCell>
-              <TableCell align="right"></TableCell>
+              <TableCell align="right">
+                {!task.has_running_tasks ? (
+                  <IconButton
+                    size="small"
+                    onClick={() =>
+                      addTask(task.project, task.desc, task.external_id)
+                    }
+                  >
+                    <PlayCircleIcon />
+                  </IconButton>
+                ) : (
+                  <IconButton size="small" onClick={() => stopTask(task.id)}>
+                    <StopCircleIcon />
+                  </IconButton>
+                )}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

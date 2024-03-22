@@ -10,8 +10,19 @@ import { Task } from "../../hooks/useTasks";
 import { formatDuration, dateToStrTime } from "../../utils/dates";
 import CloudDoneIcon from "@mui/icons-material/CloudDone";
 import CloudOffIcon from "@mui/icons-material/CloudOff";
+import { IconButton } from "@mui/material";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import StopCircleIcon from "@mui/icons-material/StopCircle";
 
-const Chronological = ({ tasks }: { tasks: Task[] }) => {
+const Chronological = ({
+  tasks,
+  addTask,
+  stopTask,
+}: {
+  tasks: Task[];
+  addTask: CallableFunction;
+  stopTask: CallableFunction;
+}) => {
   return (
     <TableContainer component={Paper} variant="outlined">
       <Table sx={{ minWidth: 650 }} size="small">
@@ -49,7 +60,22 @@ const Chronological = ({ tasks }: { tasks: Task[] }) => {
               <TableCell align="center">
                 {task.reported ? <CloudDoneIcon /> : <CloudOffIcon />}
               </TableCell>
-              <TableCell align="right"></TableCell>
+              <TableCell align="right">
+                {task.end ? (
+                  <IconButton
+                    size="small"
+                    onClick={() =>
+                      addTask(task.project, task.desc, task.external_id)
+                    }
+                  >
+                    <PlayCircleIcon />
+                  </IconButton>
+                ) : (
+                  <IconButton size="small" onClick={() => stopTask(task.id)}>
+                    <StopCircleIcon />
+                  </IconButton>
+                )}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

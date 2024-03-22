@@ -15,12 +15,12 @@ import useTasks from "./hooks/useTasks";
 const App = () => {
   const { isIntegrationValid, setting, changeViewType } = useSettings();
   const { date, setDate, setPreviousDate, setNextDate } = useDate();
-  const { tasks, groupedTasks } = useTasks(date);
+  const { tasks, groupedTasks, addTask, stopTask } = useTasks(date);
   // const {} = useKeyboard();
 
   return (
     <Layout showSendTasksIcon={isIntegrationValid}>
-      <AddTaskForm sx={{ mb: 2 }} />
+      <AddTaskForm sx={{ mb: 2 }} onSubmit={addTask} />
       <Card variant="outlined">
         <CardContent>
           <Grid container sx={{ mb: 2 }}>
@@ -40,6 +40,8 @@ const App = () => {
             viewType={setting?.view_type}
             tasks={tasks}
             groupedTasks={groupedTasks}
+            addTask={addTask}
+            stopTask={stopTask}
           />
         </CardContent>
       </Card>

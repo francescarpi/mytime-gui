@@ -12,7 +12,7 @@ export interface Task {
   reported: Boolean;
   shortcut: Number | null;
   duration: number;
-  has_runing_tasks?: Boolean;
+  has_running_tasks?: Boolean;
   children?: Task[];
 }
 
@@ -48,7 +48,7 @@ const useTasks = (date: Dayjs) => {
         existingTask.duration += task.duration;
         (existingTask.children as Task[]).push(task);
         if (task.end === null) {
-          existingTask.has_runing_tasks = true;
+          existingTask.has_running_tasks = true;
         }
         if (!task.reported) {
           existingTask.reported = false;
@@ -56,7 +56,7 @@ const useTasks = (date: Dayjs) => {
       } else {
         acc.push({
           ...task,
-          has_runing_tasks: task.end === null,
+          has_running_tasks: task.end === null,
           children: [task],
         });
       }
@@ -65,7 +65,15 @@ const useTasks = (date: Dayjs) => {
     setGroupedTasks(grouped);
   }, [tasks]);
 
-  return { tasks, groupedTasks };
+  const addTask = (project: String, desc: String, externalId: String) => {
+    invoke("create_task", { desc, project, externalId }).then(() => refresh());
+  };
+
+  const stopTask = (id: Number) => {
+    invoke("stop_task", { id }).then(() => refresh());
+  };
+
+  return { tasks, groupedTasks, addTask, stopTask };
 };
 
 export default useTasks;
