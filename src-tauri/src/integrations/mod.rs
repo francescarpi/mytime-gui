@@ -11,6 +11,7 @@ pub enum Error {
     IntegrationDoesNotExistError,
     CheckExternalIdError,
     UnauthorizedError,
+    UnkownHostError,
 }
 
 impl fmt::Display for Error {
@@ -19,6 +20,7 @@ impl fmt::Display for Error {
             Error::IntegrationDoesNotExistError => write!(f, "Integration type does not exist"),
             Error::CheckExternalIdError => write!(f, "Invalid external ID"),
             Error::UnauthorizedError => write!(f, "Unauthorized"),
+            Error::UnkownHostError => write!(f, "Unkown host"),
         }
     }
 }
