@@ -31,6 +31,7 @@ const useTasks = (date: Dayjs) => {
   }, [date, refresh]);
 
   useEffect(() => {
+    // FIXME: Interval is not working properly
     setInterval(() => {
       refresh();
     }, 30000);
@@ -73,12 +74,23 @@ const useTasks = (date: Dayjs) => {
     invoke("stop_task", { id }).then(() => refresh());
   };
 
+  const deleteTask = (id: Number) => {
+    invoke("delete_task", { id }).then(() => refresh());
+  };
+
   const copyToClipboard = (task: Task) => {
     const content = `[${task.project}] ${task.desc}`;
     navigator.clipboard.writeText(content);
   };
 
-  return { tasks, groupedTasks, addTask, stopTask, copyToClipboard };
+  return {
+    tasks,
+    groupedTasks,
+    addTask,
+    stopTask,
+    copyToClipboard,
+    deleteTask,
+  };
 };
 
 export default useTasks;

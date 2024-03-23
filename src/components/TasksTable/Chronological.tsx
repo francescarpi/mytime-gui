@@ -14,18 +14,29 @@ import { IconButton } from "@mui/material";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useConfirm } from "material-ui-confirm";
 
 const Chronological = ({
   tasks,
   addTask,
   stopTask,
   copyToClipboard,
+  deleteTask,
 }: {
   tasks: Task[];
   addTask: CallableFunction;
   stopTask: CallableFunction;
   copyToClipboard: CallableFunction;
+  deleteTask: CallableFunction;
 }) => {
+  const confirm = useConfirm();
+  const deleteHandler = (id: Number) => {
+    confirm({ description: "Are you sure you want to delete this task?" }).then(
+      () => deleteTask(id),
+    );
+  };
+
   return (
     <TableContainer component={Paper} variant="outlined">
       <Table sx={{ minWidth: 650 }} size="small">
@@ -64,6 +75,14 @@ const Chronological = ({
                 {task.reported ? <CloudDoneIcon /> : <CloudOffIcon />}
               </TableCell>
               <TableCell align="right">
+                {!task.reported && (
+                  <IconButton
+                    size="small"
+                    onClick={() => deleteHandler(task.id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                )}
                 <IconButton size="small" onClick={() => copyToClipboard(task)}>
                   <ContentCopyIcon />
                 </IconButton>

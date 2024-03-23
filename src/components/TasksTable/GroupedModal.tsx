@@ -13,6 +13,9 @@ import CloudDoneIcon from "@mui/icons-material/CloudDone";
 import CloudOffIcon from "@mui/icons-material/CloudOff";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useConfirm } from "material-ui-confirm";
+import { IconButton } from "@mui/material";
 
 const StyledBox = styled(Box)(({ theme }) => ({
   position: "absolute" as "absolute",
@@ -31,10 +34,19 @@ const StyledBox = styled(Box)(({ theme }) => ({
 const GroupedModal = ({
   task,
   onClose,
+  deleteTask,
 }: {
   task: Task | null;
   onClose: CallableFunction;
+  deleteTask: CallableFunction;
 }) => {
+  // FIX: Tasks are not refreshed after deletion
+  const confirm = useConfirm();
+  const deleteHandler = (id: Number) => {
+    confirm({ description: "Are you sure you want to delete this task?" }).then(
+      () => deleteTask(id),
+    );
+  };
   return (
     <Modal open={Boolean(task)} onClose={() => onClose()}>
       <StyledBox>
@@ -67,7 +79,16 @@ const GroupedModal = ({
                   <TableCell align="center">
                     {child.reported ? <CloudDoneIcon /> : <CloudOffIcon />}
                   </TableCell>
-                  <TableCell align="right"></TableCell>
+                  <TableCell align="right">
+                    {!task.reported && (
+                      <IconButton
+                        size="small"
+                        onClick={() => deleteHandler(task.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    )}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

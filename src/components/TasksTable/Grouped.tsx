@@ -23,17 +23,23 @@ const Grouped = ({
   addTask,
   stopTask,
   copyToClipboard,
+  deleteTask,
 }: {
   tasks: Task[];
   addTask: CallableFunction;
   stopTask: CallableFunction;
   copyToClipboard: CallableFunction;
+  deleteTask: CallableFunction;
 }) => {
   const [taskDetails, setTaskDetails] = useState<Task | null>(null);
 
   return (
     <>
-      <GroupedModal task={taskDetails} onClose={() => setTaskDetails(null)} />
+      <GroupedModal
+        task={taskDetails}
+        onClose={() => setTaskDetails(null)}
+        deleteTask={deleteTask}
+      />
       <TableContainer component={Paper} variant="outlined">
         <Table sx={{ minWidth: 650 }} size="small">
           <TableHead>
