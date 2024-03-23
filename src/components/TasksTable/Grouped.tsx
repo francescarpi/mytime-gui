@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -32,6 +32,17 @@ const Grouped = ({
   deleteTask: CallableFunction;
 }) => {
   const [taskDetails, setTaskDetails] = useState<Task | null>(null);
+
+  useEffect(() => {
+    if (taskDetails) {
+      const existing = tasks.find((t) => t.id === taskDetails.id);
+      if (existing) {
+        setTaskDetails(existing);
+      } else {
+        setTaskDetails(null);
+      }
+    }
+  }, [tasks, taskDetails]);
 
   return (
     <>

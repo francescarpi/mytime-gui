@@ -40,7 +40,6 @@ const GroupedModal = ({
   onClose: CallableFunction;
   deleteTask: CallableFunction;
 }) => {
-  // FIX: Tasks are not refreshed after deletion
   const confirm = useConfirm();
   const deleteHandler = (id: Number) => {
     confirm({ description: "Are you sure you want to delete this task?" }).then(
