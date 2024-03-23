@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Grid from "@mui/material/Grid";
 import { Card, CardContent } from "@mui/material";
 import { ConfirmProvider } from "material-ui-confirm";
@@ -7,15 +8,17 @@ import TasksTable from "./components/TasksTable/TasksTable";
 import DateSelector from "./components/DateSelector";
 import ViewTypeSelector from "./components/ViewTypeSelector";
 import AddTaskForm from "./components/AddTaskForm";
+import TaskEdition from "./components/TaskEdition";
 
 import useSettings from "./hooks/useSettings";
 import useDate from "./hooks/useDate";
 // import useKeyboard from "./hooks/useKeyboard";
-import useTasks from "./hooks/useTasks";
+import useTasks, { Task } from "./hooks/useTasks";
 
 const App = () => {
   const { isIntegrationValid, setting, changeViewType } = useSettings();
   const { date, setDate, setPreviousDate, setNextDate } = useDate();
+  // const {} = useKeyboard();
   const {
     tasks,
     groupedTasks,
@@ -24,10 +27,11 @@ const App = () => {
     copyToClipboard,
     deleteTask,
   } = useTasks(date);
-  // const {} = useKeyboard();
+  const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
 
   return (
     <ConfirmProvider>
+      <TaskEdition task={taskToEdit} onClose={() => setTaskToEdit(null)} />
       <Layout showSendTasksIcon={isIntegrationValid}>
         <AddTaskForm sx={{ mb: 2 }} onSubmit={addTask} />
         <Card variant="outlined">
@@ -53,6 +57,7 @@ const App = () => {
               stopTask={stopTask}
               copyToClipboard={copyToClipboard}
               deleteTask={deleteTask}
+              setTaskToEdit={setTaskToEdit}
             />
           </CardContent>
         </Card>

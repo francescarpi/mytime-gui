@@ -16,6 +16,7 @@ import StopCircleIcon from "@mui/icons-material/StopCircle";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useConfirm } from "material-ui-confirm";
+import EditIcon from "@mui/icons-material/Edit";
 
 const Chronological = ({
   tasks,
@@ -23,12 +24,14 @@ const Chronological = ({
   stopTask,
   copyToClipboard,
   deleteTask,
+  setTaskToEdit,
 }: {
   tasks: Task[];
   addTask: CallableFunction;
   stopTask: CallableFunction;
   copyToClipboard: CallableFunction;
   deleteTask: CallableFunction;
+  setTaskToEdit: CallableFunction;
 }) => {
   const confirm = useConfirm();
   const deleteHandler = (id: Number) => {
@@ -76,12 +79,20 @@ const Chronological = ({
               </TableCell>
               <TableCell align="right">
                 {!task.reported && (
-                  <IconButton
-                    size="small"
-                    onClick={() => deleteHandler(task.id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
+                  <>
+                    <IconButton
+                      size="small"
+                      onClick={() => deleteHandler(task.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      onClick={() => setTaskToEdit(task)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </>
                 )}
                 <IconButton size="small" onClick={() => copyToClipboard(task)}>
                   <ContentCopyIcon />

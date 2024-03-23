@@ -11,6 +11,7 @@ const TasksTable = ({
   stopTask,
   copyToClipboard,
   deleteTask,
+  setTaskToEdit,
 }: {
   viewType: ViewType | undefined;
   tasks: Task[];
@@ -19,6 +20,7 @@ const TasksTable = ({
   stopTask: CallableFunction;
   copyToClipboard: CallableFunction;
   deleteTask: CallableFunction;
+  setTaskToEdit: CallableFunction;
 }) => {
   return viewType === "Grouped" ? (
     <Grouped
@@ -27,6 +29,7 @@ const TasksTable = ({
       stopTask={stopTask}
       copyToClipboard={copyToClipboard}
       deleteTask={deleteTask}
+      setTaskToEdit={setTaskToEdit}
     />
   ) : (
     <Chronological
@@ -35,6 +38,7 @@ const TasksTable = ({
       stopTask={stopTask}
       copyToClipboard={copyToClipboard}
       deleteTask={deleteTask}
+      setTaskToEdit={setTaskToEdit}
     />
   );
 };

@@ -12,33 +12,22 @@ import { formatDuration, dateToStrTime } from "../../utils/dates";
 import CloudDoneIcon from "@mui/icons-material/CloudDone";
 import CloudOffIcon from "@mui/icons-material/CloudOff";
 import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useConfirm } from "material-ui-confirm";
 import { IconButton } from "@mui/material";
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 700,
-  backgroundColor: theme.palette.background.paper,
-  borderSize: 2,
-  borderStyle: "solid",
-  borderColor: theme.palette.primary.main,
-  boxShadow: theme.shadows[24],
-  padding: 20,
-}));
+import { StyledBox } from "../../styles/modal";
+import EditIcon from "@mui/icons-material/Edit";
 
 const GroupedModal = ({
   task,
   onClose,
   deleteTask,
+  setTaskToEdit,
 }: {
   task: Task | null;
   onClose: CallableFunction;
   deleteTask: CallableFunction;
+  setTaskToEdit: CallableFunction;
 }) => {
   const confirm = useConfirm();
   const deleteHandler = (id: Number) => {
@@ -80,12 +69,20 @@ const GroupedModal = ({
                   </TableCell>
                   <TableCell align="right">
                     {!task.reported && (
-                      <IconButton
-                        size="small"
-                        onClick={() => deleteHandler(task.id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
+                      <>
+                        <IconButton
+                          size="small"
+                          onClick={() => deleteHandler(task.id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                        <IconButton
+                          size="small"
+                          onClick={() => setTaskToEdit(task)}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </>
                     )}
                   </TableCell>
                 </TableRow>

@@ -24,12 +24,14 @@ const Grouped = ({
   stopTask,
   copyToClipboard,
   deleteTask,
+  setTaskToEdit,
 }: {
   tasks: Task[];
   addTask: CallableFunction;
   stopTask: CallableFunction;
   copyToClipboard: CallableFunction;
   deleteTask: CallableFunction;
+  setTaskToEdit: CallableFunction;
 }) => {
   const [taskDetails, setTaskDetails] = useState<Task | null>(null);
 
@@ -50,6 +52,7 @@ const Grouped = ({
         task={taskDetails}
         onClose={() => setTaskDetails(null)}
         deleteTask={deleteTask}
+        setTaskToEdit={setTaskToEdit}
       />
       <TableContainer component={Paper} variant="outlined">
         <Table sx={{ minWidth: 650 }} size="small">
