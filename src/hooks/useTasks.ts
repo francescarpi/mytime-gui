@@ -16,16 +16,29 @@ export interface Task {
   children?: Task[];
 }
 
+export interface Summary {
+  worked_today: Number;
+  worked_this_week: Number;
+  worked_this_month: Number;
+  goal_today: Number;
+  goal_this_week: Number;
+  is_running: Boolean;
+  pending_sync_tasks: Number;
+}
+
+const REFRESH_INTERVAL = 30000;
+
 const useTasks = (date: Dayjs) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [groupedTasks, setGroupedTasks] = useState<Task[]>([]);
   const [intervalId, setIntervalId] = useState<any>(null);
+  const [summary, setSummary] = useState<Summary | null>(null);
 
   const refresh = useCallback(() => {
-    console.log("Refresh", date.format("YYYY-MM-DD"));
-    invoke("tasks", { date: date.format("YYYY-MM-DD") }).then((res) =>
-      setTasks(res as Task[]),
-    );
+    const d = date.format("YYYY-MM-DD");
+    console.log("Refresh", d);
+    invoke("tasks", { date: d }).then((res) => setTasks(res as Task[]));
+    invoke("summary", { date: d }).then((res) => setSummary(res as Summary));
   }, [date]);
 
   useEffect(() => {
@@ -39,7 +52,7 @@ const useTasks = (date: Dayjs) => {
       setIntervalId(null);
     }
     console.log("Interval registered");
-    setIntervalId(setInterval(() => refresh(), 10000));
+    setIntervalId(setInterval(() => refresh(), REFRESH_INTERVAL));
   }, [refresh]);
 
   useEffect(() => {
@@ -100,6 +113,7 @@ const useTasks = (date: Dayjs) => {
     deleteTask,
     editTask,
     refresh,
+    summary,
   };
 };
 

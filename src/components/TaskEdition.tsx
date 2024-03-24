@@ -37,11 +37,11 @@ const TaskEdition = ({
   const submit = (e: any) => {
     e.preventDefault();
     if (e.target.checkValidity() && startIsValid && endIsValid) {
-      const payload: Task = {
+      const payload: any = {
         ...(task as Task),
         project,
         desc: description,
-        external_id: externalId,
+        externalId,
         start: start.format("HH:mm"),
         end: end ? end.format("HH:mm") : null,
       };

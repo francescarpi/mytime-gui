@@ -9,13 +9,17 @@ import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { Summary } from "../../hooks/useTasks";
+import Badge from "@mui/material/Badge";
 
 const Layout = ({
   children,
   showSendTasksIcon,
+  summary,
 }: {
   children: ReactNode;
   showSendTasksIcon: Boolean;
+  summary: Summary | null;
 }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -36,7 +40,14 @@ const Layout = ({
           </Search>
           {showSendTasksIcon && (
             <IconButton color="inherit" sx={{ ml: 1 }}>
-              <CloudUploadIcon />
+              <Badge
+                color="error"
+                badgeContent={
+                  summary ? (summary.pending_sync_tasks as number) : 0
+                }
+              >
+                <CloudUploadIcon />
+              </Badge>
             </IconButton>
           )}
           <IconButton color="inherit" sx={{ ml: 1 }}>
