@@ -11,9 +11,7 @@ const useKeyboard = (
         return;
       }
 
-      if (e.altKey) {
-        console.log("Alt key");
-      } else if (e.ctrlKey) {
+      if (e.ctrlKey) {
         switch (e.code) {
           case "KeyF":
             console.log("Search");

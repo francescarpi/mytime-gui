@@ -24,7 +24,6 @@ const GoalProgress = ({
         color={color}
         sx={{
           width: 200,
-          border: "1px #fff solid",
           height: 20,
         }}
       />

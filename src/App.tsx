@@ -45,6 +45,7 @@ const App = () => {
   } = useTasks(date);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
   const { query, setQuery, totalWorked, result } = useSearch();
+
   useKeyboard(setPreviousDate, setNextDate, setToday);
 
   const darkTheme = createTheme({

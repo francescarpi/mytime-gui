@@ -1,5 +1,4 @@
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import Box from "@mui/material/Box";
@@ -32,17 +31,17 @@ const DateSelector = ({
           sx={{ width: 150 }}
           value={dayjs(date)}
           format="YYYY-MM-DD"
-          maxDate={dayjs()}
+          disableFuture
           onChange={(value) => onChange(value)}
-          slotProps={{ textField: { size: "small" } }}
+          label={date.format("dddd")}
+          slotProps={{
+            textField: { size: "small" },
+          }}
         />
       </LocalizationProvider>
       <IconButton onClick={() => setNext()} sx={{ mx: 1 }}>
         <ArrowRightIcon />
       </IconButton>
-      <Typography variant="h6" sx={{ display: "inline" }}>
-        [{date.format("dddd")}]
-      </Typography>
     </Box>
   );
 };

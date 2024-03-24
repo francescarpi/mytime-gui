@@ -5,7 +5,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import KeyboardCommandKeyIcon from "@mui/icons-material/KeyboardCommandKey";
 import { Task } from "../../hooks/useTasks";
 import { formatDuration, dateToStrTime } from "../../utils/dates";
 import CloudDoneIcon from "@mui/icons-material/CloudDone";
@@ -45,9 +44,6 @@ const Chronological = ({
       <Table sx={{ minWidth: 650 }} size="small">
         <TableHead>
           <TableRow>
-            <TableCell align="center">
-              <KeyboardCommandKeyIcon fontSize="small" />
-            </TableCell>
             <TableCell align="center">#</TableCell>
             <TableCell>Project</TableCell>
             <TableCell>Description</TableCell>
@@ -62,9 +58,8 @@ const Chronological = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {tasks.map((task, index) => (
+          {tasks.map((task) => (
             <TableRow key={`${task.id}-${task.reported}-${task.end}`}>
-              <TableCell align="center">{index + 1}</TableCell>
               <TableCell align="center">{task.id.toString()}</TableCell>
               <TableCell>{task.project}</TableCell>
               <TableCell>{task.desc}</TableCell>
