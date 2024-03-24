@@ -22,6 +22,7 @@ const TasksTable = ({
   deleteTask: CallableFunction;
   setTaskToEdit: CallableFunction;
 }) => {
+  // TODO: Fix column width
   return viewType === "Grouped" ? (
     <Grouped
       tasks={groupedTasks}

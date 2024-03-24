@@ -56,7 +56,9 @@ const Chronological = ({
             <TableCell align="right">Ended</TableCell>
             <TableCell align="right">Duration</TableCell>
             <TableCell align="center">Reported</TableCell>
-            <TableCell align="right">Actions</TableCell>
+            <TableCell align="right" width={140}>
+              Actions
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
