@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import { Box, Card, CardContent } from "@mui/material";
 import { ConfirmProvider } from "material-ui-confirm";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { SnackbarProvider } from "notistack";
 
 import Layout from "./components/Layout/Layout";
 import TasksTable from "./components/TasksTable/TasksTable";
@@ -53,55 +54,57 @@ const App = () => {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <ConfirmProvider>
-        <Settings
-          opened={openSettings}
-          onClose={() => setOpenSettings(false)}
-          setting={setting}
-          saveSetting={saveSettings}
-        />
-        <TaskEdition
-          task={taskToEdit}
-          onClose={() => setTaskToEdit(null)}
-          onEdit={editTask}
-        />
-        <Layout
-          showSendTasksIcon={isIntegrationValid}
-          summary={summary}
-          setting={setting}
-          onToggleDarkMode={toggleDarkMode}
-          onPressSettings={() => setOpenSettings(true)}
-        >
-          <AddTaskForm sx={{ mb: 2 }} onSubmit={addTask} />
-          <Card variant="outlined">
-            <CardContent>
-              <Grid container sx={{ mb: 2 }}>
-                <DateSelector
-                  setPrevious={setPreviousDate}
-                  setNext={setNextDate}
-                  date={date}
-                  onChange={setDate}
-                  sx={{ flexGrow: 1 }}
-                />
-                <ViewTypeSelector
+      <SnackbarProvider maxSnack={2}>
+        <ConfirmProvider>
+          <Settings
+            opened={openSettings}
+            onClose={() => setOpenSettings(false)}
+            setting={setting}
+            saveSetting={saveSettings}
+          />
+          <TaskEdition
+            task={taskToEdit}
+            onClose={() => setTaskToEdit(null)}
+            onEdit={editTask}
+          />
+          <Layout
+            showSendTasksIcon={isIntegrationValid}
+            summary={summary}
+            setting={setting}
+            onToggleDarkMode={toggleDarkMode}
+            onPressSettings={() => setOpenSettings(true)}
+          >
+            <AddTaskForm sx={{ mb: 2 }} onSubmit={addTask} />
+            <Card variant="outlined">
+              <CardContent>
+                <Grid container sx={{ mb: 2 }}>
+                  <DateSelector
+                    setPrevious={setPreviousDate}
+                    setNext={setNextDate}
+                    date={date}
+                    onChange={setDate}
+                    sx={{ flexGrow: 1 }}
+                  />
+                  <ViewTypeSelector
+                    viewType={setting?.view_type}
+                    changeViewType={changeViewType}
+                  />
+                </Grid>
+                <TasksTable
                   viewType={setting?.view_type}
-                  changeViewType={changeViewType}
+                  tasks={tasks}
+                  groupedTasks={groupedTasks}
+                  addTask={addTask}
+                  stopTask={stopTask}
+                  copyToClipboard={copyToClipboard}
+                  deleteTask={deleteTask}
+                  setTaskToEdit={setTaskToEdit}
                 />
-              </Grid>
-              <TasksTable
-                viewType={setting?.view_type}
-                tasks={tasks}
-                groupedTasks={groupedTasks}
-                addTask={addTask}
-                stopTask={stopTask}
-                copyToClipboard={copyToClipboard}
-                deleteTask={deleteTask}
-                setTaskToEdit={setTaskToEdit}
-              />
-            </CardContent>
-          </Card>
-        </Layout>
-      </ConfirmProvider>
+              </CardContent>
+            </Card>
+          </Layout>
+        </ConfirmProvider>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 };

@@ -12,6 +12,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import { Setting } from "../../hooks/useSettings";
 import Integration from "./Integration";
 import WorkingTime from "./WorkingTime";
+import { useSnackbar } from "notistack";
 
 const Settings = ({
   opened,
@@ -26,6 +27,7 @@ const Settings = ({
 }) => {
   const [activeTab, setActiveTab] = useState<string>("1");
   const [tmpSetting, setTmpSetting] = useState<Setting | null>(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (setting) {
@@ -36,7 +38,7 @@ const Settings = ({
   const saveHandler = () => {
     saveSetting(tmpSetting);
     onClose();
-    // TODO: Show message after save
+    enqueueSnackbar("Settings saved", { variant: "success" });
   };
 
   if (!setting) {
