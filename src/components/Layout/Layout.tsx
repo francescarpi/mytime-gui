@@ -36,7 +36,6 @@ const Layout = ({
   searchQuery: string;
   setSearchQuery: CallableFunction;
 }) => {
-  // TODO: Fix header and footer
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed" sx={{ top: 0, bottom: "auto" }}>

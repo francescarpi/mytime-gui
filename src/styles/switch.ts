@@ -24,7 +24,8 @@ const DarkModeSwitch = styled(Switch)(({ theme }) => ({
     },
   },
   "& .MuiSwitch-thumb": {
-    backgroundColor: theme.palette.mode === "dark" ? "#003892" : "#001e3c",
+    backgroundColor:
+      theme.palette.mode === "dark" ? theme.palette.primary.main : "#001e3c",
     width: 22,
     height: 22,
     "&::before": {

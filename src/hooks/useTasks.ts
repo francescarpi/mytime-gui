@@ -2,18 +2,17 @@ import { useState, useEffect, useCallback } from "react";
 import { invoke } from "@tauri-apps/api";
 import { Dayjs } from "dayjs";
 
-// TODO: Change types (Number by number, etc...)
 export interface Task {
-  id: Number;
-  project: String;
-  desc: String;
-  external_id: String;
-  start: String;
-  end: String | null;
-  reported: Boolean;
-  shortcut: Number | null;
+  id: number;
+  project: string;
+  desc: string;
+  external_id: string;
+  start: string;
+  end: string | null;
+  reported: boolean;
+  shortcut: number | null;
   duration: number;
-  has_running_tasks?: Boolean;
+  has_running_tasks?: boolean;
   children?: Task[];
 }
 
@@ -53,6 +52,7 @@ const useTasks = (date: Dayjs) => {
     }
     console.log("Interval registered");
     setIntervalId(setInterval(() => refresh(), REFRESH_INTERVAL));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh]);
 
   useEffect(() => {
@@ -84,15 +84,15 @@ const useTasks = (date: Dayjs) => {
     setGroupedTasks(grouped);
   }, [tasks]);
 
-  const addTask = (project: String, desc: String, externalId: String) => {
+  const addTask = (project: string, desc: string, externalId: string) => {
     invoke("create_task", { desc, project, externalId }).then(() => refresh());
   };
 
-  const stopTask = (id: Number) => {
+  const stopTask = (id: number) => {
     invoke("stop_task", { id }).then(() => refresh());
   };
 
-  const deleteTask = (id: Number) => {
+  const deleteTask = (id: number) => {
     invoke("delete_task", { id }).then(() => refresh());
   };
 

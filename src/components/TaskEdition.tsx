@@ -20,9 +20,9 @@ const TaskEdition = ({
   onClose: CallableFunction;
   onEdit: CallableFunction;
 }) => {
-  const [project, setProject] = useState<String>("");
-  const [description, setDescription] = useState<String>("");
-  const [externalId, setExternalId] = useState<String>("");
+  const [project, setProject] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [externalId, setExternalId] = useState<string>("");
   const [start, setStart] = useState<Dayjs>(dayjs());
   const [end, setEnd] = useState<Dayjs | null>(null);
 
@@ -30,8 +30,8 @@ const TaskEdition = ({
     setProject(task?.project || "");
     setDescription(task?.desc || "");
     setExternalId(task?.external_id || "");
-    if (task?.start) setStart(dayjs(task.start as string));
-    if (task?.end) setEnd(dayjs(task.end as string));
+    if (task?.start) setStart(dayjs(task.start));
+    if (task?.end) setEnd(dayjs(task.end));
   }, [task]);
 
   const submit = (e: any) => {

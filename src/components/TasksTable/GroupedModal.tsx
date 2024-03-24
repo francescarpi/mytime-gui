@@ -30,7 +30,7 @@ const GroupedModal = ({
   setTaskToEdit: CallableFunction;
 }) => {
   const confirm = useConfirm();
-  const deleteHandler = (id: Number) => {
+  const deleteHandler = (id: number) => {
     confirm({ description: "Are you sure you want to delete this task?" }).then(
       () => deleteTask(id),
     );
