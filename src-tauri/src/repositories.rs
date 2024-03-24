@@ -19,6 +19,7 @@ impl SettingsRepository {
     }
 
     pub fn update(c: &mut SqliteConnection, setting: &Setting) -> QueryResult<Setting> {
+        // FIX: Doesn't update integration whe it's None
         diesel::update(settings::table.find(setting.id))
             .set(setting)
             .execute(c)

@@ -50,6 +50,9 @@ const useSettings = () => {
     [setting],
   );
 
+  const saveSettings = (setting: Setting) =>
+    invoke("save_settings", { settings: setting }).then(() => loadSettings());
+
   useEffect(() => {
     loadSettings();
   }, [loadSettings]);
@@ -67,6 +70,7 @@ const useSettings = () => {
     isIntegrationValid,
     changeViewType,
     toggleDarkMode,
+    saveSettings,
   };
 };
 

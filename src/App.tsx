@@ -19,8 +19,13 @@ import useTasks, { Task } from "./hooks/useTasks";
 
 const App = () => {
   const [openSettings, setOpenSettings] = useState<boolean>(false);
-  const { isIntegrationValid, setting, changeViewType, toggleDarkMode } =
-    useSettings();
+  const {
+    isIntegrationValid,
+    setting,
+    changeViewType,
+    toggleDarkMode,
+    saveSettings,
+  } = useSettings();
   const { date, setDate, setPreviousDate, setNextDate } = useDate();
   // const {} = useKeyboard();
   const {
@@ -52,6 +57,8 @@ const App = () => {
         <Settings
           opened={openSettings}
           onClose={() => setOpenSettings(false)}
+          setting={setting}
+          saveSetting={saveSettings}
         />
         <TaskEdition
           task={taskToEdit}

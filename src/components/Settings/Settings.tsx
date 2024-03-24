@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { SyntheticEvent, useState } from "react";
 import Modal from "@mui/material/Modal";
 import { StyledBox } from "../../styles/modal";
@@ -8,15 +9,39 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import { Setting } from "../../hooks/useSettings";
+import Integration from "./Integration";
+import WorkingTime from "./WorkingTime";
 
 const Settings = ({
   opened,
   onClose,
+  setting,
+  saveSetting,
 }: {
   opened: boolean;
   onClose: CallableFunction;
+  setting: Setting | null;
+  saveSetting: CallableFunction;
 }) => {
   const [activeTab, setActiveTab] = useState<string>("1");
+  const [tmpSetting, setTmpSetting] = useState<Setting | null>(null);
+
+  useEffect(() => {
+    if (setting) {
+      setTmpSetting({ ...setting });
+    }
+  }, [setting, opened]);
+
+  const saveHandler = () => {
+    saveSetting(tmpSetting);
+    onClose();
+    // TODO: Show message after save
+  };
+
+  if (!setting) {
+    return <Box sx={{ p: 4 }}>Loading...</Box>;
+  }
 
   return (
     <Modal open={opened} onClose={() => onClose()}>
@@ -38,8 +63,12 @@ const Settings = ({
               </TabList>
             </Box>
             <TabPanel value="1">Generic</TabPanel>
-            <TabPanel value="2">Integrations</TabPanel>
-            <TabPanel value="3">Work Hours</TabPanel>
+            <TabPanel value="2">
+              <Integration setting={tmpSetting} setSetting={setTmpSetting} />
+            </TabPanel>
+            <TabPanel value="3">
+              <WorkingTime setting={tmpSetting} setSetting={setTmpSetting} />
+            </TabPanel>
           </TabContext>
         </Box>
         <Box sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}>
@@ -50,7 +79,7 @@ const Settings = ({
           >
             Close
           </Button>
-          <Button variant="contained" sx={{ ml: 2 }}>
+          <Button variant="contained" sx={{ ml: 2 }} onClick={saveHandler}>
             Save
           </Button>
         </Box>
