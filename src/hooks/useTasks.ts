@@ -19,8 +19,10 @@ export interface Task {
 const useTasks = (date: Dayjs) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [groupedTasks, setGroupedTasks] = useState<Task[]>([]);
+  const [intervalId, setIntervalId] = useState<any>(null);
 
   const refresh = useCallback(() => {
+    console.log("Refresh", date.format("YYYY-MM-DD"));
     invoke("tasks", { date: date.format("YYYY-MM-DD") }).then((res) =>
       setTasks(res as Task[]),
     );
@@ -31,10 +33,13 @@ const useTasks = (date: Dayjs) => {
   }, [date, refresh]);
 
   useEffect(() => {
-    // FIXME: Interval is not working properly
-    setInterval(() => {
-      refresh();
-    }, 30000);
+    if (intervalId) {
+      console.log(`Previous Interval cleared: ${intervalId}`);
+      clearInterval(intervalId);
+      setIntervalId(null);
+    }
+    console.log("Interval registered");
+    setIntervalId(setInterval(() => refresh(), 10000));
   }, [refresh]);
 
   useEffect(() => {
@@ -94,6 +99,7 @@ const useTasks = (date: Dayjs) => {
     copyToClipboard,
     deleteTask,
     editTask,
+    refresh,
   };
 };
 
