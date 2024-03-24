@@ -11,6 +11,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Summary } from "../../hooks/useTasks";
 import Badge from "@mui/material/Badge";
+import GoalProgress from "./GoalProgress";
 
 const Layout = ({
   children,
@@ -57,7 +58,20 @@ const Layout = ({
       </AppBar>
       <Box sx={{ height: "100vh", p: 2, mt: 9 }}>{children}</Box>
       <AppBar position="fixed" sx={{ top: "auto", bottom: 0 }}>
-        <Toolbar variant="dense">Footer</Toolbar>
+        <Toolbar variant="dense" sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1, display: "flex" }}>
+            <GoalProgress
+              goal={summary?.goal_today || 0}
+              value={summary?.worked_today || 0}
+            />
+            <GoalProgress
+              sx={{ ml: 2 }}
+              goal={summary?.goal_week || 0}
+              value={summary?.worked_week || 0}
+            />
+          </Box>
+          <div>Toggle</div>
+        </Toolbar>
       </AppBar>
     </Box>
   );

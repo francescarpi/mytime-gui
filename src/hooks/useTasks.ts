@@ -17,13 +17,12 @@ export interface Task {
 }
 
 export interface Summary {
-  worked_today: Number;
-  worked_this_week: Number;
-  worked_this_month: Number;
-  goal_today: Number;
-  goal_this_week: Number;
-  is_running: Boolean;
-  pending_sync_tasks: Number;
+  worked_today: number;
+  worked_week: number;
+  goal_today: number;
+  goal_week: number;
+  is_running: boolean;
+  pending_sync_tasks: number;
 }
 
 const REFRESH_INTERVAL = 30000;
