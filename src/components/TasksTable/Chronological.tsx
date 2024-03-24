@@ -107,7 +107,11 @@ const Chronological = ({
                     <PlayCircleIcon />
                   </IconButton>
                 ) : (
-                  <IconButton size="small" onClick={() => stopTask(task.id)}>
+                  <IconButton
+                    size="small"
+                    onClick={() => stopTask(task.id)}
+                    color="error"
+                  >
                     <StopCircleIcon />
                   </IconButton>
                 )}

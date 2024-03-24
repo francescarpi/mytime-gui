@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Modal from "@mui/material/Modal";
 import { StyledBox } from "../styles/modal";
 import { Task } from "../hooks/useTasks";
@@ -14,9 +14,11 @@ import dayjs, { Dayjs } from "dayjs";
 const TaskEdition = ({
   task,
   onClose,
+  onEdit,
 }: {
   task: Task | null;
   onClose: CallableFunction;
+  onEdit: CallableFunction;
 }) => {
   const [project, setProject] = useState<String>("");
   const [description, setDescription] = useState<String>("");
@@ -32,15 +34,36 @@ const TaskEdition = ({
     if (task?.end) setEnd(dayjs(task.end as string));
   }, [task]);
 
-  const submit = (e: React.FormEvent<HTMLFormElement>) => {
+  const submit = (e: any) => {
     e.preventDefault();
-    onClose();
+    if (e.target.checkValidity() && startIsValid && endIsValid) {
+      const payload: Task = {
+        ...(task as Task),
+        project,
+        desc: description,
+        external_id: externalId,
+        start: start.format("HH:mm"),
+        end: end ? end.format("HH:mm") : null,
+      };
+      onEdit(payload);
+      onClose();
+    }
   };
+
+  const startIsValid = useMemo(
+    () => !end || (start && end && start.isBefore(end)),
+    [start, end],
+  );
+
+  const endIsValid = useMemo(
+    () => end && start && end.isAfter(start),
+    [start, end],
+  );
 
   return (
     <Modal open={Boolean(task)} onClose={() => onClose()}>
       <StyledBox width={1000}>
-        <form onSubmit={submit}>
+        <Box component="form" onSubmit={submit} noValidate>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Typography variant="h5" sx={{ mb: 4 }}>
               Task Edition
@@ -54,6 +77,8 @@ const TaskEdition = ({
                   required
                   value={project}
                   onChange={(e) => setProject(e.target.value)}
+                  helperText={!project && "Project is required"}
+                  error={!project}
                 />
               </Grid>
               <Grid item md={8}>
@@ -64,6 +89,8 @@ const TaskEdition = ({
                   required
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
+                  helperText={!description && "Description is required"}
+                  error={!description}
                 />
               </Grid>
               <Grid item md={2}>
@@ -80,8 +107,16 @@ const TaskEdition = ({
                   label="Start"
                   format="HH:mm"
                   value={start}
+                  onChange={(date) => setStart(date as Dayjs)}
                   ampm={false}
-                  slotProps={{ textField: { required: true } }}
+                  slotProps={{
+                    textField: {
+                      required: true,
+                      error: !startIsValid,
+                      helperText:
+                        !startIsValid && "Start time must be before end time",
+                    },
+                  }}
                 />
               </Grid>
               {task?.end && (
@@ -90,8 +125,16 @@ const TaskEdition = ({
                     label="End"
                     format="HH:mm"
                     value={end}
+                    onChange={(date) => setEnd(date as Dayjs)}
                     ampm={false}
-                    slotProps={{ textField: { required: true } }}
+                    slotProps={{
+                      textField: {
+                        required: true,
+                        error: !endIsValid,
+                        helperText:
+                          !endIsValid && "End time must be after start time",
+                      },
+                    }}
                   />
                 </Grid>
               )}
@@ -109,7 +152,7 @@ const TaskEdition = ({
               </Button>
             </Box>
           </LocalizationProvider>
-        </form>
+        </Box>
       </StyledBox>
     </Modal>
   );

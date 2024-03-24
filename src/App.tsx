@@ -26,12 +26,17 @@ const App = () => {
     stopTask,
     copyToClipboard,
     deleteTask,
+    editTask,
   } = useTasks(date);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
 
   return (
     <ConfirmProvider>
-      <TaskEdition task={taskToEdit} onClose={() => setTaskToEdit(null)} />
+      <TaskEdition
+        task={taskToEdit}
+        onClose={() => setTaskToEdit(null)}
+        onEdit={editTask}
+      />
       <Layout showSendTasksIcon={isIntegrationValid}>
         <AddTaskForm sx={{ mb: 2 }} onSubmit={addTask} />
         <Card variant="outlined">

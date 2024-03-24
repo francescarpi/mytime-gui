@@ -83,6 +83,9 @@ const useTasks = (date: Dayjs) => {
     navigator.clipboard.writeText(content);
   };
 
+  const editTask = (task: Task) =>
+    invoke("edit_task", { ...task }).then(() => refresh());
+
   return {
     tasks,
     groupedTasks,
@@ -90,6 +93,7 @@ const useTasks = (date: Dayjs) => {
     stopTask,
     copyToClipboard,
     deleteTask,
+    editTask,
   };
 };
 
