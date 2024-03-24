@@ -15,7 +15,11 @@ const useDate = () => {
     }
   }, [date]);
 
-  return { date, setDate, setPreviousDate, setNextDate };
+  const setToday = useCallback(() => {
+    setDate(dayjs());
+  }, []);
+
+  return { date, setDate, setPreviousDate, setNextDate, setToday };
 };
 
 export default useDate;

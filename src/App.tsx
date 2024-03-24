@@ -18,7 +18,7 @@ import Sync from "./components/Sync";
 
 import useSettings from "./hooks/useSettings";
 import useDate from "./hooks/useDate";
-// import useKeyboard from "./hooks/useKeyboard";
+import useKeyboard from "./hooks/useKeyboard";
 import useTasks, { Task } from "./hooks/useTasks";
 import useSearch from "./hooks/useSearch";
 
@@ -32,8 +32,7 @@ const App = () => {
     toggleDarkMode,
     saveSettings,
   } = useSettings();
-  const { date, setDate, setPreviousDate, setNextDate } = useDate();
-  // const {} = useKeyboard();
+  const { date, setDate, setPreviousDate, setNextDate, setToday } = useDate();
   const {
     tasks,
     groupedTasks,
@@ -46,6 +45,7 @@ const App = () => {
   } = useTasks(date);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
   const { query, setQuery, totalWorked, result } = useSearch();
+  useKeyboard(setPreviousDate, setNextDate, setToday);
 
   const darkTheme = createTheme({
     palette: {

@@ -14,6 +14,10 @@ const useSearch = () => {
       return;
     }
 
+    if (query.length < 3) {
+      return;
+    }
+
     invoke("search", { query }).then((res) => {
       const totalWorked = (res as Task[]).reduce(
         (acc, task) => acc + task.duration,

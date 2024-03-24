@@ -67,7 +67,7 @@ const Grouped = ({
               <TableCell align="right">Duration</TableCell>
               <TableCell align="center">Reported</TableCell>
               <TableCell align="center">Tasks</TableCell>
-              <TableCell align="right" width={70}>
+              <TableCell align="right" width={110}>
                 Actions
               </TableCell>
             </TableRow>

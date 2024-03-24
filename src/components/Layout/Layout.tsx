@@ -36,9 +36,20 @@ const Layout = ({
   searchQuery: string;
   setSearchQuery: CallableFunction;
 }) => {
+  const onSearchKeyPress = (e: any) => {
+    if (e.code === "Escape") {
+      setSearchQuery("");
+      e.target.blur();
+    }
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{ top: 0, bottom: "auto" }}>
+      <AppBar
+        position="fixed"
+        sx={{ top: 0, bottom: "auto" }}
+        enableColorOnDark
+      >
         <Toolbar>
           <TimerIcon />
           <Typography variant="h6" sx={{ ml: 1, flexGrow: 1 }}>
@@ -53,6 +64,7 @@ const Layout = ({
               inputProps={{ "aria-label": "search" }}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => onSearchKeyPress(e)}
             />
           </Search>
           {showSendTasksIcon && (
