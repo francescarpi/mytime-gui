@@ -12,6 +12,7 @@ import ViewTypeSelector from "./components/ViewTypeSelector";
 import AddTaskForm from "./components/AddTaskForm";
 import TaskEdition from "./components/TaskEdition";
 import Settings from "./components/Settings/Settings";
+import Sync from "./components/Sync";
 
 import useSettings from "./hooks/useSettings";
 import useDate from "./hooks/useDate";
@@ -20,6 +21,7 @@ import useTasks, { Task } from "./hooks/useTasks";
 
 const App = () => {
   const [openSettings, setOpenSettings] = useState<boolean>(false);
+  const [openSync, setOpenSync] = useState<boolean>(false);
   const {
     isIntegrationValid,
     setting,
@@ -56,6 +58,11 @@ const App = () => {
     <ThemeProvider theme={darkTheme}>
       <SnackbarProvider maxSnack={2}>
         <ConfirmProvider>
+          <Sync
+            opened={openSync}
+            onClose={() => setOpenSync(false)}
+            setting={setting}
+          />
           <Settings
             opened={openSettings}
             onClose={() => setOpenSettings(false)}
@@ -73,6 +80,7 @@ const App = () => {
             setting={setting}
             onToggleDarkMode={toggleDarkMode}
             onPressSettings={() => setOpenSettings(true)}
+            onPressSync={() => setOpenSync(true)}
           >
             <AddTaskForm sx={{ mb: 2 }} onSubmit={addTask} />
             <Card variant="outlined">

@@ -22,6 +22,7 @@ const Layout = ({
   setting,
   onToggleDarkMode,
   onPressSettings,
+  onPressSync,
 }: {
   children: ReactNode;
   showSendTasksIcon: Boolean;
@@ -29,6 +30,7 @@ const Layout = ({
   setting: Setting | null;
   onToggleDarkMode: CallableFunction;
   onPressSettings: CallableFunction;
+  onPressSync: CallableFunction;
 }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -48,7 +50,11 @@ const Layout = ({
             />
           </Search>
           {showSendTasksIcon && (
-            <IconButton color="inherit" sx={{ ml: 1 }}>
+            <IconButton
+              color="inherit"
+              sx={{ ml: 1 }}
+              onClick={() => onPressSync()}
+            >
               <Badge
                 color="error"
                 badgeContent={

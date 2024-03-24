@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { invoke } from "@tauri-apps/api";
 import { Dayjs } from "dayjs";
 
+// TODO: Change types (Number by number, etc...)
 export interface Task {
   id: Number;
   project: String;
