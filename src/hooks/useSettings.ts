@@ -3,7 +3,7 @@ import { invoke } from "@tauri-apps/api";
 
 export type ViewType = "Grouped" | "Chronological";
 
-interface Setting {
+export interface Setting {
   integration: String | null;
   integration_url: String | null;
   integration_token: String | null;
@@ -33,8 +33,17 @@ const useSettings = () => {
   }, []);
 
   const changeViewType = useCallback(
-    (viewType: ViewType) => {
-      const payload = { ...(setting as Setting), view_type: viewType };
+    (view_type: ViewType) => {
+      const payload = { ...(setting as Setting), view_type };
+      setSetting(payload);
+      invoke("save_settings", { settings: payload });
+    },
+    [setting],
+  );
+
+  const toggleDarkMode = useCallback(
+    (dark_mode: Boolean) => {
+      const payload = { ...(setting as Setting), dark_mode };
       setSetting(payload);
       invoke("save_settings", { settings: payload });
     },
@@ -57,6 +66,7 @@ const useSettings = () => {
     setting,
     isIntegrationValid,
     changeViewType,
+    toggleDarkMode,
   };
 };
 

@@ -12,15 +12,21 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { Summary } from "../../hooks/useTasks";
 import Badge from "@mui/material/Badge";
 import GoalProgress from "./GoalProgress";
+import { DarkModeSwitch } from "../../styles/switch";
+import { Setting } from "../../hooks/useSettings";
 
 const Layout = ({
   children,
   showSendTasksIcon,
   summary,
+  setting,
+  onToggleDarkMode,
 }: {
   children: ReactNode;
   showSendTasksIcon: Boolean;
   summary: Summary | null;
+  setting: Setting | null;
+  onToggleDarkMode: CallableFunction;
 }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -70,7 +76,10 @@ const Layout = ({
               value={summary?.worked_week || 0}
             />
           </Box>
-          <div>Toggle</div>
+          <DarkModeSwitch
+            checked={Boolean(setting?.dark_mode)}
+            onChange={(e) => onToggleDarkMode(e.target.checked)}
+          />
         </Toolbar>
       </AppBar>
     </Box>
