@@ -12,6 +12,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import { Setting } from "../../hooks/useSettings";
 import Integration from "./Integration";
 import WorkingTime from "./WorkingTime";
+import Generic from "./Generic";
 import { useSnackbar } from "notistack";
 
 const Settings = ({
@@ -64,7 +65,9 @@ const Settings = ({
                 <Tab label="Working Time" value="3" />
               </TabList>
             </Box>
-            <TabPanel value="1">Generic</TabPanel>
+            <TabPanel value="1">
+              <Generic setting={tmpSetting} setSetting={setTmpSetting} />
+            </TabPanel>
             <TabPanel value="2">
               <Integration setting={tmpSetting} setSetting={setTmpSetting} />
             </TabPanel>

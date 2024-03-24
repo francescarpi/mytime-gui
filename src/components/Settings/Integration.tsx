@@ -30,10 +30,10 @@ const Integration = ({
       <Grid container spacing={2}>
         <Grid item md={6}>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Type</InputLabel>
+            <InputLabel id="integrationType">Type</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              labelId="integrationType"
+              id="integrationType"
               value={(setting?.integration as string) || "Disabled"}
               label="Age"
               onChange={onChangeIntegration}

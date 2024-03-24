@@ -5,6 +5,7 @@ import { ConfirmProvider } from "material-ui-confirm";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { SnackbarProvider } from "notistack";
 import { formatDuration } from "./utils/dates";
+import CssBaseline from "@mui/material/CssBaseline";
 
 import Layout from "./components/Layout/Layout";
 import TasksTable from "./components/TasksTable/TasksTable";
@@ -46,10 +47,12 @@ const App = () => {
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
   const { query, setQuery, totalWorked, result } = useSearch();
 
-  // TODO: Improve dark theme
   const darkTheme = createTheme({
     palette: {
       mode: setting?.dark_mode ? "dark" : "light",
+      primary: {
+        main: setting?.theme || "#1976d2",
+      },
     },
   });
 
@@ -59,6 +62,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
       <SnackbarProvider maxSnack={2}>
         <ConfirmProvider>
           <Sync

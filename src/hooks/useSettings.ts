@@ -4,27 +4,27 @@ import { invoke } from "@tauri-apps/api";
 export type ViewType = "Grouped" | "Chronological";
 
 export interface Setting {
-  integration: String | null;
-  integration_url: String | null;
-  integration_token: String | null;
+  integration: string | null;
+  integration_url: string | null;
+  integration_token: string | null;
   work_hours: {
-    monday: Number;
-    tuesday: Number;
-    wednesday: Number;
-    thursday: Number;
-    friday: Number;
-    saturday: Number;
-    sunday: Number;
+    monday: number;
+    tuesday: number;
+    wednesday: number;
+    thursday: number;
+    friday: number;
+    saturday: number;
+    sunday: number;
   };
-  theme: String;
+  theme: string;
   view_type: ViewType;
-  dark_mode: Boolean;
-  tour_completed: Boolean;
+  dark_mode: boolean;
+  tour_completed: boolean;
 }
 
 const useSettings = () => {
   const [setting, setSetting] = useState<Setting | null>(null);
-  const [isIntegrationValid, setIsIntegrationValid] = useState<Boolean>(false);
+  const [isIntegrationValid, setIsIntegrationValid] = useState<boolean>(false);
 
   const loadSettings = useCallback(() => {
     invoke("settings").then((res) => {
@@ -42,7 +42,7 @@ const useSettings = () => {
   );
 
   const toggleDarkMode = useCallback(
-    (dark_mode: Boolean) => {
+    (dark_mode: boolean) => {
       const payload = { ...(setting as Setting), dark_mode };
       setSetting(payload);
       invoke("save_settings", { settings: payload });
