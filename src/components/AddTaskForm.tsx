@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { SxProps, Theme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { Button, TextField } from "@mui/material";
@@ -14,6 +14,7 @@ const AddTaskForm = ({
   const [project, setProject] = useState("");
   const [description, setDescription] = useState("");
   const [externalId, setExternalId] = useState("");
+  const submitRef = useRef<HTMLButtonElement>(null);
 
   const reset = () => {
     setProject("");
@@ -21,11 +22,11 @@ const AddTaskForm = ({
     setExternalId("");
   };
 
-  const submit = (e: React.FormEvent<HTMLFormElement>) => {
+  const submit = (e: any) => {
     e.preventDefault();
     onSubmit(project, description, externalId);
     reset();
-    // TODO: blur focus from the form
+    submitRef.current?.focus();
   };
 
   return (
@@ -65,7 +66,7 @@ const AddTaskForm = ({
             <Button onClick={reset}>Reset</Button>
           </Grid>
           <Grid item md={1}>
-            <Button variant="contained" type="submit">
+            <Button variant="contained" type="submit" ref={submitRef}>
               Add
             </Button>
           </Grid>
