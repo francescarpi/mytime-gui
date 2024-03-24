@@ -23,6 +23,8 @@ const Layout = ({
   onToggleDarkMode,
   onPressSettings,
   onPressSync,
+  searchQuery,
+  setSearchQuery,
 }: {
   children: ReactNode;
   showSendTasksIcon: Boolean;
@@ -31,6 +33,8 @@ const Layout = ({
   onToggleDarkMode: CallableFunction;
   onPressSettings: CallableFunction;
   onPressSync: CallableFunction;
+  searchQuery: string;
+  setSearchQuery: CallableFunction;
 }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -47,6 +51,8 @@ const Layout = ({
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </Search>
           {showSendTasksIcon && (

@@ -1,9 +1,10 @@
 import { useState } from "react";
 import Grid from "@mui/material/Grid";
-import { Box, Card, CardContent } from "@mui/material";
+import { Box, Card, CardContent, Typography } from "@mui/material";
 import { ConfirmProvider } from "material-ui-confirm";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { SnackbarProvider } from "notistack";
+import { formatDuration } from "./utils/dates";
 
 import Layout from "./components/Layout/Layout";
 import TasksTable from "./components/TasksTable/TasksTable";
@@ -18,6 +19,7 @@ import useSettings from "./hooks/useSettings";
 import useDate from "./hooks/useDate";
 // import useKeyboard from "./hooks/useKeyboard";
 import useTasks, { Task } from "./hooks/useTasks";
+import useSearch from "./hooks/useSearch";
 
 const App = () => {
   const [openSettings, setOpenSettings] = useState<boolean>(false);
@@ -42,6 +44,7 @@ const App = () => {
     summary,
   } = useTasks(date);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
+  const { query, setQuery, totalWorked, result } = useSearch();
 
   // TODO: Improve dark theme
   const darkTheme = createTheme({
@@ -81,26 +84,36 @@ const App = () => {
             onToggleDarkMode={toggleDarkMode}
             onPressSettings={() => setOpenSettings(true)}
             onPressSync={() => setOpenSync(true)}
+            searchQuery={query}
+            setSearchQuery={setQuery}
           >
             <AddTaskForm sx={{ mb: 2 }} onSubmit={addTask} />
             <Card variant="outlined">
               <CardContent>
-                <Grid container sx={{ mb: 2 }}>
-                  <DateSelector
-                    setPrevious={setPreviousDate}
-                    setNext={setNextDate}
-                    date={date}
-                    onChange={setDate}
-                    sx={{ flexGrow: 1 }}
-                  />
-                  <ViewTypeSelector
-                    viewType={setting?.view_type}
-                    changeViewType={changeViewType}
-                  />
-                </Grid>
+                {result.length ? (
+                  <Typography sx={{ mb: 2 }} variant="h6">
+                    {result.length} tasks found ({formatDuration(totalWorked)})
+                  </Typography>
+                ) : (
+                  <Grid container sx={{ mb: 2 }}>
+                    <DateSelector
+                      setPrevious={setPreviousDate}
+                      setNext={setNextDate}
+                      date={date}
+                      onChange={setDate}
+                      sx={{ flexGrow: 1 }}
+                    />
+                    <ViewTypeSelector
+                      viewType={setting?.view_type}
+                      changeViewType={changeViewType}
+                    />
+                  </Grid>
+                )}
                 <TasksTable
-                  viewType={setting?.view_type}
-                  tasks={tasks}
+                  viewType={
+                    result.length ? "Chronological" : setting?.view_type
+                  }
+                  tasks={result.length ? result : tasks}
                   groupedTasks={groupedTasks}
                   addTask={addTask}
                   stopTask={stopTask}
