@@ -10,6 +10,7 @@ import DateSelector from "./components/DateSelector";
 import ViewTypeSelector from "./components/ViewTypeSelector";
 import AddTaskForm from "./components/AddTaskForm";
 import TaskEdition from "./components/TaskEdition";
+import Settings from "./components/Settings/Settings";
 
 import useSettings from "./hooks/useSettings";
 import useDate from "./hooks/useDate";
@@ -17,6 +18,7 @@ import useDate from "./hooks/useDate";
 import useTasks, { Task } from "./hooks/useTasks";
 
 const App = () => {
+  const [openSettings, setOpenSettings] = useState<boolean>(false);
   const { isIntegrationValid, setting, changeViewType, toggleDarkMode } =
     useSettings();
   const { date, setDate, setPreviousDate, setNextDate } = useDate();
@@ -47,6 +49,10 @@ const App = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <ConfirmProvider>
+        <Settings
+          opened={openSettings}
+          onClose={() => setOpenSettings(false)}
+        />
         <TaskEdition
           task={taskToEdit}
           onClose={() => setTaskToEdit(null)}
@@ -57,6 +63,7 @@ const App = () => {
           summary={summary}
           setting={setting}
           onToggleDarkMode={toggleDarkMode}
+          onPressSettings={() => setOpenSettings(true)}
         >
           <AddTaskForm sx={{ mb: 2 }} onSubmit={addTask} />
           <Card variant="outlined">

@@ -21,12 +21,14 @@ const Layout = ({
   summary,
   setting,
   onToggleDarkMode,
+  onPressSettings,
 }: {
   children: ReactNode;
   showSendTasksIcon: Boolean;
   summary: Summary | null;
   setting: Setting | null;
   onToggleDarkMode: CallableFunction;
+  onPressSettings: CallableFunction;
 }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -57,7 +59,11 @@ const Layout = ({
               </Badge>
             </IconButton>
           )}
-          <IconButton color="inherit" sx={{ ml: 1 }}>
+          <IconButton
+            color="inherit"
+            sx={{ ml: 1 }}
+            onClick={() => onPressSettings()}
+          >
             <SettingsIcon />
           </IconButton>
         </Toolbar>
