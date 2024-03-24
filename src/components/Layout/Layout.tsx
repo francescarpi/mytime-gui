@@ -81,7 +81,18 @@ const Layout = ({
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Box sx={{ height: "100vh", p: 2, mt: 9 }}>{children}</Box>
+      <Box
+        sx={{
+          p: 2,
+          position: "fixed",
+          top: 64,
+          bottom: 48,
+          left: 0,
+          right: 0,
+        }}
+      >
+        {children}
+      </Box>
       <AppBar position="fixed" sx={{ top: "auto", bottom: 0 }}>
         <Toolbar variant="dense" sx={{ flexGrow: 1 }}>
           <Box sx={{ flexGrow: 1, display: "flex" }}>

@@ -1,7 +1,8 @@
 import Chronological from "./Chronological";
 import Grouped from "./Grouped";
-import type { ViewType } from "../../hooks/useSettings";
+import Box from "@mui/material/Box";
 import { Task } from "../../hooks/useTasks";
+import type { ViewType } from "../../hooks/useSettings";
 
 const TasksTable = ({
   viewType,
@@ -22,25 +23,35 @@ const TasksTable = ({
   deleteTask: CallableFunction;
   setTaskToEdit: CallableFunction;
 }) => {
-  // TODO: Fix column width
-  return viewType === "Grouped" ? (
-    <Grouped
-      tasks={groupedTasks}
-      addTask={addTask}
-      stopTask={stopTask}
-      copyToClipboard={copyToClipboard}
-      deleteTask={deleteTask}
-      setTaskToEdit={setTaskToEdit}
-    />
-  ) : (
-    <Chronological
-      tasks={tasks}
-      addTask={addTask}
-      stopTask={stopTask}
-      copyToClipboard={copyToClipboard}
-      deleteTask={deleteTask}
-      setTaskToEdit={setTaskToEdit}
-    />
+  return (
+    <Box
+      sx={{
+        overflowY: "auto",
+        overflowX: "hidden",
+        width: "100%",
+        height: 350,
+      }}
+    >
+      {viewType === "Grouped" ? (
+        <Grouped
+          tasks={groupedTasks}
+          addTask={addTask}
+          stopTask={stopTask}
+          copyToClipboard={copyToClipboard}
+          deleteTask={deleteTask}
+          setTaskToEdit={setTaskToEdit}
+        />
+      ) : (
+        <Chronological
+          tasks={tasks}
+          addTask={addTask}
+          stopTask={stopTask}
+          copyToClipboard={copyToClipboard}
+          deleteTask={deleteTask}
+          setTaskToEdit={setTaskToEdit}
+        />
+      )}
+    </Box>
   );
 };
 
