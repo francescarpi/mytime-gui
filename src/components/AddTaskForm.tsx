@@ -25,6 +25,9 @@ const AddTaskForm = ({
   const submitRef = useRef<HTMLButtonElement>(null);
 
   const reset = () => {
+    setProject("");
+    setDescription("");
+    setExternalId("");
     dispatchDefaultAddTaskValues({ type: "reset" });
   };
 
@@ -36,9 +39,15 @@ const AddTaskForm = ({
   };
 
   useEffect(() => {
-    setProject(defaultAddTaskValues.proj);
-    setDescription(defaultAddTaskValues.desc);
-    setExternalId(defaultAddTaskValues.extId);
+    if (defaultAddTaskValues.proj !== "") {
+      setProject(defaultAddTaskValues.proj);
+    }
+    if (defaultAddTaskValues.desc !== "") {
+      setDescription(defaultAddTaskValues.desc);
+    }
+    if (defaultAddTaskValues.extId !== "") {
+      setExternalId(defaultAddTaskValues.extId);
+    }
   }, [defaultAddTaskValues]);
 
   return (
