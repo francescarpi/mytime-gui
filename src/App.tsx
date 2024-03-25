@@ -83,89 +83,90 @@ const App = () => {
 
   useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
 
-  if (!setting) {
-    return <Box sx={{ p: 4 }}>Loading...</Box>;
-  }
-
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <SnackbarProvider maxSnack={2}>
-        <ConfirmProvider>
-          <Sync
-            opened={openSync}
-            onClose={() => setOpenSync(false)}
-            setting={setting}
-          />
-          <Settings
-            opened={openSettings}
-            onClose={() => setOpenSettings(false)}
-            setting={setting}
-            saveSetting={saveSettings}
-            setThemePreview={setThemePreview}
-            refreshTasks={refresh}
-          />
-          <TaskEdition
-            task={taskToEdit}
-            onClose={() => setTaskToEdit(null)}
-            onEdit={editTask}
-          />
-          <Layout
-            showSendTasksIcon={isIntegrationValid}
-            summary={summary}
-            setting={setting}
-            onToggleDarkMode={toggleDarkMode}
-            onPressSettings={() => setOpenSettings(true)}
-            onPressSync={() => setOpenSync(true)}
-            setSearchQuery={setQuery}
-            setSearchResult={setResult}
-            searchInputRef={searchInputRef}
-          >
-            <AddTaskForm
-              sx={{ mb: 2 }}
-              onSubmit={addTask}
-              defaultAddTaskValues={defaultAddTaskValues}
-              dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+      {!setting ? (
+        <Box sx={{ p: 4 }}>Loading settings...</Box>
+      ) : (
+        <SnackbarProvider maxSnack={2}>
+          <ConfirmProvider>
+            <Sync
+              opened={openSync}
+              onClose={() => setOpenSync(false)}
+              setting={setting}
             />
-            <Card variant="outlined">
-              <CardContent>
-                {result.length ? (
-                  <Typography sx={{ mb: 2 }} variant="h6">
-                    {result.length} tasks found ({formatDuration(totalWorked)})
-                  </Typography>
-                ) : (
-                  <Grid container sx={{ mb: 2 }}>
-                    <DateSelector
-                      setPrevious={setPreviousDate}
-                      setNext={setNextDate}
-                      date={date}
-                      onChange={setDate}
-                      sx={{ flexGrow: 1 }}
-                    />
-                    <ViewTypeSelector
-                      viewType={setting?.view_type}
-                      changeViewType={changeViewType}
-                    />
-                  </Grid>
-                )}
-                <TasksTable
-                  viewType={
-                    result.length ? "Chronological" : setting?.view_type
-                  }
-                  tasks={result.length ? result : tasks}
-                  groupedTasks={groupedTasks}
-                  addTask={addTask}
-                  stopTask={stopTask}
-                  copyToClipboard={copyToClipboard}
-                  deleteTask={deleteTask}
-                  setTaskToEdit={setTaskToEdit}
-                  dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
-                />
-              </CardContent>
-            </Card>
-          </Layout>
-        </ConfirmProvider>
-      </SnackbarProvider>
+            <Settings
+              opened={openSettings}
+              onClose={() => setOpenSettings(false)}
+              setting={setting}
+              saveSetting={saveSettings}
+              setThemePreview={setThemePreview}
+              refreshTasks={refresh}
+            />
+            <TaskEdition
+              task={taskToEdit}
+              onClose={() => setTaskToEdit(null)}
+              onEdit={editTask}
+            />
+            <Layout
+              showSendTasksIcon={isIntegrationValid}
+              summary={summary}
+              setting={setting}
+              onToggleDarkMode={toggleDarkMode}
+              onPressSettings={() => setOpenSettings(true)}
+              onPressSync={() => setOpenSync(true)}
+              setSearchQuery={setQuery}
+              setSearchResult={setResult}
+              searchInputRef={searchInputRef}
+            >
+              <AddTaskForm
+                sx={{ mb: 2 }}
+                onSubmit={addTask}
+                defaultAddTaskValues={defaultAddTaskValues}
+                dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+              />
+              <Card variant="outlined">
+                <CardContent>
+                  {result.length ? (
+                    <Typography sx={{ mb: 2 }} variant="h6">
+                      {result.length} tasks found ({formatDuration(totalWorked)}
+                      )
+                    </Typography>
+                  ) : (
+                    <Grid container sx={{ mb: 2 }}>
+                      <DateSelector
+                        setPrevious={setPreviousDate}
+                        setNext={setNextDate}
+                        date={date}
+                        onChange={setDate}
+                        sx={{ flexGrow: 1 }}
+                      />
+                      <ViewTypeSelector
+                        viewType={setting?.view_type}
+                        changeViewType={changeViewType}
+                      />
+                    </Grid>
+                  )}
+                  <TasksTable
+                    viewType={
+                      result.length ? "Chronological" : setting?.view_type
+                    }
+                    tasks={result.length ? result : tasks}
+                    groupedTasks={groupedTasks}
+                    addTask={addTask}
+                    stopTask={stopTask}
+                    copyToClipboard={copyToClipboard}
+                    deleteTask={deleteTask}
+                    setTaskToEdit={setTaskToEdit}
+                    dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+                  />
+                </CardContent>
+              </Card>
+            </Layout>
+          </ConfirmProvider>
+        </SnackbarProvider>
+      )}
     </ThemeProvider>
   );
 };
