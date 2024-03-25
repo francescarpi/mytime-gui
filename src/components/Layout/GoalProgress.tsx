@@ -16,6 +16,8 @@ const GoalProgress = ({
   const percentage = (value * 100) / goal;
   const color = percentage < 100 ? "error" : "success";
 
+  // TODO: If goal is 0, show in red?
+
   return (
     <Box sx={{ ...sx, position: "relative" }}>
       <LinearProgress

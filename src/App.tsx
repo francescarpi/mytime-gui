@@ -25,6 +25,7 @@ import useSearch from "./hooks/useSearch";
 const App = () => {
   const [openSettings, setOpenSettings] = useState<boolean>(false);
   const [openSync, setOpenSync] = useState<boolean>(false);
+  const [themePreview, setThemePreview] = useState<string | null>(null);
   const {
     isIntegrationValid,
     setting,
@@ -52,7 +53,7 @@ const App = () => {
     palette: {
       mode: setting?.dark_mode ? "dark" : "light",
       primary: {
-        main: setting?.theme || "#1976d2",
+        main: themePreview ? themePreview : setting?.theme || "#1976d2",
       },
     },
   });
@@ -76,6 +77,7 @@ const App = () => {
             onClose={() => setOpenSettings(false)}
             setting={setting}
             saveSetting={saveSettings}
+            setThemePreview={setThemePreview}
           />
           <TaskEdition
             task={taskToEdit}

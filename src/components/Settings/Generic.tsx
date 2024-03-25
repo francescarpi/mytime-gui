@@ -5,12 +5,15 @@ import { MuiColorInput } from "mui-color-input";
 const Generic = ({
   setting,
   setSetting,
+  setThemePreview,
 }: {
   setting: Setting | null;
   setSetting: CallableFunction;
+  setThemePreview: CallableFunction;
 }) => {
   const onChangeTheme = (color: string) => {
     setSetting({ ...setting, theme: color });
+    setThemePreview(color);
   };
   return (
     <Box>

@@ -20,11 +20,13 @@ const Settings = ({
   onClose,
   setting,
   saveSetting,
+  setThemePreview,
 }: {
   opened: boolean;
   onClose: CallableFunction;
   setting: Setting | null;
   saveSetting: CallableFunction;
+  setThemePreview: CallableFunction;
 }) => {
   const [activeTab, setActiveTab] = useState<string>("1");
   const [tmpSetting, setTmpSetting] = useState<Setting | null>(null);
@@ -40,6 +42,12 @@ const Settings = ({
     saveSetting(tmpSetting);
     onClose();
     enqueueSnackbar("Settings saved", { variant: "success" });
+    // TODO: Refresh tasks after save
+  };
+
+  const cancelHandler = () => {
+    setThemePreview(null);
+    onClose();
   };
 
   if (!setting) {
@@ -66,7 +74,11 @@ const Settings = ({
               </TabList>
             </Box>
             <TabPanel value="1">
-              <Generic setting={tmpSetting} setSetting={setTmpSetting} />
+              <Generic
+                setting={tmpSetting}
+                setSetting={setTmpSetting}
+                setThemePreview={setThemePreview}
+              />
             </TabPanel>
             <TabPanel value="2">
               <Integration setting={tmpSetting} setSetting={setTmpSetting} />
@@ -77,11 +89,7 @@ const Settings = ({
           </TabContext>
         </Box>
         <Box sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}>
-          <Button
-            variant="contained"
-            onClick={() => onClose()}
-            color="secondary"
-          >
+          <Button variant="contained" onClick={cancelHandler} color="secondary">
             Close
           </Button>
           <Button variant="contained" sx={{ ml: 2 }} onClick={saveHandler}>
