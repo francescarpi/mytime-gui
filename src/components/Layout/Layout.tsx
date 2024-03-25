@@ -1,4 +1,4 @@
-import { ReactNode, RefObject, useState, useEffect } from "react";
+import { ReactNode, RefObject, useState } from "react";
 import { Search, SearchIconWrapper, StyledInputBase } from "./styles";
 import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
@@ -48,12 +48,6 @@ const Layout = ({
     }
   };
 
-  useEffect(() => {
-    debounce((q) => {
-      setSearchQuery(q);
-    }, 500)(query);
-  }, [query, setSearchQuery]);
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -78,9 +72,10 @@ const Layout = ({
                 autoCorrect: "off",
                 autoCapitalize: "off",
                 spellCheck: "false",
+                onInput: (e: any) => setQuery(e.target.value),
               }}
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={debounce((e) => setSearchQuery(e.target.value), 500)}
               onKeyDown={(e) => onSearchKeyPress(e)}
             />
           </Search>
