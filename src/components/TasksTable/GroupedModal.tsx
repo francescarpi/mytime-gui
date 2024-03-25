@@ -9,8 +9,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { formatDuration, dateToStrTime } from "../../utils/dates";
-import CloudDoneIcon from "@mui/icons-material/CloudDone";
-import CloudOffIcon from "@mui/icons-material/CloudOff";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useConfirm } from "material-ui-confirm";
@@ -37,7 +35,7 @@ const GroupedModal = ({
   };
   return (
     <Modal open={Boolean(task)} onClose={() => onClose()}>
-      <StyledBox>
+      <StyledBox width={600}>
         <Typography variant="h5">{task?.desc}</Typography>
         <TableContainer>
           <Table>
@@ -47,7 +45,6 @@ const GroupedModal = ({
                 <TableCell align="right">Started</TableCell>
                 <TableCell align="right">Ended</TableCell>
                 <TableCell align="right">Duration</TableCell>
-                <TableCell align="center">Reported</TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -63,9 +60,6 @@ const GroupedModal = ({
                   </TableCell>
                   <TableCell align="right">
                     {formatDuration(child.duration as number)}
-                  </TableCell>
-                  <TableCell align="center">
-                    {child.reported ? <CloudDoneIcon /> : <CloudOffIcon />}
                   </TableCell>
                   <TableCell align="right">
                     {!task.reported && (

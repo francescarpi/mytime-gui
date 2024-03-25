@@ -8,15 +8,14 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Task } from "../../hooks/useTasks";
 import { formatDuration } from "../../utils/dates";
-import CloudDoneIcon from "@mui/icons-material/CloudDone";
-import CloudOffIcon from "@mui/icons-material/CloudOff";
 import Button from "@mui/material/Button";
 import { IconButton } from "@mui/material";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import GroupedModal from "./GroupedModal";
-import UpgradeIcon from "@mui/icons-material/Upgrade";
+import SyncIndicator from "./SyncIndicator";
+import CopyStringToAddForm from "./CopyStringToAddForm";
 
 const Grouped = ({
   tasks,
@@ -76,51 +75,33 @@ const Grouped = ({
               <TableRow key={`${task.id}-${task.reported}-${task.end}`}>
                 <TableCell sx={{ textWrap: "nowrap" }}>
                   {task.project}
-                  <IconButton
-                    size="small"
-                    onClick={() =>
-                      dispatchDefaultAddTaskValues({
-                        type: "setProj",
-                        value: task.project,
-                      })
-                    }
-                  >
-                    <UpgradeIcon />
-                  </IconButton>
+                  <CopyStringToAddForm
+                    dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+                    type="setProj"
+                    value={task.project}
+                  />
                 </TableCell>
                 <TableCell>
                   {task.desc}
-                  <IconButton
-                    size="small"
-                    onClick={() =>
-                      dispatchDefaultAddTaskValues({
-                        type: "setDesc",
-                        value: task.desc,
-                      })
-                    }
-                  >
-                    <UpgradeIcon />
-                  </IconButton>
+                  <CopyStringToAddForm
+                    dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+                    type="setDesc"
+                    value={task.desc}
+                  />
                 </TableCell>
                 <TableCell align="right" sx={{ textWrap: "nowrap" }}>
                   {task.external_id}
-                  <IconButton
-                    size="small"
-                    onClick={() =>
-                      dispatchDefaultAddTaskValues({
-                        type: "setExtId",
-                        value: task.external_id,
-                      })
-                    }
-                  >
-                    <UpgradeIcon />
-                  </IconButton>
+                  <CopyStringToAddForm
+                    dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+                    type="setExtId"
+                    value={task.external_id}
+                  />
                 </TableCell>
                 <TableCell align="right">
                   {formatDuration(task.duration as number)}
                 </TableCell>
                 <TableCell align="center">
-                  {task.reported ? <CloudDoneIcon /> : <CloudOffIcon />}
+                  <SyncIndicator task={task} />
                 </TableCell>
                 <TableCell align="center">
                   <Button
