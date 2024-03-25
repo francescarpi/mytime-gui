@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, RefObject } from "react";
 import { Search, SearchIconWrapper, StyledInputBase } from "./styles";
 import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
@@ -25,6 +25,7 @@ const Layout = ({
   onPressSync,
   searchQuery,
   setSearchQuery,
+  searchInputRef,
 }: {
   children: ReactNode;
   showSendTasksIcon: Boolean;
@@ -35,6 +36,7 @@ const Layout = ({
   onPressSync: CallableFunction;
   searchQuery: string;
   setSearchQuery: CallableFunction;
+  searchInputRef: RefObject<HTMLInputElement>;
 }) => {
   const onSearchKeyPress = (e: any) => {
     if (e.code === "Escape") {
@@ -61,7 +63,7 @@ const Layout = ({
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
+              inputProps={{ "aria-label": "search", ref: searchInputRef }}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => onSearchKeyPress(e)}

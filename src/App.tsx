@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Grid from "@mui/material/Grid";
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import { ConfirmProvider } from "material-ui-confirm";
@@ -26,6 +26,7 @@ const App = () => {
   const [openSettings, setOpenSettings] = useState<boolean>(false);
   const [openSync, setOpenSync] = useState<boolean>(false);
   const [themePreview, setThemePreview] = useState<string | null>(null);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
   const {
     isIntegrationValid,
     setting,
@@ -48,7 +49,7 @@ const App = () => {
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
   const { query, setQuery, totalWorked, result } = useSearch();
 
-  useKeyboard(setPreviousDate, setNextDate, setToday);
+  useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
 
   const darkTheme = createTheme({
     palette: {
@@ -95,6 +96,7 @@ const App = () => {
             onPressSync={() => setOpenSync(true)}
             searchQuery={query}
             setSearchQuery={setQuery}
+            searchInputRef={searchInputRef}
           >
             <AddTaskForm sx={{ mb: 2 }} onSubmit={addTask} />
             <Card variant="outlined">

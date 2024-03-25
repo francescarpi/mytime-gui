@@ -1,9 +1,10 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, RefObject } from "react";
 
 const useKeyboard = (
   setPreviousDate: CallableFunction,
   setNextDate: CallableFunction,
   setToday: CallableFunction,
+  searchInputRef: RefObject<HTMLInputElement>,
 ) => {
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -14,7 +15,7 @@ const useKeyboard = (
       if (e.ctrlKey) {
         switch (e.code) {
           case "KeyF":
-            console.log("Search");
+            searchInputRef.current?.focus();
             break;
         }
       } else {
@@ -31,7 +32,7 @@ const useKeyboard = (
         }
       }
     },
-    [setNextDate, setPreviousDate, setToday],
+    [setNextDate, setPreviousDate, setToday, searchInputRef],
   );
 
   useEffect(() => {
