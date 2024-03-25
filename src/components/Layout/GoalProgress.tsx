@@ -13,10 +13,8 @@ const GoalProgress = ({
   goal: number;
   value: number;
 }) => {
-  const percentage = (value * 100) / goal;
+  const percentage = goal === 0 ? 0 : (value * 100) / goal;
   const color = percentage < 100 ? "error" : "success";
-
-  // TODO: If goal is 0, show in red?
 
   return (
     <Box sx={{ ...sx, position: "relative" }}>
