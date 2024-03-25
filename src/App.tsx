@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useReducer } from "react";
 import Grid from "@mui/material/Grid";
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import { ConfirmProvider } from "material-ui-confirm";
@@ -23,11 +23,37 @@ import useTasks, { Task } from "./hooks/useTasks";
 import useSearch from "./hooks/useSearch";
 import appTheme from "./styles/theme";
 
+const defaultAddTaskValuesReducer = (
+  state: { proj: string; desc: string; extId: string },
+  action: any,
+) => {
+  switch (action.type) {
+    case "setProj":
+      return { ...state, proj: action.value };
+    case "setDesc":
+      return { ...state, desc: action.value };
+    case "setExtId":
+      return { ...state, extId: action.value };
+    case "reset":
+      return { proj: "", desc: "", extId: "" };
+  }
+  return state;
+};
+
 const App = () => {
   const [openSettings, setOpenSettings] = useState<boolean>(false);
+
   const [openSync, setOpenSync] = useState<boolean>(false);
+
   const [themePreview, setThemePreview] = useState<string | null>(null);
+
+  const [defaultAddTaskValues, dispatchDefaultAddTaskValues] = useReducer(
+    defaultAddTaskValuesReducer,
+    { proj: "", desc: "", extId: "" },
+  );
+
   const searchInputRef = useRef<HTMLInputElement | null>(null);
+
   const {
     isIntegrationValid,
     setting,
@@ -35,7 +61,9 @@ const App = () => {
     toggleDarkMode,
     saveSettings,
   } = useSettings();
+
   const { date, setDate, setPreviousDate, setNextDate, setToday } = useDate();
+
   const {
     tasks,
     groupedTasks,
@@ -48,9 +76,12 @@ const App = () => {
     refresh,
   } = useTasks(date);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
+
   const { query, setQuery, totalWorked, result } = useSearch();
-  useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
+
   const darkTheme = appTheme(setting, themePreview);
+
+  useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
 
   if (!setting) {
     return <Box sx={{ p: 4 }}>Loading...</Box>;
@@ -90,7 +121,12 @@ const App = () => {
             setSearchQuery={setQuery}
             searchInputRef={searchInputRef}
           >
-            <AddTaskForm sx={{ mb: 2 }} onSubmit={addTask} />
+            <AddTaskForm
+              sx={{ mb: 2 }}
+              onSubmit={addTask}
+              defaultAddTaskValues={defaultAddTaskValues}
+              dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+            />
             <Card variant="outlined">
               <CardContent>
                 {result.length ? (
@@ -123,6 +159,7 @@ const App = () => {
                   copyToClipboard={copyToClipboard}
                   deleteTask={deleteTask}
                   setTaskToEdit={setTaskToEdit}
+                  dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
                 />
               </CardContent>
             </Card>

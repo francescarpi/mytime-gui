@@ -13,6 +13,7 @@ const TasksTable = ({
   copyToClipboard,
   deleteTask,
   setTaskToEdit,
+  dispatchDefaultAddTaskValues,
 }: {
   viewType: ViewType | undefined;
   tasks: Task[];
@@ -22,6 +23,7 @@ const TasksTable = ({
   copyToClipboard: CallableFunction;
   deleteTask: CallableFunction;
   setTaskToEdit: CallableFunction;
+  dispatchDefaultAddTaskValues: CallableFunction;
 }) => {
   return (
     <Box
@@ -40,6 +42,7 @@ const TasksTable = ({
           copyToClipboard={copyToClipboard}
           deleteTask={deleteTask}
           setTaskToEdit={setTaskToEdit}
+          dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
         />
       ) : (
         <Chronological
@@ -49,6 +52,7 @@ const TasksTable = ({
           copyToClipboard={copyToClipboard}
           deleteTask={deleteTask}
           setTaskToEdit={setTaskToEdit}
+          dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
         />
       )}
     </Box>

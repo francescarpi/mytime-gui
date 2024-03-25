@@ -16,6 +16,7 @@ import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import GroupedModal from "./GroupedModal";
+import UpgradeIcon from "@mui/icons-material/Upgrade";
 
 const Grouped = ({
   tasks,
@@ -24,6 +25,7 @@ const Grouped = ({
   copyToClipboard,
   deleteTask,
   setTaskToEdit,
+  dispatchDefaultAddTaskValues,
 }: {
   tasks: Task[];
   addTask: CallableFunction;
@@ -31,6 +33,7 @@ const Grouped = ({
   copyToClipboard: CallableFunction;
   deleteTask: CallableFunction;
   setTaskToEdit: CallableFunction;
+  dispatchDefaultAddTaskValues: CallableFunction;
 }) => {
   const [taskDetails, setTaskDetails] = useState<Task | null>(null);
 
@@ -59,7 +62,7 @@ const Grouped = ({
             <TableRow>
               <TableCell>Project</TableCell>
               <TableCell>Description</TableCell>
-              <TableCell align="right">External Id</TableCell>
+              <TableCell align="center">External Id</TableCell>
               <TableCell align="right">Duration</TableCell>
               <TableCell align="center">Reported</TableCell>
               <TableCell align="center">Tasks</TableCell>
@@ -71,9 +74,48 @@ const Grouped = ({
           <TableBody>
             {tasks.map((task) => (
               <TableRow key={`${task.id}-${task.reported}-${task.end}`}>
-                <TableCell>{task.project}</TableCell>
-                <TableCell>{task.desc}</TableCell>
-                <TableCell align="right">{task.external_id}</TableCell>
+                <TableCell sx={{ textWrap: "nowrap" }}>
+                  {task.project}
+                  <IconButton
+                    size="small"
+                    onClick={() =>
+                      dispatchDefaultAddTaskValues({
+                        type: "setProj",
+                        value: task.project,
+                      })
+                    }
+                  >
+                    <UpgradeIcon />
+                  </IconButton>
+                </TableCell>
+                <TableCell>
+                  {task.desc}
+                  <IconButton
+                    size="small"
+                    onClick={() =>
+                      dispatchDefaultAddTaskValues({
+                        type: "setDesc",
+                        value: task.desc,
+                      })
+                    }
+                  >
+                    <UpgradeIcon />
+                  </IconButton>
+                </TableCell>
+                <TableCell align="right" sx={{ textWrap: "nowrap" }}>
+                  {task.external_id}
+                  <IconButton
+                    size="small"
+                    onClick={() =>
+                      dispatchDefaultAddTaskValues({
+                        type: "setExtId",
+                        value: task.external_id,
+                      })
+                    }
+                  >
+                    <UpgradeIcon />
+                  </IconButton>
+                </TableCell>
                 <TableCell align="right">
                   {formatDuration(task.duration as number)}
                 </TableCell>

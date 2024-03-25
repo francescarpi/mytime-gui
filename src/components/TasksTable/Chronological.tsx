@@ -16,6 +16,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useConfirm } from "material-ui-confirm";
 import EditIcon from "@mui/icons-material/Edit";
+import UpgradeIcon from "@mui/icons-material/Upgrade";
 
 const Chronological = ({
   tasks,
@@ -24,6 +25,7 @@ const Chronological = ({
   copyToClipboard,
   deleteTask,
   setTaskToEdit,
+  dispatchDefaultAddTaskValues,
 }: {
   tasks: Task[];
   addTask: CallableFunction;
@@ -31,6 +33,7 @@ const Chronological = ({
   copyToClipboard: CallableFunction;
   deleteTask: CallableFunction;
   setTaskToEdit: CallableFunction;
+  dispatchDefaultAddTaskValues: CallableFunction;
 }) => {
   const confirm = useConfirm();
   const deleteHandler = (id: number) => {
@@ -47,7 +50,7 @@ const Chronological = ({
             <TableCell align="center">#</TableCell>
             <TableCell>Project</TableCell>
             <TableCell>Description</TableCell>
-            <TableCell align="right">External Id</TableCell>
+            <TableCell align="center">External Id</TableCell>
             <TableCell align="right">Started</TableCell>
             <TableCell align="right">Ended</TableCell>
             <TableCell align="right">Duration</TableCell>
@@ -61,9 +64,48 @@ const Chronological = ({
           {tasks.map((task) => (
             <TableRow key={`${task.id}-${task.reported}-${task.end}`}>
               <TableCell align="center">{task.id.toString()}</TableCell>
-              <TableCell>{task.project}</TableCell>
-              <TableCell>{task.desc}</TableCell>
-              <TableCell align="right">{task.external_id}</TableCell>
+              <TableCell sx={{ textWrap: "nowrap" }}>
+                {task.project}
+                <IconButton
+                  size="small"
+                  onClick={() =>
+                    dispatchDefaultAddTaskValues({
+                      type: "setProj",
+                      value: task.project,
+                    })
+                  }
+                >
+                  <UpgradeIcon />
+                </IconButton>
+              </TableCell>
+              <TableCell>
+                {task.desc}
+                <IconButton
+                  size="small"
+                  onClick={() =>
+                    dispatchDefaultAddTaskValues({
+                      type: "setDesc",
+                      value: task.desc,
+                    })
+                  }
+                >
+                  <UpgradeIcon />
+                </IconButton>
+              </TableCell>
+              <TableCell align="right" sx={{ textWrap: "nowrap" }}>
+                {task.external_id}
+                <IconButton
+                  size="small"
+                  onClick={() =>
+                    dispatchDefaultAddTaskValues({
+                      type: "setExtId",
+                      value: task.external_id,
+                    })
+                  }
+                >
+                  <UpgradeIcon />
+                </IconButton>
+              </TableCell>
               <TableCell align="right">{dateToStrTime(task.start)}</TableCell>
               <TableCell align="right">
                 {task.end ? dateToStrTime(task.end) : ""}

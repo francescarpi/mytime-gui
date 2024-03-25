@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { SxProps, Theme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { Button, TextField } from "@mui/material";
@@ -7,9 +7,17 @@ import Grid from "@mui/material/Grid";
 const AddTaskForm = ({
   sx,
   onSubmit,
+  defaultAddTaskValues,
+  dispatchDefaultAddTaskValues,
 }: {
   sx?: SxProps<Theme>;
   onSubmit: CallableFunction;
+  defaultAddTaskValues: {
+    proj: string;
+    desc: string;
+    extId: string;
+  };
+  dispatchDefaultAddTaskValues: CallableFunction;
 }) => {
   const [project, setProject] = useState("");
   const [description, setDescription] = useState("");
@@ -17,9 +25,7 @@ const AddTaskForm = ({
   const submitRef = useRef<HTMLButtonElement>(null);
 
   const reset = () => {
-    setProject("");
-    setDescription("");
-    setExternalId("");
+    dispatchDefaultAddTaskValues({ type: "reset" });
   };
 
   const submit = (e: any) => {
@@ -28,6 +34,12 @@ const AddTaskForm = ({
     reset();
     submitRef.current?.focus();
   };
+
+  useEffect(() => {
+    setProject(defaultAddTaskValues.proj);
+    setDescription(defaultAddTaskValues.desc);
+    setExternalId(defaultAddTaskValues.extId);
+  }, [defaultAddTaskValues]);
 
   return (
     <Box sx={{ ...sx, flexgrow: 1 }}>
