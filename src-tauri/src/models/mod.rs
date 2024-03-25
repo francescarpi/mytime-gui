@@ -13,7 +13,7 @@ pub mod work_hours;
 
 // Setting is a struct that represents the settings for the app.
 #[derive(Deserialize, Debug, Queryable, AsChangeset, Serialize)]
-#[diesel(table_name=settings)]
+#[diesel(table_name=settings, treat_none_as_null=true)]
 pub struct Setting {
     pub id: i32,
     pub integration: Option<integration::IntegrationType>,
