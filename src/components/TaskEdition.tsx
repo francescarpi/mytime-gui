@@ -10,6 +10,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs, { Dayjs } from "dayjs";
+import { useSnackbar } from "notistack";
 
 const TaskEdition = ({
   task,
@@ -25,6 +26,7 @@ const TaskEdition = ({
   const [externalId, setExternalId] = useState<string>("");
   const [start, setStart] = useState<Dayjs>(dayjs());
   const [end, setEnd] = useState<Dayjs | null>(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     setProject(task?.project || "");
@@ -36,18 +38,30 @@ const TaskEdition = ({
 
   const submit = (e: any) => {
     e.preventDefault();
-    if (e.target.checkValidity() && startIsValid && endIsValid) {
-      const payload: any = {
-        ...(task as Task),
-        project,
-        desc: description,
-        externalId,
-        start: start.format("HH:mm"),
-        end: end ? end.format("HH:mm") : null,
-      };
-      onEdit(payload);
-      onClose();
+    console.log("Form valid: ", e.target.checkValidity());
+    console.log("Start is valid: ", startIsValid);
+    console.log("End is valid: ", endIsValid);
+
+    if (
+      !e.target.checkValidity() ||
+      !startIsValid ||
+      (task?.end && !endIsValid)
+    ) {
+      return;
     }
+
+    const payload: any = {
+      ...(task as Task),
+      project,
+      desc: description,
+      externalId,
+      start: start.format("HH:mm"),
+      end: end ? end.format("HH:mm") : null,
+    };
+
+    onEdit(payload);
+    enqueueSnackbar("Task edited", { variant: "success" });
+    onClose();
   };
 
   const startIsValid = useMemo(
