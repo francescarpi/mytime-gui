@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import Grid from "@mui/material/Grid";
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import { ConfirmProvider } from "material-ui-confirm";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import { SnackbarProvider } from "notistack";
 import { formatDuration } from "./utils/dates";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -21,6 +21,7 @@ import useDate from "./hooks/useDate";
 import useKeyboard from "./hooks/useKeyboard";
 import useTasks, { Task } from "./hooks/useTasks";
 import useSearch from "./hooks/useSearch";
+import appTheme from "./styles/theme";
 
 const App = () => {
   const [openSettings, setOpenSettings] = useState<boolean>(false);
@@ -48,17 +49,8 @@ const App = () => {
   } = useTasks(date);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
   const { query, setQuery, totalWorked, result } = useSearch();
-
   useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
-
-  const darkTheme = createTheme({
-    palette: {
-      mode: setting?.dark_mode ? "dark" : "light",
-      primary: {
-        main: themePreview ? themePreview : setting?.theme || "#1976d2",
-      },
-    },
-  });
+  const darkTheme = appTheme(setting, themePreview);
 
   if (!setting) {
     return <Box sx={{ p: 4 }}>Loading...</Box>;
