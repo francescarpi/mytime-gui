@@ -95,6 +95,7 @@ const App = () => {
               opened={openSync}
               onClose={() => setOpenSync(false)}
               setting={setting}
+              refreshTasks={refresh}
             />
             <Settings
               opened={openSettings}

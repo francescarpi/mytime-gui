@@ -10,27 +10,36 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import useSync from "../hooks/useSync";
+import useSync, { SyncTask } from "../hooks/useSync";
 import { formatDuration } from "../utils/dates";
 import CloudOffIcon from "@mui/icons-material/CloudOff";
 import CloudDoneIcon from "@mui/icons-material/CloudDone";
 import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
 import Button from "@mui/material/Button";
-import LoadingButton from "@mui/lab/LoadingButton";
 import Tooltip from "@mui/material/Tooltip";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const successReducer = (
-  state: { [key: string]: { success: boolean; error?: string } },
+  state: {
+    [key: string]: { success?: boolean; error?: string; sending: boolean };
+  },
   action: any,
 ) => {
   switch (action.type) {
     case "reset":
       return {};
+    case "sending":
+      state[action.externalId] = { sending: true };
+      return state;
     case "success":
-      state[action.externalId] = { success: true };
+      state[action.externalId] = { success: true, sending: false };
       return state;
     case "error":
-      state[action.externalId] = { success: false, error: action.error };
+      state[action.externalId] = {
+        success: false,
+        error: action.error,
+        sending: false,
+      };
       return state;
   }
   return state;
@@ -40,14 +49,17 @@ const Sync = ({
   opened,
   onClose,
   setting,
+  refreshTasks,
 }: {
   opened: boolean;
   onClose: CallableFunction;
   setting: Setting | null;
+  refreshTasks: CallableFunction;
 }) => {
   const [isSending, setIsSending] = useState<boolean>(false);
   const { tasks, loadTasks, send } = useSync();
   const [success, dispatchSuccess] = useReducer(successReducer, {});
+  const [tasksSent, setTasksSent] = useState<boolean>(false);
 
   useEffect(() => {
     loadTasks();
@@ -63,8 +75,10 @@ const Sync = ({
   const sendHandler = () => {
     setIsSending(true);
     dispatchSuccess({ type: "reset" });
-    const promises = tasks.map((task) =>
-      send(task)
+
+    const promises = tasks.map(async (task) => {
+      dispatchSuccess({ type: "sending", externalId: task.external_id });
+      return send(task)
         .then(() =>
           dispatchSuccess({ type: "success", externalId: task.external_id }),
         )
@@ -74,13 +88,34 @@ const Sync = ({
             externalId: task.external_id,
             error,
           }),
-        ),
-    );
+        );
+    });
 
     Promise.all(promises).then(() => {
       setIsSending(false);
-      loadTasks();
+      setTasksSent(true);
+      refreshTasks();
     });
+  };
+
+  const renderIcon = (task: SyncTask) => {
+    if (success[task.external_id] === undefined) {
+      return <CloudOffIcon />;
+    }
+
+    if (success[task.external_id].sending) {
+      return <CircularProgress size={20} />;
+    }
+
+    if (success[task.external_id].success) {
+      return <CloudDoneIcon color="success" />;
+    }
+
+    return (
+      <Tooltip title={success[task.external_id].error}>
+        <ThunderstormIcon color="error" />
+      </Tooltip>
+    );
   };
 
   return (
@@ -112,17 +147,7 @@ const Sync = ({
                     </TableCell>
                     <TableCell align="right">{task.external_id}</TableCell>
                     <TableCell align="right">{task.ids.join(", ")}</TableCell>
-                    <TableCell align="center">
-                      {success[task.external_id] === undefined ? (
-                        <CloudOffIcon />
-                      ) : success[task.external_id].success ? (
-                        <CloudDoneIcon color="success" />
-                      ) : (
-                        <Tooltip title={success[task.external_id].error}>
-                          <ThunderstormIcon color="error" />
-                        </Tooltip>
-                      )}
-                    </TableCell>
+                    <TableCell align="center">{renderIcon(task)}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -137,15 +162,14 @@ const Sync = ({
             >
               Close
             </Button>
-            <LoadingButton
+            <Button
               variant="contained"
               sx={{ ml: 2 }}
               onClick={sendHandler}
-              disabled={isSending}
-              loading={isSending}
+              disabled={isSending || tasksSent}
             >
               Send
-            </LoadingButton>
+            </Button>
           </Box>
         </Box>
       </StyledBox>

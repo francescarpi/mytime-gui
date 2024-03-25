@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { invoke } from "@tauri-apps/api";
 import { formatDuration } from "../utils/dates";
 
-interface SyncTask {
+export interface SyncTask {
   date: string;
   desc: string;
   duration: number;
