@@ -140,13 +140,23 @@ impl TasksRepository {
     pub fn search_tasks_with_duration(
         c: &mut SqliteConnection,
         query: &str,
+        limit: Option<i32>,
     ) -> QueryResult<Vec<TaskWithDuration>> {
-        sql_query(format!(
+        let sql = if limit.is_some() {
+            format!(
+            "SELECT *, {} AS duration FROM tasks WHERE desc LIKE $1 OR project LIKE $1 ORDER BY {} LIMIT {}",
+            DURATION_SQL, DEFAULT_TASKS_ORDER, limit.unwrap()
+            )
+        } else {
+            format!(
             "SELECT *, {} AS duration FROM tasks WHERE desc LIKE $1 OR project LIKE $1 ORDER BY {}",
             DURATION_SQL, DEFAULT_TASKS_ORDER
-        ))
-        .bind::<Text, _>(format!("%{}%", query))
-        .load(c)
+            )
+        };
+
+        sql_query(sql)
+            .bind::<Text, _>(format!("%{}%", query))
+            .load(c)
     }
 
     pub fn worked_during_the_day(

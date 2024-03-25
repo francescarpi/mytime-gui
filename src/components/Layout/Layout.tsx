@@ -1,4 +1,4 @@
-import { ReactNode, RefObject } from "react";
+import { ReactNode, RefObject, useState, useEffect } from "react";
 import { Search, SearchIconWrapper, StyledInputBase } from "./styles";
 import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
@@ -14,6 +14,7 @@ import Badge from "@mui/material/Badge";
 import GoalProgress from "./GoalProgress";
 import { DarkModeSwitch } from "../../styles/switch";
 import { Setting } from "../../hooks/useSettings";
+import { debounce } from "@mui/material/utils";
 
 const Layout = ({
   children,
@@ -23,9 +24,9 @@ const Layout = ({
   onToggleDarkMode,
   onPressSettings,
   onPressSync,
-  searchQuery,
   setSearchQuery,
   searchInputRef,
+  setSearchResult,
 }: {
   children: ReactNode;
   showSendTasksIcon: Boolean;
@@ -34,16 +35,24 @@ const Layout = ({
   onToggleDarkMode: CallableFunction;
   onPressSettings: CallableFunction;
   onPressSync: CallableFunction;
-  searchQuery: string;
   setSearchQuery: CallableFunction;
   searchInputRef: RefObject<HTMLInputElement>;
+  setSearchResult: CallableFunction;
 }) => {
+  const [query, setQuery] = useState("");
   const onSearchKeyPress = (e: any) => {
     if (e.code === "Escape") {
-      setSearchQuery("");
+      setQuery("");
+      setSearchResult([]);
       e.target.blur();
     }
   };
+
+  useEffect(() => {
+    debounce((q) => {
+      setSearchQuery(q);
+    }, 500)(query);
+  }, [query, setSearchQuery]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -70,8 +79,8 @@ const Layout = ({
                 autoCapitalize: "off",
                 spellCheck: "false",
               }}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => onSearchKeyPress(e)}
             />
           </Search>

@@ -77,7 +77,7 @@ const App = () => {
   } = useTasks(date);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
 
-  const { query, setQuery, totalWorked, result } = useSearch();
+  const { setQuery, totalWorked, result, setResult } = useSearch({});
 
   const darkTheme = appTheme(setting, themePreview);
 
@@ -117,8 +117,8 @@ const App = () => {
             onToggleDarkMode={toggleDarkMode}
             onPressSettings={() => setOpenSettings(true)}
             onPressSync={() => setOpenSync(true)}
-            searchQuery={query}
             setSearchQuery={setQuery}
+            setSearchResult={setResult}
             searchInputRef={searchInputRef}
           >
             <AddTaskForm
