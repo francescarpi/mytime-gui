@@ -53,6 +53,12 @@ const AddTaskForm = ({
               required
               value={project}
               onChange={(e) => setProject(e.target.value)}
+              inputProps={{
+                autoComplete: "off",
+                autoCorrect: "off",
+                autoCapitalize: "off",
+                spellCheck: "false",
+              }}
             />
           </Grid>
           <Grid item md={6}>
@@ -63,6 +69,12 @@ const AddTaskForm = ({
               required
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              inputProps={{
+                autoComplete: "off",
+                autoCorrect: "off",
+                autoCapitalize: "off",
+                spellCheck: "false",
+              }}
             />
           </Grid>
           <Grid item md={2}>
@@ -72,6 +84,12 @@ const AddTaskForm = ({
               fullWidth
               value={externalId}
               onChange={(e) => setExternalId(e.target.value)}
+              inputProps={{
+                autoComplete: "off",
+                autoCorrect: "off",
+                autoCapitalize: "off",
+                spellCheck: "false",
+              }}
             />
           </Grid>
           <Grid item md={1}>

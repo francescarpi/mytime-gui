@@ -63,7 +63,13 @@ const Layout = ({
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
-              inputProps={{ "aria-label": "search", ref: searchInputRef }}
+              inputProps={{
+                ref: searchInputRef,
+                autoComplete: "off",
+                autoCorrect: "off",
+                autoCapitalize: "off",
+                spellCheck: "false",
+              }}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => onSearchKeyPress(e)}

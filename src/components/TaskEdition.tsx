@@ -93,6 +93,12 @@ const TaskEdition = ({
                   onChange={(e) => setProject(e.target.value)}
                   helperText={!project && "Project is required"}
                   error={!project}
+                  inputProps={{
+                    autoComplete: "off",
+                    autoCorrect: "off",
+                    autoCapitalize: "off",
+                    spellCheck: "false",
+                  }}
                 />
               </Grid>
               <Grid item md={8}>
@@ -105,6 +111,12 @@ const TaskEdition = ({
                   onChange={(e) => setDescription(e.target.value)}
                   helperText={!description && "Description is required"}
                   error={!description}
+                  inputProps={{
+                    autoComplete: "off",
+                    autoCorrect: "off",
+                    autoCapitalize: "off",
+                    spellCheck: "false",
+                  }}
                 />
               </Grid>
               <Grid item md={2}>
@@ -114,6 +126,12 @@ const TaskEdition = ({
                   fullWidth
                   value={externalId}
                   onChange={(e) => setExternalId(e.target.value)}
+                  inputProps={{
+                    autoComplete: "off",
+                    autoCorrect: "off",
+                    autoCapitalize: "off",
+                    spellCheck: "false",
+                  }}
                 />
               </Grid>
               <Grid item md={2}>
