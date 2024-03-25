@@ -21,12 +21,14 @@ const Settings = ({
   setting,
   saveSetting,
   setThemePreview,
+  refreshTasks,
 }: {
   opened: boolean;
   onClose: CallableFunction;
   setting: Setting | null;
   saveSetting: CallableFunction;
   setThemePreview: CallableFunction;
+  refreshTasks: CallableFunction;
 }) => {
   const [activeTab, setActiveTab] = useState<string>("1");
   const [tmpSetting, setTmpSetting] = useState<Setting | null>(null);
@@ -40,9 +42,9 @@ const Settings = ({
 
   const saveHandler = () => {
     saveSetting(tmpSetting);
-    onClose();
+    refreshTasks();
     enqueueSnackbar("Settings saved", { variant: "success" });
-    // TODO: Refresh tasks after save
+    onClose();
   };
 
   const cancelHandler = () => {

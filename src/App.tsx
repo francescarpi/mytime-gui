@@ -43,6 +43,7 @@ const App = () => {
     deleteTask,
     editTask,
     summary,
+    refresh,
   } = useTasks(date);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
   const { query, setQuery, totalWorked, result } = useSearch();
@@ -78,6 +79,7 @@ const App = () => {
             setting={setting}
             saveSetting={saveSettings}
             setThemePreview={setThemePreview}
+            refreshTasks={refresh}
           />
           <TaskEdition
             task={taskToEdit}
