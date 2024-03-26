@@ -39,6 +39,8 @@ const defaultAddTaskValuesReducer = (
   return state;
 };
 
+const iniAddTaskValues = { proj: "", desc: "", extId: "" };
+
 const App = () => {
   const [openSync, setOpenSync] = useState<boolean>(false);
 
@@ -50,7 +52,7 @@ const App = () => {
 
   const [defaultAddTaskValues, dispatchDefaultAddTaskValues] = useReducer(
     defaultAddTaskValuesReducer,
-    { proj: "", desc: "", extId: "" },
+    iniAddTaskValues,
   );
 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
