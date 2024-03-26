@@ -1,28 +1,30 @@
-const locale = "en-GB"
+const locale = "en-GB";
 
 /**
  * Given a duration represented in seconds and returns a string with hours and minutes.
  * Example: 7552 => 2h6m
  */
 export const formatDuration = (duration: number): string => {
-  const hours = Math.floor(duration / 3600)
-  const minutes = Math.floor((duration % 3600) / 60)
-  const parts = [`${hours}h`]
+  const hours = Math.floor(duration / 3600);
+  const minutes = Math.floor((duration % 3600) / 60);
+  const parts = [`${hours}h`];
   if (minutes) {
-    parts.push(`${minutes}m`)
+    parts.push(`${minutes}m`);
   }
-  return parts.join("")
-}
+  return parts.join("");
+};
 
 /**
  * Given a date, returns a string with format: HH:mm
  */
-export const dateToStrTime = (date: Date): string =>
-  new Intl.DateTimeFormat("es-ES", {
+export const dateToStrTime = (date: Date | string): string => {
+  let newDate = typeof date === "string" ? new Date(date) : (date as Date);
+  return new Intl.DateTimeFormat("es-ES", {
     timeZone: "Europe/Madrid",
     hour: "2-digit",
     minute: "2-digit",
-  }).format(date)
+  }).format(newDate);
+};
 
 /**
  * Given a date, returns a string with format YYYY-MM-DD
@@ -32,7 +34,7 @@ export const dateToStrDate = (date: Date): string =>
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-  }).format(date)
+  }).format(date);
 
 /**
  * Given a date, returns a string with format YYYY-MM-DD HH:mm
@@ -42,15 +44,15 @@ export const dateToStrDateTime = (date: Date): string =>
     dateStyle: "long",
     timeStyle: "short",
     timeZone: "Europe/Madrid",
-  }).format(date)
+  }).format(date);
 
 export const dayOfTheWeek = (date: Date): string =>
   new Intl.DateTimeFormat(locale, {
     weekday: "long",
     timeZone: "Europe/Madrid",
-  }).format(date)
+  }).format(date);
 
-export const hourToSeconds = (hour: String): Number => {
-  const [hours, minutes] = hour.split(":")
-  return parseInt(hours, 10) * 3600 + parseInt(minutes, 10) * 60
-}
+export const hourToSeconds = (hour: string): number => {
+  const [hours, minutes] = hour.split(":");
+  return parseInt(hours, 10) * 3600 + parseInt(minutes, 10) * 60;
+};

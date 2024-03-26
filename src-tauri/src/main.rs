@@ -166,10 +166,10 @@ fn delete_task(id: i32, conn: State<'_, DbConn>) {
 }
 
 #[command]
-fn search(query: &str, conn: State<'_, DbConn>) -> Value {
+async fn search(query: &str, limit: Option<i32>, conn: State<'_, DbConn>) -> Result<Value, Value> {
     let mut db = conn.0.lock().unwrap();
-    let tasks = TasksRepository::search_tasks_with_duration(&mut db, query).unwrap();
-    json!(tasks)
+    let tasks = TasksRepository::search_tasks_with_duration(&mut db, query, limit).unwrap();
+    Ok(json!(tasks))
 }
 
 fn main() {

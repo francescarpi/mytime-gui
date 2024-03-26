@@ -123,16 +123,20 @@ mod tests {
         .unwrap();
 
         // Test
-        let tasks = TasksRepository::search_tasks_with_duration(&mut c, "Project 1").unwrap();
+        let tasks = TasksRepository::search_tasks_with_duration(&mut c, "Project 1", None).unwrap();
         assert_eq!(tasks.len(), 2);
         assert_eq!(tasks[0].desc, "Task 2");
         assert_eq!(tasks[1].desc, "Task 1");
 
-        let tasks = TasksRepository::search_tasks_with_duration(&mut c, "Project 2").unwrap();
+        let tasks =
+            TasksRepository::search_tasks_with_duration(&mut c, "Project 1", Some(1)).unwrap();
+        assert_eq!(tasks.len(), 1);
+
+        let tasks = TasksRepository::search_tasks_with_duration(&mut c, "Project 2", None).unwrap();
         assert_eq!(tasks.len(), 1);
         assert_eq!(tasks[0].desc, "Task 3");
 
-        let tasks = TasksRepository::search_tasks_with_duration(&mut c, "ask 1").unwrap();
+        let tasks = TasksRepository::search_tasks_with_duration(&mut c, "ask 1", None).unwrap();
         assert_eq!(tasks.len(), 1);
         assert_eq!(tasks[0].desc, "Task 1");
     }
