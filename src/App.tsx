@@ -74,7 +74,7 @@ const App = () => {
     editTask,
     summary,
     refresh,
-  } = useTasks(date);
+  } = useTasks(date, setToday);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
 
   const { setQuery, totalWorked, result, setResult } = useSearch({});
@@ -82,15 +82,6 @@ const App = () => {
   const darkTheme = appTheme(setting, themePreview);
 
   useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
-
-  const addTaskHandler = (
-    project: string,
-    desc: string,
-    externalId: string,
-  ) => {
-    addTask(project, desc, externalId);
-    setToday();
-  };
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -132,7 +123,7 @@ const App = () => {
             >
               <AddTaskForm
                 sx={{ mb: 2 }}
-                onSubmit={addTaskHandler}
+                onSubmit={addTask}
                 defaultAddTaskValues={defaultAddTaskValues}
                 dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
               />
@@ -164,7 +155,7 @@ const App = () => {
                     }
                     tasks={result.length ? result : tasks}
                     groupedTasks={groupedTasks}
-                    addTask={addTaskHandler}
+                    addTask={addTask}
                     stopTask={stopTask}
                     copyToClipboard={copyToClipboard}
                     deleteTask={deleteTask}

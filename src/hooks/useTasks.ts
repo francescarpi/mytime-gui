@@ -27,7 +27,7 @@ export interface Summary {
 
 const REFRESH_INTERVAL = 30000;
 
-const useTasks = (date: Dayjs) => {
+const useTasks = (date: Dayjs, setToday: CallableFunction) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [groupedTasks, setGroupedTasks] = useState<Task[]>([]);
   const [intervalId, setIntervalId] = useState<any>(null);
@@ -85,7 +85,7 @@ const useTasks = (date: Dayjs) => {
   }, [tasks]);
 
   const addTask = (project: string, desc: string, externalId: string) => {
-    invoke("create_task", { desc, project, externalId }).then(() => refresh());
+    invoke("create_task", { desc, project, externalId }).then(() => setToday());
   };
 
   const stopTask = (id: number) => {
