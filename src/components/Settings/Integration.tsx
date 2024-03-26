@@ -49,6 +49,13 @@ const Integration = ({
             fullWidth
             value={setting?.integration_url}
             onChange={onChangeIntegrationUrl}
+            inputProps={{
+              autoComplete: "off",
+              autoCorrect: "off",
+              autoCapitalize: "off",
+              spellCheck: "false",
+              maxLength: 200,
+            }}
           />
         </Grid>
         <Grid item md={12}>
@@ -57,6 +64,13 @@ const Integration = ({
             fullWidth
             value={setting?.integration_token}
             onChange={onChangeIntegrationToken}
+            inputProps={{
+              autoComplete: "off",
+              autoCorrect: "off",
+              autoCapitalize: "off",
+              spellCheck: "false",
+              maxLength: 100,
+            }}
           />
         </Grid>
       </Grid>

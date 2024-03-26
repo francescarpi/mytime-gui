@@ -98,6 +98,7 @@ const TaskEdition = ({
                     autoCorrect: "off",
                     autoCapitalize: "off",
                     spellCheck: "false",
+                    maxLength: 100,
                   }}
                 />
               </Grid>
@@ -116,6 +117,7 @@ const TaskEdition = ({
                     autoCorrect: "off",
                     autoCapitalize: "off",
                     spellCheck: "false",
+                    maxLength: 200,
                   }}
                 />
               </Grid>
@@ -131,6 +133,7 @@ const TaskEdition = ({
                     autoCorrect: "off",
                     autoCapitalize: "off",
                     spellCheck: "false",
+                    maxLength: 50,
                   }}
                 />
               </Grid>

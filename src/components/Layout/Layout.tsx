@@ -72,6 +72,7 @@ const Layout = ({
                 autoCorrect: "off",
                 autoCapitalize: "off",
                 spellCheck: "false",
+                maxLength: 100,
                 onInput: (e: any) => setQuery(e.target.value),
               }}
               value={query}
