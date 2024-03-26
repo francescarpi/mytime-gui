@@ -45,7 +45,7 @@ const SettingsProvider = ({
       setTheme(setting.theme);
       setDarkMode(setting.dark_mode);
     }
-  }, [setting]);
+  }, [setting, setTheme, setDarkMode]);
 
   return (
     <SettingsContext.Provider

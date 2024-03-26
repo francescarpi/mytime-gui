@@ -15,7 +15,7 @@ const ViewTypeSelector = () => {
         settingsContext.changeViewType(value);
       }
     },
-    [settingsContext.changeViewType],
+    [settingsContext],
   );
 
   return (

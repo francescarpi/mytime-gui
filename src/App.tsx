@@ -78,14 +78,14 @@ const App = () => {
   useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
 
   return (
-    <SettingsProvider
-      setThemePreview={setThemePreview}
-      refreshTasks={refresh}
-      setTheme={setTheme}
-      setDarkMode={setDarkMode}
-    >
-      <ThemeProvider theme={defaultTheme}>
-        <CssBaseline />
+    <ThemeProvider theme={defaultTheme}>
+      <CssBaseline />
+      <SettingsProvider
+        setThemePreview={setThemePreview}
+        refreshTasks={refresh}
+        setTheme={setTheme}
+        setDarkMode={setDarkMode}
+      >
         <SnackbarProvider maxSnack={2}>
           <ConfirmProvider>
             <Sync
@@ -145,8 +145,8 @@ const App = () => {
             </Layout>
           </ConfirmProvider>
         </SnackbarProvider>
-      </ThemeProvider>
-    </SettingsProvider>
+      </SettingsProvider>
+    </ThemeProvider>
   );
 };
 

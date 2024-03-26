@@ -14,6 +14,7 @@ import Integration from "./Integration";
 import WorkingTime from "./WorkingTime";
 import Generic from "./Generic";
 import { useSnackbar } from "notistack";
+import Shortcuts from "./Shortcuts";
 
 const Settings = ({
   opened,
@@ -69,6 +70,7 @@ const Settings = ({
                 <Tab label="Generic" value="1" />
                 <Tab label="Integrations" value="2" />
                 <Tab label="Working Time" value="3" />
+                <Tab label="Shortcuts" value="4" />
               </TabList>
             </Box>
             <TabPanel value="1">
@@ -83,6 +85,9 @@ const Settings = ({
             </TabPanel>
             <TabPanel value="3">
               <WorkingTime setting={tmpSetting} setSetting={setTmpSetting} />
+            </TabPanel>
+            <TabPanel value="4">
+              <Shortcuts />
             </TabPanel>
           </TabContext>
         </Box>
