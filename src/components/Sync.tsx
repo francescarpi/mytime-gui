@@ -131,8 +131,12 @@ const Sync = ({
                   <TableCell align="left">Description</TableCell>
                   <TableCell align="left">Date</TableCell>
                   <TableCell align="right">Duration</TableCell>
-                  <TableCell align="right">External Id</TableCell>
-                  <TableCell align="right">Task Ids</TableCell>
+                  <TableCell align="right" sx={{ textWrap: "nowrap" }}>
+                    External Id
+                  </TableCell>
+                  <TableCell align="right" sx={{ textWrap: "nowrap" }}>
+                    Task Ids
+                  </TableCell>
                   <TableCell align="center">Success</TableCell>
                 </TableRow>
               </TableHead>
@@ -140,7 +144,9 @@ const Sync = ({
                 {tasks.map((task) => (
                   <TableRow key={task.ids.join("_")}>
                     <TableCell align="left">{task.desc}</TableCell>
-                    <TableCell align="left">{task.date}</TableCell>
+                    <TableCell align="left" sx={{ textWrap: "nowrap" }}>
+                      {task.date}
+                    </TableCell>
                     <TableCell align="right">
                       {formatDuration(task.duration)}
                     </TableCell>
