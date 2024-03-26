@@ -83,6 +83,15 @@ const App = () => {
 
   useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
 
+  const addTaskHandler = (
+    project: string,
+    desc: string,
+    externalId: string,
+  ) => {
+    addTask(project, desc, externalId);
+    setToday();
+  };
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -123,7 +132,7 @@ const App = () => {
             >
               <AddTaskForm
                 sx={{ mb: 2 }}
-                onSubmit={addTask}
+                onSubmit={addTaskHandler}
                 defaultAddTaskValues={defaultAddTaskValues}
                 dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
               />
@@ -155,7 +164,7 @@ const App = () => {
                     }
                     tasks={result.length ? result : tasks}
                     groupedTasks={groupedTasks}
-                    addTask={addTask}
+                    addTask={addTaskHandler}
                     stopTask={stopTask}
                     copyToClipboard={copyToClipboard}
                     deleteTask={deleteTask}
