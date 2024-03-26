@@ -1,6 +1,6 @@
 import { useState, useRef, useReducer } from "react";
 import Grid from "@mui/material/Grid";
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 import { ConfirmProvider } from "material-ui-confirm";
 import { ThemeProvider } from "@mui/material/styles";
 import { SnackbarProvider } from "notistack";
@@ -13,10 +13,9 @@ import DateSelector from "./components/DateSelector";
 import ViewTypeSelector from "./components/ViewTypeSelector";
 import AddTaskForm from "./components/AddTaskForm";
 import TaskEdition from "./components/TaskEdition";
-import Settings from "./components/Settings/Settings";
 import Sync from "./components/Sync";
+import { SettingsProvider } from "./providers/SettingsProvider";
 
-import useSettings from "./hooks/useSettings";
 import useDate from "./hooks/useDate";
 import useKeyboard from "./hooks/useKeyboard";
 import useTasks, { Task } from "./hooks/useTasks";
@@ -41,11 +40,13 @@ const defaultAddTaskValuesReducer = (
 };
 
 const App = () => {
-  const [openSettings, setOpenSettings] = useState<boolean>(false);
-
   const [openSync, setOpenSync] = useState<boolean>(false);
 
   const [themePreview, setThemePreview] = useState<string | null>(null);
+
+  const [theme, setTheme] = useState<string>("#1976d2");
+
+  const [darkMode, setDarkMode] = useState<boolean>(false);
 
   const [defaultAddTaskValues, dispatchDefaultAddTaskValues] = useReducer(
     defaultAddTaskValuesReducer,
@@ -53,14 +54,6 @@ const App = () => {
   );
 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
-
-  const {
-    isIntegrationValid,
-    setting,
-    changeViewType,
-    toggleDarkMode,
-    saveSettings,
-  } = useSettings();
 
   const { date, setDate, setPreviousDate, setNextDate, setToday } = useDate();
 
@@ -75,34 +68,29 @@ const App = () => {
     summary,
     refresh,
   } = useTasks(date, setToday);
+
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
 
   const { setQuery, totalWorked, result, setResult } = useSearch({});
 
-  const darkTheme = appTheme(setting, themePreview);
+  const defaultTheme = appTheme(darkMode, theme, themePreview);
 
   useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      {!setting ? (
-        <Box sx={{ p: 4 }}>Loading settings...</Box>
-      ) : (
+    <SettingsProvider
+      setThemePreview={setThemePreview}
+      refreshTasks={refresh}
+      setTheme={setTheme}
+      setDarkMode={setDarkMode}
+    >
+      <ThemeProvider theme={defaultTheme}>
+        <CssBaseline />
         <SnackbarProvider maxSnack={2}>
           <ConfirmProvider>
             <Sync
               opened={openSync}
               onClose={() => setOpenSync(false)}
-              setting={setting}
-              refreshTasks={refresh}
-            />
-            <Settings
-              opened={openSettings}
-              onClose={() => setOpenSettings(false)}
-              setting={setting}
-              saveSetting={saveSettings}
-              setThemePreview={setThemePreview}
               refreshTasks={refresh}
             />
             <TaskEdition
@@ -111,11 +99,7 @@ const App = () => {
               onEdit={editTask}
             />
             <Layout
-              showSendTasksIcon={isIntegrationValid}
               summary={summary}
-              setting={setting}
-              onToggleDarkMode={toggleDarkMode}
-              onPressSettings={() => setOpenSettings(true)}
               onPressSync={() => setOpenSync(true)}
               setSearchQuery={setQuery}
               setSearchResult={setResult}
@@ -143,16 +127,10 @@ const App = () => {
                         onChange={setDate}
                         sx={{ flexGrow: 1 }}
                       />
-                      <ViewTypeSelector
-                        viewType={setting?.view_type}
-                        changeViewType={changeViewType}
-                      />
+                      <ViewTypeSelector />
                     </Grid>
                   )}
                   <TasksTable
-                    viewType={
-                      result.length ? "Chronological" : setting?.view_type
-                    }
                     tasks={result.length ? result : tasks}
                     groupedTasks={groupedTasks}
                     addTask={addTask}
@@ -167,8 +145,8 @@ const App = () => {
             </Layout>
           </ConfirmProvider>
         </SnackbarProvider>
-      )}
-    </ThemeProvider>
+      </ThemeProvider>
+    </SettingsProvider>
   );
 };
 

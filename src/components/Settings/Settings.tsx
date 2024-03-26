@@ -52,10 +52,6 @@ const Settings = ({
     onClose();
   };
 
-  if (!setting) {
-    return <Box sx={{ p: 4 }}>Loading...</Box>;
-  }
-
   return (
     <Modal open={opened} onClose={() => onClose()}>
       <StyledBox>

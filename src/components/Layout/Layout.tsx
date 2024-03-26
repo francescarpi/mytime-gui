@@ -1,4 +1,4 @@
-import { ReactNode, RefObject, useState } from "react";
+import { ReactNode, RefObject, useState, useContext } from "react";
 import { Search, SearchIconWrapper, StyledInputBase } from "./styles";
 import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
@@ -13,33 +13,28 @@ import { Summary } from "../../hooks/useTasks";
 import Badge from "@mui/material/Badge";
 import GoalProgress from "./GoalProgress";
 import { DarkModeSwitch } from "../../styles/switch";
-import { Setting } from "../../hooks/useSettings";
 import { debounce } from "@mui/material/utils";
+import { SettingsContext } from "../../providers/SettingsProvider";
 
 const Layout = ({
   children,
-  showSendTasksIcon,
   summary,
-  setting,
-  onToggleDarkMode,
-  onPressSettings,
   onPressSync,
   setSearchQuery,
   searchInputRef,
   setSearchResult,
 }: {
   children: ReactNode;
-  showSendTasksIcon: Boolean;
   summary: Summary | null;
-  setting: Setting | null;
-  onToggleDarkMode: CallableFunction;
-  onPressSettings: CallableFunction;
   onPressSync: CallableFunction;
   setSearchQuery: CallableFunction;
   searchInputRef: RefObject<HTMLInputElement>;
   setSearchResult: CallableFunction;
 }) => {
+  const settingContext = useContext(SettingsContext);
+
   const [query, setQuery] = useState("");
+
   const onSearchKeyPress = (e: any) => {
     if (e.code === "Escape") {
       setQuery("");
@@ -48,7 +43,7 @@ const Layout = ({
     }
   };
 
-  return (
+  return settingContext.setting ? (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="fixed"
@@ -80,7 +75,7 @@ const Layout = ({
               onKeyDown={(e) => onSearchKeyPress(e)}
             />
           </Search>
-          {showSendTasksIcon && (
+          {settingContext.isIntegrationValid && (
             <IconButton
               color="inherit"
               sx={{ ml: 1 }}
@@ -99,7 +94,7 @@ const Layout = ({
           <IconButton
             color="inherit"
             sx={{ ml: 1 }}
-            onClick={() => onPressSettings()}
+            onClick={() => settingContext.show()}
           >
             <SettingsIcon />
           </IconButton>
@@ -131,12 +126,14 @@ const Layout = ({
             />
           </Box>
           <DarkModeSwitch
-            checked={Boolean(setting?.dark_mode)}
-            onChange={(e) => onToggleDarkMode(e.target.checked)}
+            checked={Boolean(settingContext.setting?.dark_mode)}
+            onChange={(e) => settingContext.toggleDarkMode(e.target.checked)}
           />
         </Toolbar>
       </AppBar>
     </Box>
+  ) : (
+    <Box sx={{ p: 2 }}>Loading...</Box>
   );
 };
 

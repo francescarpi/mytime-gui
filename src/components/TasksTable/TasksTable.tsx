@@ -1,11 +1,11 @@
+import { useContext } from "react";
 import Chronological from "./Chronological";
 import Grouped from "./Grouped";
 import Box from "@mui/material/Box";
 import { Task } from "../../hooks/useTasks";
-import type { ViewType } from "../../hooks/useSettings";
+import { SettingsContext } from "../../providers/SettingsProvider";
 
 const TasksTable = ({
-  viewType,
   tasks,
   groupedTasks,
   addTask,
@@ -15,7 +15,6 @@ const TasksTable = ({
   setTaskToEdit,
   dispatchDefaultAddTaskValues,
 }: {
-  viewType: ViewType | undefined;
   tasks: Task[];
   groupedTasks: Task[];
   addTask: CallableFunction;
@@ -25,6 +24,7 @@ const TasksTable = ({
   setTaskToEdit: CallableFunction;
   dispatchDefaultAddTaskValues: CallableFunction;
 }) => {
+  const settingsContext = useContext(SettingsContext);
   return (
     <Box
       sx={{
@@ -34,7 +34,7 @@ const TasksTable = ({
         height: 350,
       }}
     >
-      {viewType === "Grouped" ? (
+      {settingsContext.setting?.view_type === "Grouped" ? (
         <Grouped
           tasks={groupedTasks}
           addTask={addTask}

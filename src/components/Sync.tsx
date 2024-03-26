@@ -1,9 +1,8 @@
-import { useEffect, useState, useReducer } from "react";
+import { useEffect, useState, useReducer, useContext } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { StyledBox } from "../styles/modal";
 import Typography from "@mui/material/Typography";
-import { Setting } from "../hooks/useSettings";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -18,6 +17,7 @@ import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import CircularProgress from "@mui/material/CircularProgress";
+import { SettingsContext } from "../providers/SettingsProvider";
 
 const successReducer = (
   state: {
@@ -48,18 +48,17 @@ const successReducer = (
 const Sync = ({
   opened,
   onClose,
-  setting,
   refreshTasks,
 }: {
   opened: boolean;
   onClose: CallableFunction;
-  setting: Setting | null;
   refreshTasks: CallableFunction;
 }) => {
   const [isSending, setIsSending] = useState<boolean>(false);
   const { tasks, loadTasks, send } = useSync();
   const [success, dispatchSuccess] = useReducer(successReducer, {});
   const [tasksSent, setTasksSent] = useState<boolean>(false);
+  const settingContext = useContext(SettingsContext);
 
   useEffect(() => {
     loadTasks();
@@ -122,7 +121,7 @@ const Sync = ({
     <Modal open={opened} onClose={closeHandler}>
       <StyledBox>
         <Typography variant="h5" sx={{ mb: 4 }}>
-          Send tasks to {setting?.integration}
+          Send tasks to {settingContext.setting?.integration}
         </Typography>
         <Box>
           <TableContainer>
