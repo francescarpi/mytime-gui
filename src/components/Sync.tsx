@@ -162,14 +162,16 @@ const Sync = ({
             >
               Close
             </Button>
-            <Button
-              variant="contained"
-              sx={{ ml: 2 }}
-              onClick={sendHandler}
-              disabled={isSending || tasksSent}
-            >
-              Send
-            </Button>
+            {tasks.length > 0 && (
+              <Button
+                variant="contained"
+                sx={{ ml: 2 }}
+                onClick={sendHandler}
+                disabled={isSending || tasksSent}
+              >
+                Send
+              </Button>
+            )}
           </Box>
         </Box>
       </StyledBox>
