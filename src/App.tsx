@@ -1,21 +1,15 @@
 import { useState, useRef, useReducer } from "react";
-import Grid from "@mui/material/Grid";
-import { Card, CardContent, Typography } from "@mui/material";
 import { ConfirmProvider } from "material-ui-confirm";
 import { ThemeProvider } from "@mui/material/styles";
 import { SnackbarProvider } from "notistack";
-import { formatDuration } from "./utils/dates";
 import CssBaseline from "@mui/material/CssBaseline";
 
 import Layout from "./components/Layout/Layout";
 import TasksTable from "./components/TasksTable/TasksTable";
-import DateSelector from "./components/DateSelector";
-import ViewTypeSelector from "./components/ViewTypeSelector";
 import AddTaskForm from "./components/AddTaskForm";
 import TaskEdition from "./components/TaskEdition";
 import Sync from "./components/Sync";
 import { SettingsProvider } from "./providers/SettingsProvider";
-import CopyToClipboardBtn from "./components/CopyToClipboardBtn";
 
 import useDate from "./hooks/useDate";
 import useKeyboard from "./hooks/useKeyboard";
@@ -23,6 +17,9 @@ import useTasks, { Task } from "./hooks/useTasks";
 import useSearch from "./hooks/useSearch";
 import appTheme from "./styles/theme";
 import useClipboard from "./hooks/useClipboard";
+import TasksTableActionsHeader from "./components/TasksTableActionsHeader";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 
 const defaultAddTaskValuesReducer = (
   state: { proj: string; desc: string; extId: string },
@@ -123,32 +120,18 @@ const App = () => {
               />
               <Card variant="outlined">
                 <CardContent>
-                  {result.length ? (
-                    <Typography sx={{ mb: 2 }} variant="h6">
-                      {result.length} tasks found ({formatDuration(totalWorked)}
-                      )
-                    </Typography>
-                  ) : (
-                    <Grid container sx={{ mb: 2 }}>
-                      <DateSelector
-                        setPrevious={setPreviousDate}
-                        setNext={setNextDate}
-                        date={date}
-                        onChange={setDate}
-                        sx={{ flexGrow: 1 }}
-                      />
-                      <CopyToClipboardBtn
-                        onClick={() =>
-                          copyTasks({
-                            tasks: viewModeGrouped ? groupedTasks : tasks,
-                          })
-                        }
-                        tooltip="Copy all visible tasks to the clipboard as a list"
-                        sx={{ mr: 2 }}
-                      />
-                      <ViewTypeSelector />
-                    </Grid>
-                  )}
+                  <TasksTableActionsHeader
+                    searchResult={result}
+                    totalWorked={totalWorked}
+                    setPreviousDate={setPreviousDate}
+                    setNextDate={setNextDate}
+                    date={date}
+                    setDate={setDate}
+                    copyTasks={copyTasks}
+                    viewModeGrouped={viewModeGrouped}
+                    groupedTasks={groupedTasks}
+                    tasks={tasks}
+                  />
                   <TasksTable
                     searchMode={searchMode}
                     tasks={searchMode ? result : tasks}
