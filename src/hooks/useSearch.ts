@@ -6,6 +6,7 @@ const useSearch = ({ limit = null }: { limit?: number | null }) => {
   const [query, setQuery] = useState<string>("");
   const [result, setResult] = useState<Task[]>([]);
   const [totalWorked, setTotalWorked] = useState<number>(0);
+  const [searchMode, setSearchMode] = useState<boolean>(false);
 
   useEffect(() => {
     if (query !== "") {
@@ -21,7 +22,11 @@ const useSearch = ({ limit = null }: { limit?: number | null }) => {
     }
   }, [query, limit]);
 
-  return { query, result, setQuery, totalWorked, setResult };
+  useEffect(() => {
+    setSearchMode(result.length > 0);
+  }, [result]);
+
+  return { query, result, setQuery, totalWorked, setResult, searchMode };
 };
 
 export default useSearch;

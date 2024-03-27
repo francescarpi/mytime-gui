@@ -15,6 +15,7 @@ import { useConfirm } from "material-ui-confirm";
 import { IconButton } from "@mui/material";
 import { StyledBox } from "../../styles/modal";
 import EditIcon from "@mui/icons-material/Edit";
+import Tooltip from "@mui/material/Tooltip";
 
 const GroupedModal = ({
   task,
@@ -64,18 +65,22 @@ const GroupedModal = ({
                   <TableCell align="right">
                     {!task.reported && (
                       <>
-                        <IconButton
-                          size="small"
-                          onClick={() => deleteHandler(task.id)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                        <IconButton
-                          size="small"
-                          onClick={() => setTaskToEdit(task)}
-                        >
-                          <EditIcon />
-                        </IconButton>
+                        <Tooltip title="Delete task" placement="top">
+                          <IconButton
+                            size="small"
+                            onClick={() => deleteHandler(task.id)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Edit task" placement="top">
+                          <IconButton
+                            size="small"
+                            onClick={() => setTaskToEdit(task)}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </Tooltip>
                       </>
                     )}
                   </TableCell>

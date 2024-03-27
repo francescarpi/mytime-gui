@@ -15,12 +15,14 @@ import AddTaskForm from "./components/AddTaskForm";
 import TaskEdition from "./components/TaskEdition";
 import Sync from "./components/Sync";
 import { SettingsProvider } from "./providers/SettingsProvider";
+import CopyToClipboardBtn from "./components/CopyToClipboardBtn";
 
 import useDate from "./hooks/useDate";
 import useKeyboard from "./hooks/useKeyboard";
 import useTasks, { Task } from "./hooks/useTasks";
 import useSearch from "./hooks/useSearch";
 import appTheme from "./styles/theme";
+import useClipboard from "./hooks/useClipboard";
 
 const defaultAddTaskValuesReducer = (
   state: { proj: string; desc: string; extId: string },
@@ -66,7 +68,6 @@ const App = () => {
     groupedTasks,
     addTask,
     stopTask,
-    copyToClipboard,
     deleteTask,
     editTask,
     summary,
@@ -75,11 +76,15 @@ const App = () => {
 
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
 
-  const { setQuery, totalWorked, result, setResult } = useSearch({});
+  const { setQuery, totalWorked, result, setResult, searchMode } = useSearch(
+    {},
+  );
 
   const defaultTheme = appTheme(darkMode, theme, themePreview);
 
   useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
+
+  const { copyTask, copyTasks } = useClipboard();
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -132,15 +137,25 @@ const App = () => {
                         onChange={setDate}
                         sx={{ flexGrow: 1 }}
                       />
+                      <CopyToClipboardBtn
+                        onClick={() =>
+                          copyTasks({
+                            tasks: viewModeGrouped ? groupedTasks : tasks,
+                          })
+                        }
+                        tooltip="Copy all visible tasks to the clipboard as a list"
+                        sx={{ mr: 2 }}
+                      />
                       <ViewTypeSelector />
                     </Grid>
                   )}
                   <TasksTable
-                    tasks={result.length ? result : tasks}
+                    searchMode={searchMode}
+                    tasks={searchMode ? result : tasks}
                     groupedTasks={groupedTasks}
                     addTask={addTask}
                     stopTask={stopTask}
-                    copyToClipboard={copyToClipboard}
+                    copyToClipboard={copyTask}
                     deleteTask={deleteTask}
                     setTaskToEdit={setTaskToEdit}
                     dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}

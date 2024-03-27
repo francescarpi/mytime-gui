@@ -10,12 +10,13 @@ import { formatDuration, dateToStrTime } from "../../utils/dates";
 import { IconButton } from "@mui/material";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useConfirm } from "material-ui-confirm";
 import EditIcon from "@mui/icons-material/Edit";
 import SyncIndicator from "./SyncIndicator";
 import CopyStringToAddForm from "./CopyStringToAddForm";
+import Tooltip from "@mui/material/Tooltip";
+import CopyToClipboardBtn from "../CopyToClipboardBtn";
 
 const Chronological = ({
   tasks,
