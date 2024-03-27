@@ -35,10 +35,13 @@ const Layout = ({
 
   const [query, setQuery] = useState("");
 
+  const resetSearch = () => {
+    setQuery("");
+    setSearchResult([]);
+  };
+
   const onSearchKeyPress = (e: any) => {
     if (e.code === "Escape") {
-      setQuery("");
-      setSearchResult([]);
       e.target.blur();
     }
   };
@@ -73,6 +76,7 @@ const Layout = ({
               value={query}
               onChange={debounce((e) => setSearchQuery(e.target.value), 500)}
               onKeyDown={(e) => onSearchKeyPress(e)}
+              onBlur={() => resetSearch()}
             />
           </Search>
           {settingContext.isIntegrationValid && (

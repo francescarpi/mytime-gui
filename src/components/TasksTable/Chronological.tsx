@@ -100,40 +100,46 @@ const Chronological = ({
               <TableCell align="right">
                 {!task.reported && (
                   <>
-                    <IconButton
-                      size="small"
-                      onClick={() => deleteHandler(task.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                    <IconButton
-                      size="small"
-                      onClick={() => setTaskToEdit(task)}
-                    >
-                      <EditIcon />
-                    </IconButton>
+                    <Tooltip title="Delete task" placement="top">
+                      <IconButton
+                        size="small"
+                        onClick={() => deleteHandler(task.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Edit task" placement="top">
+                      <IconButton
+                        size="small"
+                        onClick={() => setTaskToEdit(task)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
                   </>
                 )}
-                <IconButton size="small" onClick={() => copyToClipboard(task)}>
-                  <ContentCopyIcon />
-                </IconButton>
+                <CopyToClipboardBtn onClick={() => copyToClipboard(task)} />
                 {task.end ? (
-                  <IconButton
-                    size="small"
-                    onClick={() =>
-                      addTask(task.project, task.desc, task.external_id)
-                    }
-                  >
-                    <PlayCircleIcon />
-                  </IconButton>
+                  <Tooltip title="Start task" placement="top">
+                    <IconButton
+                      size="small"
+                      onClick={() =>
+                        addTask(task.project, task.desc, task.external_id)
+                      }
+                    >
+                      <PlayCircleIcon />
+                    </IconButton>
+                  </Tooltip>
                 ) : (
-                  <IconButton
-                    size="small"
-                    onClick={() => stopTask(task.id)}
-                    color="error"
-                  >
-                    <StopCircleIcon />
-                  </IconButton>
+                  <Tooltip title="Stop task" placement="top">
+                    <IconButton
+                      size="small"
+                      onClick={() => stopTask(task.id)}
+                      color="error"
+                    >
+                      <StopCircleIcon />
+                    </IconButton>
+                  </Tooltip>
                 )}
               </TableCell>
             </TableRow>
