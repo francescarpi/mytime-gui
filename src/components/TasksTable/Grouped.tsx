@@ -12,10 +12,11 @@ import Button from "@mui/material/Button";
 import { IconButton } from "@mui/material";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import GroupedModal from "./GroupedModal";
 import SyncIndicator from "./SyncIndicator";
 import CopyStringToAddForm from "./CopyStringToAddForm";
+import Tooltip from "@mui/material/Tooltip";
+import CopyToClipboardBtn from "../CopyToClipboardBtn";
 
 const Grouped = ({
   tasks,
@@ -114,29 +115,28 @@ const Grouped = ({
                   </Button>
                 </TableCell>
                 <TableCell align="right">
-                  <IconButton
-                    size="small"
-                    onClick={() => copyToClipboard(task)}
-                  >
-                    <ContentCopyIcon />
-                  </IconButton>
+                  <CopyToClipboardBtn onClick={() => copyToClipboard(task)} />
                   {!task.has_running_tasks ? (
-                    <IconButton
-                      size="small"
-                      onClick={() =>
-                        addTask(task.project, task.desc, task.external_id)
-                      }
-                    >
-                      <PlayCircleIcon />
-                    </IconButton>
+                    <Tooltip title="Start task" placement="top">
+                      <IconButton
+                        size="small"
+                        onClick={() =>
+                          addTask(task.project, task.desc, task.external_id)
+                        }
+                      >
+                        <PlayCircleIcon />
+                      </IconButton>
+                    </Tooltip>
                   ) : (
-                    <IconButton
-                      size="small"
-                      onClick={() => stopTask(task.id)}
-                      color="error"
-                    >
-                      <StopCircleIcon />
-                    </IconButton>
+                    <Tooltip title="Stop task" placement="top">
+                      <IconButton
+                        size="small"
+                        onClick={() => stopTask(task.id)}
+                        color="error"
+                      >
+                        <StopCircleIcon />
+                      </IconButton>
+                    </Tooltip>
                   )}
                 </TableCell>
               </TableRow>

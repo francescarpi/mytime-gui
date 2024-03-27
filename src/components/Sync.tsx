@@ -137,7 +137,7 @@ const Sync = ({
                   <TableCell align="right" sx={{ textWrap: "nowrap" }}>
                     Task Ids
                   </TableCell>
-                  <TableCell align="center">Success</TableCell>
+                  <TableCell align="center">Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

@@ -96,11 +96,6 @@ const useTasks = (date: Dayjs, setToday: CallableFunction) => {
     invoke("delete_task", { id }).then(() => refresh());
   };
 
-  const copyToClipboard = (task: Task) => {
-    const content = `[${task.project}] ${task.desc}`;
-    navigator.clipboard.writeText(content);
-  };
-
   const editTask = (task: Task) =>
     invoke("edit_task", { ...task }).then(() => refresh());
 
@@ -109,7 +104,6 @@ const useTasks = (date: Dayjs, setToday: CallableFunction) => {
     groupedTasks,
     addTask,
     stopTask,
-    copyToClipboard,
     deleteTask,
     editTask,
     refresh,

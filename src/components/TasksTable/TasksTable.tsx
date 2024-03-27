@@ -14,6 +14,7 @@ const TasksTable = ({
   deleteTask,
   setTaskToEdit,
   dispatchDefaultAddTaskValues,
+  searchMode,
 }: {
   tasks: Task[];
   groupedTasks: Task[];
@@ -23,6 +24,7 @@ const TasksTable = ({
   deleteTask: CallableFunction;
   setTaskToEdit: CallableFunction;
   dispatchDefaultAddTaskValues: CallableFunction;
+  searchMode: boolean;
 }) => {
   const settingsContext = useContext(SettingsContext);
   return (
@@ -34,7 +36,7 @@ const TasksTable = ({
         height: 350,
       }}
     >
-      {settingsContext.setting?.view_type === "Grouped" ? (
+      {settingsContext.setting?.view_type === "Grouped" && !searchMode ? (
         <Grouped
           tasks={groupedTasks}
           addTask={addTask}
