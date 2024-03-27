@@ -13,6 +13,7 @@ const StyledBox = styled(Box)(({ theme, width }: any) => ({
   borderColor: theme.palette.primary.main,
   boxShadow: theme.shadows[24],
   padding: 20,
+  borderRadius: 8,
 }));
 
 export { StyledBox };
