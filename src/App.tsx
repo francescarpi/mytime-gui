@@ -50,6 +50,8 @@ const App = () => {
 
   const [darkMode, setDarkMode] = useState<boolean>(false);
 
+  const [viewModeGrouped, setViewModeGrouped] = useState<boolean>(false);
+
   const [defaultAddTaskValues, dispatchDefaultAddTaskValues] = useReducer(
     defaultAddTaskValuesReducer,
     iniAddTaskValues,
@@ -87,6 +89,7 @@ const App = () => {
         refreshTasks={refresh}
         setTheme={setTheme}
         setDarkMode={setDarkMode}
+        setViewModeGrouped={setViewModeGrouped}
       >
         <SnackbarProvider maxSnack={2}>
           <ConfirmProvider>

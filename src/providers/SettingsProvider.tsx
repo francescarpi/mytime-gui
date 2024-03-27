@@ -23,12 +23,14 @@ const SettingsProvider = ({
   refreshTasks,
   setTheme,
   setDarkMode,
+  setViewModeGrouped,
 }: {
   children: ReactNode;
   setThemePreview: CallableFunction;
   refreshTasks: CallableFunction;
   setTheme: CallableFunction;
   setDarkMode: CallableFunction;
+  setViewModeGrouped: CallableFunction;
 }) => {
   const {
     setting,
@@ -44,8 +46,9 @@ const SettingsProvider = ({
     if (setting) {
       setTheme(setting.theme);
       setDarkMode(setting.dark_mode);
+      setViewModeGrouped(setting.view_type === "Grouped");
     }
-  }, [setting, setTheme, setDarkMode]);
+  }, [setting, setTheme, setDarkMode, setViewModeGrouped]);
 
   return (
     <SettingsContext.Provider
