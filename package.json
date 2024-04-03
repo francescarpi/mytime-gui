@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "bun run src/index.tsx",
-    "build": "react-scripts build",
-    "test:unit": "react-scripts test",
+    "dev": "bunx --bun vite",
+    "build": "bunx --bun vite build",
     "tauri": "tauri"
   },
   "dependencies": {
@@ -64,4 +63,3 @@
     "typescript": "^5.0.0"
   }
 }
-
