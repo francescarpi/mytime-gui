@@ -7,6 +7,20 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs, { Dayjs } from "dayjs";
+import { PickersDay, PickersDayProps } from "@mui/x-date-pickers/PickersDay";
+import Badge from "@mui/material/Badge";
+import useCalendar from "../hooks/useCalendar";
+import { styled } from "@mui/material/styles";
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    top: 10,
+    right: 10,
+    backgroundColor: theme.palette.secondary.main,
+    minWidth: 5,
+    height: 5,
+  },
+}));
 
 const DateSelector = ({
   setPrevious,
@@ -21,6 +35,23 @@ const DateSelector = ({
   date: Dayjs;
   onChange: CallableFunction;
 }) => {
+  const { datesWidthTasks, setMonth } = useCalendar();
+
+  const dayComponent = (
+    props: PickersDayProps<Dayjs> & { dates?: string[] },
+  ) => {
+    return (
+      <StyledBadge
+        key={props.day.toString()}
+        overlap="circular"
+        variant="dot"
+        invisible={!props.dates?.includes(props.day.format("YYYY-MM-DD"))}
+      >
+        <PickersDay {...props} />
+      </StyledBadge>
+    );
+  };
+
   return (
     <Box sx={sx}>
       <IconButton onClick={() => setPrevious()} sx={{ mr: 1 }}>
@@ -36,7 +67,15 @@ const DateSelector = ({
           label={date.format("dddd")}
           slotProps={{
             textField: { size: "small" },
+            day: {
+              dates: datesWidthTasks,
+            } as any,
           }}
+          slots={{
+            day: dayComponent,
+          }}
+          onOpen={() => setMonth([date.month() + 1, date.year()])}
+          onMonthChange={(month) => setMonth([month.month() + 1, month.year()])}
         />
       </LocalizationProvider>
       <IconButton onClick={() => setNext()} sx={{ mx: 1 }}>

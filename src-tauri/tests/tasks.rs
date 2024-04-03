@@ -6,7 +6,7 @@ pub mod common;
 mod tests {
     use crate::common::get_db_connection;
     use app::repositories::TasksRepository;
-    use chrono::{offset::Local, NaiveTime, Timelike};
+    use chrono::{offset::Local, Datelike, NaiveTime, Timelike};
 
     #[test]
     fn add_task() {
@@ -249,5 +249,24 @@ mod tests {
 
         let tasks = TasksRepository::grouped_tasks(&mut c).unwrap();
         assert_eq!(tasks.len(), 0);
+    }
+
+    #[test]
+    fn dates_with_tasks() {
+        // Setup
+        let mut c = get_db_connection();
+        let now = Local::now().naive_local();
+        let _ = TasksRepository::add_task(
+            &mut c,
+            "Test task".to_string(),
+            Some("1234".to_string()),
+            None,
+        )
+        .unwrap();
+
+        // Test
+        let response = TasksRepository::dates_with_tasks(&mut c, now.month(), now.year()).unwrap();
+        assert_eq!(response.len(), 1);
+        assert_eq!(response[0].date, now.date());
     }
 }
