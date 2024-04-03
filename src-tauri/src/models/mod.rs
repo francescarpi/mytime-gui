@@ -114,3 +114,7 @@ pub struct GroupedTask {
     #[diesel(sql_type = Text)]
     pub ids: ids::ListIds,
 }
+
+pub struct DatesWithTasks {
+    pub dates: Vec<NaiveDate>,
+}

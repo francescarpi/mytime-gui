@@ -245,4 +245,30 @@ impl TasksRepository {
         let query = format!("UPDATE tasks SET reported = true WHERE id IN ({})", ids);
         sql_query(query).execute(c)
     }
+
+    pub fn dates_with_tasks(
+        c: &mut SqliteConnection,
+        month: i32,
+        year: i32,
+    ) -> QueryResult<Vec<String>> {
+        let month = format!("{:02}", month);
+        let year = year.to_string();
+
+        sql_query(
+            "
+            SELECT
+                STRFTIME('%Y-%m-%d', start) AS dates
+            FROM 
+                tasks
+            WHERE 
+                STRFTIME('%m', start) == $1 AND
+                STRFTIME('%Y', start) == $2
+            GROUP BY
+                date
+        ",
+        )
+        .bind::<Text, _>(month)
+        .bind::<Text, _>(year)
+        .load(c)
+    }
 }
