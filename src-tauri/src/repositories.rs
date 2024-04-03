@@ -248,16 +248,16 @@ impl TasksRepository {
 
     pub fn dates_with_tasks(
         c: &mut SqliteConnection,
-        month: i32,
+        month: u32,
         year: i32,
-    ) -> QueryResult<Vec<String>> {
+    ) -> QueryResult<Vec<DatesWithTasks>> {
         let month = format!("{:02}", month);
         let year = year.to_string();
 
         sql_query(
             "
             SELECT
-                STRFTIME('%Y-%m-%d', start) AS dates
+                STRFTIME('%Y-%m-%d', start) AS date
             FROM 
                 tasks
             WHERE 

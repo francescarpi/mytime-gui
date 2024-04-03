@@ -172,6 +172,13 @@ async fn search(query: &str, limit: Option<i32>, conn: State<'_, DbConn>) -> Res
     Ok(json!(tasks))
 }
 
+#[command]
+fn dates_with_tasks(month: u32, year: i32, conn: State<'_, DbConn>) -> Value {
+    let mut db = conn.0.lock().unwrap();
+    let tasks = TasksRepository::dates_with_tasks(&mut db, month, year).unwrap();
+    json!(tasks)
+}
+
 fn main() {
     let system_tray = SystemTray::new();
     tauri::Builder::default()
@@ -192,6 +199,7 @@ fn main() {
             send_to_integration,
             delete_task,
             search,
+            dates_with_tasks,
         ])
         .system_tray(system_tray)
         .run(tauri::generate_context!())

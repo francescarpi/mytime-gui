@@ -10,6 +10,17 @@ import dayjs, { Dayjs } from "dayjs";
 import { PickersDay, PickersDayProps } from "@mui/x-date-pickers/PickersDay";
 import Badge from "@mui/material/Badge";
 import useCalendar from "../hooks/useCalendar";
+import { styled } from "@mui/material/styles";
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    top: 10,
+    right: 10,
+    backgroundColor: theme.palette.secondary.main,
+    minWidth: 5,
+    height: 5,
+  },
+}));
 
 const DateSelector = ({
   setPrevious,
@@ -30,15 +41,14 @@ const DateSelector = ({
     props: PickersDayProps<Dayjs> & { dates?: string[] },
   ) => {
     return (
-      <Badge
+      <StyledBadge
         key={props.day.toString()}
         overlap="circular"
         variant="dot"
-        color="secondary"
         invisible={!props.dates?.includes(props.day.format("YYYY-MM-DD"))}
       >
         <PickersDay {...props} />
-      </Badge>
+      </StyledBadge>
     );
   };
 
@@ -64,8 +74,8 @@ const DateSelector = ({
           slots={{
             day: dayComponent,
           }}
-          onOpen={() => setMonth(date.month() + 1)}
-          onMonthChange={(month) => setMonth(month.month() + 1)}
+          onOpen={() => setMonth([date.month() + 1, date.year()])}
+          onMonthChange={(month) => setMonth([month.month() + 1, month.year()])}
         />
       </LocalizationProvider>
       <IconButton onClick={() => setNext()} sx={{ mx: 1 }}>

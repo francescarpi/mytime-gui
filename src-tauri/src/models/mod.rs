@@ -115,6 +115,9 @@ pub struct GroupedTask {
     pub ids: ids::ListIds,
 }
 
+#[derive(Deserialize, Queryable, QueryableByName, Debug, Serialize)]
+#[diesel()]
 pub struct DatesWithTasks {
-    pub dates: Vec<NaiveDate>,
+    #[diesel(sql_type = Date)]
+    pub date: NaiveDate,
 }
