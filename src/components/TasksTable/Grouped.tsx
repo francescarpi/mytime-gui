@@ -17,6 +17,7 @@ import SyncIndicator from "./SyncIndicator";
 import CopyStringToAddForm from "./CopyStringToAddForm";
 import Tooltip from "@mui/material/Tooltip";
 import CopyToClipboardBtn from "../CopyToClipboardBtn";
+import Box from "@mui/material/Box";
 
 const Grouped = ({
   tasks,
@@ -75,28 +76,34 @@ const Grouped = ({
             {tasks.map((task) => (
               <TableRow key={`${task.id}-${task.reported}-${task.end}`}>
                 <TableCell sx={{ textWrap: "nowrap" }}>
-                  {task.project}
                   <CopyStringToAddForm
                     dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
                     type="setProj"
                     value={task.project}
                   />
+                  {task.project}
                 </TableCell>
                 <TableCell>
-                  {task.desc}
-                  <CopyStringToAddForm
-                    dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
-                    type="setDesc"
-                    value={task.desc}
-                  />
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Box>
+                      <CopyStringToAddForm
+                        dispatchDefaultAddTaskValues={
+                          dispatchDefaultAddTaskValues
+                        }
+                        type="setDesc"
+                        value={task.desc}
+                      />
+                    </Box>
+                    <Box>{task.desc}</Box>
+                  </Box>
                 </TableCell>
                 <TableCell align="right" sx={{ textWrap: "nowrap" }}>
-                  {task.external_id}
                   <CopyStringToAddForm
                     dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
                     type="setExtId"
                     value={task.external_id}
                   />
+                  {task.external_id}
                 </TableCell>
                 <TableCell align="right">
                   {formatDuration(task.duration as number)}
