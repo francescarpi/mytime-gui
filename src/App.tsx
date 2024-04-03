@@ -93,7 +93,7 @@ const App = () => {
         setDarkMode={setDarkMode}
         setViewModeGrouped={setViewModeGrouped}
       >
-        <SnackbarProvider maxSnack={2}>
+        <SnackbarProvider maxSnack={2} autoHideDuration={5000}>
           <ConfirmProvider>
             <Sync
               opened={openSync}
