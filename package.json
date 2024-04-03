@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "PORT=5173 BROWSER=none react-scripts start",
+    "dev": "bun run src/index.tsx",
     "build": "react-scripts build",
     "test:unit": "react-scripts test",
     "tauri": "tauri"
@@ -54,5 +54,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   }
 }
+
