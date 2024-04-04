@@ -26,6 +26,7 @@ const TaskEdition = ({
   const [externalId, setExternalId] = useState<string>("");
   const [start, setStart] = useState<Dayjs>(dayjs());
   const [end, setEnd] = useState<Dayjs | null>(null);
+  const [errorsEnabled, setErrorsEnabled] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -34,6 +35,15 @@ const TaskEdition = ({
     setExternalId(task?.external_id || "");
     if (task?.start) setStart(dayjs(task.start));
     if (task?.end) setEnd(dayjs(task.end));
+
+    // Hack to avoid show the fields with error while the popup is openning.
+    if (task) {
+      setTimeout(() => {
+        setErrorsEnabled(true);
+      }, 500);
+    } else {
+      setErrorsEnabled(false);
+    }
   }, [task]);
 
   const submit = (e: any) => {
@@ -92,7 +102,7 @@ const TaskEdition = ({
                   value={project}
                   onChange={(e) => setProject(e.target.value)}
                   helperText={!project && "Project is required"}
-                  error={!project}
+                  error={errorsEnabled && !project}
                   inputProps={{
                     autoComplete: "off",
                     autoCorrect: "off",
@@ -111,7 +121,7 @@ const TaskEdition = ({
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   helperText={!description && "Description is required"}
-                  error={!description}
+                  error={errorsEnabled && !description}
                   inputProps={{
                     autoComplete: "off",
                     autoCorrect: "off",
@@ -147,7 +157,7 @@ const TaskEdition = ({
                   slotProps={{
                     textField: {
                       required: true,
-                      error: !startIsValid,
+                      error: errorsEnabled && !startIsValid,
                       helperText:
                         !startIsValid && "Start time must be before end time",
                     },
@@ -165,7 +175,7 @@ const TaskEdition = ({
                     slotProps={{
                       textField: {
                         required: true,
-                        error: !endIsValid,
+                        error: errorsEnabled && !endIsValid,
                         helperText:
                           !endIsValid && "End time must be after start time",
                       },
