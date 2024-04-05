@@ -17,6 +17,7 @@ import useTasks, { Task } from "./hooks/useTasks";
 import useSearch from "./hooks/useSearch";
 import appTheme from "./styles/theme";
 import useClipboard from "./hooks/useClipboard";
+import useVersion from "./hooks/useVersion";
 import TasksTableActionsHeader from "./components/TasksTableActionsHeader";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -82,6 +83,8 @@ const App = () => {
   useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
 
   const { copyTask, copyTasks } = useClipboard();
+
+  const { version } = useVersion();
 
   return (
     <ThemeProvider theme={defaultTheme}>
