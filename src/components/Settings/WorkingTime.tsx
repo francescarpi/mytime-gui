@@ -56,7 +56,7 @@ const WorkingTime = ({
             fullWidth
             value={setting?.work_hours.thursday || 0}
             type="number"
-            onChange={(e) => setValue(parseFloat(e.target.value), "thurday")}
+            onChange={(e) => setValue(parseFloat(e.target.value), "thursday")}
           />
         </Grid>
         <Grid item md={3}>
