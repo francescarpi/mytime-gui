@@ -36,9 +36,10 @@ const useVersion = () => {
       .then((res) => {
         const validReleases = res.data.filter((release: any) => !release.draft);
         const lastRelease = validReleases[validReleases.length - 1];
+        const tag = lastRelease.tag_name;
+        const myVersion = `v${version}`;
 
-        console.log(lastRelease.tag_name, version);
-        if (lastRelease.tag_name !== version) {
+        if (myVersion !== tag) {
           setUrlNewVersion(lastRelease.html_url);
         }
       });
