@@ -39,8 +39,11 @@ const Layout = ({
   const [query, setQuery] = useState("");
 
   const resetSearch = () => {
-    setQuery("");
-    setSearchResult([]);
+    // The timeout is needed to prevent the search results from being cleared when clicking on a result
+    setTimeout(() => {
+      setQuery("");
+      setSearchResult([]);
+    }, 100);
   };
 
   const onSearchKeyPress = (e: any) => {
