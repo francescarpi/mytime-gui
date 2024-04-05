@@ -15,6 +15,7 @@ import GoalProgress from "./GoalProgress";
 import { DarkModeSwitch } from "../../styles/switch";
 import { debounce } from "@mui/material/utils";
 import { SettingsContext } from "../../providers/SettingsProvider";
+import Button from "@mui/material/Button";
 
 const Layout = ({
   children,
@@ -23,6 +24,7 @@ const Layout = ({
   setSearchQuery,
   searchInputRef,
   setSearchResult,
+  urlNewVersion,
 }: {
   children: ReactNode;
   summary: Summary | null;
@@ -30,6 +32,7 @@ const Layout = ({
   setSearchQuery: CallableFunction;
   searchInputRef: RefObject<HTMLInputElement>;
   setSearchResult: CallableFunction;
+  urlNewVersion: string | null;
 }) => {
   const settingContext = useContext(SettingsContext);
 
@@ -55,9 +58,19 @@ const Layout = ({
       >
         <Toolbar>
           <TimerIcon />
-          <Typography variant="h6" sx={{ ml: 1, flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            sx={{ ml: 1, flexGrow: urlNewVersion ? 0 : 1 }}
+          >
             MyTime
           </Typography>
+          {urlNewVersion && (
+            <Box sx={{ flexGrow: 1, display: "flex", pl: 5 }}>
+              <Button href={urlNewVersion} target="_blank" color="secondary">
+                New version available
+              </Button>
+            </Box>
+          )}
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
