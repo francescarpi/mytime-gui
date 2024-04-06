@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - "v*"
+    branches:
+      - feat/sign_app
   workflow_dispatch:
 
 jobs:
@@ -53,6 +55,7 @@ jobs:
           REACT_APP_GITHUB_TOKEN: ${{ secrets.LIST_RELEASES_TOKEN }}
           REACT_APP_GITHUB_OWNER: ${{ secrets.PROJECT_OWNER }}
           REACT_APP_GITHUB_REPO_NAME: mytime-gui
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
         with:
           tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
           releaseName: "MyTime v__VERSION__" # tauri-action replaces \_\_VERSION\_\_ with the app version.
