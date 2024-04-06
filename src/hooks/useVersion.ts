@@ -26,7 +26,7 @@ const useVersion = () => {
     });
 
     octokit
-      .request(`GET /repos/${owner}/${repo}/releases`, {
+      .request(`GET /repos/${owner}/${repo}/releases/latest`, {
         owner: "OWNER",
         repo: "REPO",
         headers: {
@@ -34,13 +34,12 @@ const useVersion = () => {
         },
       })
       .then((res) => {
-        const validReleases = res.data.filter((release: any) => !release.draft);
-        const lastRelease = validReleases[validReleases.length - 1];
-        const tag = lastRelease.tag_name;
-        const myVersion = `v${version}`;
-
-        if (myVersion !== tag) {
-          setUrlNewVersion(lastRelease.html_url);
+        if (
+          res.status === 200 &&
+          res.data &&
+          res.data.tag_name !== `v${version}`
+        ) {
+          setUrlNewVersion(res.data.html_url);
         }
       });
   }, [version]);
