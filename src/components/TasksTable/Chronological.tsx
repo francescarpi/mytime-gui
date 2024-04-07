@@ -7,17 +7,13 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Task } from "../../hooks/useTasks";
 import { formatDuration, dateToStrTime } from "../../utils/dates";
-import { IconButton } from "@mui/material";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import StopCircleIcon from "@mui/icons-material/StopCircle";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useConfirm } from "material-ui-confirm";
-import EditIcon from "@mui/icons-material/Edit";
 import SyncIndicator from "./SyncIndicator";
 import CopyStringToAddForm from "./CopyStringToAddForm";
-import Tooltip from "@mui/material/Tooltip";
 import CopyToClipboardBtn from "../CopyToClipboardBtn";
 import Box from "@mui/material/Box";
+import EditDeleteActions from "./EditDeleteActions";
+import StartStopActions from "./StartStopActions";
 
 const Chronological = ({
   tasks,
@@ -107,48 +103,18 @@ const Chronological = ({
               </TableCell>
               <TableCell align="right">
                 {!task.reported && (
-                  <>
-                    <Tooltip title="Delete task" placement="top">
-                      <IconButton
-                        size="small"
-                        onClick={() => deleteHandler(task.id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Edit task" placement="top">
-                      <IconButton
-                        size="small"
-                        onClick={() => setTaskToEdit(task)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </>
+                  <EditDeleteActions
+                    task={task}
+                    deleteHandler={deleteHandler}
+                    setTaskToEdit={setTaskToEdit}
+                  />
                 )}
                 <CopyToClipboardBtn onClick={() => copyToClipboard(task)} />
-                {task.end ? (
-                  <Tooltip title="Start task" placement="top">
-                    <IconButton
-                      size="small"
-                      onClick={() =>
-                        addTask(task.project, task.desc, task.external_id)
-                      }
-                    >
-                      <PlayCircleIcon />
-                    </IconButton>
-                  </Tooltip>
-                ) : (
-                  <Tooltip title="Stop task" placement="top">
-                    <IconButton
-                      size="small"
-                      onClick={() => stopTask(task.id)}
-                      color="error"
-                    >
-                      <StopCircleIcon />
-                    </IconButton>
-                  </Tooltip>
-                )}
+                <StartStopActions
+                  task={task}
+                  addTask={addTask}
+                  stopTask={stopTask}
+                />
               </TableCell>
             </TableRow>
           ))}

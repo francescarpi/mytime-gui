@@ -9,15 +9,12 @@ import Paper from "@mui/material/Paper";
 import { Task } from "../../hooks/useTasks";
 import { formatDuration } from "../../utils/dates";
 import Button from "@mui/material/Button";
-import { IconButton } from "@mui/material";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import StopCircleIcon from "@mui/icons-material/StopCircle";
 import GroupedModal from "./GroupedModal";
 import SyncIndicator from "./SyncIndicator";
 import CopyStringToAddForm from "./CopyStringToAddForm";
-import Tooltip from "@mui/material/Tooltip";
 import CopyToClipboardBtn from "../CopyToClipboardBtn";
 import Box from "@mui/material/Box";
+import StartStopActions from "./StartStopActions";
 
 const Grouped = ({
   tasks,
@@ -123,28 +120,11 @@ const Grouped = ({
                 </TableCell>
                 <TableCell align="right">
                   <CopyToClipboardBtn onClick={() => copyToClipboard(task)} />
-                  {!task.has_running_tasks ? (
-                    <Tooltip title="Start task" placement="top">
-                      <IconButton
-                        size="small"
-                        onClick={() =>
-                          addTask(task.project, task.desc, task.external_id)
-                        }
-                      >
-                        <PlayCircleIcon />
-                      </IconButton>
-                    </Tooltip>
-                  ) : (
-                    <Tooltip title="Stop task" placement="top">
-                      <IconButton
-                        size="small"
-                        onClick={() => stopTask(task.id)}
-                        color="error"
-                      >
-                        <StopCircleIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )}
+                  <StartStopActions
+                    task={task}
+                    addTask={addTask}
+                    stopTask={stopTask}
+                  />
                 </TableCell>
               </TableRow>
             ))}

@@ -10,12 +10,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { formatDuration, dateToStrTime } from "../../utils/dates";
 import Button from "@mui/material/Button";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useConfirm } from "material-ui-confirm";
-import { IconButton } from "@mui/material";
 import { StyledBox } from "../../styles/modal";
-import EditIcon from "@mui/icons-material/Edit";
-import Tooltip from "@mui/material/Tooltip";
+import EditDeleteActions from "./EditDeleteActions";
 
 const GroupedModal = ({
   task,
@@ -64,24 +61,11 @@ const GroupedModal = ({
                   </TableCell>
                   <TableCell align="right">
                     {!task.reported && (
-                      <>
-                        <Tooltip title="Delete task" placement="top">
-                          <IconButton
-                            size="small"
-                            onClick={() => deleteHandler(task.id)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Edit task" placement="top">
-                          <IconButton
-                            size="small"
-                            onClick={() => setTaskToEdit(task)}
-                          >
-                            <EditIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </>
+                      <EditDeleteActions
+                        task={task}
+                        deleteHandler={deleteHandler}
+                        setTaskToEdit={setTaskToEdit}
+                      />
                     )}
                   </TableCell>
                 </TableRow>
