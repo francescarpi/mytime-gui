@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "mytime",
-    "version": "0.2.4"
+    "version": "0.2.5"
   },
   "tauri": {
     "allowlist": {
@@ -36,7 +36,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.farpi.dev",
+      "identifier": "com.farpi.mytime",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
