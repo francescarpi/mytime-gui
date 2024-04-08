@@ -288,4 +288,20 @@ mod tests {
         let task = TasksRepository::get_task(&mut c, task.id).unwrap();
         assert!(!task.favourite);
     }
+
+    #[test]
+    fn favourites() {
+        // Setup
+        let mut c = get_db_connection();
+        let task = TasksRepository::add_task(&mut c, "Test task".to_string(), None, None).unwrap();
+        let _ = TasksRepository::toggle_favourite(&mut c, task.id);
+
+        // Test
+        let tasks = TasksRepository::favourites(&mut c).unwrap();
+        assert_eq!(tasks.len(), 1);
+
+        let _ = TasksRepository::toggle_favourite(&mut c, task.id);
+        let tasks = TasksRepository::favourites(&mut c).unwrap();
+        assert_eq!(tasks.len(), 0);
+    }
 }

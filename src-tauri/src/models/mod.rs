@@ -67,7 +67,7 @@ pub struct NewSetting {
     pub tour_completed: bool,
 }
 
-#[derive(Deserialize, Debug, Queryable, QueryableByName)]
+#[derive(Deserialize, Debug, Queryable, QueryableByName, Serialize)]
 #[diesel(table_name=tasks)]
 pub struct Task {
     pub id: i32,

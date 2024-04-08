@@ -55,11 +55,11 @@ const GroupedModal = ({
                   <TableCell align="center">
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                       <FavoriteAction
-                        task={task}
+                        task={child}
                         sx={{ mr: 1 }}
                         toggle={toggleFavourite}
                       />
-                      {task.id.toString()}
+                      {child.id.toString()}
                     </Box>
                   </TableCell>
                   <TableCell align="right">

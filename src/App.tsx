@@ -18,9 +18,11 @@ import useSearch from "./hooks/useSearch";
 import appTheme from "./styles/theme";
 import useClipboard from "./hooks/useClipboard";
 import useVersion from "./hooks/useVersion";
+import useFavorites from "./hooks/useFavourites";
 import TasksTableActionsHeader from "./components/TasksTableActionsHeader";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import Favourites from "./components/Favourites";
 
 const defaultAddTaskValuesReducer = (
   state: { proj: string; desc: string; extId: string },
@@ -43,6 +45,8 @@ const iniAddTaskValues = { proj: "", desc: "", extId: "" };
 
 const App = () => {
   const [openSync, setOpenSync] = useState<boolean>(false);
+
+  const [openFavorites, setOpenFavorites] = useState<boolean>(false);
 
   const [themePreview, setThemePreview] = useState<string | null>(null);
 
@@ -70,8 +74,9 @@ const App = () => {
     editTask,
     summary,
     refresh,
-    toggleFavourite,
   } = useTasks(date, setToday);
+
+  const { toggleFavourite, favourites, loadFavorites } = useFavorites(refresh);
 
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
 
@@ -104,6 +109,14 @@ const App = () => {
               onClose={() => setOpenSync(false)}
               refreshTasks={refresh}
             />
+            <Favourites
+              opened={openFavorites}
+              onClose={() => setOpenFavorites(false)}
+              favourites={favourites}
+              load={loadFavorites}
+              addTask={addTask}
+              toggleFavourite={toggleFavourite}
+            />
             <TaskEdition
               task={taskToEdit}
               onClose={() => setTaskToEdit(null)}
@@ -112,6 +125,7 @@ const App = () => {
             <Layout
               summary={summary}
               onPressSync={() => setOpenSync(true)}
+              onPressFavourites={() => setOpenFavorites(true)}
               setSearchQuery={setQuery}
               setSearchResult={setResult}
               searchInputRef={searchInputRef}

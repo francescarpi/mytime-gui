@@ -172,6 +172,13 @@ fn toggle_favourite(task_id: i32) {
     let _task_id = TasksRepository::toggle_favourite(&mut db, task_id);
 }
 
+#[command]
+fn favourites() -> Value {
+    let mut db = db::establish_connection();
+    let tasks = TasksRepository::favourites(&mut db).unwrap();
+    json!(tasks)
+}
+
 fn main() {
     let system_tray = SystemTray::new();
     tauri::Builder::default()
@@ -192,7 +199,8 @@ fn main() {
             delete_task,
             search,
             dates_with_tasks,
-            toggle_favourite
+            toggle_favourite,
+            favourites,
         ])
         .system_tray(system_tray)
         .run(tauri::generate_context!())

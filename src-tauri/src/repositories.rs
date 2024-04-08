@@ -279,4 +279,11 @@ impl TasksRepository {
             .set(tasks::favourite.eq(new_favourite))
             .execute(c)
     }
+
+    pub fn favourites(c: &mut SqliteConnection) -> QueryResult<Vec<Task>> {
+        tasks::table
+            .filter(tasks::favourite.eq(true))
+            .order(tasks::id)
+            .load::<Task>(c)
+    }
 }
