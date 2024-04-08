@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.2.7] - 2024-04-08
+
 ### Added
 
 - Add favourites tasks feature
