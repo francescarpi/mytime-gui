@@ -271,4 +271,12 @@ impl TasksRepository {
         .bind::<Text, _>(year)
         .load(c)
     }
+
+    pub fn toggle_favourite(c: &mut SqliteConnection, task_id: i32) -> QueryResult<usize> {
+        let task = Self::get_task(c, task_id).unwrap();
+        let new_favourite = !task.favourite;
+        diesel::update(tasks::table.find(task_id))
+            .set(tasks::favourite.eq(new_favourite))
+            .execute(c)
+    }
 }

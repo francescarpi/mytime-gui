@@ -70,6 +70,7 @@ const App = () => {
     editTask,
     summary,
     refresh,
+    toggleFavourite,
   } = useTasks(date, setToday);
 
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
@@ -146,6 +147,7 @@ const App = () => {
                     deleteTask={deleteTask}
                     setTaskToEdit={setTaskToEdit}
                     dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+                    toggleFavourite={toggleFavourite}
                   />
                 </CardContent>
               </Card>

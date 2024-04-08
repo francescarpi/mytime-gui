@@ -13,17 +13,20 @@ import Button from "@mui/material/Button";
 import { useConfirm } from "material-ui-confirm";
 import { StyledBox } from "../../styles/modal";
 import EditDeleteActions from "./EditDeleteActions";
+import FavoriteAction from "./FavouriteAction";
 
 const GroupedModal = ({
   task,
   onClose,
   deleteTask,
   setTaskToEdit,
+  toggleFavourite,
 }: {
   task: Task | null;
   onClose: CallableFunction;
   deleteTask: CallableFunction;
   setTaskToEdit: CallableFunction;
+  toggleFavourite: CallableFunction;
 }) => {
   const confirm = useConfirm();
   const deleteHandler = (id: number) => {
@@ -47,9 +50,18 @@ const GroupedModal = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {task?.children?.map((child, index) => (
+              {task?.children?.map((child) => (
                 <TableRow key={`${child.id}-${child.reported}-${child.end}`}>
-                  <TableCell align="center">{index + 1}</TableCell>
+                  <TableCell align="center">
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <FavoriteAction
+                        task={task}
+                        sx={{ mr: 1 }}
+                        toggle={toggleFavourite}
+                      />
+                      {task.id.toString()}
+                    </Box>
+                  </TableCell>
                   <TableCell align="right">
                     {dateToStrTime(child.start)}
                   </TableCell>

@@ -23,6 +23,7 @@ diesel::table! {
         reported -> Bool,
         external_id -> Nullable<Text>,
         project -> Nullable<Text>,
+        favourite -> Bool,
     }
 }
 

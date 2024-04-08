@@ -14,6 +14,7 @@ export interface Task {
   duration: number;
   has_running_tasks?: boolean;
   children?: Task[];
+  favourite: boolean;
 }
 
 export interface Summary {
@@ -99,6 +100,9 @@ const useTasks = (date: Dayjs, setToday: CallableFunction) => {
   const editTask = (task: Task) =>
     invoke("edit_task", { ...task }).then(() => refresh());
 
+  const toggleFavourite = (taskId: number) =>
+    invoke("toggle_favourite", { taskId }).then(() => refresh());
+
   return {
     tasks,
     groupedTasks,
@@ -108,6 +112,7 @@ const useTasks = (date: Dayjs, setToday: CallableFunction) => {
     editTask,
     refresh,
     summary,
+    toggleFavourite,
   };
 };
 

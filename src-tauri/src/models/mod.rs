@@ -77,6 +77,7 @@ pub struct Task {
     pub reported: bool,
     pub external_id: Option<String>,
     pub project: Option<String>,
+    pub favourite: bool,
 }
 
 #[derive(Deserialize, Debug, Queryable, QueryableByName, Serialize)]
@@ -89,6 +90,7 @@ pub struct TaskWithDuration {
     pub reported: bool,
     pub external_id: Option<String>,
     pub project: Option<String>,
+    pub favourite: bool,
     #[diesel(sql_type = Integer)]
     pub duration: i32,
 }

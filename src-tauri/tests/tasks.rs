@@ -28,6 +28,7 @@ mod tests {
         assert_eq!(new_task.start.time().hour(), now.time().hour());
         assert_eq!(new_task.start.time().minute(), now.time().minute());
         assert!(new_task.duration >= 0);
+        assert!(!new_task.favourite);
     }
 
     #[test]
@@ -127,6 +128,7 @@ mod tests {
         assert_eq!(tasks.len(), 2);
         assert_eq!(tasks[0].desc, "Task 2");
         assert_eq!(tasks[1].desc, "Task 1");
+        assert!(!tasks[0].favourite);
 
         let tasks =
             TasksRepository::search_tasks_with_duration(&mut c, "Project 1", Some(1)).unwrap();
@@ -268,5 +270,22 @@ mod tests {
         let response = TasksRepository::dates_with_tasks(&mut c, now.month(), now.year()).unwrap();
         assert_eq!(response.len(), 1);
         assert_eq!(response[0].date, now.date());
+    }
+
+    #[test]
+    fn toggle_favourite() {
+        // Setup
+        let mut c = get_db_connection();
+        let task = TasksRepository::add_task(&mut c, "Test task".to_string(), None, None).unwrap();
+        assert!(!task.favourite);
+
+        // Test
+        let _ = TasksRepository::toggle_favourite(&mut c, task.id);
+        let task = TasksRepository::get_task(&mut c, task.id).unwrap();
+        assert!(task.favourite);
+
+        let _ = TasksRepository::toggle_favourite(&mut c, task.id);
+        let task = TasksRepository::get_task(&mut c, task.id).unwrap();
+        assert!(!task.favourite);
     }
 }

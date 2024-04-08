@@ -15,6 +15,7 @@ const TasksTable = ({
   setTaskToEdit,
   dispatchDefaultAddTaskValues,
   searchMode,
+  toggleFavourite,
 }: {
   tasks: Task[];
   groupedTasks: Task[];
@@ -25,6 +26,7 @@ const TasksTable = ({
   setTaskToEdit: CallableFunction;
   dispatchDefaultAddTaskValues: CallableFunction;
   searchMode: boolean;
+  toggleFavourite: CallableFunction;
 }) => {
   const settingsContext = useContext(SettingsContext);
   return (
@@ -45,6 +47,7 @@ const TasksTable = ({
           deleteTask={deleteTask}
           setTaskToEdit={setTaskToEdit}
           dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+          toggleFavourite={toggleFavourite}
         />
       ) : (
         <Chronological
@@ -55,6 +58,7 @@ const TasksTable = ({
           deleteTask={deleteTask}
           setTaskToEdit={setTaskToEdit}
           dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+          toggleFavourite={toggleFavourite}
         />
       )}
     </Box>

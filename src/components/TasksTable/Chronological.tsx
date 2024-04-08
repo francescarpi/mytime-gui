@@ -14,6 +14,7 @@ import CopyToClipboardBtn from "../CopyToClipboardBtn";
 import Box from "@mui/material/Box";
 import EditDeleteActions from "./EditDeleteActions";
 import StartStopActions from "./StartStopActions";
+import FavoriteAction from "./FavouriteAction";
 
 const Chronological = ({
   tasks,
@@ -23,6 +24,7 @@ const Chronological = ({
   deleteTask,
   setTaskToEdit,
   dispatchDefaultAddTaskValues,
+  toggleFavourite,
 }: {
   tasks: Task[];
   addTask: CallableFunction;
@@ -31,6 +33,7 @@ const Chronological = ({
   deleteTask: CallableFunction;
   setTaskToEdit: CallableFunction;
   dispatchDefaultAddTaskValues: CallableFunction;
+  toggleFavourite: CallableFunction;
 }) => {
   const confirm = useConfirm();
   const deleteHandler = (id: number) => {
@@ -60,7 +63,16 @@ const Chronological = ({
         <TableBody>
           {tasks.map((task) => (
             <TableRow key={`${task.id}-${task.reported}-${task.end}`}>
-              <TableCell align="center">{task.id.toString()}</TableCell>
+              <TableCell align="center">
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <FavoriteAction
+                    task={task}
+                    sx={{ mr: 1 }}
+                    toggle={toggleFavourite}
+                  />
+                  {task.id.toString()}
+                </Box>
+              </TableCell>
               <TableCell sx={{ textWrap: "nowrap" }}>
                 <CopyStringToAddForm
                   dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
