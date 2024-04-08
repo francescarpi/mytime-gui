@@ -24,6 +24,7 @@ const Grouped = ({
   deleteTask,
   setTaskToEdit,
   dispatchDefaultAddTaskValues,
+  toggleFavourite,
 }: {
   tasks: Task[];
   addTask: CallableFunction;
@@ -32,6 +33,7 @@ const Grouped = ({
   deleteTask: CallableFunction;
   setTaskToEdit: CallableFunction;
   dispatchDefaultAddTaskValues: CallableFunction;
+  toggleFavourite: CallableFunction;
 }) => {
   const [taskDetails, setTaskDetails] = useState<Task | null>(null);
 
@@ -53,6 +55,7 @@ const Grouped = ({
         onClose={() => setTaskDetails(null)}
         deleteTask={deleteTask}
         setTaskToEdit={setTaskToEdit}
+        toggleFavourite={toggleFavourite}
       />
       <TableContainer component={Paper} variant="outlined">
         <Table sx={{ minWidth: 650 }} size="small">

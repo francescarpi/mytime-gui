@@ -14,6 +14,7 @@ export interface Task {
   duration: number;
   has_running_tasks?: boolean;
   children?: Task[];
+  favourite: boolean;
 }
 
 export interface Summary {

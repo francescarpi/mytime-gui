@@ -1,0 +1,2 @@
+ALTER TABLE tasks
+  ADD COLUMN favourite BOOLEAN NOT NULL DEFAULT false;

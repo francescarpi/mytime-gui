@@ -16,11 +16,13 @@ import { DarkModeSwitch } from "../../styles/switch";
 import { debounce } from "@mui/material/utils";
 import { SettingsContext } from "../../providers/SettingsProvider";
 import Button from "@mui/material/Button";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
 const Layout = ({
   children,
   summary,
   onPressSync,
+  onPressFavourites,
   setSearchQuery,
   searchInputRef,
   setSearchResult,
@@ -29,6 +31,7 @@ const Layout = ({
   children: ReactNode;
   summary: Summary | null;
   onPressSync: CallableFunction;
+  onPressFavourites: CallableFunction;
   setSearchQuery: CallableFunction;
   searchInputRef: RefObject<HTMLInputElement>;
   setSearchResult: CallableFunction;
@@ -95,6 +98,13 @@ const Layout = ({
               onBlur={() => resetSearch()}
             />
           </Search>
+          <IconButton
+            color="inherit"
+            sx={{ ml: 1 }}
+            onClick={() => onPressFavourites()}
+          >
+            <BookmarkBorderIcon />
+          </IconButton>
           {settingContext.isIntegrationValid && (
             <IconButton
               color="inherit"
