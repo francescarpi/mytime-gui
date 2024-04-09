@@ -245,8 +245,7 @@ mod tests {
         let _ = TasksRepository::stop(&mut c, task2.id);
 
         // Test
-        let response =
-            TasksRepository::mark_tasks_as_reported(&mut c, format!("{},{}", task1.id, task2.id));
+        let response = TasksRepository::mark_tasks_as_reported(&mut c, &[task1.id, task2.id]);
         assert!(response.is_ok());
 
         let tasks = TasksRepository::grouped_tasks(&mut c).unwrap();

@@ -240,8 +240,13 @@ impl TasksRepository {
 
     pub fn mark_tasks_as_reported(
         c: &mut SqliteConnection,
-        ids: String,
+        ids: &[i32],
     ) -> Result<usize, diesel::result::Error> {
+        let ids = ids
+            .iter()
+            .map(|id| id.to_string())
+            .collect::<Vec<String>>()
+            .join(", ");
         let query = format!("UPDATE tasks SET reported = true WHERE id IN ({})", ids);
         sql_query(query).execute(c)
     }

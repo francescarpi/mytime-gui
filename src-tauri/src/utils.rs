@@ -15,4 +15,10 @@ pub mod dates {
 
         new_date.to_rfc3339()
     }
+
+    pub fn format_duration(duration: i32) -> String {
+        let hours = duration / 3600;
+        let minutes = (duration % 3600) / 60;
+        format!("{}h{}m", hours, minutes)
+    }
 }

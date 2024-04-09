@@ -1,5 +1,5 @@
 use crate::models::integration::IntegrationType;
-use crate::models::Setting;
+use crate::models::{GroupedTask, Setting};
 use redmine::Redmine;
 use std::fmt;
 
@@ -12,6 +12,7 @@ pub enum Error {
     CheckExternalIdError,
     UnauthorizedError,
     UnkownHostError,
+    TaskNotFound,
 }
 
 impl fmt::Display for Error {
@@ -21,20 +22,14 @@ impl fmt::Display for Error {
             Error::CheckExternalIdError => write!(f, "Invalid external ID"),
             Error::UnauthorizedError => write!(f, "Unauthorized"),
             Error::UnkownHostError => write!(f, "Unkown host"),
+            Error::TaskNotFound => write!(f, "Task not found"),
         }
     }
 }
 
 // Integration trait
 pub trait Integration {
-    fn send_task(
-        &self,
-        settings: &Setting,
-        desc: String,
-        date: String,
-        duration: String,
-        external_id: String,
-    ) -> Result<(), Error>;
+    fn send_task(&self, settings: &Setting, task: &GroupedTask) -> Result<(), Error>;
 }
 
 pub fn get_integration(settings: &Setting) -> Option<impl Integration> {

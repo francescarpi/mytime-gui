@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
 import { invoke } from "@tauri-apps/api";
-import { formatDuration } from "../utils/dates";
 
 export interface SyncTask {
   date: string;
@@ -20,11 +19,7 @@ const useSync = () => {
   const send = (task: SyncTask): Promise<void> => {
     console.log("Send task", task);
     return invoke("send_to_integration", {
-      description: task.desc,
-      date: task.date,
-      duration: formatDuration(task.duration),
       externalId: task.external_id,
-      ids: task.ids.join(","),
     });
   };
 
