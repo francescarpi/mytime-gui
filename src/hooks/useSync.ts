@@ -16,10 +16,10 @@ const useSync = () => {
     invoke("group_tasks").then((t) => setTasks(t as SyncTask[]));
   }, []);
 
-  const send = (task: SyncTask): Promise<void> => {
-    console.log("Send task", task);
+  const send = (index: number): Promise<void> => {
+    console.log("Send task with index:", index);
     return invoke("send_to_integration", {
-      externalId: task.external_id,
+      index,
     });
   };
 

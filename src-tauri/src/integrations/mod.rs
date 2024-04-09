@@ -12,7 +12,6 @@ pub enum Error {
     CheckExternalIdError,
     UnauthorizedError,
     UnkownHostError,
-    TaskNotFound,
 }
 
 impl fmt::Display for Error {
@@ -22,7 +21,6 @@ impl fmt::Display for Error {
             Error::CheckExternalIdError => write!(f, "Invalid external ID"),
             Error::UnauthorizedError => write!(f, "Unauthorized"),
             Error::UnkownHostError => write!(f, "Unkown host"),
-            Error::TaskNotFound => write!(f, "Task not found"),
         }
     }
 }

@@ -75,9 +75,9 @@ const Sync = ({
     setIsSending(true);
     dispatchSuccess({ type: "reset" });
 
-    const promises = tasks.map(async (task) => {
+    const promises = tasks.map(async (task, index) => {
       dispatchSuccess({ type: "sending", externalId: task.external_id });
-      return send(task)
+      return send(index)
         .then(() =>
           dispatchSuccess({ type: "success", externalId: task.external_id }),
         )
