@@ -214,6 +214,7 @@ impl TasksRepository {
         sql_query(format!(
             "
             SELECT
+                GROUP_CONCAT(id, '-') AS id,
                 external_id,
                 SUM({}) AS duration,
                 desc,
@@ -231,7 +232,8 @@ impl TasksRepository {
                 desc,
                 STRFTIME('%Y-%m-%d', start)
             ORDER BY
-                STRFTIME('%Y-%m-%d', start) DESC
+                STRFTIME('%Y-%m-%d', start) DESC,
+                id
         ",
             DURATION_SQL
         ))

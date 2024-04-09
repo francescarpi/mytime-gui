@@ -122,13 +122,13 @@ fn group_tasks() -> Value {
 }
 
 #[command]
-async fn send_to_integration(index: u32) -> Result<(), String> {
+async fn send_to_integration(id: String) -> Result<(), String> {
     let mut db = db::establish_connection();
     let settings = SettingsRepository::get_settings(&mut db).unwrap();
 
     if let Some(integration) = get_integration(&settings) {
         let tasks = TasksRepository::grouped_tasks(&mut db).unwrap();
-        let task = tasks.get(index as usize).unwrap();
+        let task = tasks.iter().find(|task| task.id == id).unwrap();
         match integration.send_task(&settings, task) {
             Ok(_) => {
                 let _ = TasksRepository::mark_tasks_as_reported(&mut db, &task.ids.0);

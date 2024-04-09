@@ -214,6 +214,7 @@ mod tests {
         let response = TasksRepository::grouped_tasks(&mut c).unwrap();
 
         assert_eq!(response.len(), 1);
+        assert_eq!(response[0].id, "1-2");
         assert_eq!(response[0].external_id, "1234");
         assert!(response[0].duration >= 0);
         assert_eq!(response[0].desc, "Test task");
