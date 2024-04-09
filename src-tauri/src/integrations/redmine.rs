@@ -1,5 +1,6 @@
 use super::{Error, Integration};
-use crate::models::Setting;
+use crate::models::{GroupedTask, Setting};
+use crate::utils::dates::format_duration;
 use oxhttp::model::{Method, Request, Status};
 use oxhttp::Client;
 use serde_json::json;
@@ -15,14 +16,7 @@ impl Default for Redmine {
 }
 
 impl Integration for Redmine {
-    fn send_task(
-        &self,
-        settings: &Setting,
-        desc: String,
-        date: String,
-        duration: String,
-        external_id: String,
-    ) -> Result<(), Error> {
+    fn send_task(&self, settings: &Setting, task: &GroupedTask) -> Result<(), Error> {
         let mut url = Url::parse(settings.integration_url.as_ref().unwrap()).unwrap();
         if !url.path().ends_with('/') {
             url.path_segments_mut().unwrap().push("");
@@ -32,10 +26,10 @@ impl Integration for Redmine {
         let token = &settings.integration_token.as_ref().unwrap();
         let body = json!({
             "time_entry": {
-                "issue_id": external_id,
-                "hours": duration,
-                "comments": desc,
-                "spent_on": date,
+                "issue_id": task.external_id,
+                "hours": format_duration(task.duration),
+                "comments": task.desc,
+                "spent_on": task.date.to_string()
             }
         });
 
