@@ -122,22 +122,19 @@ fn group_tasks() -> Value {
 }
 
 #[command]
-async fn send_to_integration(external_id: String) -> Result<(), String> {
+async fn send_to_integration(id: String) -> Result<(), String> {
     let mut db = db::establish_connection();
     let settings = SettingsRepository::get_settings(&mut db).unwrap();
 
     if let Some(integration) = get_integration(&settings) {
         let tasks = TasksRepository::grouped_tasks(&mut db).unwrap();
-        if let Some(task) = tasks.iter().find(|task| task.external_id == external_id) {
-            match integration.send_task(&settings, task) {
-                Ok(_) => {
-                    let _ = TasksRepository::mark_tasks_as_reported(&mut db, &task.ids.0);
-                    Ok(())
-                }
-                Err(err) => Err(err.to_string()),
+        let task = tasks.iter().find(|task| task.id == id).unwrap();
+        match integration.send_task(&settings, task) {
+            Ok(_) => {
+                let _ = TasksRepository::mark_tasks_as_reported(&mut db, &task.ids.0);
+                Ok(())
             }
-        } else {
-            Err(integrations::Error::TaskNotFound.to_string())
+            Err(err) => Err(err.to_string()),
         }
     } else {
         Err(integrations::Error::IntegrationDoesNotExistError.to_string())

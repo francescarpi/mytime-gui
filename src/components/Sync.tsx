@@ -29,13 +29,13 @@ const successReducer = (
     case "reset":
       return {};
     case "sending":
-      state[action.externalId] = { sending: true };
+      state[action.id] = { sending: true };
       return state;
     case "success":
-      state[action.externalId] = { success: true, sending: false };
+      state[action.id] = { success: true, sending: false };
       return state;
     case "error":
-      state[action.externalId] = {
+      state[action.id] = {
         success: false,
         error: action.error,
         sending: false,
@@ -63,6 +63,7 @@ const Sync = ({
   useEffect(() => {
     loadTasks();
     dispatchSuccess({ type: "reset" });
+    setTasksSent(false);
   }, [opened, loadTasks]);
 
   const closeHandler = () => {
@@ -76,15 +77,13 @@ const Sync = ({
     dispatchSuccess({ type: "reset" });
 
     const promises = tasks.map(async (task) => {
-      dispatchSuccess({ type: "sending", externalId: task.external_id });
-      return send(task)
-        .then(() =>
-          dispatchSuccess({ type: "success", externalId: task.external_id }),
-        )
+      dispatchSuccess({ type: "sending", id: task.id });
+      return send(task.id)
+        .then(() => dispatchSuccess({ type: "success", id: task.id }))
         .catch((error) =>
           dispatchSuccess({
             type: "error",
-            externalId: task.external_id,
+            id: task.id,
             error,
           }),
         );
@@ -98,20 +97,20 @@ const Sync = ({
   };
 
   const renderIcon = (task: SyncTask) => {
-    if (success[task.external_id] === undefined) {
+    if (success[task.id] === undefined) {
       return <CloudOffIcon />;
     }
 
-    if (success[task.external_id].sending) {
+    if (success[task.id].sending) {
       return <CircularProgress size={20} />;
     }
 
-    if (success[task.external_id].success) {
+    if (success[task.id].success) {
       return <CloudDoneIcon color="success" />;
     }
 
     return (
-      <Tooltip title={success[task.external_id].error}>
+      <Tooltip title={success[task.id].error}>
         <ThunderstormIcon color="error" />
       </Tooltip>
     );
@@ -142,7 +141,7 @@ const Sync = ({
               </TableHead>
               <TableBody>
                 {tasks.map((task) => (
-                  <TableRow key={task.ids.join("_")}>
+                  <TableRow key={task.id}>
                     <TableCell align="left">{task.desc}</TableCell>
                     <TableCell align="left" sx={{ textWrap: "nowrap" }}>
                       {task.date}

@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { invoke } from "@tauri-apps/api";
 
 export interface SyncTask {
+  id: string;
   date: string;
   desc: string;
   duration: number;
@@ -16,10 +17,10 @@ const useSync = () => {
     invoke("group_tasks").then((t) => setTasks(t as SyncTask[]));
   }, []);
 
-  const send = (task: SyncTask): Promise<void> => {
-    console.log("Send task", task);
+  const send = (id: string): Promise<void> => {
+    console.log("Send task with ID:", id);
     return invoke("send_to_integration", {
-      externalId: task.external_id,
+      id,
     });
   };
 

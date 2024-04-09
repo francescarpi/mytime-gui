@@ -106,6 +106,8 @@ pub struct Duration {
 #[diesel()]
 pub struct GroupedTask {
     #[diesel(sql_type = Text)]
+    pub id: String,
+    #[diesel(sql_type = Text)]
     pub external_id: String,
     #[diesel(sql_type = Integer)]
     pub duration: i32,
