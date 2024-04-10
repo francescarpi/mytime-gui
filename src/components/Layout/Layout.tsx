@@ -27,6 +27,7 @@ const Layout = ({
   searchInputRef,
   setSearchResult,
   urlNewVersion,
+  version,
 }: {
   children: ReactNode;
   summary: Summary | null;
@@ -36,6 +37,7 @@ const Layout = ({
   searchInputRef: RefObject<HTMLInputElement>;
   setSearchResult: CallableFunction;
   urlNewVersion: string | null;
+  version: string | null;
 }) => {
   const settingContext = useContext(SettingsContext);
 
@@ -64,24 +66,9 @@ const Layout = ({
       >
         <Toolbar>
           <TimerIcon />
-          <Typography
-            variant="h6"
-            sx={{ ml: 1, flexGrow: urlNewVersion ? 0 : 1 }}
-          >
+          <Typography variant="h6" sx={{ ml: 1, flexGrow: 1 }}>
             MyTime
           </Typography>
-          {urlNewVersion && (
-            <Box sx={{ flexGrow: 1, display: "flex", pl: 5 }}>
-              <Button
-                href={urlNewVersion}
-                target="_blank"
-                color="warning"
-                variant="outlined"
-              >
-                New version available
-              </Button>
-            </Box>
-          )}
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -160,6 +147,23 @@ const Layout = ({
               value={summary?.worked_week || 0}
             />
           </Box>
+          {version && (
+            <Box sx={{ mr: 2, display: "flex", alignItems: "center" }}>
+              <Typography variant="subtitle2">Version: {version}</Typography>
+              {urlNewVersion && (
+                <Button
+                  size="small"
+                  href={urlNewVersion}
+                  target="_blank"
+                  color="warning"
+                  variant="outlined"
+                  sx={{ ml: 2 }}
+                >
+                  New version available
+                </Button>
+              )}
+            </Box>
+          )}
           <DarkModeSwitch
             checked={Boolean(settingContext.setting?.dark_mode)}
             onChange={(e) => settingContext.toggleDarkMode(e.target.checked)}
