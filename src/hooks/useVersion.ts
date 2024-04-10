@@ -38,7 +38,7 @@ const useVersion = () => {
         .then((res) => {
           if (res.status === 200) {
             console.log("Latest version:", res.data.tag_name);
-            if (res.data.tag_name !== `v${version}`) {
+            if (!res.data.draft && res.data.tag_name !== `v${version}`) {
               setUrlNewVersion(res.data.html_url);
             }
           }

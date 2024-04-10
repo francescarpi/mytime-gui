@@ -72,7 +72,12 @@ const Layout = ({
           </Typography>
           {urlNewVersion && (
             <Box sx={{ flexGrow: 1, display: "flex", pl: 5 }}>
-              <Button href={urlNewVersion} target="_blank" color="secondary">
+              <Button
+                href={urlNewVersion}
+                target="_blank"
+                color="warning"
+                variant="outlined"
+              >
                 New version available
               </Button>
             </Box>

@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - Integration tasks sent code refactored
+- The color of the "new version" button has been changed
 
 ## [v0.2.7] - 2024-04-08
 
