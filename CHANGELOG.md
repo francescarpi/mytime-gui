@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - Notification of new version has been moved to the bottom of the page
+- Snackbar messages moved to the bottom center of the page
 
 ## [v0.2.8] - 2024-04-09
 
