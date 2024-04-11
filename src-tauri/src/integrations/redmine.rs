@@ -3,7 +3,7 @@ use crate::models::{GroupedTask, Setting};
 use crate::utils::dates::format_duration;
 use oxhttp::model::{Method, Request, Status};
 use oxhttp::Client;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json;
 
 #[derive(Debug, Deserialize)]
@@ -11,7 +11,7 @@ pub struct RedmineError {
     pub errors: Vec<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct RedmineTimeActivity {
     pub id: i32,
     pub name: String,
@@ -92,7 +92,7 @@ impl Redmine {
         request
     }
 
-    pub fn get_activities(settings: &Setting) -> Vec<RedmineTimeActivity> {
+    pub fn activities(settings: &Setting) -> Vec<RedmineTimeActivity> {
         let url = Self::prepare_url(
             settings,
             vec![

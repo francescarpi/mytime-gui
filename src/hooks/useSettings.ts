@@ -7,6 +7,7 @@ export interface Setting {
   integration: string | null;
   integration_url: string | null;
   integration_token: string | null;
+  integration_extra_param: string | null;
   work_hours: {
     monday: number;
     tuesday: number;

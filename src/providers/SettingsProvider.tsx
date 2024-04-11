@@ -2,6 +2,7 @@ import { createContext, ReactNode, useState, useEffect } from "react";
 import { Setting } from "../hooks/useSettings";
 import useSettings from "../hooks/useSettings";
 import Settings from "../components/Settings/Settings";
+import useRedmine from "../hooks/useRedmine";
 
 const SettingsContext = createContext<{
   setting: Setting | null;
@@ -42,6 +43,8 @@ const SettingsProvider = ({
 
   const [show, setShow] = useState<boolean>(false);
 
+  const { activities: redmineActivities } = useRedmine();
+
   useEffect(() => {
     if (setting) {
       setTheme(setting.theme);
@@ -67,6 +70,7 @@ const SettingsProvider = ({
         saveSetting={saveSettings}
         setThemePreview={setThemePreview}
         refreshTasks={refreshTasks}
+        redmineActivities={redmineActivities}
       />
       {children}
     </SettingsContext.Provider>
