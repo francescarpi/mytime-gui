@@ -5,7 +5,6 @@ use oxhttp::model::{Method, Request, Status};
 use oxhttp::Client;
 use serde::Deserialize;
 use serde_json;
-use url::Url;
 
 #[derive(Debug, Deserialize)]
 pub struct RedmineError {
@@ -23,12 +22,7 @@ impl Default for Redmine {
 
 impl Integration for Redmine {
     fn send_task(&self, settings: &Setting, task: &GroupedTask) -> Result<(), Error> {
-        let mut url = Url::parse(settings.integration_url.as_ref().unwrap()).unwrap();
-        if !url.path().ends_with('/') {
-            url.path_segments_mut().unwrap().push("");
-        }
-        url.path_segments_mut().unwrap().push("time_entries.json");
-
+        let url = Self::prepare_url(settings, "time_entries.json".to_string());
         let token = &settings.integration_token.as_ref().unwrap();
         let body = serde_json::json!({
             "time_entry": {
