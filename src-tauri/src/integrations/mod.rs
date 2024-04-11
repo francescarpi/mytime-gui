@@ -30,12 +30,14 @@ impl fmt::Display for Error {
 pub trait Integration {
     fn send_task(&self, settings: &Setting, task: &GroupedTask) -> Result<(), Error>;
 
-    fn prepare_url(settings: &Setting, suffix: String) -> String {
+    fn prepare_url(settings: &Setting, suffix: Vec<String>) -> String {
         let mut url = Url::parse(settings.integration_url.as_ref().unwrap()).unwrap();
         if !url.path().ends_with('/') {
             url.path_segments_mut().unwrap().push("");
         }
-        url.path_segments_mut().unwrap().push(&suffix);
+        for s in suffix.iter() {
+            url.path_segments_mut().unwrap().push(s);
+        }
         url.as_str().to_string()
     }
 }
