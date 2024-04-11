@@ -80,13 +80,14 @@ const Sync = ({
       dispatchSuccess({ type: "sending", id: task.id });
       return send(task.id)
         .then(() => dispatchSuccess({ type: "success", id: task.id }))
-        .catch((error) =>
+        .catch((error) => {
+          console.log(error);
           dispatchSuccess({
             type: "error",
             id: task.id,
             error,
-          }),
-        );
+          });
+        });
     });
 
     Promise.all(promises).then(() => {

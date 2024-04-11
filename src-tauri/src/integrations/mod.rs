@@ -9,18 +9,18 @@ pub mod redmine;
 #[derive(Debug)]
 pub enum Error {
     IntegrationDoesNotExistError,
-    CheckExternalIdError,
     UnauthorizedError,
     UnkownHostError,
+    GenericError(Vec<String>),
 }
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Error::IntegrationDoesNotExistError => write!(f, "Integration type does not exist"),
-            Error::CheckExternalIdError => write!(f, "Invalid external ID"),
             Error::UnauthorizedError => write!(f, "Unauthorized"),
             Error::UnkownHostError => write!(f, "Unkown host"),
+            Error::GenericError(e) => write!(f, "{:?}", e.join(", ")),
         }
     }
 }

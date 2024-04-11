@@ -3,8 +3,14 @@ use crate::models::{GroupedTask, Setting};
 use crate::utils::dates::format_duration;
 use oxhttp::model::{Method, Request, Status};
 use oxhttp::Client;
-use serde_json::json;
+use serde::Deserialize;
+use serde_json;
 use url::Url;
+
+#[derive(Debug, Deserialize)]
+pub struct RedmineError {
+    pub errors: Vec<String>,
+}
 
 #[derive(Debug)]
 pub struct Redmine {}
@@ -24,7 +30,7 @@ impl Integration for Redmine {
         url.path_segments_mut().unwrap().push("time_entries.json");
 
         let token = &settings.integration_token.as_ref().unwrap();
-        let body = json!({
+        let body = serde_json::json!({
             "time_entry": {
                 "issue_id": task.external_id,
                 "hours": format_duration(task.duration),
@@ -46,7 +52,9 @@ impl Integration for Redmine {
                 if response.status() == Status::UNAUTHORIZED {
                     return Err(Error::UnauthorizedError);
                 }
-                Err(Error::CheckExternalIdError)
+                let response_body = response.into_body().to_string().unwrap();
+                let error = serde_json::from_str::<RedmineError>(&response_body).unwrap();
+                Err(Error::GenericError(error.errors))
             }
             Err(_) => Err(Error::UnkownHostError),
         }
