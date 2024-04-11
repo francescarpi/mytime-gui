@@ -7,6 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { RedmineActivity } from "../../hooks/useRedmine";
+import RedmineActivitySelect from "../RedmineActivitySelect";
 
 const Integration = ({
   setting,
@@ -28,10 +29,10 @@ const Integration = ({
   const onChangeIntegrationToken = (e: any) =>
     setSetting({ ...setting, integration_token: e.target.value });
 
-  const onChangeRedmineActivity = (e: SelectChangeEvent) => {
+  const onChangeRedmineActivity = (value: string) => {
     setSetting({
       ...setting,
-      integration_extra_param: e.target.value,
+      integration_extra_param: value,
     });
   };
 
@@ -85,27 +86,11 @@ const Integration = ({
         </Grid>
         {setting?.integration === "Redmine" && (
           <Grid item md={12}>
-            <FormControl fullWidth>
-              <InputLabel id="redmineActivity">
-                Default Activity for Redmine
-              </InputLabel>
-              <Select
-                labelId="redmineActivity"
-                id="redmineActivity"
-                label="Default Activity for Redmine"
-                value={setting?.integration_extra_param || ""}
-                onChange={onChangeRedmineActivity}
-              >
-                {redmineActivities.map((activity) => (
-                  <MenuItem
-                    value={activity.id.toString()}
-                    key={`ra-${activity.id}`}
-                  >
-                    {activity.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <RedmineActivitySelect
+              activities={redmineActivities}
+              value={setting?.integration_extra_param}
+              onChange={onChangeRedmineActivity}
+            />
           </Grid>
         )}
       </Grid>

@@ -34,7 +34,12 @@ impl Default for Redmine {
 }
 
 impl Integration for Redmine {
-    fn send_task(&self, settings: &Setting, task: &GroupedTask) -> Result<(), Error> {
+    fn send_task(
+        &self,
+        settings: &Setting,
+        task: &GroupedTask,
+        extra_param: Option<String>,
+    ) -> Result<(), Error> {
         let url = Self::prepare_url(settings, vec!["time_entries.json".to_string()]);
         let token = &settings.integration_token.as_ref().unwrap();
         let body = serde_json::json!({
@@ -42,7 +47,8 @@ impl Integration for Redmine {
                 "issue_id": task.external_id,
                 "hours": format_duration(task.duration),
                 "comments": task.desc,
-                "spent_on": task.date.to_string()
+                "spent_on": task.date.to_string(),
+                "activity_id": extra_param,
             }
         });
 

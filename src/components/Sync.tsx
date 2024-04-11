@@ -18,6 +18,8 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import CircularProgress from "@mui/material/CircularProgress";
 import { SettingsContext } from "../providers/SettingsProvider";
+import { RedmineActivity } from "../hooks/useRedmine";
+import RedmineActivitySelect from "./RedmineActivitySelect";
 
 const successReducer = (
   state: {
@@ -49,16 +51,20 @@ const Sync = ({
   opened,
   onClose,
   refreshTasks,
+  redmineActivities,
 }: {
   opened: boolean;
   onClose: CallableFunction;
   refreshTasks: CallableFunction;
+  redmineActivities: RedmineActivity[];
 }) => {
+  const settingContext = useContext(SettingsContext);
   const [isSending, setIsSending] = useState<boolean>(false);
-  const { tasks, loadTasks, send } = useSync();
+  const { tasks, loadTasks, send } = useSync(
+    settingContext.setting?.integration_extra_param || null,
+  );
   const [success, dispatchSuccess] = useReducer(successReducer, {});
   const [tasksSent, setTasksSent] = useState<boolean>(false);
-  const settingContext = useContext(SettingsContext);
 
   useEffect(() => {
     loadTasks();
@@ -78,7 +84,7 @@ const Sync = ({
 
     const promises = tasks.map(async (task) => {
       dispatchSuccess({ type: "sending", id: task.id });
-      return send(task.id)
+      return send(task.id, task.extra_param)
         .then(() => dispatchSuccess({ type: "success", id: task.id }))
         .catch((error) => {
           console.log(error);
@@ -119,7 +125,7 @@ const Sync = ({
 
   return (
     <Modal open={opened} onClose={closeHandler}>
-      <StyledBox>
+      <StyledBox width={1000}>
         <Typography variant="h5" sx={{ mb: 4 }}>
           Send tasks to {settingContext.setting?.integration}
         </Typography>
@@ -137,6 +143,9 @@ const Sync = ({
                   <TableCell align="right" sx={{ textWrap: "nowrap" }}>
                     Task Ids
                   </TableCell>
+                  {settingContext.setting?.integration === "Redmine" && (
+                    <TableCell align="center">Activity</TableCell>
+                  )}
                   <TableCell align="center">Status</TableCell>
                 </TableRow>
               </TableHead>
@@ -152,6 +161,16 @@ const Sync = ({
                     </TableCell>
                     <TableCell align="right">{task.external_id}</TableCell>
                     <TableCell align="right">{task.ids.join(", ")}</TableCell>
+                    {settingContext.setting?.integration === "Redmine" && (
+                      <TableCell align="center">
+                        <RedmineActivitySelect
+                          size="small"
+                          activities={redmineActivities}
+                          value={task.extra_param}
+                          onChange={(val: string) => (task.extra_param = val)}
+                        />
+                      </TableCell>
+                    )}
                     <TableCell align="center">{renderIcon(task)}</TableCell>
                   </TableRow>
                 ))}

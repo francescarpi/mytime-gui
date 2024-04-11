@@ -28,7 +28,12 @@ impl fmt::Display for Error {
 
 // Integration trait
 pub trait Integration {
-    fn send_task(&self, settings: &Setting, task: &GroupedTask) -> Result<(), Error>;
+    fn send_task(
+        &self,
+        settings: &Setting,
+        task: &GroupedTask,
+        extra_param: Option<String>,
+    ) -> Result<(), Error>;
 
     fn prepare_url(settings: &Setting, suffix: Vec<String>) -> String {
         let mut url = Url::parse(settings.integration_url.as_ref().unwrap()).unwrap();
