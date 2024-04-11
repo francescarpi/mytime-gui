@@ -2,7 +2,6 @@ use crate::schema::*;
 use chrono::{Datelike, NaiveDate, NaiveDateTime};
 use diesel::deserialize::QueryableByName;
 use diesel::sql_types::{Date, Integer, Text};
-use diesel::Insertable;
 use diesel::{deserialize::Queryable, query_builder::AsChangeset};
 use serde::{Deserialize, Serialize};
 
@@ -24,6 +23,7 @@ pub struct Setting {
     pub view_type: view_type::ViewType,
     pub dark_mode: bool,
     pub tour_completed: bool,
+    pub integration_extra_param: Option<String>,
 }
 
 impl Setting {
@@ -52,19 +52,6 @@ impl Setting {
         total += self.work_hours.sunday;
         total * 3600.0
     }
-}
-
-#[derive(Insertable, Serialize)]
-#[diesel(table_name=settings)]
-pub struct NewSetting {
-    pub integration: Option<integration::IntegrationType>,
-    pub integration_url: Option<String>,
-    pub integration_token: Option<String>,
-    pub work_hours: work_hours::WorkHours,
-    pub theme: String,
-    pub view_type: view_type::ViewType,
-    pub dark_mode: bool,
-    pub tour_completed: bool,
 }
 
 #[derive(Deserialize, Debug, Queryable, QueryableByName, Serialize)]

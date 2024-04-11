@@ -2,6 +2,7 @@ import { createContext, ReactNode, useState, useEffect } from "react";
 import { Setting } from "../hooks/useSettings";
 import useSettings from "../hooks/useSettings";
 import Settings from "../components/Settings/Settings";
+import { RedmineActivity } from "../hooks/useRedmine";
 
 const SettingsContext = createContext<{
   setting: Setting | null;
@@ -24,6 +25,7 @@ const SettingsProvider = ({
   setTheme,
   setDarkMode,
   setViewModeGrouped,
+  redmineActivities,
 }: {
   children: ReactNode;
   setThemePreview: CallableFunction;
@@ -31,6 +33,7 @@ const SettingsProvider = ({
   setTheme: CallableFunction;
   setDarkMode: CallableFunction;
   setViewModeGrouped: CallableFunction;
+  redmineActivities: RedmineActivity[];
 }) => {
   const {
     setting,
@@ -67,6 +70,7 @@ const SettingsProvider = ({
         saveSetting={saveSettings}
         setThemePreview={setThemePreview}
         refreshTasks={refreshTasks}
+        redmineActivities={redmineActivities}
       />
       {children}
     </SettingsContext.Provider>

@@ -19,6 +19,7 @@ import appTheme from "./styles/theme";
 import useClipboard from "./hooks/useClipboard";
 import useVersion from "./hooks/useVersion";
 import useFavorites from "./hooks/useFavourites";
+import useRedmine from "./hooks/useRedmine";
 import TasksTableActionsHeader from "./components/TasksTableActionsHeader";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -92,6 +93,8 @@ const App = () => {
 
   const { urlNewVersion, version } = useVersion();
 
+  const { activities: redmineActivities } = useRedmine();
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -101,6 +104,7 @@ const App = () => {
         setTheme={setTheme}
         setDarkMode={setDarkMode}
         setViewModeGrouped={setViewModeGrouped}
+        redmineActivities={redmineActivities}
       >
         <SnackbarProvider
           maxSnack={2}
@@ -112,6 +116,7 @@ const App = () => {
               opened={openSync}
               onClose={() => setOpenSync(false)}
               refreshTasks={refresh}
+              redmineActivities={redmineActivities}
             />
             <Favourites
               opened={openFavorites}

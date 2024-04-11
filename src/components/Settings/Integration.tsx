@@ -6,13 +6,17 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { RedmineActivity } from "../../hooks/useRedmine";
+import RedmineActivitySelect from "../RedmineActivitySelect";
 
 const Integration = ({
   setting,
   setSetting,
+  redmineActivities,
 }: {
   setting: Setting | null;
   setSetting: CallableFunction;
+  redmineActivities: RedmineActivity[];
 }) => {
   const onChangeIntegration = (e: SelectChangeEvent) => {
     const integration = e.target.value === "Disabled" ? null : e.target.value;
@@ -25,6 +29,13 @@ const Integration = ({
   const onChangeIntegrationToken = (e: any) =>
     setSetting({ ...setting, integration_token: e.target.value });
 
+  const onChangeRedmineActivity = (value: string) => {
+    setSetting({
+      ...setting,
+      integration_extra_param: value,
+    });
+  };
+
   return (
     <Box>
       <Grid container spacing={2}>
@@ -34,8 +45,8 @@ const Integration = ({
             <Select
               labelId="integrationType"
               id="integrationType"
+              label="Type"
               value={(setting?.integration as string) || "Disabled"}
-              label="Age"
               onChange={onChangeIntegration}
             >
               <MenuItem value={"Disabled"}>Disabled</MenuItem>
@@ -73,6 +84,15 @@ const Integration = ({
             }}
           />
         </Grid>
+        {setting?.integration === "Redmine" && (
+          <Grid item md={12}>
+            <RedmineActivitySelect
+              activities={redmineActivities}
+              value={setting?.integration_extra_param}
+              onChange={onChangeRedmineActivity}
+            />
+          </Grid>
+        )}
       </Grid>
     </Box>
   );

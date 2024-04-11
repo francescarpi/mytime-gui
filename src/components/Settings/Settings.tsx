@@ -15,6 +15,7 @@ import WorkingTime from "./WorkingTime";
 import Generic from "./Generic";
 import { useSnackbar } from "notistack";
 import Shortcuts from "./Shortcuts";
+import { RedmineActivity } from "../../hooks/useRedmine";
 
 const Settings = ({
   opened,
@@ -23,6 +24,7 @@ const Settings = ({
   saveSetting,
   setThemePreview,
   refreshTasks,
+  redmineActivities,
 }: {
   opened: boolean;
   onClose: CallableFunction;
@@ -30,6 +32,7 @@ const Settings = ({
   saveSetting: CallableFunction;
   setThemePreview: CallableFunction;
   refreshTasks: CallableFunction;
+  redmineActivities: RedmineActivity[];
 }) => {
   const [activeTab, setActiveTab] = useState<string>("1");
   const [tmpSetting, setTmpSetting] = useState<Setting | null>(null);
@@ -81,7 +84,11 @@ const Settings = ({
               />
             </TabPanel>
             <TabPanel value="2">
-              <Integration setting={tmpSetting} setSetting={setTmpSetting} />
+              <Integration
+                setting={tmpSetting}
+                setSetting={setTmpSetting}
+                redmineActivities={redmineActivities}
+              />
             </TabPanel>
             <TabPanel value="3">
               <WorkingTime setting={tmpSetting} setSetting={setTmpSetting} />

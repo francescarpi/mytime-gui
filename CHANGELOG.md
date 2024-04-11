@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+
+- Allow select an activity type for the Redmine tasks
+
 ### Changed
 
 - Notification of new version has been moved to the bottom of the page

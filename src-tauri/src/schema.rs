@@ -11,6 +11,7 @@ diesel::table! {
         view_type -> Text,
         dark_mode -> Bool,
         tour_completed -> Bool,
+        integration_extra_param -> Nullable<Text>,
     }
 }
 
