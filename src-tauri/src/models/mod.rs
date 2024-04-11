@@ -23,6 +23,7 @@ pub struct Setting {
     pub view_type: view_type::ViewType,
     pub dark_mode: bool,
     pub tour_completed: bool,
+    pub integration_extra_param: Option<String>,
 }
 
 impl Setting {
