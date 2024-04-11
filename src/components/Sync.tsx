@@ -20,6 +20,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { SettingsContext } from "../providers/SettingsProvider";
 import { RedmineActivity } from "../hooks/useRedmine";
 import RedmineActivitySelect from "./RedmineActivitySelect";
+import Alert from "@mui/material/Alert";
 
 const successReducer = (
   state: {
@@ -130,6 +131,9 @@ const Sync = ({
           Send tasks to {settingContext.setting?.integration}
         </Typography>
         <Box>
+          {settingContext.setting?.integration === 'Redmine' && !settingContext.setting?.integration_extra_param && (
+            <Alert severity="warning" variant="outlined" sx={{ mb: 2 }}>Go to Settings -&gt; Integrations and set a default activity for redmine.</Alert>
+          )}
           <TableContainer>
             <Table size="small">
               <TableHead>
