@@ -181,6 +181,19 @@ fn redmine_activities() -> Value {
     json!(integrations::redmine::Redmine::activities(&settings))
 }
 
+#[command]
+fn info(app_handle: tauri::AppHandle) -> Value {
+    let package_info = app_handle.package_info();
+    let mut db = db::establish_connection();
+
+    json!({
+        "version": package_info.version,
+        "authors": package_info.authors,
+        "db_path": db::db_path(),
+        "total_tasks": TasksRepository::total_tasks(&mut db).unwrap(),
+    })
+}
+
 fn main() {
     let system_tray = SystemTray::new();
     tauri::Builder::default()
@@ -203,7 +216,8 @@ fn main() {
             dates_with_tasks,
             toggle_favourite,
             favourites,
-            redmine_activities
+            redmine_activities,
+            info,
         ])
         .system_tray(system_tray)
         .run(tauri::generate_context!())
