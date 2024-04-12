@@ -14,6 +14,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - The setting save button is disabled if the settings are not modified
 
+### Fixed
+
+- Fix a but where the start date was mark as invalid after edit another task
+
 ## [v0.2.9] - 2024-04-11
 
 ### Added
