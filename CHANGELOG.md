@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Add info tab to the settings page
 
+### Changed
+
+- The setting save button is disabled if the settings are not modified
+
 ## [v0.2.9] - 2024-04-11
 
 ### Added

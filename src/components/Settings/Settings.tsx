@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { SyntheticEvent, useState } from "react";
 import Modal from "@mui/material/Modal";
 import { StyledBox } from "../../styles/modal";
@@ -17,6 +17,7 @@ import { useSnackbar } from "notistack";
 import Shortcuts from "./Shortcuts";
 import { RedmineActivity } from "../../hooks/useRedmine";
 import Info from "./Info";
+import { areEquals } from "../../utils/objects";
 
 const Settings = ({
   opened,
@@ -56,6 +57,10 @@ const Settings = ({
     setThemePreview(null);
     onClose();
   };
+
+  const disableSave = useMemo(() => {
+    return !setting || !tmpSetting || areEquals(setting, tmpSetting);
+  }, [tmpSetting, setting]);
 
   return (
     <Modal open={opened} onClose={() => onClose()}>
@@ -107,7 +112,7 @@ const Settings = ({
           <Button variant="contained" onClick={cancelHandler} color="secondary">
             Close
           </Button>
-          <Button variant="contained" sx={{ ml: 2 }} onClick={saveHandler}>
+          <Button variant="contained" sx={{ ml: 2 }} onClick={saveHandler} disabled={disableSave}>
             Save
           </Button>
         </Box>
