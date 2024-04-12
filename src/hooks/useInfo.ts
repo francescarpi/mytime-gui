@@ -13,7 +13,6 @@ const useInfo = () => {
 
   useEffect(() => {
     invoke("info").then((i) => {
-      console.log(i);
       setInfo(i as AppInfo);
     });
   }, []);
