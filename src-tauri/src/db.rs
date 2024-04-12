@@ -15,7 +15,7 @@ fn db_dir() -> AppDirs {
     AppDirs::new(Some("mytime"), true).unwrap()
 }
 
-fn db_path() -> String {
+pub fn db_path() -> String {
     let app_dirs = db_dir();
     app_dirs
         .data_dir

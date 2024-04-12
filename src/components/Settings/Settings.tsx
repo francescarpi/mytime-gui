@@ -16,6 +16,7 @@ import Generic from "./Generic";
 import { useSnackbar } from "notistack";
 import Shortcuts from "./Shortcuts";
 import { RedmineActivity } from "../../hooks/useRedmine";
+import Info from "./Info";
 
 const Settings = ({
   opened,
@@ -74,6 +75,7 @@ const Settings = ({
                 <Tab label="Integrations" value="2" />
                 <Tab label="Working Time" value="3" />
                 <Tab label="Shortcuts" value="4" />
+                <Tab label="Info" value="5" />
               </TabList>
             </Box>
             <TabPanel value="1">
@@ -95,6 +97,9 @@ const Settings = ({
             </TabPanel>
             <TabPanel value="4">
               <Shortcuts />
+            </TabPanel>
+            <TabPanel value="5">
+              <Info />
             </TabPanel>
           </TabContext>
         </Box>

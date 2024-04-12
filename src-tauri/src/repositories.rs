@@ -293,4 +293,8 @@ impl TasksRepository {
             .order(tasks::id)
             .load::<Task>(c)
     }
+
+    pub fn total_tasks(c: &mut SqliteConnection) -> QueryResult<i64> {
+        tasks::table.count().get_result(c)
+    }
 }

@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+
+- Add info tab to the settings page
+
 ## [v0.2.9] - 2024-04-11
 
 ### Added
