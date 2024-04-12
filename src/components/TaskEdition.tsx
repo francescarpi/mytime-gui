@@ -33,8 +33,13 @@ const TaskEdition = ({
     setProject(task?.project || "");
     setDescription(task?.desc || "");
     setExternalId(task?.external_id || "");
+
     if (task?.start) setStart(dayjs(task.start));
-    if (task?.end) setEnd(dayjs(task.end));
+    if (task?.end) {
+      setEnd(dayjs(task.end));
+    } else {
+      setEnd(null);
+    }
 
     // Hack to avoid show the fields with error while the popup is openning.
     if (task) {
