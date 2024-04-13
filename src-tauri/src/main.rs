@@ -18,6 +18,12 @@ use repositories::{SettingsRepository, TasksRepository};
 use serde::Serialize;
 use serde_json::{json, Value};
 
+#[cfg(target_os = "linux")]
+use std::{fs::metadata, path::PathBuf};
+
+#[cfg(target_os = "linux")]
+use fork::{daemon, Fork};
+
 #[derive(Debug, Clone, Serialize)]
 struct Summary {
     pub worked_today: i32,

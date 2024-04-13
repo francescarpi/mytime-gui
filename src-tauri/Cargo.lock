@@ -69,6 +69,7 @@ dependencies = [
  "chrono",
  "diesel",
  "diesel_migrations",
+ "fork",
  "libsqlite3-sys",
  "oxhttp",
  "platform-dirs",
@@ -812,6 +813,15 @@ name = "foreign-types-shared"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "00b0228411908ca8685dba7fc2cdd70ec9990a6e753e89b6ac91a84c40fbaf4b"
+
+[[package]]
+name = "fork"
+version = "0.1.23"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "60e74d3423998a57e9d906e49252fb79eb4a04d5cdfe188fb1b7ff9fc076a8ed"
+dependencies = [
+ "libc",
+]
 
 [[package]]
 name = "form_urlencoded"
