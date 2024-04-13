@@ -26,7 +26,7 @@ diesel = { version = "2.1.5", features = ["chrono", "sqlite", "r2d2"] }
 diesel_migrations = "2.1.0"
 libsqlite3-sys = { version = "0.28.0", features = ["bundled"] }
 url = "2.5.0"
-fork = "0.1"
+fork = "0.1.23"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.
