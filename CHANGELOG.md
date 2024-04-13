@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 
 - Add info tab to the settings page
+- Add button to open the folder that contains the database file
 
 ### Changed
 
