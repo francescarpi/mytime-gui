@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - The setting save button is disabled if the settings are not modified
+- The integration token field type has been changed to "password"
 
 ### Fixed
 

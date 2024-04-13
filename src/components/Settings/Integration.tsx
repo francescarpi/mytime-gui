@@ -75,6 +75,7 @@ const Integration = ({
             fullWidth
             value={setting?.integration_token}
             onChange={onChangeIntegrationToken}
+            type="password"
             inputProps={{
               autoComplete: "off",
               autoCorrect: "off",
