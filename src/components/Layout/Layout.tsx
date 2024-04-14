@@ -4,7 +4,6 @@ import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import TimerIcon from "@mui/icons-material/Timer";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -17,6 +16,7 @@ import { debounce } from "@mui/material/utils";
 import { SettingsContext } from "../../providers/SettingsProvider";
 import Button from "@mui/material/Button";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import Logo from "../../statics/images/logo.png"
 
 const Layout = ({
   children,
@@ -65,7 +65,7 @@ const Layout = ({
         enableColorOnDark
       >
         <Toolbar>
-          <TimerIcon />
+          <img src={Logo} width="35" />
           <Typography variant="h6" sx={{ ml: 1, flexGrow: 1 }}>
             MyTime
           </Typography>
