@@ -1,4 +1,6 @@
-# mytime-gui
+# mytime
+
+![Logo](./app-icon.png)
 
 MyTime is an application to track your working time. It allows you register your daily tasks, calculate its duration
 and synchronize with your ticketing system. At them moment is only integrated with Redmine.
