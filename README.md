@@ -11,7 +11,7 @@ Initial screen:
 ![Screenshot 1](./captures/cap1.jpeg)
 
 App with running tasks:
-![Screenshot 2](./captures/cap2.jpeg)
+![Screenshot 2](./captures/cap2.png)
 
 Synchronize your tasks with Redmine
 ![Screenshot 3](./captures/cap3.png)
