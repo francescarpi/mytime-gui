@@ -65,7 +65,7 @@ const Layout = ({
         enableColorOnDark
       >
         <Toolbar>
-          <img src={Logo} width="35" />
+          <img src={Logo} width="35" alt="Logo" />
           <Typography variant="h6" sx={{ ml: 1, flexGrow: 1 }}>
             MyTime
           </Typography>
