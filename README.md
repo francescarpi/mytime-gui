@@ -1,6 +1,8 @@
 # mytime
 
-<img src="./app-icon.png" width="200">
+<div align="center">
+  <img src="./app-icon.png" width="200">
+</div>
 
 MyTime is an application to track your working time. It allows you register your daily tasks, calculate its duration
 and synchronize with your ticketing system. At them moment is only integrated with Redmine.
