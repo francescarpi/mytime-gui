@@ -20,8 +20,8 @@ Synchronize your tasks with Redmine
 
 It uses *sqlite3* to manage the database. It's stored at:
 
-* Linux & Mac: `$HOME/.local/share/mytime/mytime.db`
-* Windows: `C:\Users\%USERNAME%\AppData\Local\mytime\mytime.db`
+* Linux & Mac: `$HOME/.local/share/mytime/mytime.sqlite`
+* Windows: `C:\Users\%USERNAME%\AppData\Local\mytime\mytime.sqlite`
 
 ## Development
 
