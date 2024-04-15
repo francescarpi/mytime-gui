@@ -63,7 +63,7 @@ const Grouped = ({
             <TableRow>
               <TableCell>Project</TableCell>
               <TableCell>Description</TableCell>
-              <TableCell align="center">External Id</TableCell>
+              <TableCell align="right">External Id</TableCell>
               <TableCell align="right">Duration</TableCell>
               <TableCell align="center">Reported</TableCell>
               <TableCell align="center">Tasks</TableCell>

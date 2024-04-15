@@ -50,7 +50,7 @@ const Chronological = ({
             <TableCell align="center">#</TableCell>
             <TableCell>Project</TableCell>
             <TableCell>Description</TableCell>
-            <TableCell align="center">External Id</TableCell>
+            <TableCell align="right">External Id</TableCell>
             <TableCell align="right">Started</TableCell>
             <TableCell align="right">Ended</TableCell>
             <TableCell align="right">Duration</TableCell>
