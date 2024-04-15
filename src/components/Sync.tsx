@@ -61,7 +61,7 @@ const Sync = ({
 }) => {
   const settingContext = useContext(SettingsContext);
   const [isSending, setIsSending] = useState<boolean>(false);
-  const { tasks, loadTasks, send } = useSync(
+  const { tasks, loadTasks, send, updateTaskExtraParam } = useSync(
     settingContext.setting?.integration_extra_param || null,
   );
   const [success, dispatchSuccess] = useReducer(successReducer, {});
@@ -124,6 +124,11 @@ const Sync = ({
     );
   };
 
+  const handleChangeActivity = (task: SyncTask, activity: string) => {
+    updateTaskExtraParam(task.id, activity);
+    setTasksSent(false);
+  };
+
   return (
     <Modal open={opened} onClose={closeHandler}>
       <StyledBox width={1000}>
@@ -131,9 +136,13 @@ const Sync = ({
           Send tasks to {settingContext.setting?.integration}
         </Typography>
         <Box>
-          {settingContext.setting?.integration === 'Redmine' && !settingContext.setting?.integration_extra_param && (
-            <Alert severity="warning" variant="outlined" sx={{ mb: 2 }}>Go to Settings -&gt; Integrations and set a default activity for redmine.</Alert>
-          )}
+          {settingContext.setting?.integration === "Redmine" &&
+            !settingContext.setting?.integration_extra_param && (
+              <Alert severity="warning" variant="outlined" sx={{ mb: 2 }}>
+                Go to Settings -&gt; Integrations and set a default activity for
+                redmine.
+              </Alert>
+            )}
           <TableContainer>
             <Table size="small">
               <TableHead>
@@ -171,7 +180,9 @@ const Sync = ({
                           size="small"
                           activities={redmineActivities}
                           value={task.extra_param}
-                          onChange={(val: string) => (task.extra_param = val)}
+                          onChange={(val: string) =>
+                            handleChangeActivity(task, val)
+                          }
                         />
                       </TableCell>
                     )}

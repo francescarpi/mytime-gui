@@ -35,7 +35,14 @@ const useSync = (integration_extra_param: string | null) => {
     });
   };
 
-  return { tasks, loadTasks, send };
+  const updateTaskExtraParam = (id: string, extraParam: string | null) => {
+    const newTasks = [...tasks];
+    const taskFound = newTasks.find((t) => t.id === id) as SyncTask;
+    taskFound.extra_param = extraParam;
+    setTasks(newTasks);
+  };
+
+  return { tasks, loadTasks, send, updateTaskExtraParam };
 };
 
 export default useSync;
