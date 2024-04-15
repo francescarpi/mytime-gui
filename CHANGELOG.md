@@ -6,9 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.3.1] - 2024-04-15
+
 ### Changed
 
 - Change the systray icon
+
+
+### Fixed
+
+- Fixed a bug when trying to compare settings
 
 ## [v0.3.0] - 2024-04-14
 
