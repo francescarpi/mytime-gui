@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getVersion } from "@tauri-apps/api/app";
 import { Octokit } from "@octokit/core";
+import semver from "semver";
 
 const useVersion = () => {
   const [version, setVersion] = useState<string | null>(null);
@@ -37,8 +38,10 @@ const useVersion = () => {
         })
         .then((res) => {
           if (res.status === 200) {
-            console.log("Latest version:", res.data.tag_name);
-            if (!res.data.draft && res.data.tag_name !== `v${version}`) {
+            const tagToVersion = res.data.tag_name.replace("v", "");
+            console.log("Current version:", version);
+            console.log("Latest version:", tagToVersion);
+            if (!res.data.draft && semver.gt(tagToVersion, version)) {
               setUrlNewVersion(res.data.html_url);
             }
           }

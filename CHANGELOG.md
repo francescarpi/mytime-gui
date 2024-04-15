@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - Align external id string to the right
+- Improved how a new version is detected
 
 ## [v0.3.2] - 2024-04-15
 
