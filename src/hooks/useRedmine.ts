@@ -15,6 +15,7 @@ const useRedmine = () => {
         id: a.id,
         name: a.name,
       })) as RedmineActivity[];
+      actv.sort((a, b) => a.name.localeCompare(b.name));
       setActivities(actv);
     });
   }, []);
