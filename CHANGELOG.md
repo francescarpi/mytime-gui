@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- Change the systray icon
+
 ## [v0.3.0] - 2024-04-14
 
 ### Added
@@ -19,7 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - The setting save button is disabled if the settings are not modified
 - The integration token field type has been changed to "password"
 
-### Fixed
+### Fixed
 
 - Fix a but where the start date was mark as invalid after edit another task
 
