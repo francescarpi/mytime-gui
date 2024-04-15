@@ -116,11 +116,7 @@ impl Redmine {
                     let activities =
                         serde_json::from_str::<RedmineTimeActivities>(&response_body).unwrap();
 
-                    return activities
-                        .time_entry_activities
-                        .into_iter()
-                        .filter(|activity| activity.active)
-                        .collect::<Vec<RedmineTimeActivity>>();
+                    return activities.time_entry_activities;
                 }
                 vec![]
             }
