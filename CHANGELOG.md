@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.3.2] - 2024-04-15
+
+### Fixed
+
+- Fix areEquals method
+
 ## [v0.3.1] - 2024-04-15
 
 ### Changed

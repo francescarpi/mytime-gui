@@ -1,9 +1,5 @@
 const areEquals = (obj1: any, obj2: any) => {
-  if (obj1 === null || obj2 === null) {
-    return true
-  }
-
-  if (typeof obj1 !== 'object' || typeof obj2 !== 'object') {
+  if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 === null || obj2 === null) {
     return obj1 === obj2;
   }
 
