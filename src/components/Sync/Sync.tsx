@@ -1,7 +1,7 @@
 import { useEffect, useState, useReducer, useContext } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import { StyledBox } from "../styles/modal";
+import { StyledBox } from "../../styles/modal";
 import Typography from "@mui/material/Typography";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,25 +9,18 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import useSync, { SyncTask } from "../hooks/useSync";
-import { formatDuration } from "../utils/dates";
-import CloudOffIcon from "@mui/icons-material/CloudOff";
-import CloudDoneIcon from "@mui/icons-material/CloudDone";
-import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
+import useSync, { SyncTask } from "../../hooks/useSync";
+import { formatDuration } from "../../utils/dates";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 import CircularProgress from "@mui/material/CircularProgress";
-import { SettingsContext } from "../providers/SettingsProvider";
-import { RedmineActivity } from "../hooks/useRedmine";
-import RedmineActivitySelect from "./RedmineActivitySelect";
-import Alert from "@mui/material/Alert";
+import { SettingsContext } from "../../providers/SettingsProvider";
+import { RedmineActivity } from "../../hooks/useRedmine";
+import RedmineActivitySelect from "./../RedmineActivitySelect";
+import { SuccessType } from "./types";
+import TaskIcon from "./TaskIcon";
 
-const successReducer = (
-  state: {
-    [key: string]: { success?: boolean; error?: string; sending: boolean };
-  },
-  action: any,
-) => {
+import Alert from "@mui/material/Alert";
+const successReducer = (state: SuccessType, action: any) => {
   switch (action.type) {
     case "reset":
       return {};
@@ -66,22 +59,32 @@ const Sync = ({
   const [tasksSent, setTasksSent] = useState<boolean>(false);
 
   useEffect(() => {
+    // When the modal is opened or closed, reset the success state
     loadTasks();
     dispatchSuccess({ type: "reset" });
     setTasksSent(false);
   }, [opened, loadTasks]);
 
   useEffect(() => {
+    // Load the project activities for each task
     if (opened && tasks.length) {
-      tasks.forEach((task) => {
-        if (projectActivities[task.external_id] === undefined) {
-          loadProjectActivities(task.external_id);
+      const uniqueExternalIds = Object.keys(
+        tasks.reduce((acc: { [key: string]: boolean }, task: SyncTask) => {
+          acc[task.external_id] = true;
+          return acc;
+        }, {}),
+      );
+
+      uniqueExternalIds.forEach((externalId) => {
+        if (projectActivities[externalId] === undefined) {
+          loadProjectActivities(externalId);
         }
       });
     }
   }, [opened, tasks, projectActivities, loadProjectActivities]);
 
   useEffect(() => {
+    // Set the default activity for redmine tasks
     const defaultActivityName = redmineActivities.find(
       (act) =>
         act.id.toString() === settingContext.setting?.integration_extra_param,
@@ -141,26 +144,6 @@ const Sync = ({
       setTasksSent(true);
       refreshTasks();
     });
-  };
-
-  const renderIcon = (task: SyncTask) => {
-    if (success[task.id] === undefined) {
-      return <CloudOffIcon />;
-    }
-
-    if (success[task.id].sending) {
-      return <CircularProgress size={20} />;
-    }
-
-    if (success[task.id].success) {
-      return <CloudDoneIcon color="success" />;
-    }
-
-    return (
-      <Tooltip title={success[task.id].error}>
-        <ThunderstormIcon color="error" />
-      </Tooltip>
-    );
   };
 
   const handleChangeActivity = (task: SyncTask, activity: string) => {
@@ -240,7 +223,9 @@ const Sync = ({
                         </Box>
                       </TableCell>
                     )}
-                    <TableCell align="center">{renderIcon(task)}</TableCell>
+                    <TableCell align="center">
+                      <TaskIcon task={task} success={success} />
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

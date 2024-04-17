@@ -8,7 +8,7 @@ import Layout from "./components/Layout/Layout";
 import TasksTable from "./components/TasksTable/TasksTable";
 import AddTaskForm from "./components/AddTaskForm";
 import TaskEdition from "./components/TaskEdition";
-import Sync from "./components/Sync";
+import Sync from "./components/Sync/Sync";
 import { SettingsProvider } from "./providers/SettingsProvider";
 
 import useDate from "./hooks/useDate";
