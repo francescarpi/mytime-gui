@@ -119,6 +119,7 @@ const Sync = ({
 
     const promises = tasks.map(async (task) => {
       if (success[task.id] && success[task.id].success) {
+        dispatchSuccess({ type: "success", id: task.id });
         return;
       }
 
@@ -224,7 +225,10 @@ const Sync = ({
                             activities={
                               projectActivities[task.external_id] || []
                             }
-                            disabled={!projectActivities[task.external_id]}
+                            disabled={
+                              !projectActivities[task.external_id] ||
+                              success[task.id]?.success
+                            }
                             value={task.extra_param}
                             onChange={(val: string) =>
                               handleChangeActivity(task, val)
