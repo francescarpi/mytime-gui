@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.3.3] - 2024-04-17
+
 ### Added
 
 - Improve how redmine activities are loaded. Now, they are loaded by project
