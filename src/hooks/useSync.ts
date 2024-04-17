@@ -11,21 +11,21 @@ export interface SyncTask {
   extra_param: string | null;
 }
 
-const useSync = (integration_extra_param: string | null) => {
+const useSync = () => {
   const [tasks, setTasks] = useState<SyncTask[]>([]);
 
   const loadTasks = useCallback(() => {
     invoke("group_tasks").then((ts) => {
       const tsks = (ts as SyncTask[]).reduce(
         (acc: SyncTask[], cur: SyncTask) => {
-          acc.push({ ...cur, extra_param: integration_extra_param });
+          acc.push({ ...cur, extra_param: null });
           return acc;
         },
         [],
       );
       setTasks(tsks);
     });
-  }, [integration_extra_param]);
+  }, []);
 
   const send = (id: string, extraParam: string | null): Promise<void> => {
     console.log("Send task with ID:", id, extraParam);

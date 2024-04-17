@@ -93,7 +93,11 @@ const App = () => {
 
   const { urlNewVersion, version } = useVersion();
 
-  const { activities: redmineActivities } = useRedmine();
+  const {
+    activities: redmineActivities,
+    projectActivities,
+    loadProjectActivities,
+  } = useRedmine();
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -117,6 +121,8 @@ const App = () => {
               onClose={() => setOpenSync(false)}
               refreshTasks={refresh}
               redmineActivities={redmineActivities}
+              projectActivities={projectActivities}
+              loadProjectActivities={loadProjectActivities}
             />
             <Favourites
               opened={openFavorites}

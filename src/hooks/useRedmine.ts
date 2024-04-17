@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import { invoke } from "@tauri-apps/api";
 
 export interface RedmineActivity {
@@ -6,8 +6,23 @@ export interface RedmineActivity {
   name: string;
 }
 
+const projectActivitiesReducer = (
+  state: { [key: string]: RedmineActivity[] },
+  action: any,
+) => {
+  switch (action.type) {
+    case "set":
+      return { ...state, [action.id]: action.activities };
+  }
+  return state;
+};
+
 const useRedmine = () => {
   const [activities, setActivities] = useState<RedmineActivity[]>([]);
+  const [projectActivities, dispatchProjectActivities] = useReducer(
+    projectActivitiesReducer,
+    {},
+  );
 
   useEffect(() => {
     invoke("redmine_activities").then((res) => {
@@ -20,7 +35,16 @@ const useRedmine = () => {
     });
   }, []);
 
-  return { activities };
+  const loadProjectActivities = (externalId: string) =>
+    invoke("redmine_project_activities", { externalId }).then((res: any) => {
+      dispatchProjectActivities({
+        type: "set",
+        id: externalId,
+        activities: res as RedmineActivity[],
+      });
+    });
+
+  return { activities, projectActivities, loadProjectActivities };
 };
 
 export default useRedmine;

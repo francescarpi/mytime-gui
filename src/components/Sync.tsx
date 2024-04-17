@@ -32,18 +32,14 @@ const successReducer = (
     case "reset":
       return {};
     case "sending":
-      state[action.id] = { sending: true };
-      return state;
+      return { ...state, [action.id]: { sending: true } };
     case "success":
-      state[action.id] = { success: true, sending: false };
-      return state;
+      return { ...state, [action.id]: { success: true, sending: false } };
     case "error":
-      state[action.id] = {
-        success: false,
-        error: action.error,
-        sending: false,
+      return {
+        ...state,
+        [action.id]: { success: false, error: action.error, sending: false },
       };
-      return state;
   }
   return state;
 };
@@ -53,17 +49,19 @@ const Sync = ({
   onClose,
   refreshTasks,
   redmineActivities,
+  projectActivities,
+  loadProjectActivities,
 }: {
   opened: boolean;
   onClose: CallableFunction;
   refreshTasks: CallableFunction;
   redmineActivities: RedmineActivity[];
+  projectActivities: { [key: string]: RedmineActivity[] };
+  loadProjectActivities: CallableFunction;
 }) => {
   const settingContext = useContext(SettingsContext);
   const [isSending, setIsSending] = useState<boolean>(false);
-  const { tasks, loadTasks, send, updateTaskExtraParam } = useSync(
-    settingContext.setting?.integration_extra_param || null,
-  );
+  const { tasks, loadTasks, send, updateTaskExtraParam } = useSync();
   const [success, dispatchSuccess] = useReducer(successReducer, {});
   const [tasksSent, setTasksSent] = useState<boolean>(false);
 
@@ -72,6 +70,16 @@ const Sync = ({
     dispatchSuccess({ type: "reset" });
     setTasksSent(false);
   }, [opened, loadTasks]);
+
+  useEffect(() => {
+    if (opened && tasks.length) {
+      tasks.forEach((task) => {
+        if (projectActivities[task.external_id] === undefined) {
+          loadProjectActivities(task.external_id);
+        }
+      });
+    }
+  }, [opened, tasks, projectActivities, loadProjectActivities]);
 
   const closeHandler = () => {
     if (!isSending) {
@@ -129,6 +137,10 @@ const Sync = ({
     setTasksSent(false);
   };
 
+  if (!opened) {
+    return null;
+  }
+
   return (
     <Modal open={opened} onClose={closeHandler}>
       <StyledBox width={1000}>
@@ -175,15 +187,23 @@ const Sync = ({
                     <TableCell align="right">{task.external_id}</TableCell>
                     <TableCell align="right">{task.ids.join(", ")}</TableCell>
                     {settingContext.setting?.integration === "Redmine" && (
-                      <TableCell align="center">
-                        <RedmineActivitySelect
-                          size="small"
-                          activities={redmineActivities}
-                          value={task.extra_param}
-                          onChange={(val: string) =>
-                            handleChangeActivity(task, val)
-                          }
-                        />
+                      <TableCell>
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <RedmineActivitySelect
+                            size="small"
+                            activities={
+                              projectActivities[task.external_id] || []
+                            }
+                            disabled={!projectActivities[task.external_id]}
+                            value={task.extra_param}
+                            onChange={(val: string) =>
+                              handleChangeActivity(task, val)
+                            }
+                          />
+                          {!projectActivities[task.external_id] && (
+                            <CircularProgress size={20} sx={{ ml: 2 }} />
+                          )}
+                        </Box>
                       </TableCell>
                     )}
                     <TableCell align="center">{renderIcon(task)}</TableCell>
