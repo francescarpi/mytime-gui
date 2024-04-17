@@ -81,6 +81,32 @@ const Sync = ({
     }
   }, [opened, tasks, projectActivities, loadProjectActivities]);
 
+  useEffect(() => {
+    const defaultActivityName = redmineActivities.find(
+      (act) =>
+        act.id.toString() === settingContext.setting?.integration_extra_param,
+    )?.name;
+
+    if (defaultActivityName) {
+      tasks.forEach((task) => {
+        if (!task.extra_param && projectActivities[task.external_id]) {
+          const act = projectActivities[task.external_id].find(
+            (act) => act.name === defaultActivityName,
+          );
+          if (act) {
+            updateTaskExtraParam(task.id, act.id.toString());
+          }
+        }
+      });
+    }
+  }, [
+    projectActivities,
+    tasks,
+    redmineActivities,
+    settingContext,
+    updateTaskExtraParam,
+  ]);
+
   const closeHandler = () => {
     if (!isSending) {
       onClose();
