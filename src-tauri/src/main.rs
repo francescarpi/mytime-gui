@@ -190,6 +190,16 @@ fn redmine_activities() -> Value {
 }
 
 #[command]
+async fn redmine_project_activities(external_id: String) -> Value {
+    let mut db = db::establish_connection();
+    let settings = SettingsRepository::get_settings(&mut db).unwrap();
+    json!(integrations::redmine::Redmine::project_activities(
+        &settings,
+        external_id
+    ))
+}
+
+#[command]
 fn info(app_handle: tauri::AppHandle) -> Value {
     let package_info = app_handle.package_info();
     let mut db = db::establish_connection();
@@ -272,6 +282,7 @@ fn main() {
             toggle_favourite,
             favourites,
             redmine_activities,
+            redmine_project_activities,
             info,
             show_in_folder,
         ])
