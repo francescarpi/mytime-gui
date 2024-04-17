@@ -161,15 +161,15 @@ impl Redmine {
         settings: &Setting,
         external_id: String,
     ) -> Vec<RedmineProjectActivity> {
-        // Get the issue
+        let client = Client::new();
+        let token = &settings.integration_token.as_ref().unwrap();
+
+        // Get issue
         let url = Self::prepare_url(
             settings,
             vec!["issues".to_string(), format!("{}.json", external_id)],
         );
-        let token = &settings.integration_token.as_ref().unwrap();
-        let client = Client::new();
         let response = client.request(Self::prepare_get_request(url.as_ref(), token));
-
         if response.is_err() {
             return vec![];
         }
@@ -188,9 +188,6 @@ impl Redmine {
             ],
         );
         let url = format!("{}?include=time_entry_activities", url);
-
-        let token = &settings.integration_token.as_ref().unwrap();
-        let client = Client::new();
         let response = client.request(Self::prepare_get_request(url.as_ref(), token));
 
         if response.is_err() {
