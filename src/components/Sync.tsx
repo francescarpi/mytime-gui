@@ -118,6 +118,10 @@ const Sync = ({
     dispatchSuccess({ type: "reset" });
 
     const promises = tasks.map(async (task) => {
+      if (success[task.id] && success[task.id].success) {
+        return;
+      }
+
       dispatchSuccess({ type: "sending", id: task.id });
       return send(task.id, task.extra_param)
         .then(() => dispatchSuccess({ type: "success", id: task.id }))
