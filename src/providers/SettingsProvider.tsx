@@ -26,6 +26,7 @@ const SettingsProvider = ({
   setDarkMode,
   setViewModeGrouped,
   redmineActivities,
+  loadRedmineActivities,
 }: {
   children: ReactNode;
   setThemePreview: CallableFunction;
@@ -34,6 +35,7 @@ const SettingsProvider = ({
   setDarkMode: CallableFunction;
   setViewModeGrouped: CallableFunction;
   redmineActivities: RedmineActivity[];
+  loadRedmineActivities: CallableFunction;
 }) => {
   const {
     setting,
@@ -50,8 +52,24 @@ const SettingsProvider = ({
       setTheme(setting.theme);
       setDarkMode(setting.dark_mode);
       setViewModeGrouped(setting.view_type === "Grouped");
+
+      if (
+        setting.integration === "Redmine" &&
+        setting.integration_url &&
+        setting.integration_token &&
+        redmineActivities.length === 0
+      ) {
+        loadRedmineActivities();
+      }
     }
-  }, [setting, setTheme, setDarkMode, setViewModeGrouped]);
+  }, [
+    setting,
+    setTheme,
+    setDarkMode,
+    setViewModeGrouped,
+    loadRedmineActivities,
+    redmineActivities,
+  ]);
 
   return (
     <SettingsContext.Provider

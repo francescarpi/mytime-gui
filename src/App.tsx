@@ -95,6 +95,7 @@ const App = () => {
 
   const {
     activities: redmineActivities,
+    loadRedmineActivities,
     projectActivities,
     loadProjectActivities,
   } = useRedmine();
@@ -109,6 +110,7 @@ const App = () => {
         setDarkMode={setDarkMode}
         setViewModeGrouped={setViewModeGrouped}
         redmineActivities={redmineActivities}
+        loadRedmineActivities={loadRedmineActivities}
       >
         <SnackbarProvider
           maxSnack={2}

@@ -24,7 +24,7 @@ const useRedmine = () => {
     {},
   );
 
-  useEffect(() => {
+  const loadRedmineActivities = () =>
     invoke("redmine_activities").then((res) => {
       const actv = (res as any).map((a: any) => ({
         id: a.id,
@@ -33,6 +33,9 @@ const useRedmine = () => {
       actv.sort((a, b) => a.name.localeCompare(b.name));
       setActivities(actv);
     });
+
+  useEffect(() => {
+    loadRedmineActivities();
   }, []);
 
   const loadProjectActivities = (externalId: string) =>
@@ -44,7 +47,12 @@ const useRedmine = () => {
       });
     });
 
-  return { activities, projectActivities, loadProjectActivities };
+  return {
+    activities,
+    loadRedmineActivities,
+    projectActivities,
+    loadProjectActivities,
+  };
 };
 
 export default useRedmine;
