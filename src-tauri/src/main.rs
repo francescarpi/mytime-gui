@@ -186,17 +186,24 @@ fn favourites() -> Value {
 fn redmine_activities() -> Value {
     let mut db = db::establish_connection();
     let settings = SettingsRepository::get_settings(&mut db).unwrap();
-    json!(integrations::redmine::Redmine::activities(&settings))
+    if settings.has_integration() {
+        return json!(integrations::redmine::Redmine::activities(&settings));
+    }
+    json!([])
 }
 
 #[command]
 async fn redmine_project_activities(external_id: String) -> Value {
     let mut db = db::establish_connection();
     let settings = SettingsRepository::get_settings(&mut db).unwrap();
-    json!(integrations::redmine::Redmine::project_activities(
-        &settings,
-        external_id
-    ))
+    if settings.has_integration() {
+        return json!(integrations::redmine::Redmine::project_activities(
+            &settings,
+            external_id
+        ));
+    }
+
+    json!([])
 }
 
 #[command]
