@@ -24,6 +24,39 @@ pub struct RedmineTimeActivities {
     pub time_entry_activities: Vec<RedmineTimeActivity>,
 }
 
+#[derive(Debug, Deserialize)]
+pub struct RedmineIssueProject {
+    pub id: i32,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct RedmineIssue {
+    pub id: i32,
+    pub project: RedmineIssueProject,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct RedmineIssueResponse {
+    pub issue: RedmineIssue,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct RedmineProjectActivity {
+    pub id: i32,
+    pub name: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct RedmineProject {
+    pub id: i32,
+    pub time_entry_activities: Vec<RedmineProjectActivity>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct RedmineProjectResponse {
+    pub project: RedmineProject,
+}
+
 #[derive(Debug)]
 pub struct Redmine {}
 
@@ -116,15 +149,56 @@ impl Redmine {
                     let activities =
                         serde_json::from_str::<RedmineTimeActivities>(&response_body).unwrap();
 
-                    return activities
-                        .time_entry_activities
-                        .into_iter()
-                        .filter(|activity| activity.active)
-                        .collect::<Vec<RedmineTimeActivity>>();
+                    return activities.time_entry_activities;
                 }
                 vec![]
             }
             Err(_) => vec![],
         }
+    }
+
+    pub fn project_activities(
+        settings: &Setting,
+        external_id: String,
+    ) -> Vec<RedmineProjectActivity> {
+        let client = Client::new();
+        let token = &settings.integration_token.as_ref().unwrap();
+
+        // Get issue
+        let url = Self::prepare_url(
+            settings,
+            vec!["issues".to_string(), format!("{}.json", external_id)],
+        );
+        let response = client.request(Self::prepare_get_request(url.as_ref(), token));
+        if response.is_err() {
+            return vec![];
+        }
+
+        let issue_response = serde_json::from_str::<RedmineIssueResponse>(
+            &response.unwrap().into_body().to_string().unwrap(),
+        )
+        .unwrap();
+
+        // Get project
+        let url = Self::prepare_url(
+            settings,
+            vec![
+                "projects".to_string(),
+                format!("{}.json", issue_response.issue.project.id),
+            ],
+        );
+        let url = format!("{}?include=time_entry_activities", url);
+        let response = client.request(Self::prepare_get_request(url.as_ref(), token));
+
+        if response.is_err() {
+            return vec![];
+        }
+
+        let project_response = serde_json::from_str::<RedmineProjectResponse>(
+            &response.unwrap().into_body().to_string().unwrap(),
+        )
+        .unwrap();
+
+        project_response.project.time_entry_activities
     }
 }
