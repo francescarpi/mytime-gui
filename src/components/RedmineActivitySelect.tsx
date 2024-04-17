@@ -9,11 +9,13 @@ const RedmineActivitySelect = ({
   onChange,
   value,
   size = "medium",
+  disabled = false,
 }: {
   activities: RedmineActivity[];
   onChange: CallableFunction;
   value: string | null;
   size?: "small" | "medium";
+  disabled?: boolean;
 }) => {
   return (
     <FormControl fullWidth size={size}>
@@ -29,6 +31,7 @@ const RedmineActivitySelect = ({
         label={size === "medium" ? "Default Activity for Redmine" : undefined}
         value={value || ""}
         onChange={(e) => onChange(e.target.value)}
+        disabled={disabled}
       >
         {activities.map((activity) => (
           <MenuItem value={activity.id.toString()} key={`ra-${activity.id}`}>
