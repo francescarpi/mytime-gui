@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+
+- Improve how redmine activities are loaded. Now, they are loaded by project
+
 ### Changed
 
 - Align external id string to the right
