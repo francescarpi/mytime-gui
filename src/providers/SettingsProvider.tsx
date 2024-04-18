@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useState, useEffect } from "react";
-import { Setting } from "../hooks/useSettings";
+import { Setting, ViewType } from "../hooks/useSettings";
 import useSettings from "../hooks/useSettings";
 import Settings from "../components/Settings/Settings";
 
@@ -46,7 +46,7 @@ const SettingsProvider = ({
     if (setting) {
       setTheme(setting.theme);
       setDarkMode(setting.dark_mode);
-      setViewModeGrouped(setting.view_type === "Grouped"); // TODO: Use an enum
+      setViewModeGrouped(setting.view_type === ViewType.Grouped);
     }
   }, [setting, setTheme, setDarkMode, setViewModeGrouped]);
 

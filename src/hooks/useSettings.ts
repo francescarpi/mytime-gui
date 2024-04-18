@@ -1,8 +1,10 @@
 import { useState, useCallback, useEffect } from "react";
 import { invoke } from "@tauri-apps/api";
 
-// TODO: Change string to enum
-export type ViewType = "Grouped" | "Chronological";
+export enum ViewType {
+  Grouped = "Grouped",
+  Chronological = "Chronological",
+}
 
 export interface Setting {
   // TODO: Change string to enum
