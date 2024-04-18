@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "../../providers/SettingsProvider";
 import Sync from "../../components/Sync/Sync";
 import Alert from "@mui/material/Alert";
@@ -36,11 +36,12 @@ const SyncModal = ({
   const settingContext = useContext(SettingsContext);
   const { activities, projectActivities, loadRedmineProjectActivities } =
     useRedmine();
+  const [loadingActivities, setLoadingActivities] = useState<boolean>(false);
 
-  // TODO: Improve the performance. Prevent call multiple times when tasks are updated
   useEffect(() => {
     // Load the project activities for each task
-    if (opened && tasks.length) {
+    if (opened && tasks.length && !loadingActivities) {
+      setLoadingActivities(true);
       const uniqueExternalIds = Object.keys(
         tasks.reduce((acc: { [key: string]: boolean }, task: SyncTask) => {
           acc[task.external_id] = true;
@@ -54,7 +55,14 @@ const SyncModal = ({
         }
       });
     }
-  }, [opened, tasks, projectActivities, loadRedmineProjectActivities]);
+  }, [
+    opened,
+    tasks,
+    projectActivities,
+    loadRedmineProjectActivities,
+    loadingActivities,
+    setLoadingActivities,
+  ]);
 
   useEffect(() => {
     // Set the default activity for redmine tasks

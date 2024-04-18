@@ -39,7 +39,7 @@ const Sync = ({
   isSending: boolean;
   sendHandler: CallableFunction;
   tasksSent: boolean;
-  udpateTaskExtraParam?: CallableFunction;
+  updateTaskExtraParam?: CallableFunction;
   setTasksSent?: CallableFunction;
 }) => {
   if (!opened) {
