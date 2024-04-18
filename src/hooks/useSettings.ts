@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { invoke } from "@tauri-apps/api";
+import { IntegrationType } from "../integrations";
 
 export enum ViewType {
   Grouped = "Grouped",
@@ -7,8 +8,7 @@ export enum ViewType {
 }
 
 export interface Setting {
-  // TODO: Change string to enum
-  integration: string | null;
+  integration: IntegrationType | null;
   integration_url: string | null;
   integration_token: string | null;
   integration_extra_param: string | null;
