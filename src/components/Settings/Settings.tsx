@@ -21,7 +21,7 @@ import { StyledBox } from "../../styles/modal";
 import { useSnackbar } from "notistack";
 import { Setting } from "../../hooks/useSettings";
 import { areEquals } from "../../utils/objects";
-import { getIntegrationComponent } from "../../integrations";
+import { getIntegrationSettingsComponent } from "../../integrations";
 
 const Settings = ({
   opened,
@@ -94,7 +94,9 @@ const Settings = ({
             </TabPanel>
             <TabPanel value="2">
               {createElement(
-                getIntegrationComponent(tmpSetting?.integration as string),
+                getIntegrationSettingsComponent(
+                  tmpSetting?.integration as string,
+                ),
                 {
                   setting: tmpSetting,
                   setSetting: setTmpSetting,

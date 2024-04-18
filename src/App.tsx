@@ -8,7 +8,7 @@ import Layout from "./components/Layout/Layout";
 import TasksTable from "./components/TasksTable/TasksTable";
 import AddTaskForm from "./components/AddTaskForm";
 import TaskEdition from "./components/TaskEdition";
-import Sync from "./components/Sync/Sync";
+import SyncWrapper from "./components/Sync/SyncWrapper";
 import { SettingsProvider } from "./providers/SettingsProvider";
 
 import useDate from "./hooks/useDate";
@@ -19,7 +19,6 @@ import appTheme from "./styles/theme";
 import useClipboard from "./hooks/useClipboard";
 import useVersion from "./hooks/useVersion";
 import useFavorites from "./hooks/useFavourites";
-import useRedmine from "./integrations/redmine/useRedmine";
 import TasksTableActionsHeader from "./components/TasksTableActionsHeader";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -93,12 +92,6 @@ const App = () => {
 
   const { urlNewVersion, version } = useVersion();
 
-  const {
-    activities: redmineActivities,
-    projectActivities,
-    loadRedmineProjectActivities,
-  } = useRedmine();
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -115,13 +108,10 @@ const App = () => {
           anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
         >
           <ConfirmProvider>
-            <Sync
+            <SyncWrapper
               opened={openSync}
               onClose={() => setOpenSync(false)}
               refreshTasks={refresh}
-              redmineActivities={redmineActivities}
-              projectActivities={projectActivities}
-              loadProjectActivities={loadRedmineProjectActivities}
             />
             <Favourites
               opened={openFavorites}
