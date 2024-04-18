@@ -90,7 +90,7 @@ const App = () => {
 
   const { copyTask, copyTasks } = useClipboard();
 
-  const { urlNewVersion, version } = useVersion();
+  const { newVersion, version } = useVersion();
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -133,7 +133,7 @@ const App = () => {
               setSearchQuery={setQuery}
               setSearchResult={setResult}
               searchInputRef={searchInputRef}
-              urlNewVersion={urlNewVersion}
+              newVersion={newVersion}
               version={version}
             >
               <AddTaskForm

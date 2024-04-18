@@ -16,7 +16,8 @@ import { debounce } from "@mui/material/utils";
 import { SettingsContext } from "../../providers/SettingsProvider";
 import Button from "@mui/material/Button";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import Logo from "../../statics/images/logo.png"
+import Logo from "../../statics/images/logo.png";
+import { NewVersion } from "../../hooks/useVersion";
 
 const Layout = ({
   children,
@@ -26,7 +27,7 @@ const Layout = ({
   setSearchQuery,
   searchInputRef,
   setSearchResult,
-  urlNewVersion,
+  newVersion,
   version,
 }: {
   children: ReactNode;
@@ -36,7 +37,7 @@ const Layout = ({
   setSearchQuery: CallableFunction;
   searchInputRef: RefObject<HTMLInputElement>;
   setSearchResult: CallableFunction;
-  urlNewVersion: string | null;
+  newVersion: NewVersion | null;
   version: string | null;
 }) => {
   const settingContext = useContext(SettingsContext);
@@ -150,16 +151,16 @@ const Layout = ({
           {version && (
             <Box sx={{ mr: 2, display: "flex", alignItems: "center" }}>
               <Typography variant="subtitle2">Version: {version}</Typography>
-              {urlNewVersion && (
+              {newVersion && (
                 <Button
                   size="small"
-                  href={urlNewVersion}
+                  href={newVersion.url}
                   target="_blank"
                   color="warning"
                   variant="outlined"
                   sx={{ ml: 2 }}
                 >
-                  New version available
+                  New version available ({newVersion.version})
                 </Button>
               )}
             </Box>

@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Sync component code refactored
 - Replace some string types by enums
+- Show the version number when a new version is available
 
 ## [v0.3.3] - 2024-04-17
 
