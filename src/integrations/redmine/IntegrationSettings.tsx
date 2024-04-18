@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import RedmineActivitySelect from "./RedmineActivitySelect";
 import useRedmine from "./useRedmine";
 
-const RedmineIntegration = ({
+const RedmineIntegrationSettings = ({
   setting,
   setSetting,
 }: {
@@ -33,4 +33,4 @@ const RedmineIntegration = ({
   );
 };
 
-export default RedmineIntegration;
+export default RedmineIntegrationSettings;

@@ -1,5 +1,5 @@
 import Integration from "../components/Settings/Integration";
-import RedmineIntegration from "./redmine/Integration";
+import RedmineIntegrationSettings from "./redmine/IntegrationSettings";
 
 export enum IntegrationType {
   Redmine = "Redmine",
@@ -8,7 +8,7 @@ export enum IntegrationType {
 export const getIntegrationComponent = (integration: string) => {
   switch (integration) {
     case IntegrationType.Redmine:
-      return RedmineIntegration;
+      return RedmineIntegrationSettings;
     default:
       return Integration;
   }

@@ -96,7 +96,7 @@ const App = () => {
   const {
     activities: redmineActivities,
     projectActivities,
-    loadProjectActivities,
+    loadRedmineProjectActivities,
   } = useRedmine();
 
   return (
@@ -121,7 +121,7 @@ const App = () => {
               refreshTasks={refresh}
               redmineActivities={redmineActivities}
               projectActivities={projectActivities}
-              loadProjectActivities={loadProjectActivities}
+              loadProjectActivities={loadRedmineProjectActivities}
             />
             <Favourites
               opened={openFavorites}

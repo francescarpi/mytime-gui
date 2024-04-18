@@ -38,7 +38,7 @@ const useRedmine = () => {
     loadRedmineActivities();
   }, []);
 
-  const loadProjectActivities = (externalId: string) =>
+  const loadRedmineProjectActivities = (externalId: string) =>
     invoke("redmine_project_activities", { externalId }).then((res: any) => {
       dispatchProjectActivities({
         type: "set",
@@ -51,7 +51,7 @@ const useRedmine = () => {
     activities,
     loadRedmineActivities,
     projectActivities,
-    loadProjectActivities,
+    loadRedmineProjectActivities,
   };
 };
 
