@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
@@ -12,36 +11,23 @@ import Button from "@mui/material/Button";
 import TaskIcon from "./TaskIcon";
 import { formatDuration } from "../../utils/dates";
 import { StyledBox } from "../../styles/modal";
-import { SyncTask } from "../../hooks/useSync";
-import { SuccessType } from "./types";
+import { SyncProps } from "./types";
 
-const Sync = ({
-  opened,
-  onClose,
-  slotHeader = null,
-  slotTableHeader = null,
-  slotTableRow = null,
-  tasks,
-  integrationName,
-  success,
-  isSending,
-  sendHandler,
-  tasksSent,
-}: {
-  opened: boolean;
-  onClose: CallableFunction;
-  slotHeader?: ReactNode;
-  slotTableHeader?: ReactNode;
-  slotTableRow?: CallableFunction | null;
-  tasks: SyncTask[];
-  integrationName: string;
-  success: SuccessType;
-  isSending: boolean;
-  sendHandler: CallableFunction;
-  tasksSent: boolean;
-  updateTaskExtraParam?: CallableFunction;
-  setTasksSent?: CallableFunction;
-}) => {
+const Sync = (props: SyncProps) => {
+  const {
+    opened,
+    onClose,
+    tasks,
+    integrationName,
+    success,
+    isSending,
+    sendHandler,
+    tasksSent,
+    slotHeader,
+    slotTableHeader,
+    slotTableRow,
+  } = props;
+
   if (!opened) {
     return null;
   }

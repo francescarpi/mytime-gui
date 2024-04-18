@@ -8,31 +8,11 @@ import RedmineActivitySelect from "./RedmineActivitySelect";
 import CircularProgress from "@mui/material/CircularProgress";
 import useRedmine from "./useRedmine";
 import { SyncTask } from "../../hooks/useSync";
-import { SuccessType } from "../../components/Sync/types";
+import { SyncProps } from "../../components/Sync/types";
 
-const SyncModal = ({
-  opened,
-  onClose,
-  tasks,
-  integrationName,
-  success,
-  isSending,
-  tasksSent,
-  sendHandler,
-  updateTaskExtraParam,
-  setTasksSent,
-}: {
-  opened: boolean;
-  onClose: CallableFunction;
-  tasks: SyncTask[];
-  integrationName: string;
-  success: SuccessType;
-  isSending: boolean;
-  tasksSent: boolean;
-  sendHandler: CallableFunction;
-  updateTaskExtraParam?: CallableFunction;
-  setTasksSent?: CallableFunction;
-}) => {
+const SyncModal = (props: SyncProps) => {
+  const { opened, tasks, success, updateTaskExtraParam, setTasksSent } = props;
+
   const settingContext = useContext(SettingsContext);
   const { activities, projectActivities, loadRedmineProjectActivities } =
     useRedmine();
@@ -133,17 +113,10 @@ const SyncModal = ({
 
   return (
     <Sync
-      opened={opened}
-      onClose={onClose}
-      tasks={tasks}
-      integrationName={integrationName}
-      success={success}
-      isSending={isSending}
-      tasksSent={tasksSent}
-      sendHandler={sendHandler}
       slotHeader={renderHeader()}
       slotTableHeader={<TableCell align="center">Activity</TableCell>}
       slotTableRow={renderRow}
+      {...props}
     />
   );
 };
