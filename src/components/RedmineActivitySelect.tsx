@@ -14,7 +14,7 @@ const RedmineActivitySelect = ({
   activities: RedmineActivity[];
   onChange: CallableFunction;
   value: string | null;
-  size?: "small" | "medium";
+  size?: "small" | "medium"; // TODO: Change to enum
   disabled?: boolean;
 }) => {
   return (
