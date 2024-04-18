@@ -183,7 +183,7 @@ fn favourites() -> Value {
 }
 
 #[command]
-fn redmine_activities() -> Value {
+async fn redmine_activities() -> Value {
     let mut db = db::establish_connection();
     let settings = SettingsRepository::get_settings(&mut db).unwrap();
     if settings.has_integration() {

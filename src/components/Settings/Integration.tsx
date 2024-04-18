@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import Box from "@mui/material/Box";
 import { Setting } from "../../hooks/useSettings";
 import TextField from "@mui/material/TextField";
@@ -6,17 +7,15 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { RedmineActivity } from "../../hooks/useRedmine";
-import RedmineActivitySelect from "../RedmineActivitySelect";
 
 const Integration = ({
   setting,
   setSetting,
-  redmineActivities,
+  children,
 }: {
   setting: Setting | null;
   setSetting: CallableFunction;
-  redmineActivities: RedmineActivity[];
+  children?: ReactNode;
 }) => {
   const onChangeIntegration = (e: SelectChangeEvent) => {
     const integration = e.target.value === "Disabled" ? null : e.target.value;
@@ -28,13 +27,6 @@ const Integration = ({
 
   const onChangeIntegrationToken = (e: any) =>
     setSetting({ ...setting, integration_token: e.target.value });
-
-  const onChangeRedmineActivity = (value: string) => {
-    setSetting({
-      ...setting,
-      integration_extra_param: value,
-    });
-  };
 
   return (
     <Box>
@@ -58,7 +50,7 @@ const Integration = ({
           <TextField
             label="URL"
             fullWidth
-            value={setting?.integration_url}
+            value={setting?.integration_url || ""}
             onChange={onChangeIntegrationUrl}
             inputProps={{
               autoComplete: "off",
@@ -73,7 +65,7 @@ const Integration = ({
           <TextField
             label="Token"
             fullWidth
-            value={setting?.integration_token}
+            value={setting?.integration_token || ""}
             onChange={onChangeIntegrationToken}
             type="password"
             inputProps={{
@@ -85,15 +77,7 @@ const Integration = ({
             }}
           />
         </Grid>
-        {setting?.integration === "Redmine" && (
-          <Grid item md={12}>
-            <RedmineActivitySelect
-              activities={redmineActivities}
-              value={setting?.integration_extra_param}
-              onChange={onChangeRedmineActivity}
-            />
-          </Grid>
-        )}
+        {children}
       </Grid>
     </Box>
   );
