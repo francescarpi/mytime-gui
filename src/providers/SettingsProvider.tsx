@@ -46,7 +46,7 @@ const SettingsProvider = ({
     if (setting) {
       setTheme(setting.theme);
       setDarkMode(setting.dark_mode);
-      setViewModeGrouped(setting.view_type === "Grouped");
+      setViewModeGrouped(setting.view_type === "Grouped"); // TODO: Use an enum
     }
   }, [setting, setTheme, setDarkMode, setViewModeGrouped]);
 
