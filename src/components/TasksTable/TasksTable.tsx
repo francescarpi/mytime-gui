@@ -4,6 +4,7 @@ import Grouped from "./Grouped";
 import Box from "@mui/material/Box";
 import { Task } from "../../hooks/useTasks";
 import { SettingsContext } from "../../providers/SettingsProvider";
+import { ViewType } from "../../hooks/useSettings";
 
 const TasksTable = ({
   tasks,
@@ -38,7 +39,8 @@ const TasksTable = ({
         height: 350,
       }}
     >
-      {settingsContext.setting?.view_type === "Grouped" && !searchMode ? (
+      {settingsContext.setting?.view_type === ViewType.Grouped &&
+      !searchMode ? (
         <Grouped
           tasks={groupedTasks}
           addTask={addTask}

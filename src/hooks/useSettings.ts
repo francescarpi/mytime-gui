@@ -1,10 +1,14 @@
 import { useState, useCallback, useEffect } from "react";
 import { invoke } from "@tauri-apps/api";
+import { IntegrationType } from "../integrations";
 
-export type ViewType = "Grouped" | "Chronological";
+export enum ViewType {
+  Grouped = "Grouped",
+  Chronological = "Chronological",
+}
 
 export interface Setting {
-  integration: string | null;
+  integration: IntegrationType | null;
   integration_url: string | null;
   integration_token: string | null;
   integration_extra_param: string | null;

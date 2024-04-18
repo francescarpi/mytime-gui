@@ -1,10 +1,13 @@
 use super::{Error, Integration};
 use crate::models::{GroupedTask, Setting};
+use crate::repositories::SettingsRepository;
 use crate::utils::dates::format_duration;
+use crate::{db, integrations};
 use oxhttp::model::{Method, Request, Status};
 use oxhttp::Client;
 use serde::{Deserialize, Serialize};
 use serde_json;
+use tauri::command;
 
 #[derive(Debug, Deserialize)]
 pub struct RedmineError {
@@ -201,4 +204,28 @@ impl Redmine {
 
         project_response.project.time_entry_activities
     }
+}
+
+#[command]
+pub async fn redmine_activities() -> serde_json::Value {
+    let mut db = db::establish_connection();
+    let settings = SettingsRepository::get_settings(&mut db).unwrap();
+    if settings.has_integration() {
+        return serde_json::json!(integrations::redmine::Redmine::activities(&settings));
+    }
+    serde_json::json!([])
+}
+
+#[command]
+pub async fn redmine_project_activities(external_id: String) -> serde_json::Value {
+    let mut db = db::establish_connection();
+    let settings = SettingsRepository::get_settings(&mut db).unwrap();
+    if settings.has_integration() {
+        return serde_json::json!(integrations::redmine::Redmine::project_activities(
+            &settings,
+            external_id
+        ));
+    }
+
+    serde_json::json!([])
 }

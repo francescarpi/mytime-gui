@@ -3,9 +3,14 @@ import { getVersion } from "@tauri-apps/api/app";
 import { Octokit } from "@octokit/core";
 import semver from "semver";
 
+export interface NewVersion {
+  url: string;
+  version: string;
+}
+
 const useVersion = () => {
   const [version, setVersion] = useState<string | null>(null);
-  const [urlNewVersion, setUrlNewVersion] = useState<string | null>(null);
+  const [newVersion, setNewVersion] = useState<NewVersion | null>(null);
 
   useEffect(() => {
     getVersion().then((res) => {
@@ -42,13 +47,13 @@ const useVersion = () => {
             console.log("Current version:", version);
             console.log("Latest version:", tagToVersion);
             if (!res.data.draft && semver.gt(tagToVersion, version)) {
-              setUrlNewVersion(res.data.html_url);
+              setNewVersion({ url: res.data.html_url, version: tagToVersion });
             }
           }
         });
     }, 1000);
   }, [version]);
 
-  return { version, urlNewVersion };
+  return { version, newVersion };
 };
 export default useVersion;

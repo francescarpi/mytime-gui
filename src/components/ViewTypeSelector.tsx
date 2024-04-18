@@ -3,7 +3,7 @@ import { useCallback, useContext } from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
-import type { ViewType } from "../hooks/useSettings";
+import { ViewType } from "../hooks/useSettings";
 import { SettingsContext } from "../providers/SettingsProvider";
 
 const ViewTypeSelector = () => {
@@ -26,8 +26,10 @@ const ViewTypeSelector = () => {
       exclusive
       onChange={handleChange}
     >
-      <ToggleButton value="Chronological">Chronological</ToggleButton>
-      <ToggleButton value="Grouped">Grouped</ToggleButton>
+      <ToggleButton value="Chronological">
+        {ViewType.Chronological}
+      </ToggleButton>
+      <ToggleButton value="Grouped">{ViewType.Grouped}</ToggleButton>
     </ToggleButtonGroup>
   );
 };

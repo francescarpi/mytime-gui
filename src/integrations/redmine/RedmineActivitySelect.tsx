@@ -1,7 +1,7 @@
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
-import { RedmineActivity } from "../hooks/useRedmine";
+import { RedmineActivity } from "./useRedmine";
 import MenuItem from "@mui/material/MenuItem";
 
 const RedmineActivitySelect = ({

@@ -8,7 +8,7 @@ import Layout from "./components/Layout/Layout";
 import TasksTable from "./components/TasksTable/TasksTable";
 import AddTaskForm from "./components/AddTaskForm";
 import TaskEdition from "./components/TaskEdition";
-import Sync from "./components/Sync/Sync";
+import SyncWrapper from "./components/Sync/SyncWrapper";
 import { SettingsProvider } from "./providers/SettingsProvider";
 
 import useDate from "./hooks/useDate";
@@ -19,7 +19,6 @@ import appTheme from "./styles/theme";
 import useClipboard from "./hooks/useClipboard";
 import useVersion from "./hooks/useVersion";
 import useFavorites from "./hooks/useFavourites";
-import useRedmine from "./hooks/useRedmine";
 import TasksTableActionsHeader from "./components/TasksTableActionsHeader";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -91,14 +90,7 @@ const App = () => {
 
   const { copyTask, copyTasks } = useClipboard();
 
-  const { urlNewVersion, version } = useVersion();
-
-  const {
-    activities: redmineActivities,
-    loadRedmineActivities,
-    projectActivities,
-    loadProjectActivities,
-  } = useRedmine();
+  const { newVersion, version } = useVersion();
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -109,8 +101,6 @@ const App = () => {
         setTheme={setTheme}
         setDarkMode={setDarkMode}
         setViewModeGrouped={setViewModeGrouped}
-        redmineActivities={redmineActivities}
-        loadRedmineActivities={loadRedmineActivities}
       >
         <SnackbarProvider
           maxSnack={2}
@@ -118,13 +108,10 @@ const App = () => {
           anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
         >
           <ConfirmProvider>
-            <Sync
+            <SyncWrapper
               opened={openSync}
               onClose={() => setOpenSync(false)}
               refreshTasks={refresh}
-              redmineActivities={redmineActivities}
-              projectActivities={projectActivities}
-              loadProjectActivities={loadProjectActivities}
             />
             <Favourites
               opened={openFavorites}
@@ -146,7 +133,7 @@ const App = () => {
               setSearchQuery={setQuery}
               setSearchResult={setResult}
               searchInputRef={searchInputRef}
-              urlNewVersion={urlNewVersion}
+              newVersion={newVersion}
               version={version}
             >
               <AddTaskForm

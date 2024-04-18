@@ -1,8 +1,7 @@
 import { createContext, ReactNode, useState, useEffect } from "react";
-import { Setting } from "../hooks/useSettings";
+import { Setting, ViewType } from "../hooks/useSettings";
 import useSettings from "../hooks/useSettings";
 import Settings from "../components/Settings/Settings";
-import { RedmineActivity } from "../hooks/useRedmine";
 
 const SettingsContext = createContext<{
   setting: Setting | null;
@@ -25,8 +24,6 @@ const SettingsProvider = ({
   setTheme,
   setDarkMode,
   setViewModeGrouped,
-  redmineActivities,
-  loadRedmineActivities,
 }: {
   children: ReactNode;
   setThemePreview: CallableFunction;
@@ -34,8 +31,6 @@ const SettingsProvider = ({
   setTheme: CallableFunction;
   setDarkMode: CallableFunction;
   setViewModeGrouped: CallableFunction;
-  redmineActivities: RedmineActivity[];
-  loadRedmineActivities: CallableFunction;
 }) => {
   const {
     setting,
@@ -51,25 +46,9 @@ const SettingsProvider = ({
     if (setting) {
       setTheme(setting.theme);
       setDarkMode(setting.dark_mode);
-      setViewModeGrouped(setting.view_type === "Grouped");
-
-      if (
-        setting.integration === "Redmine" &&
-        setting.integration_url &&
-        setting.integration_token &&
-        redmineActivities.length === 0
-      ) {
-        loadRedmineActivities();
-      }
+      setViewModeGrouped(setting.view_type === ViewType.Grouped);
     }
-  }, [
-    setting,
-    setTheme,
-    setDarkMode,
-    setViewModeGrouped,
-    loadRedmineActivities,
-    redmineActivities,
-  ]);
+  }, [setting, setTheme, setDarkMode, setViewModeGrouped]);
 
   return (
     <SettingsContext.Provider
@@ -88,7 +67,6 @@ const SettingsProvider = ({
         saveSetting={saveSettings}
         setThemePreview={setThemePreview}
         refreshTasks={refreshTasks}
-        redmineActivities={redmineActivities}
       />
       {children}
     </SettingsContext.Provider>

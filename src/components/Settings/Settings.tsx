@@ -1,23 +1,27 @@
-import { useEffect, useMemo } from "react";
-import { SyntheticEvent, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  SyntheticEvent,
+  useState,
+  createElement,
+} from "react";
 import Modal from "@mui/material/Modal";
-import { StyledBox } from "../../styles/modal";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import { Setting } from "../../hooks/useSettings";
-import Integration from "./Integration";
 import WorkingTime from "./WorkingTime";
 import Generic from "./Generic";
-import { useSnackbar } from "notistack";
 import Shortcuts from "./Shortcuts";
-import { RedmineActivity } from "../../hooks/useRedmine";
 import Info from "./Info";
+import { StyledBox } from "../../styles/modal";
+import { useSnackbar } from "notistack";
+import { Setting } from "../../hooks/useSettings";
 import { areEquals } from "../../utils/objects";
+import { getIntegrationSettingsComponent } from "../../integrations";
 
 const Settings = ({
   opened,
@@ -26,7 +30,6 @@ const Settings = ({
   saveSetting,
   setThemePreview,
   refreshTasks,
-  redmineActivities,
 }: {
   opened: boolean;
   onClose: CallableFunction;
@@ -34,7 +37,6 @@ const Settings = ({
   saveSetting: CallableFunction;
   setThemePreview: CallableFunction;
   refreshTasks: CallableFunction;
-  redmineActivities: RedmineActivity[];
 }) => {
   const [activeTab, setActiveTab] = useState<string>("1");
   const [tmpSetting, setTmpSetting] = useState<Setting | null>(null);
@@ -91,11 +93,15 @@ const Settings = ({
               />
             </TabPanel>
             <TabPanel value="2">
-              <Integration
-                setting={tmpSetting}
-                setSetting={setTmpSetting}
-                redmineActivities={redmineActivities}
-              />
+              {createElement(
+                getIntegrationSettingsComponent(
+                  tmpSetting?.integration as string,
+                ),
+                {
+                  setting: tmpSetting,
+                  setSetting: setTmpSetting,
+                },
+              )}
             </TabPanel>
             <TabPanel value="3">
               <WorkingTime setting={tmpSetting} setSetting={setTmpSetting} />
@@ -112,7 +118,12 @@ const Settings = ({
           <Button variant="contained" onClick={cancelHandler} color="secondary">
             Close
           </Button>
-          <Button variant="contained" sx={{ ml: 2 }} onClick={saveHandler} disabled={disableSave}>
+          <Button
+            variant="contained"
+            sx={{ ml: 2 }}
+            onClick={saveHandler}
+            disabled={disableSave}
+          >
             Save
           </Button>
         </Box>

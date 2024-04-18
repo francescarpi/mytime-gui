@@ -183,30 +183,6 @@ fn favourites() -> Value {
 }
 
 #[command]
-fn redmine_activities() -> Value {
-    let mut db = db::establish_connection();
-    let settings = SettingsRepository::get_settings(&mut db).unwrap();
-    if settings.has_integration() {
-        return json!(integrations::redmine::Redmine::activities(&settings));
-    }
-    json!([])
-}
-
-#[command]
-async fn redmine_project_activities(external_id: String) -> Value {
-    let mut db = db::establish_connection();
-    let settings = SettingsRepository::get_settings(&mut db).unwrap();
-    if settings.has_integration() {
-        return json!(integrations::redmine::Redmine::project_activities(
-            &settings,
-            external_id
-        ));
-    }
-
-    json!([])
-}
-
-#[command]
 fn info(app_handle: tauri::AppHandle) -> Value {
     let package_info = app_handle.package_info();
     let mut db = db::establish_connection();
@@ -288,10 +264,10 @@ fn main() {
             dates_with_tasks,
             toggle_favourite,
             favourites,
-            redmine_activities,
-            redmine_project_activities,
             info,
             show_in_folder,
+            integrations::redmine::redmine_activities,
+            integrations::redmine::redmine_project_activities,
         ])
         .system_tray(system_tray)
         .run(tauri::generate_context!())
