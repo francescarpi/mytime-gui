@@ -1,8 +1,8 @@
 import Integration from "../../components/Settings/Integration";
 import { Setting } from "../../hooks/useSettings";
 import Grid from "@mui/material/Grid";
-import RedmineActivitySelect from "../../components/RedmineActivitySelect";
-import useRedmine from "../../hooks/useRedmine";
+import RedmineActivitySelect from "./RedmineActivitySelect";
+import useRedmine from "./useRedmine";
 
 const RedmineIntegration = ({
   setting,

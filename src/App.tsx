@@ -19,7 +19,7 @@ import appTheme from "./styles/theme";
 import useClipboard from "./hooks/useClipboard";
 import useVersion from "./hooks/useVersion";
 import useFavorites from "./hooks/useFavourites";
-import useRedmine from "./hooks/useRedmine";
+import useRedmine from "./integrations/redmine/useRedmine";
 import TasksTableActionsHeader from "./components/TasksTableActionsHeader";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";

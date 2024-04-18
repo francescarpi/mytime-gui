@@ -14,8 +14,8 @@ import { formatDuration } from "../../utils/dates";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import { SettingsContext } from "../../providers/SettingsProvider";
-import { RedmineActivity } from "../../hooks/useRedmine";
-import RedmineActivitySelect from "./../RedmineActivitySelect";
+import { RedmineActivity } from "../../integrations/redmine/useRedmine";
+import RedmineActivitySelect from "../../integrations/redmine/RedmineActivitySelect";
 import { SuccessType } from "./types";
 import TaskIcon from "./TaskIcon";
 
