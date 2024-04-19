@@ -34,6 +34,7 @@ const SyncModal = (props: SyncProps) => {
           loadRedmineProjectActivities(externalId);
         }
       });
+      setLoadingActivities(false);
     }
   }, [
     opened,
