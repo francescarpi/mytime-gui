@@ -207,7 +207,7 @@ impl Redmine {
 }
 
 #[command]
-pub async fn redmine_activities() -> serde_json::Value {
+pub async fn activities() -> serde_json::Value {
     let mut db = db::establish_connection();
     let settings = SettingsRepository::get_settings(&mut db).unwrap();
     if settings.has_integration() {
@@ -217,7 +217,7 @@ pub async fn redmine_activities() -> serde_json::Value {
 }
 
 #[command]
-pub async fn redmine_project_activities(external_id: String) -> serde_json::Value {
+pub async fn project_activities(external_id: String) -> serde_json::Value {
     let mut db = db::establish_connection();
     let settings = SettingsRepository::get_settings(&mut db).unwrap();
     if settings.has_integration() {

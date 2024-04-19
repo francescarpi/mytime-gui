@@ -25,7 +25,7 @@ const useRedmine = () => {
   );
 
   const loadRedmineActivities = () =>
-    invoke("redmine_activities").then((res) => {
+    invoke("activities").then((res) => {
       const actv = (res as any).map((a: any) => ({
         id: a.id,
         name: a.name,
@@ -40,7 +40,7 @@ const useRedmine = () => {
 
   const loadRedmineProjectActivities = (externalId: string) => {
     console.log("load project activities", externalId);
-    invoke("redmine_project_activities", { externalId }).then((res: any) => {
+    invoke("project_activities", { externalId }).then((res: any) => {
       dispatchProjectActivities({
         type: "set",
         id: externalId,
