@@ -61,6 +61,12 @@ pub struct RedmineProjectResponse {
 }
 
 #[derive(Debug)]
+pub enum RedmineErrorType {
+    IssueNotFound,
+    GenericError,
+}
+
+#[derive(Debug)]
 pub struct Redmine {}
 
 impl Default for Redmine {
@@ -163,7 +169,7 @@ impl Redmine {
     pub fn project_activities(
         settings: &Setting,
         external_id: String,
-    ) -> Vec<RedmineProjectActivity> {
+    ) -> Result<Vec<RedmineProjectActivity>, RedmineErrorType> {
         let client = Client::new();
         let token = &settings.integration_token.as_ref().unwrap();
 
@@ -174,11 +180,17 @@ impl Redmine {
         );
         let response = client.request(Self::prepare_get_request(url.as_ref(), token));
         if response.is_err() {
-            return vec![];
+            return Err(RedmineErrorType::GenericError);
+        }
+
+        let unwrapped_response = response.unwrap();
+
+        if unwrapped_response.status() == Status::NOT_FOUND {
+            return Err(RedmineErrorType::IssueNotFound);
         }
 
         let issue_response = serde_json::from_str::<RedmineIssueResponse>(
-            &response.unwrap().into_body().to_string().unwrap(),
+            &unwrapped_response.into_body().to_string().unwrap(),
         )
         .unwrap();
 
@@ -194,7 +206,7 @@ impl Redmine {
         let response = client.request(Self::prepare_get_request(url.as_ref(), token));
 
         if response.is_err() {
-            return vec![];
+            return Err(RedmineErrorType::GenericError);
         }
 
         let project_response = serde_json::from_str::<RedmineProjectResponse>(
@@ -202,7 +214,7 @@ impl Redmine {
         )
         .unwrap();
 
-        project_response.project.time_entry_activities
+        Ok(project_response.project.time_entry_activities)
     }
 }
 
@@ -217,15 +229,17 @@ pub async fn activities() -> serde_json::Value {
 }
 
 #[command]
-pub async fn project_activities(external_id: String) -> serde_json::Value {
+pub async fn project_activities(
+    external_id: String,
+) -> Result<serde_json::Value, serde_json::Value> {
     let mut db = db::establish_connection();
     let settings = SettingsRepository::get_settings(&mut db).unwrap();
     if settings.has_integration() {
-        return serde_json::json!(integrations::redmine::Redmine::project_activities(
-            &settings,
-            external_id
-        ));
+        return match integrations::redmine::Redmine::project_activities(&settings, external_id) {
+            Ok(activities) => Ok(serde_json::json!(activities)),
+            Err(_) => Err(serde_json::json!([])),
+        };
     }
 
-    serde_json::json!([])
+    Ok(serde_json::json!([]))
 }
