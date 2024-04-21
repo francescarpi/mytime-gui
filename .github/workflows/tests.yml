@@ -4,7 +4,7 @@ on:
   push:
 
 jobs:
-  tests:
+  rust-tests:
     permissions:
       contents: write
     strategy:
@@ -35,3 +35,24 @@ jobs:
         run: |
           cd src-tauri
           cargo test
+
+  react-tests:
+    permissions:
+      contents: write
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y nodejs npm
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Run tests
+        run: |
+          npm run test:unit
