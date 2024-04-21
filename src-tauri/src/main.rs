@@ -266,8 +266,8 @@ fn main() {
             favourites,
             info,
             show_in_folder,
-            integrations::redmine::redmine_activities,
-            integrations::redmine::redmine_project_activities,
+            integrations::redmine::activities,
+            integrations::redmine::project_activities,
         ])
         .system_tray(system_tray)
         .run(tauri::generate_context!())

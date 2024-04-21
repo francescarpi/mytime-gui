@@ -9,6 +9,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import useRedmine from "./useRedmine";
 import { SyncTask } from "../../hooks/useSync";
 import { SyncProps } from "../../components/Sync/types";
+import ReportProblemIcon from "@mui/icons-material/ReportProblem";
+import Tooltip from "@mui/material/Tooltip";
 
 const SyncModal = (props: SyncProps) => {
   const { opened, tasks, success, updateTaskExtraParam, setTasksSent } = props;
@@ -31,9 +33,16 @@ const SyncModal = (props: SyncProps) => {
 
       uniqueExternalIds.forEach((externalId) => {
         if (projectActivities[externalId] === undefined) {
-          loadRedmineProjectActivities(externalId);
+          loadRedmineProjectActivities(externalId)
+            .then(() => {
+              console.log("success");
+            })
+            .catch((err) => {
+              console.log("error", err);
+            });
         }
       });
+      setLoadingActivities(false);
     }
   }, [
     opened,
@@ -53,8 +62,11 @@ const SyncModal = (props: SyncProps) => {
 
     if (defaultActivityName) {
       tasks.forEach((task) => {
-        if (!task.extra_param && projectActivities[task.external_id]) {
-          const act = projectActivities[task.external_id].find(
+        if (
+          !task.extra_param &&
+          projectActivities[task.external_id]?.activities
+        ) {
+          const act = projectActivities[task.external_id].activities.find(
             (act) => act.name === defaultActivityName,
           );
           if (act && updateTaskExtraParam) {
@@ -96,15 +108,22 @@ const SyncModal = (props: SyncProps) => {
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <RedmineActivitySelect
             size="small"
-            activities={projectActivities[task.external_id] || []}
+            activities={projectActivities[task.external_id]?.activities || []}
             disabled={
-              !projectActivities[task.external_id] || success[task.id]?.success
+              !projectActivities[task.external_id]?.activities ||
+              success[task.id]?.success ||
+              projectActivities[task.external_id]?.error
             }
             value={task.extra_param}
             onChange={(val: string) => handleChangeActivity(task, val)}
           />
-          {!projectActivities[task.external_id] && (
+          {projectActivities[task.external_id]?.loading && (
             <CircularProgress size={20} sx={{ ml: 2 }} />
+          )}
+          {projectActivities[task.external_id]?.error && (
+            <Tooltip title="Non-existent external id">
+              <ReportProblemIcon color="error" sx={{ ml: 2 }} />
+            </Tooltip>
           )}
         </Box>
       </TableCell>

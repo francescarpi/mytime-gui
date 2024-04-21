@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+
+- Check if external id is valid when the sync modal is opened
+
+### Changed
+
+- Rename some internal methods
+
 ## [v0.3.4] - 2024-04-18
 
 ### Changed
