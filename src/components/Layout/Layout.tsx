@@ -1,4 +1,4 @@
-import { ReactNode, RefObject, useState, useContext } from "react";
+import { ReactNode, RefObject, useContext, useState } from "react";
 import { Search, SearchIconWrapper, StyledInputBase } from "./styles";
 import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
@@ -26,7 +26,6 @@ const Layout = ({
   onPressFavourites,
   setSearchQuery,
   searchInputRef,
-  setSearchResult,
   newVersion,
   version,
 }: {
@@ -36,24 +35,15 @@ const Layout = ({
   onPressFavourites: CallableFunction;
   setSearchQuery: CallableFunction;
   searchInputRef: RefObject<HTMLInputElement>;
-  setSearchResult: CallableFunction;
   newVersion: NewVersion | null;
   version: string | null;
 }) => {
   const settingContext = useContext(SettingsContext);
-
-  const [query, setQuery] = useState("");
-
-  const resetSearch = () => {
-    // The timeout is needed to prevent the search results from being cleared when clicking on a result
-    setTimeout(() => {
-      setQuery("");
-      setSearchResult([]);
-    }, 100);
-  };
+  const [query, setQuery] = useState<string>("");
 
   const onSearchKeyPress = (e: any) => {
     if (e.code === "Escape") {
+      setSearchQuery("");
       e.target.blur();
     }
   };
@@ -88,7 +78,6 @@ const Layout = ({
               value={query}
               onChange={debounce((e) => setSearchQuery(e.target.value), 500)}
               onKeyDown={(e) => onSearchKeyPress(e)}
-              onBlur={() => resetSearch()}
             />
           </Search>
           <IconButton

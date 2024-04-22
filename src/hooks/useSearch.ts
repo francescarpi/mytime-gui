@@ -9,7 +9,9 @@ const useSearch = ({ limit = null }: { limit?: number | null }) => {
   const [searchMode, setSearchMode] = useState<boolean>(false);
 
   useEffect(() => {
-    if (query !== "") {
+    if (query === "") {
+      setResult([]);
+    } else {
       console.log("Search tasks with query: ", query);
       invoke("search", { query, limit }).then((res) => {
         const totalWorked = (res as Task[]).reduce(
