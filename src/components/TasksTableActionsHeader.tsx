@@ -6,6 +6,8 @@ import { formatDuration } from "../utils/dates";
 import CopyToClipboardBtn from "./CopyToClipboardBtn";
 import DateSelector from "./DateSelector";
 import ViewTypeSelector from "./ViewTypeSelector";
+import Button from "@mui/material/Button";
+import SearchOffIcon from "@mui/icons-material/SearchOff";
 
 const TasksTableActionsHeader = ({
   searchResult,
@@ -18,6 +20,7 @@ const TasksTableActionsHeader = ({
   viewModeGrouped,
   groupedTasks,
   tasks,
+  setQuery,
 }: {
   searchResult: Task[];
   totalWorked: number;
@@ -29,10 +32,19 @@ const TasksTableActionsHeader = ({
   viewModeGrouped: boolean;
   groupedTasks: Task[];
   tasks: Task[];
+  setQuery: CallableFunction;
 }) => {
   return searchResult.length ? (
     <Typography sx={{ mb: 2 }} variant="h6">
       {searchResult.length} tasks found ({formatDuration(totalWorked)})
+      <Button
+        variant="contained"
+        startIcon={<SearchOffIcon />}
+        sx={{ ml: 2 }}
+        onClick={() => setQuery("")}
+      >
+        Clear search reuslts
+      </Button>
     </Typography>
   ) : (
     <Grid container sx={{ mb: 2 }}>

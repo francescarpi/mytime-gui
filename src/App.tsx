@@ -80,9 +80,7 @@ const App = () => {
 
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
 
-  const { setQuery, totalWorked, result, setResult, searchMode } = useSearch(
-    {},
-  );
+  const { setQuery, totalWorked, result, searchMode } = useSearch({});
 
   const defaultTheme = appTheme(darkMode, theme, themePreview);
 
@@ -131,7 +129,6 @@ const App = () => {
               onPressSync={() => setOpenSync(true)}
               onPressFavourites={() => setOpenFavorites(true)}
               setSearchQuery={setQuery}
-              setSearchResult={setResult}
               searchInputRef={searchInputRef}
               newVersion={newVersion}
               version={version}
@@ -155,6 +152,7 @@ const App = () => {
                     viewModeGrouped={viewModeGrouped}
                     groupedTasks={groupedTasks}
                     tasks={tasks}
+                    setQuery={setQuery}
                   />
                   <TasksTable
                     searchMode={searchMode}

@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- Improve the performance of searchings
+
 ## [v0.3.5] - 2024-04-21
 
 ### Added
