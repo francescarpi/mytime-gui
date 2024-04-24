@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.3.8] - 2024-04-24
+
 ### Changed
 
 - Improve the sync modal adding asynchronous loading by the activities
