@@ -21,29 +21,26 @@ const SyncModal = (props: SyncProps) => {
   const [loadingActivities, setLoadingActivities] = useState<boolean>(false);
 
   useEffect(() => {
-    // Load the project activities for each task
-    if (opened && tasks.length && !loadingActivities) {
-      setLoadingActivities(true);
-      const uniqueExternalIds = Object.keys(
-        tasks.reduce((acc: { [key: string]: boolean }, task: SyncTask) => {
-          acc[task.external_id] = true;
-          return acc;
-        }, {}),
-      );
+    setTimeout(() => {
+      // Load the project activities for each task
+      if (opened && tasks.length && !loadingActivities) {
+        setLoadingActivities(true);
+        const uniqueExternalIds = Object.keys(
+          tasks.reduce((acc: { [key: string]: boolean }, task: SyncTask) => {
+            acc[task.external_id] = true;
+            return acc;
+          }, {}),
+        );
 
-      uniqueExternalIds.forEach((externalId) => {
-        if (projectActivities[externalId] === undefined) {
-          loadRedmineProjectActivities(externalId)
-            .then(() => {
-              console.log("success");
-            })
-            .catch((err) => {
-              console.log("error", err);
-            });
-        }
-      });
-      setLoadingActivities(false);
-    }
+        uniqueExternalIds.forEach((externalId) => {
+          if (projectActivities[externalId] === undefined) {
+            loadRedmineProjectActivities(externalId);
+          }
+        });
+
+        setLoadingActivities(false);
+      }
+    });
   }, [
     opened,
     tasks,
@@ -112,7 +109,8 @@ const SyncModal = (props: SyncProps) => {
             disabled={
               !projectActivities[task.external_id]?.activities ||
               success[task.id]?.success ||
-              projectActivities[task.external_id]?.error
+              projectActivities[task.external_id]?.error ||
+              projectActivities[task.external_id]?.loading
             }
             value={task.extra_param}
             onChange={(val: string) => handleChangeActivity(task, val)}
