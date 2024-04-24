@@ -7,10 +7,15 @@ pub mod repositories;
 pub mod schema;
 pub mod utils;
 
+use env_logger;
+use log;
+use std::env;
 use std::process::Command;
+use std::sync::Mutex;
 
+use diesel::SqliteConnection;
 use models::Setting;
-use tauri::{command, SystemTray};
+use tauri::{command, State, SystemTray};
 
 use chrono::NaiveTime;
 use integrations::*;
@@ -35,9 +40,12 @@ struct Summary {
     pub pending_sync_tasks: usize,
 }
 
+#[derive()]
+struct DbConn(Mutex<SqliteConnection>);
+
 #[command]
-fn tasks(date: &str) -> Result<Value, Value> {
-    let mut db = db::establish_connection();
+fn tasks(date: &str, conn: State<'_, DbConn>) -> Result<Value, Value> {
+    let mut db = conn.0.lock().unwrap();
     let date = chrono::NaiveDate::parse_from_str(date, "%Y-%m-%d").unwrap();
     TasksRepository::tasks_with_duration_by_date(&mut db, date)
         .map(|tasks| json!(tasks))
@@ -45,8 +53,8 @@ fn tasks(date: &str) -> Result<Value, Value> {
 }
 
 #[command]
-fn summary(date: &str) -> Value {
-    let mut db = db::establish_connection();
+fn summary(date: &str, conn: State<'_, DbConn>) -> Value {
+    let mut db = conn.0.lock().unwrap();
     let date = chrono::NaiveDate::parse_from_str(date, "%Y-%m-%d").unwrap();
 
     let worked_week = TasksRepository::worked_during_the_week(&mut db, date)
@@ -78,8 +86,13 @@ fn summary(date: &str) -> Value {
 }
 
 #[command]
-fn create_task(desc: String, external_id: Option<String>, project: Option<String>) {
-    let mut db = db::establish_connection();
+fn create_task(
+    desc: String,
+    external_id: Option<String>,
+    project: Option<String>,
+    conn: State<'_, DbConn>,
+) {
+    let mut db = conn.0.lock().unwrap();
     if let Some(task_id) = TasksRepository::get_current_working_task_id(&mut db) {
         let _task = TasksRepository::stop(&mut db, task_id);
     }
@@ -88,8 +101,8 @@ fn create_task(desc: String, external_id: Option<String>, project: Option<String
 }
 
 #[command]
-fn stop_task(id: i32) {
-    let mut db = db::establish_connection();
+fn stop_task(id: i32, conn: State<'_, DbConn>) {
+    let mut db = conn.0.lock().unwrap();
     let _task = TasksRepository::stop(&mut db, id);
 }
 
@@ -101,8 +114,9 @@ fn edit_task(
     external_id: Option<String>,
     start: String,
     end: Option<String>,
+    conn: State<'_, DbConn>,
 ) {
-    let mut db = db::establish_connection();
+    let mut db = conn.0.lock().unwrap();
     let new_start = NaiveTime::parse_from_str(&start, "%H:%M").unwrap();
     let new_end = end.map(|end| NaiveTime::parse_from_str(&end, "%H:%M").unwrap());
 
@@ -111,38 +125,51 @@ fn edit_task(
 }
 
 #[command]
-fn settings() -> Value {
-    let mut db = db::establish_connection();
+fn settings(conn: State<'_, DbConn>) -> Value {
+    let mut db = conn.0.lock().unwrap();
     json!(SettingsRepository::get_settings(&mut db).unwrap())
 }
 
 #[command]
-fn save_settings(settings: Setting) {
-    let mut db = db::establish_connection();
+fn save_settings(settings: Setting, conn: State<'_, DbConn>) {
+    let mut db = conn.0.lock().unwrap();
     let _settings = SettingsRepository::update(&mut db, &settings).unwrap();
 }
 
 #[command]
-fn group_tasks() -> Value {
-    let mut db = db::establish_connection();
+fn group_tasks(conn: State<'_, DbConn>) -> Value {
+    let mut db = conn.0.lock().unwrap();
     let tasks = TasksRepository::grouped_tasks(&mut db).unwrap();
     json!(tasks)
 }
 
 #[command]
-async fn send_to_integration(id: String, extra_param: Option<String>) -> Result<(), String> {
-    let mut db = db::establish_connection();
+async fn send_to_integration(
+    id: String,
+    extra_param: Option<String>,
+    conn: State<'_, DbConn>,
+) -> Result<(), String> {
+    let mut db = conn.0.lock().unwrap();
     let settings = SettingsRepository::get_settings(&mut db).unwrap();
+    let skip_send = env::var("SKIP_SEND").unwrap_or_default() == "true";
 
     if let Some(integration) = get_integration(&settings) {
         let tasks = TasksRepository::grouped_tasks(&mut db).unwrap();
         let task = tasks.iter().find(|task| task.id == id).unwrap();
-        match integration.send_task(&settings, task, extra_param) {
-            Ok(_) => {
-                let _ = TasksRepository::mark_tasks_as_reported(&mut db, &task.ids.0);
-                Ok(())
+
+        log::info!("sending task: {:?}", task.id);
+
+        if skip_send {
+            let _ = TasksRepository::mark_tasks_as_reported(&mut db, &task.ids.0);
+            Ok(())
+        } else {
+            match integration.send_task(&settings, task, extra_param) {
+                Ok(_) => {
+                    let _ = TasksRepository::mark_tasks_as_reported(&mut db, &task.ids.0);
+                    Ok(())
+                }
+                Err(err) => Err(err.to_string()),
             }
-            Err(err) => Err(err.to_string()),
         }
     } else {
         Err(integrations::Error::IntegrationDoesNotExistError.to_string())
@@ -150,42 +177,42 @@ async fn send_to_integration(id: String, extra_param: Option<String>) -> Result<
 }
 
 #[command]
-fn delete_task(id: i32) {
-    let mut db = db::establish_connection();
+fn delete_task(id: i32, conn: State<'_, DbConn>) {
+    let mut db = conn.0.lock().unwrap();
     let _task = TasksRepository::delete_task(&mut db, id);
 }
 
 #[command]
-async fn search(query: &str, limit: Option<i32>) -> Result<Value, Value> {
-    let mut db = db::establish_connection();
+async fn search(query: &str, limit: Option<i32>, conn: State<'_, DbConn>) -> Result<Value, Value> {
+    let mut db = conn.0.lock().unwrap();
     let tasks = TasksRepository::search_tasks_with_duration(&mut db, query, limit).unwrap();
     Ok(json!(tasks))
 }
 
 #[command]
-fn dates_with_tasks(month: u32, year: i32) -> Value {
-    let mut db = db::establish_connection();
+fn dates_with_tasks(month: u32, year: i32, conn: State<'_, DbConn>) -> Value {
+    let mut db = conn.0.lock().unwrap();
     let tasks = TasksRepository::dates_with_tasks(&mut db, month, year).unwrap();
     json!(tasks)
 }
 
 #[command]
-fn toggle_favourite(task_id: i32) {
-    let mut db = db::establish_connection();
+fn toggle_favourite(task_id: i32, conn: State<'_, DbConn>) {
+    let mut db = conn.0.lock().unwrap();
     let _task_id = TasksRepository::toggle_favourite(&mut db, task_id);
 }
 
 #[command]
-fn favourites() -> Value {
-    let mut db = db::establish_connection();
+fn favourites(conn: State<'_, DbConn>) -> Value {
+    let mut db = conn.0.lock().unwrap();
     let tasks = TasksRepository::favourites(&mut db).unwrap();
     json!(tasks)
 }
 
 #[command]
-fn info(app_handle: tauri::AppHandle) -> Value {
+fn info(app_handle: tauri::AppHandle, conn: State<'_, DbConn>) -> Value {
     let package_info = app_handle.package_info();
-    let mut db = db::establish_connection();
+    let mut db = conn.0.lock().unwrap();
 
     json!({
         "version": package_info.version,
@@ -245,7 +272,9 @@ fn show_in_folder(path: String) {
 fn main() {
     let system_tray = SystemTray::new();
     tauri::Builder::default()
+        .manage(DbConn(Mutex::new(db::establish_connection())))
         .setup(|_app| {
+            env_logger::init();
             db::init();
             Ok(())
         })
