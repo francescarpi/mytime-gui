@@ -4,6 +4,7 @@ use diesel::dsl::sql_query;
 use diesel::prelude::*;
 use diesel::sql_types::{Integer, Text};
 use diesel::SqliteConnection;
+use log;
 
 use crate::models::*;
 use crate::schema::*;
@@ -250,6 +251,7 @@ impl TasksRepository {
             .collect::<Vec<String>>()
             .join(", ");
         let query = format!("UPDATE tasks SET reported = true WHERE id IN ({})", ids);
+        log::info!("query mark_tasks_as_reported: {}", query);
         sql_query(query).execute(c)
     }
 

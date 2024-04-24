@@ -2,12 +2,12 @@ use super::{Error, Integration};
 use crate::models::{GroupedTask, Setting};
 use crate::repositories::SettingsRepository;
 use crate::utils::dates::format_duration;
-use crate::{db, integrations};
+use crate::{integrations, DbConn};
 use oxhttp::model::{Method, Request, Status};
 use oxhttp::Client;
 use serde::{Deserialize, Serialize};
 use serde_json;
-use tauri::command;
+use tauri::{command, State};
 
 #[derive(Debug, Deserialize)]
 pub struct RedmineError {
@@ -219,20 +219,23 @@ impl Redmine {
 }
 
 #[command]
-pub async fn activities() -> serde_json::Value {
-    let mut db = db::establish_connection();
+pub async fn activities(conn: State<'_, DbConn>) -> Result<serde_json::Value, serde_json::Value> {
+    let mut db = conn.0.lock().unwrap();
     let settings = SettingsRepository::get_settings(&mut db).unwrap();
     if settings.has_integration() {
-        return serde_json::json!(integrations::redmine::Redmine::activities(&settings));
+        return Ok(serde_json::json!(
+            integrations::redmine::Redmine::activities(&settings)
+        ));
     }
-    serde_json::json!([])
+    Ok(serde_json::json!([]))
 }
 
 #[command]
 pub async fn project_activities(
     external_id: String,
+    conn: State<'_, DbConn>,
 ) -> Result<serde_json::Value, serde_json::Value> {
-    let mut db = db::establish_connection();
+    let mut db = conn.0.lock().unwrap();
     let settings = SettingsRepository::get_settings(&mut db).unwrap();
     if settings.has_integration() {
         return match integrations::redmine::Redmine::project_activities(&settings, external_id) {

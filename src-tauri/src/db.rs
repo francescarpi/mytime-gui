@@ -5,12 +5,6 @@ use std::{fs, path::Path};
 
 const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
 
-pub fn establish_connection() -> SqliteConnection {
-    let db_url = format!("sqlite://{}", db_path());
-
-    SqliteConnection::establish(&db_url).expect("Error connecting to database")
-}
-
 fn db_dir() -> AppDirs {
     AppDirs::new(Some("mytime"), true).unwrap()
 }
@@ -35,14 +29,16 @@ fn create_db_file() {
     fs::File::create(db_path()).unwrap();
 }
 
-fn run_migrations() {
-    let mut c = establish_connection();
-    c.run_pending_migrations(MIGRATIONS).unwrap();
-}
-
 pub fn init() {
     if !db_exists() {
         create_db_file();
     }
-    run_migrations();
+}
+
+pub fn establish_connection() -> SqliteConnection {
+    init();
+    let db_url = format!("sqlite://{}", db_path());
+    let mut conn = SqliteConnection::establish(&db_url).expect("Error connecting to database");
+    conn.run_pending_migrations(MIGRATIONS).unwrap();
+    conn
 }
