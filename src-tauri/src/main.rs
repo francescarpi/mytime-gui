@@ -41,7 +41,7 @@ struct Summary {
 }
 
 #[derive()]
-struct DbConn(Mutex<SqliteConnection>);
+pub struct DbConn(Mutex<SqliteConnection>);
 
 #[command]
 fn tasks(date: &str, conn: State<'_, DbConn>) -> Result<Value, Value> {
@@ -275,7 +275,6 @@ fn main() {
         .manage(DbConn(Mutex::new(db::establish_connection())))
         .setup(|_app| {
             env_logger::init();
-            db::init();
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
