@@ -21,10 +21,10 @@ jobs:
           - platform: 'macos-latest'
             args: '--target x86_64-apple-darwin'
           - platform: 'ubuntu-20.04'
-            args: ''
+            args:
           - platform: 'windows-latest'
-            args: ''
-            
+            args:
+
     runs-on: ${{ matrix.platform }}
 
     steps:
