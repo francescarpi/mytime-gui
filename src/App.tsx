@@ -46,8 +46,6 @@ const iniAddTaskValues = { proj: "", desc: "", extId: "" };
 const App = () => {
   const [openSync, setOpenSync] = useState<boolean>(false);
 
-  const [openFavorites, setOpenFavorites] = useState<boolean>(false);
-
   const [themePreview, setThemePreview] = useState<string | null>(null);
 
   const [theme, setTheme] = useState<string>("#1976d2");
@@ -111,14 +109,6 @@ const App = () => {
               onClose={() => setOpenSync(false)}
               refreshTasks={refresh}
             />
-            <Favourites
-              opened={openFavorites}
-              onClose={() => setOpenFavorites(false)}
-              favourites={favourites}
-              load={loadFavorites}
-              addTask={addTask}
-              toggleFavourite={toggleFavourite}
-            />
             <TaskEdition
               task={taskToEdit}
               onClose={() => setTaskToEdit(null)}
@@ -127,11 +117,18 @@ const App = () => {
             <Layout
               summary={summary}
               onPressSync={() => setOpenSync(true)}
-              onPressFavourites={() => setOpenFavorites(true)}
               setSearchQuery={setQuery}
               searchInputRef={searchInputRef}
               newVersion={newVersion}
               version={version}
+              rightSideBarContent={
+                <Favourites
+                  favourites={favourites}
+                  load={loadFavorites}
+                  addTask={addTask}
+                  toggleFavourite={toggleFavourite}
+                />
+              }
             >
               <AddTaskForm
                 sx={{ mb: 2 }}
