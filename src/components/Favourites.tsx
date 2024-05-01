@@ -36,7 +36,7 @@ const Favourites = ({
   return (
     <Box>
       <Typography variant="h5" sx={{ mb: 4 }}>
-        Favourite tasks
+        Favourites tasks
       </Typography>
       <Box>
         <TableContainer component={Paper} variant="outlined">
