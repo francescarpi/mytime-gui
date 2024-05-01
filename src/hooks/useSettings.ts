@@ -25,6 +25,7 @@ export interface Setting {
   view_type: ViewType;
   dark_mode: boolean;
   tour_completed: boolean;
+  right_sidebar_open: boolean;
 }
 
 const useSettings = () => {
@@ -33,6 +34,7 @@ const useSettings = () => {
 
   const loadSettings = useCallback(() => {
     invoke("settings").then((res) => {
+      console.log("Settings loaded", res);
       setSetting(res as Setting);
     });
   }, []);
@@ -49,6 +51,15 @@ const useSettings = () => {
   const toggleDarkMode = useCallback(
     (dark_mode: boolean) => {
       const payload = { ...(setting as Setting), dark_mode };
+      setSetting(payload);
+      invoke("save_settings", { settings: payload });
+    },
+    [setting],
+  );
+
+  const updateRightSidebarOpened = useCallback(
+    (right_sidebar_open: boolean) => {
+      const payload = { ...(setting as Setting), right_sidebar_open };
       setSetting(payload);
       invoke("save_settings", { settings: payload });
     },
@@ -76,6 +87,7 @@ const useSettings = () => {
     changeViewType,
     toggleDarkMode,
     saveSettings,
+    updateRightSidebarOpened,
   };
 };
 

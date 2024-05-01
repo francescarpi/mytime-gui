@@ -42,7 +42,6 @@ const Layout = ({
 }) => {
   const settingContext = useContext(SettingsContext);
   const [query, setQuery] = useState<string>("");
-  const [rightSideBarOpen, setRightSideBarOpen] = useState<boolean>(false);
 
   const onSearchKeyPress = (e: any) => {
     if (e.code === "Escape") {
@@ -52,7 +51,9 @@ const Layout = ({
   };
 
   const toggleRightSideBar = () => {
-    setRightSideBarOpen(!rightSideBarOpen);
+    settingContext.updateRightSidebarOpened(
+      !settingContext.setting?.right_sidebar_open,
+    );
   };
 
   return settingContext.setting ? (
@@ -92,7 +93,11 @@ const Layout = ({
             sx={{ ml: 1 }}
             onClick={() => toggleRightSideBar()}
           >
-            {rightSideBarOpen ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+            {settingContext.setting?.right_sidebar_open ? (
+              <BookmarkIcon />
+            ) : (
+              <BookmarkBorderIcon />
+            )}
           </IconButton>
           {settingContext.isIntegrationValid && (
             <IconButton
@@ -138,7 +143,7 @@ const Layout = ({
           <Box sx={{ p: 2, width: "100%" }}>{children}</Box>
           <Slide
             direction="left"
-            in={rightSideBarOpen}
+            in={settingContext.setting?.right_sidebar_open}
             mountOnEnter
             unmountOnExit
           >
