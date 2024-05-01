@@ -12,6 +12,7 @@ diesel::table! {
         dark_mode -> Bool,
         tour_completed -> Bool,
         integration_extra_param -> Nullable<Text>,
+        right_sidebar_open -> Bool,
     }
 }
 

@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- Favourites moved from to the right sidebar
+
 ## [v0.3.9] - 2024-04-25
 
 ### Added

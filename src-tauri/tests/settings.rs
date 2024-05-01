@@ -22,6 +22,7 @@ mod tests {
         assert_eq!(settings.integration_url, None);
         assert_eq!(settings.integration_token, None);
         assert_eq!(settings.integration_extra_param, None);
+        assert_eq!(settings.right_sidebar_open, false);
 
         assert_eq!(
             settings.work_hours.to_string(),
@@ -61,6 +62,7 @@ mod tests {
         settings.integration_token = Some("12345".to_string());
         settings.integration_extra_param = Some("1".to_string());
         settings.tour_completed = true;
+        settings.right_sidebar_open = true;
 
         let response = SettingsRepository::update(&mut c, &settings);
         let settings = response.unwrap();
@@ -85,5 +87,6 @@ mod tests {
         assert_eq!(settings.view_type, ViewType::Chronological);
         assert!(!settings.dark_mode);
         assert!(settings.tour_completed);
+        assert!(settings.right_sidebar_open);
     }
 }

@@ -16,23 +16,25 @@ import { debounce } from "@mui/material/utils";
 import { SettingsContext } from "../../providers/SettingsProvider";
 import Button from "@mui/material/Button";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import Logo from "../../statics/images/logo.png";
 import { NewVersion } from "../../hooks/useVersion";
+import Slide from "@mui/material/Slide";
 
 const Layout = ({
   children,
+  rightSideBarContent,
   summary,
   onPressSync,
-  onPressFavourites,
   setSearchQuery,
   searchInputRef,
   newVersion,
   version,
 }: {
   children: ReactNode;
+  rightSideBarContent: ReactNode;
   summary: Summary | null;
   onPressSync: CallableFunction;
-  onPressFavourites: CallableFunction;
   setSearchQuery: CallableFunction;
   searchInputRef: RefObject<HTMLInputElement>;
   newVersion: NewVersion | null;
@@ -46,6 +48,12 @@ const Layout = ({
       setSearchQuery("");
       e.target.blur();
     }
+  };
+
+  const toggleRightSideBar = () => {
+    settingContext.updateRightSidebarOpened(
+      !settingContext.setting?.right_sidebar_open,
+    );
   };
 
   return settingContext.setting ? (
@@ -83,9 +91,13 @@ const Layout = ({
           <IconButton
             color="inherit"
             sx={{ ml: 1 }}
-            onClick={() => onPressFavourites()}
+            onClick={() => toggleRightSideBar()}
           >
-            <BookmarkBorderIcon />
+            {settingContext.setting?.right_sidebar_open ? (
+              <BookmarkIcon />
+            ) : (
+              <BookmarkBorderIcon />
+            )}
           </IconButton>
           {settingContext.isIntegrationValid && (
             <IconButton
@@ -114,7 +126,6 @@ const Layout = ({
       </AppBar>
       <Box
         sx={{
-          p: 2,
           position: "fixed",
           top: 64,
           bottom: 48,
@@ -122,7 +133,33 @@ const Layout = ({
           right: 0,
         }}
       >
-        {children}
+        <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <Box sx={{ p: 2, width: "100%" }}>{children}</Box>
+          <Slide
+            direction="left"
+            in={settingContext.setting?.right_sidebar_open}
+            mountOnEnter
+            unmountOnExit
+          >
+            <Box
+              sx={{
+                width: 400,
+                p: 2,
+                borderLeft: 1,
+                borderColor: (theme) =>
+                  theme.palette.mode === "dark" ? "grey.800" : "grey.300",
+              }}
+            >
+              {rightSideBarContent}
+            </Box>
+          </Slide>
+        </Box>
       </Box>
       <AppBar position="fixed" sx={{ top: "auto", bottom: 0 }}>
         <Toolbar variant="dense" sx={{ flexGrow: 1 }}>

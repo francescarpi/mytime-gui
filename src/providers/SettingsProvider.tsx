@@ -9,12 +9,14 @@ const SettingsContext = createContext<{
   show: CallableFunction;
   changeViewType: CallableFunction;
   toggleDarkMode: CallableFunction;
+  updateRightSidebarOpened: CallableFunction;
 }>({
   setting: null,
   isIntegrationValid: false,
   show: () => {},
   changeViewType: () => {},
   toggleDarkMode: () => {},
+  updateRightSidebarOpened: () => {},
 });
 
 const SettingsProvider = ({
@@ -38,6 +40,7 @@ const SettingsProvider = ({
     changeViewType,
     isIntegrationValid,
     toggleDarkMode,
+    updateRightSidebarOpened,
   } = useSettings();
 
   const [show, setShow] = useState<boolean>(false);
@@ -58,6 +61,7 @@ const SettingsProvider = ({
         changeViewType,
         isIntegrationValid,
         toggleDarkMode,
+        updateRightSidebarOpened,
       }}
     >
       <Settings

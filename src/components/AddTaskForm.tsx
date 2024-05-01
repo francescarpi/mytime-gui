@@ -82,7 +82,7 @@ const AddTaskForm = ({
                 }}
               />
             </Grid>
-            <Grid item md={6}>
+            <Grid item md={5}>
               <TextField
                 label="Description"
                 size="small"
@@ -99,7 +99,7 @@ const AddTaskForm = ({
                 }}
               />
             </Grid>
-            <Grid item md={2}>
+            <Grid item md={3}>
               <TextField
                 label="External Id"
                 size="small"
