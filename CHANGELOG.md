@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.4.1] - 2024-05-03
+
+### Fixed
+
+- Fixed high CPU fixed when right sidebar was opened
+
 ## [v0.4.0] - 2024-05-02
 
 ### Changed
