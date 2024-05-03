@@ -27,7 +27,8 @@ const Favourites = ({
 }) => {
   useEffect(() => {
     load();
-  }, [load]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const startTask = (task: Task) => {
     addTask(task.project, task.desc, task.external_id);
