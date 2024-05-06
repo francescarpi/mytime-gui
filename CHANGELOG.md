@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+
+- Add the project name in the favourites list
+
+### Fixed
+
+- Fix favourites title
+
 ## [v0.4.1] - 2024-05-03
 
 ### Fixed
