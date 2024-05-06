@@ -22,19 +22,13 @@ const SettingsContext = createContext<{
 const SettingsProvider = ({
   children,
   refreshTasks,
-  setTheme,
-  setThemeSecondary,
-  setThemePreview,
-  setThemeSecondaryPreview,
+  dispatchTheme,
   setDarkMode,
   setViewModeGrouped,
 }: {
   children: ReactNode;
   refreshTasks: CallableFunction;
-  setTheme: CallableFunction;
-  setThemeSecondary: CallableFunction;
-  setThemePreview: CallableFunction;
-  setThemeSecondaryPreview: CallableFunction;
+  dispatchTheme: CallableFunction;
   setDarkMode: CallableFunction;
   setViewModeGrouped: CallableFunction;
 }) => {
@@ -51,12 +45,15 @@ const SettingsProvider = ({
 
   useEffect(() => {
     if (setting) {
-      setTheme(setting.theme);
-      setThemeSecondary(setting.theme_secondary);
+      dispatchTheme({
+        type: "setColors",
+        primary: setting.theme,
+        secondary: setting.theme_secondary,
+      });
       setDarkMode(setting.dark_mode);
       setViewModeGrouped(setting.view_type === ViewType.Grouped);
     }
-  }, [setting, setTheme, setDarkMode, setViewModeGrouped, setThemeSecondary]);
+  }, [setting, dispatchTheme, setDarkMode, setViewModeGrouped]);
 
   return (
     <SettingsContext.Provider
@@ -74,8 +71,7 @@ const SettingsProvider = ({
         onClose={() => setShow(false)}
         setting={setting}
         saveSetting={saveSettings}
-        setThemePreview={setThemePreview}
-        setThemeSecondaryPreview={setThemeSecondaryPreview}
+        dispatchTheme={dispatchTheme}
         refreshTasks={refreshTasks}
       />
       {children}

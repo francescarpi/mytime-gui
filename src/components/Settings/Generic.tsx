@@ -5,22 +5,20 @@ import Grid from "@mui/material/Grid";
 const Generic = ({
   setting,
   setSetting,
-  setThemePreview,
-  setThemeSecondaryPreview,
+  dispatchTheme,
 }: {
   setting: Setting | null;
   setSetting: CallableFunction;
-  setThemePreview: CallableFunction;
-  setThemeSecondaryPreview: CallableFunction;
+  dispatchTheme: CallableFunction;
 }) => {
   const onChangeTheme = (color: string) => {
     setSetting({ ...setting, theme: color });
-    setThemePreview(color);
+    dispatchTheme({ type: "previewPrimary", primary: color });
   };
 
   const onChangeThemeSecondary = (color: string) => {
     setSetting({ ...setting, theme_secondary: color });
-    setThemeSecondaryPreview(color);
+    dispatchTheme({ type: "previewSecondary", secondary: color });
   };
 
   return (

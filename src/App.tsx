@@ -23,6 +23,7 @@ import TasksTableActionsHeader from "./components/TasksTableActionsHeader";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Favourites from "./components/Favourites";
+import { Theme } from "./models";
 
 const defaultAddTaskValuesReducer = (
   state: { proj: string; desc: string; extId: string },
@@ -41,19 +42,44 @@ const defaultAddTaskValuesReducer = (
   return state;
 };
 
+const themeReducer = (state: Theme, action: any) => {
+  console.log(action);
+  switch (action.type) {
+    case "setColors":
+      return {
+        ...state,
+        primary: action.primary,
+        secondary: action.secondary,
+      };
+    case "previewPrimary":
+      return {
+        ...state,
+        primaryPreview: action.primary,
+      };
+    case "previewSecondary":
+      return {
+        ...state,
+        secondaryPreview: action.secondary,
+      };
+    case "cancelPreview":
+      return { ...state, primaryPreview: null, secondaryPreview: null };
+  }
+  return state;
+};
+
 const iniAddTaskValues = { proj: "", desc: "", extId: "" };
 
 const App = () => {
   const [openSync, setOpenSync] = useState<boolean>(false);
 
-  const [theme, setTheme] = useState<string>("#1976d2");
-  const [themeSecondary, setThemeSecondary] = useState<string>("#ce93d8");
-  const [themePreview, setThemePreview] = useState<string | null>(null);
-  const [themeSecondaryPreview, setThemeSecondaryPreview] = useState<
-    string | null
-  >(null);
-
+  const [theme, dispatchTheme] = useReducer(themeReducer, {
+    primary: "#1976d2",
+    secondary: "#ce93d8",
+    primaryPreview: null,
+    secondaryPreview: null,
+  });
   const [darkMode, setDarkMode] = useState<boolean>(false);
+  const defaultTheme = appTheme(darkMode, theme);
 
   const [viewModeGrouped, setViewModeGrouped] = useState<boolean>(false);
 
@@ -83,14 +109,6 @@ const App = () => {
 
   const { setQuery, totalWorked, result, searchMode } = useSearch({});
 
-  const defaultTheme = appTheme(
-    darkMode,
-    theme,
-    themeSecondary,
-    themePreview,
-    themeSecondaryPreview,
-  );
-
   useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
 
   const { copyTask, copyTasks } = useClipboard();
@@ -102,10 +120,7 @@ const App = () => {
       <CssBaseline />
       <SettingsProvider
         refreshTasks={refresh}
-        setTheme={setTheme}
-        setThemeSecondary={setThemeSecondary}
-        setThemePreview={setThemePreview}
-        setThemeSecondaryPreview={setThemeSecondaryPreview}
+        dispatchTheme={dispatchTheme}
         setDarkMode={setDarkMode}
         setViewModeGrouped={setViewModeGrouped}
       >
