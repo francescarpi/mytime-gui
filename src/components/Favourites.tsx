@@ -54,18 +54,11 @@ const Favourites = ({
               {favourites.map((task) => (
                 <TableRow key={task.id}>
                   <TableCell>
-                    <Tooltip
-                      title={`Project: ${task.project} | Ext.ID: ${task.external_id}`}
-                      placement="left"
-                    >
-                      <Box>
-                        <Box>{task.desc}</Box>
-                        <Typography variant="caption" color="text.secondary">
-                          {task.project}{" "}
-                          {task.external_id && `(${task.external_id})`}
-                        </Typography>
-                      </Box>
-                    </Tooltip>
+                    <Box>{task.desc}</Box>
+                    <Typography variant="caption" color="text.secondary">
+                      {task.project}{" "}
+                      {task.external_id && `(${task.external_id})`}
+                    </Typography>
                   </TableCell>
                   <TableCell align="right">
                     <Tooltip title="Unmark favourite" placement="top">
