@@ -9,6 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import TaskIcon from "./TaskIcon";
+import Alert from "@mui/material/Alert";
 import { formatDuration } from "../../utils/dates";
 import { StyledBox } from "../../styles/modal";
 import { SyncProps } from "./types";
@@ -40,6 +41,11 @@ const Sync = (props: SyncProps) => {
         </Typography>
         <Box>
           {slotHeader}
+          {tasks.length === 0 && (
+            <Alert severity="warning" variant="outlined" sx={{ mb: 2 }}>
+              No tasks to send. Only finished tasks with an external id can be.
+            </Alert>
+          )}
           <TableContainer>
             <Table size="small">
               <TableHead>
