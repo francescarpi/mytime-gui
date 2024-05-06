@@ -56,8 +56,8 @@ const Favourites = ({
                   <TableCell>
                     <Box>{task.desc}</Box>
                     <Typography variant="caption" color="text.secondary">
-                      {task.project}{" "}
-                      {task.external_id && `(${task.external_id})`}
+                      {task.project}
+                      {task.external_id && ` (${task.external_id})`}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
