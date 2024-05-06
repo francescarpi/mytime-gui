@@ -23,6 +23,7 @@ import TasksTableActionsHeader from "./components/TasksTableActionsHeader";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Favourites from "./components/Favourites";
+import { Theme } from "./models";
 
 const defaultAddTaskValuesReducer = (
   state: { proj: string; desc: string; extId: string },
@@ -41,16 +42,43 @@ const defaultAddTaskValuesReducer = (
   return state;
 };
 
+const themeReducer = (state: Theme, action: any) => {
+  switch (action.type) {
+    case "setColors":
+      return {
+        ...state,
+        primary: action.primary,
+        secondary: action.secondary,
+      };
+    case "previewPrimary":
+      return {
+        ...state,
+        primaryPreview: action.primary,
+      };
+    case "previewSecondary":
+      return {
+        ...state,
+        secondaryPreview: action.secondary,
+      };
+    case "cancelPreview":
+      return { ...state, primaryPreview: null, secondaryPreview: null };
+  }
+  return state;
+};
+
 const iniAddTaskValues = { proj: "", desc: "", extId: "" };
 
 const App = () => {
   const [openSync, setOpenSync] = useState<boolean>(false);
 
-  const [themePreview, setThemePreview] = useState<string | null>(null);
-
-  const [theme, setTheme] = useState<string>("#1976d2");
-
+  const [theme, dispatchTheme] = useReducer(themeReducer, {
+    primary: "#1976d2",
+    secondary: "#ce93d8",
+    primaryPreview: null,
+    secondaryPreview: null,
+  });
   const [darkMode, setDarkMode] = useState<boolean>(false);
+  const defaultTheme = appTheme(darkMode, theme);
 
   const [viewModeGrouped, setViewModeGrouped] = useState<boolean>(false);
 
@@ -80,8 +108,6 @@ const App = () => {
 
   const { setQuery, totalWorked, result, searchMode } = useSearch({});
 
-  const defaultTheme = appTheme(darkMode, theme, themePreview);
-
   useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
 
   const { copyTask, copyTasks } = useClipboard();
@@ -92,9 +118,8 @@ const App = () => {
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <SettingsProvider
-        setThemePreview={setThemePreview}
         refreshTasks={refresh}
-        setTheme={setTheme}
+        dispatchTheme={dispatchTheme}
         setDarkMode={setDarkMode}
         setViewModeGrouped={setViewModeGrouped}
       >

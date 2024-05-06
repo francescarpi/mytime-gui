@@ -25,6 +25,7 @@ pub struct Setting {
     pub tour_completed: bool,
     pub integration_extra_param: Option<String>,
     pub right_sidebar_open: bool,
+    pub theme_secondary: String,
 }
 
 impl Setting {

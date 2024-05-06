@@ -42,6 +42,7 @@ mod tests {
         );
 
         assert_eq!(settings.theme, "#1976d2");
+        assert_eq!(settings.theme_secondary, "#ce93d8");
 
         assert_eq!(settings.view_type.to_string(), "chronological");
         assert_eq!(settings.view_type, ViewType::Chronological);

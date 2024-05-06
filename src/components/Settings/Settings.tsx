@@ -28,14 +28,14 @@ const Settings = ({
   onClose,
   setting,
   saveSetting,
-  setThemePreview,
+  dispatchTheme,
   refreshTasks,
 }: {
   opened: boolean;
   onClose: CallableFunction;
   setting: Setting | null;
   saveSetting: CallableFunction;
-  setThemePreview: CallableFunction;
+  dispatchTheme: CallableFunction;
   refreshTasks: CallableFunction;
 }) => {
   const [activeTab, setActiveTab] = useState<string>("1");
@@ -56,7 +56,7 @@ const Settings = ({
   };
 
   const cancelHandler = () => {
-    setThemePreview(null);
+    dispatchTheme({ type: "cancelPreview" });
     onClose();
   };
 
@@ -89,7 +89,7 @@ const Settings = ({
               <Generic
                 setting={tmpSetting}
                 setSetting={setTmpSetting}
-                setThemePreview={setThemePreview}
+                dispatchTheme={dispatchTheme}
               />
             </TabPanel>
             <TabPanel value="2">

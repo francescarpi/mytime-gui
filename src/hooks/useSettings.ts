@@ -22,6 +22,7 @@ export interface Setting {
     sunday: number;
   };
   theme: string;
+  theme_secondary: string;
   view_type: ViewType;
   dark_mode: boolean;
   tour_completed: boolean;

@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Add the project name in the favourites list
 - Refresh favourites list on toggle one favourite
 - Add a default message if there are not tasks to send
+- Allow selecting the secondary colour for the theme
 
 ### Fixed
 
