@@ -46,9 +46,12 @@ const iniAddTaskValues = { proj: "", desc: "", extId: "" };
 const App = () => {
   const [openSync, setOpenSync] = useState<boolean>(false);
 
-  const [themePreview, setThemePreview] = useState<string | null>(null);
-
   const [theme, setTheme] = useState<string>("#1976d2");
+  const [themeSecondary, setThemeSecondary] = useState<string>("#ce93d8");
+  const [themePreview, setThemePreview] = useState<string | null>(null);
+  const [themeSecondaryPreview, setThemeSecondaryPreview] = useState<
+    string | null
+  >(null);
 
   const [darkMode, setDarkMode] = useState<boolean>(false);
 
@@ -80,7 +83,13 @@ const App = () => {
 
   const { setQuery, totalWorked, result, searchMode } = useSearch({});
 
-  const defaultTheme = appTheme(darkMode, theme, themePreview);
+  const defaultTheme = appTheme(
+    darkMode,
+    theme,
+    themeSecondary,
+    themePreview,
+    themeSecondaryPreview,
+  );
 
   useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
 
@@ -92,9 +101,11 @@ const App = () => {
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <SettingsProvider
-        setThemePreview={setThemePreview}
         refreshTasks={refresh}
         setTheme={setTheme}
+        setThemeSecondary={setThemeSecondary}
+        setThemePreview={setThemePreview}
+        setThemeSecondaryPreview={setThemeSecondaryPreview}
         setDarkMode={setDarkMode}
         setViewModeGrouped={setViewModeGrouped}
       >

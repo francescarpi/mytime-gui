@@ -29,6 +29,7 @@ const Settings = ({
   setting,
   saveSetting,
   setThemePreview,
+  setThemeSecondaryPreview,
   refreshTasks,
 }: {
   opened: boolean;
@@ -36,6 +37,7 @@ const Settings = ({
   setting: Setting | null;
   saveSetting: CallableFunction;
   setThemePreview: CallableFunction;
+  setThemeSecondaryPreview: CallableFunction;
   refreshTasks: CallableFunction;
 }) => {
   const [activeTab, setActiveTab] = useState<string>("1");
@@ -90,6 +92,7 @@ const Settings = ({
                 setting={tmpSetting}
                 setSetting={setTmpSetting}
                 setThemePreview={setThemePreview}
+                setThemeSecondaryPreview={setThemeSecondaryPreview}
               />
             </TabPanel>
             <TabPanel value="2">
