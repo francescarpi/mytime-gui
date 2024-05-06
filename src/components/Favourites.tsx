@@ -37,7 +37,7 @@ const Favourites = ({
   return (
     <Box>
       <Typography variant="h5" sx={{ mb: 4 }}>
-        Favourites tasks
+        Favourite tasks
       </Typography>
       <Box>
         <TableContainer component={Paper} variant="outlined">
@@ -58,7 +58,13 @@ const Favourites = ({
                       title={`Project: ${task.project} | Ext.ID: ${task.external_id}`}
                       placement="left"
                     >
-                      <Box>{task.desc}</Box>
+                      <Box>
+                        <Box>{task.desc}</Box>
+                        <Typography variant="caption" color="text.secondary">
+                          {task.project}{" "}
+                          {task.external_id && `(${task.external_id})`}
+                        </Typography>
+                      </Box>
                     </Tooltip>
                   </TableCell>
                   <TableCell align="right">
