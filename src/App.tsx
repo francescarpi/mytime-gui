@@ -43,7 +43,6 @@ const defaultAddTaskValuesReducer = (
 };
 
 const themeReducer = (state: Theme, action: any) => {
-  console.log(action);
   switch (action.type) {
     case "setColors":
       return {
