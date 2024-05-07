@@ -113,7 +113,7 @@ const Chronological = ({
               <TableCell align="center">
                 <SyncIndicator task={task} />
               </TableCell>
-              <TableCell align="right">
+              <TableCell align="right" sx={{ textWrap: "nowrap" }}>
                 {!task.reported && (
                   <EditDeleteActions
                     task={task}
