@@ -23,50 +23,7 @@ import TasksTableActionsHeader from "./components/TasksTableActionsHeader";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Favourites from "./components/Favourites";
-import { Theme } from "./models";
-
-const defaultAddTaskValuesReducer = (
-  state: { proj: string; desc: string; extId: string },
-  action: any,
-) => {
-  switch (action.type) {
-    case "setProj":
-      return { ...state, proj: action.value };
-    case "setDesc":
-      return { ...state, desc: action.value };
-    case "setExtId":
-      return { ...state, extId: action.value };
-    case "reset":
-      return { proj: "", desc: "", extId: "" };
-  }
-  return state;
-};
-
-const themeReducer = (state: Theme, action: any) => {
-  switch (action.type) {
-    case "setColors":
-      return {
-        ...state,
-        primary: action.primary,
-        secondary: action.secondary,
-      };
-    case "previewPrimary":
-      return {
-        ...state,
-        primaryPreview: action.primary,
-      };
-    case "previewSecondary":
-      return {
-        ...state,
-        secondaryPreview: action.secondary,
-      };
-    case "cancelPreview":
-      return { ...state, primaryPreview: null, secondaryPreview: null };
-  }
-  return state;
-};
-
-const iniAddTaskValues = { proj: "", desc: "", extId: "" };
+import { defaultAddTaskValuesReducer, themeReducer } from "./reducers";
 
 const App = () => {
   const [openSync, setOpenSync] = useState<boolean>(false);
@@ -84,7 +41,7 @@ const App = () => {
 
   const [defaultAddTaskValues, dispatchDefaultAddTaskValues] = useReducer(
     defaultAddTaskValuesReducer,
-    iniAddTaskValues,
+    { proj: "", desc: "", extId: "" },
   );
 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
