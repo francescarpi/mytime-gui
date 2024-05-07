@@ -46,8 +46,8 @@ const Sync = (props: SyncProps) => {
               No tasks to send. Only finished tasks with an external ID can be.
             </Alert>
           )}
-          <TableContainer>
-            <Table size="small">
+          <TableContainer sx={{ maxHeight: 350 }}>
+            <Table size="small" stickyHeader>
               <TableHead>
                 <TableRow>
                   <TableCell align="left">Description</TableCell>
