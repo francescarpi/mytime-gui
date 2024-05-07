@@ -185,7 +185,9 @@ impl Redmine {
 
         let unwrapped_response = response.unwrap();
 
-        if unwrapped_response.status() == Status::NOT_FOUND {
+        if unwrapped_response.status() == Status::NOT_FOUND
+            || unwrapped_response.status() == Status::FORBIDDEN
+        {
             return Err(RedmineErrorType::IssueNotFound);
         }
 
