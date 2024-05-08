@@ -14,6 +14,7 @@ diesel::table! {
         integration_extra_param -> Nullable<Text>,
         right_sidebar_open -> Bool,
         theme_secondary -> Text,
+        integration_username -> Nullable<Text>,
     }
 }
 

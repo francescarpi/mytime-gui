@@ -1,9 +1,11 @@
 use crate::models::integration::IntegrationType;
 use crate::models::{GroupedTask, Setting};
+use jira::Jira;
 use redmine::Redmine;
 use std::fmt;
 use url::Url;
 
+pub mod jira;
 pub mod redmine;
 
 // Integration errors
@@ -35,7 +37,7 @@ pub trait Integration {
         extra_param: Option<String>,
     ) -> Result<(), Error>;
 
-    fn prepare_url(settings: &Setting, suffix: Vec<String>) -> String {
+    fn prepare_url(&self, settings: &Setting, suffix: Vec<&String>) -> String {
         let mut url = Url::parse(settings.integration_url.as_ref().unwrap()).unwrap();
         if !url.path().ends_with('/') {
             url.path_segments_mut().unwrap().push("");
@@ -47,9 +49,12 @@ pub trait Integration {
     }
 }
 
-pub fn get_integration(settings: &Setting) -> Option<impl Integration> {
+// Method that receive a settings struct and depends on the settings.integration
+// returns an implementation of the Integration trait (Redmine or Jira)
+pub fn get_integration(settings: &Setting) -> Option<Box<dyn Integration>> {
     match settings.integration {
-        Some(IntegrationType::Redmine) => Some(Redmine::new()),
+        Some(IntegrationType::Redmine) => Some(Box::new(Redmine::new())),
+        Some(IntegrationType::Jira) => Some(Box::new(Jira::new())),
         _ => None,
     }
 }

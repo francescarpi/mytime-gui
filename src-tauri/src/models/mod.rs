@@ -26,6 +26,7 @@ pub struct Setting {
     pub integration_extra_param: Option<String>,
     pub right_sidebar_open: bool,
     pub theme_secondary: String,
+    pub integration_username: Option<String>,
 }
 
 impl Setting {
