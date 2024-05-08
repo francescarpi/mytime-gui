@@ -82,7 +82,7 @@ impl Integration for Redmine {
         task: &GroupedTask,
         extra_param: Option<String>,
     ) -> Result<(), Error> {
-        let url = Self::prepare_url(settings, vec!["time_entries.json".to_string()]);
+        let url = self.prepare_url(settings, vec![&"time_entries.json".to_string()]);
         let token = &settings.integration_token.as_ref().unwrap();
         let body = serde_json::json!({
             "time_entry": {
@@ -95,7 +95,7 @@ impl Integration for Redmine {
         });
 
         let client = Client::new();
-        match client.request(Self::prepare_post_request(
+        match client.request(Self::build_post_request(
             url.as_ref(),
             &body.to_string(),
             token,
@@ -121,7 +121,7 @@ impl Redmine {
         Self {}
     }
 
-    fn prepare_post_request(url: &str, body: &str, token: &str) -> Request {
+    fn build_post_request(url: &str, body: &str, token: &str) -> Request {
         let mut request =
             Request::builder(Method::POST, url.parse().unwrap()).with_body(body.to_string());
         request
@@ -131,7 +131,7 @@ impl Redmine {
         request
     }
 
-    fn prepare_get_request(url: &str, token: &str) -> Request {
+    fn build_get_request(url: &str, token: &str) -> Request {
         let mut request = Request::builder(Method::GET, url.parse().unwrap()).build();
         request
             .append_header("Content-Type", "application/json")
@@ -140,17 +140,17 @@ impl Redmine {
         request
     }
 
-    pub fn activities(settings: &Setting) -> Vec<RedmineTimeActivity> {
-        let url = Self::prepare_url(
+    pub fn activities(&self, settings: &Setting) -> Vec<RedmineTimeActivity> {
+        let url = self.prepare_url(
             settings,
             vec![
-                "enumerations".to_string(),
-                "time_entry_activities.json".to_string(),
+                &"enumerations".to_string(),
+                &"time_entry_activities.json".to_string(),
             ],
         );
         let token = &settings.integration_token.as_ref().unwrap();
         let client = Client::new();
-        match client.request(Self::prepare_get_request(url.as_ref(), token)) {
+        match client.request(Self::build_get_request(url.as_ref(), token)) {
             Ok(response) => {
                 if response.status() == Status::OK {
                     let response_body = response.into_body().to_string().unwrap();
@@ -167,6 +167,7 @@ impl Redmine {
     }
 
     pub fn project_activities(
+        &self,
         settings: &Setting,
         external_id: String,
     ) -> Result<Vec<RedmineProjectActivity>, RedmineErrorType> {
@@ -174,11 +175,11 @@ impl Redmine {
         let token = &settings.integration_token.as_ref().unwrap();
 
         // Get issue
-        let url = Self::prepare_url(
+        let url = self.prepare_url(
             settings,
-            vec!["issues".to_string(), format!("{}.json", external_id)],
+            vec![&"issues".to_string(), &format!("{}.json", external_id)],
         );
-        let response = client.request(Self::prepare_get_request(url.as_ref(), token));
+        let response = client.request(Self::build_get_request(url.as_ref(), token));
         if response.is_err() {
             return Err(RedmineErrorType::GenericError);
         }
@@ -197,15 +198,15 @@ impl Redmine {
         .unwrap();
 
         // Get project
-        let url = Self::prepare_url(
+        let url = self.prepare_url(
             settings,
             vec![
-                "projects".to_string(),
-                format!("{}.json", issue_response.issue.project.id),
+                &"projects".to_string(),
+                &format!("{}.json", issue_response.issue.project.id),
             ],
         );
         let url = format!("{}?include=time_entry_activities", url);
-        let response = client.request(Self::prepare_get_request(url.as_ref(), token));
+        let response = client.request(Self::build_get_request(url.as_ref(), token));
 
         if response.is_err() {
             return Err(RedmineErrorType::GenericError);
@@ -226,7 +227,7 @@ pub async fn activities(conn: State<'_, DbConn>) -> Result<serde_json::Value, se
     let settings = SettingsRepository::get_settings(&mut db).unwrap();
     if settings.has_integration() {
         return Ok(serde_json::json!(
-            integrations::redmine::Redmine::activities(&settings)
+            integrations::redmine::Redmine::new().activities(&settings)
         ));
     }
     Ok(serde_json::json!([]))
@@ -240,7 +241,9 @@ pub async fn project_activities(
     let mut db = conn.0.lock().unwrap();
     let settings = SettingsRepository::get_settings(&mut db).unwrap();
     if settings.has_integration() {
-        return match integrations::redmine::Redmine::project_activities(&settings, external_id) {
+        return match integrations::redmine::Redmine::new()
+            .project_activities(&settings, external_id)
+        {
             Ok(activities) => Ok(serde_json::json!(activities)),
             Err(_) => Err(serde_json::json!([])),
         };

@@ -43,6 +43,7 @@ const Integration = ({
             >
               <MenuItem value={"Disabled"}>Disabled</MenuItem>
               <MenuItem value={"Redmine"}>Redmine</MenuItem>
+              <MenuItem value={"Jira"}>Jira</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -73,7 +74,7 @@ const Integration = ({
               autoCorrect: "off",
               autoCapitalize: "off",
               spellCheck: "false",
-              maxLength: 100,
+              maxLength: 255,
             }}
           />
         </Grid>
