@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.5.1] - 2024-05-08
+
 ### Fixed
 
 - Add sticky header in the sync tasks table for long tables
