@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.6.0] - 2024-05-08
+
 ### Added
 
 - Add Jira integration
