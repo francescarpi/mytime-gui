@@ -5,7 +5,7 @@
 </p>
 
 MyTime is an application to track your working time. It allows you register your daily tasks, calculate its duration
-and synchronize with your ticketing system. At them moment is only integrated with Redmine.
+and synchronize with your ticketing system. At them moment is only integrated with Redmine and Jira.
 
 Initial screen:
 ![Screenshot 1](./captures/cap1.jpeg)
@@ -13,7 +13,7 @@ Initial screen:
 App with running tasks:
 ![Screenshot 2](./captures/cap2.png)
 
-Synchronize your tasks with Redmine
+Synchronize your tasks:
 ![Screenshot 3](./captures/cap3.png)
 
 ## Database
