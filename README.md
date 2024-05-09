@@ -40,3 +40,17 @@ Build:
 ```
 npm run tauri build
 ```
+
+## Integrations, get tokens
+
+### Redmine
+
+* Go to your account ("https://<your-domain>/my/account")
+* The API access key is in the right sidebar
+
+
+### Jira
+
+* Go to the tokens generator [page](https://id.atlassian.com/manage-profile/security/api-tokens)
+* Use them in the config.
+* The username is your email
