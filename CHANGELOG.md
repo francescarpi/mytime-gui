@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- Improved settings for the integrations and added a tooltip to show a help
+
+
 ## [v0.6.0] - 2024-05-08
 
 ### Added

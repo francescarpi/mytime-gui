@@ -20,9 +20,7 @@ const RedmineActivitySelect = ({
   return (
     <FormControl fullWidth size={size}>
       {size !== "small" && (
-        <InputLabel id="redmineActivity">
-          Default Activity for Redmine
-        </InputLabel>
+        <InputLabel id="redmineActivity">Default Activity</InputLabel>
       )}
       <Select
         size={size}

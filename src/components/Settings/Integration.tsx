@@ -25,9 +25,6 @@ const Integration = ({
   const onChangeIntegrationUrl = (e: any) =>
     setSetting({ ...setting, integration_url: e.target.value });
 
-  const onChangeIntegrationToken = (e: any) =>
-    setSetting({ ...setting, integration_token: e.target.value });
-
   return (
     <Box>
       <Grid container spacing={2}>
@@ -59,22 +56,6 @@ const Integration = ({
               autoCapitalize: "off",
               spellCheck: "false",
               maxLength: 200,
-            }}
-          />
-        </Grid>
-        <Grid item md={12}>
-          <TextField
-            label="Token"
-            fullWidth
-            value={setting?.integration_token || ""}
-            onChange={onChangeIntegrationToken}
-            type="password"
-            inputProps={{
-              autoComplete: "off",
-              autoCorrect: "off",
-              autoCapitalize: "off",
-              spellCheck: "false",
-              maxLength: 255,
             }}
           />
         </Grid>
