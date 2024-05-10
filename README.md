@@ -45,7 +45,7 @@ npm run tauri build
 
 ### Redmine
 
-* Go to your account ("https://<your-domain>/my/account")
+* Go to your account ("https://YOUR-DOMAIN/my/account")
 * The API access key is in the right sidebar
 
 
