@@ -15,6 +15,7 @@ import Box from "@mui/material/Box";
 import EditDeleteActions from "./EditDeleteActions";
 import StartStopActions from "./StartStopActions";
 import FavoriteAction from "./FavouriteAction";
+import CopyStringToClipboard from "./CopyStringToClipboard";
 
 const Chronological = ({
   tasks,
@@ -25,6 +26,7 @@ const Chronological = ({
   setTaskToEdit,
   dispatchDefaultAddTaskValues,
   toggleFavourite,
+  copyStringToClipboard,
 }: {
   tasks: Task[];
   addTask: CallableFunction;
@@ -34,6 +36,7 @@ const Chronological = ({
   setTaskToEdit: CallableFunction;
   dispatchDefaultAddTaskValues: CallableFunction;
   toggleFavourite: CallableFunction;
+  copyStringToClipboard: CallableFunction;
 }) => {
   const confirm = useConfirm();
   const deleteHandler = (id: number) => {
@@ -74,34 +77,53 @@ const Chronological = ({
                 </Box>
               </TableCell>
               <TableCell sx={{ textWrap: "nowrap" }}>
-                <CopyStringToAddForm
-                  dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
-                  type="setProj"
-                  value={task.project}
-                />
-                {task.project}
+                <Box
+                  sx={{
+                    textWrap: "nowrap",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <CopyStringToAddForm
+                    dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+                    type="setProj"
+                    value={task.project}
+                  />
+                  <CopyStringToClipboard onClick={copyStringToClipboard}>
+                    {task.project}
+                  </CopyStringToClipboard>
+                </Box>
               </TableCell>
               <TableCell>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Box>
-                    <CopyStringToAddForm
-                      dispatchDefaultAddTaskValues={
-                        dispatchDefaultAddTaskValues
-                      }
-                      type="setDesc"
-                      value={task.desc}
-                    />
-                  </Box>
-                  <Box>{task.desc}</Box>
+                  <CopyStringToAddForm
+                    dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+                    type="setDesc"
+                    value={task.desc}
+                  />
+                  <CopyStringToClipboard onClick={copyStringToClipboard}>
+                    {task.desc}
+                  </CopyStringToClipboard>
                 </Box>
               </TableCell>
               <TableCell align="right" sx={{ textWrap: "nowrap" }}>
-                <CopyStringToAddForm
-                  dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
-                  type="setExtId"
-                  value={task.external_id}
-                />
-                {task.external_id}
+                <Box
+                  sx={{
+                    textWrap: "nowrap",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <CopyStringToAddForm
+                    dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+                    type="setExtId"
+                    value={task.external_id}
+                  />
+                  <CopyStringToClipboard onClick={copyStringToClipboard}>
+                    {task.external_id}
+                  </CopyStringToClipboard>
+                </Box>
               </TableCell>
               <TableCell align="right">{dateToStrTime(task.start)}</TableCell>
               <TableCell align="right">

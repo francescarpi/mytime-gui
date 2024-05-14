@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [v0.6.1] - 2024-05-12
 
+### Added
+
+- Copy project, desc or ext. id to the clipboard on click over
+
 ### Changed
 
 - Improved settings for the integrations and added a tooltip to show a help

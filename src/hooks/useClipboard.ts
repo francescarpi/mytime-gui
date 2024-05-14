@@ -31,7 +31,11 @@ const useClipboard = () => {
     navigator.clipboard.writeText(text);
   };
 
-  return { copyTask, copyTasks };
+  const copyString = (text: string) => {
+    navigator.clipboard.writeText(text);
+  };
+
+  return { copyTask, copyTasks, copyString };
 };
 
 export default useClipboard;

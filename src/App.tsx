@@ -67,7 +67,7 @@ const App = () => {
 
   useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
 
-  const { copyTask, copyTasks } = useClipboard();
+  const { copyTask, copyTasks, copyString } = useClipboard();
 
   const { newVersion, version } = useVersion();
 
@@ -140,6 +140,7 @@ const App = () => {
                     addTask={addTask}
                     stopTask={stopTask}
                     copyToClipboard={copyTask}
+                    copyStringToClipboard={copyString}
                     deleteTask={deleteTask}
                     setTaskToEdit={setTaskToEdit}
                     dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
