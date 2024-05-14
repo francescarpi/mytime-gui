@@ -6,11 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
-## [v0.6.1] - 2024-05-12
-
 ### Added
 
 - Copy project, desc or ext. id to the clipboard on click over
+
+## [v0.6.1] - 2024-05-12
 
 ### Changed
 
