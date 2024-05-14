@@ -15,6 +15,7 @@ import CopyStringToAddForm from "./CopyStringToAddForm";
 import CopyToClipboardBtn from "../CopyToClipboardBtn";
 import Box from "@mui/material/Box";
 import StartStopActions from "./StartStopActions";
+import CopyStringToClipboard from "./CopyStringToClipboard";
 
 const Grouped = ({
   tasks,
@@ -25,6 +26,7 @@ const Grouped = ({
   setTaskToEdit,
   dispatchDefaultAddTaskValues,
   toggleFavourite,
+  copyStringToClipboard,
 }: {
   tasks: Task[];
   addTask: CallableFunction;
@@ -34,6 +36,7 @@ const Grouped = ({
   setTaskToEdit: CallableFunction;
   dispatchDefaultAddTaskValues: CallableFunction;
   toggleFavourite: CallableFunction;
+  copyStringToClipboard: CallableFunction;
 }) => {
   const [taskDetails, setTaskDetails] = useState<Task | null>(null);
 
@@ -75,35 +78,60 @@ const Grouped = ({
           <TableBody>
             {tasks.map((task) => (
               <TableRow key={`${task.id}-${task.reported}-${task.end}`}>
-                <TableCell sx={{ textWrap: "nowrap" }}>
-                  <CopyStringToAddForm
-                    dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
-                    type="setProj"
-                    value={task.project}
-                  />
-                  {task.project}
+                <TableCell>
+                  <Box
+                    sx={{
+                      textWrap: "nowrap",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CopyStringToAddForm
+                      dispatchDefaultAddTaskValues={
+                        dispatchDefaultAddTaskValues
+                      }
+                      type="setProj"
+                      value={task.project}
+                    />
+                    <CopyStringToClipboard onClick={copyStringToClipboard}>
+                      {task.project}
+                    </CopyStringToClipboard>
+                  </Box>
                 </TableCell>
                 <TableCell>
                   <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Box>
-                      <CopyStringToAddForm
-                        dispatchDefaultAddTaskValues={
-                          dispatchDefaultAddTaskValues
-                        }
-                        type="setDesc"
-                        value={task.desc}
-                      />
-                    </Box>
-                    <Box>{task.desc}</Box>
+                    <CopyStringToAddForm
+                      dispatchDefaultAddTaskValues={
+                        dispatchDefaultAddTaskValues
+                      }
+                      type="setDesc"
+                      value={task.desc}
+                    />
+                    <CopyStringToClipboard onClick={copyStringToClipboard}>
+                      {task.desc}
+                    </CopyStringToClipboard>
                   </Box>
                 </TableCell>
-                <TableCell align="right" sx={{ textWrap: "nowrap" }}>
-                  <CopyStringToAddForm
-                    dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
-                    type="setExtId"
-                    value={task.external_id}
-                  />
-                  {task.external_id}
+                <TableCell align="right">
+                  <Box
+                    sx={{
+                      textWrap: "nowrap",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <CopyStringToAddForm
+                      dispatchDefaultAddTaskValues={
+                        dispatchDefaultAddTaskValues
+                      }
+                      type="setExtId"
+                      value={task.external_id}
+                    />
+                    <CopyStringToClipboard onClick={copyStringToClipboard}>
+                      {task.external_id}
+                    </CopyStringToClipboard>
+                  </Box>
                 </TableCell>
                 <TableCell align="right">
                   {formatDuration(task.duration as number)}
