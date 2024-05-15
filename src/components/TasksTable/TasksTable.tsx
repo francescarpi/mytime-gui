@@ -18,6 +18,7 @@ const TasksTable = ({
   searchMode,
   toggleFavourite,
   copyStringToClipboard,
+  setQuery,
 }: {
   tasks: Task[];
   groupedTasks: Task[];
@@ -30,6 +31,7 @@ const TasksTable = ({
   searchMode: boolean;
   toggleFavourite: CallableFunction;
   copyStringToClipboard: CallableFunction;
+  setQuery: CallableFunction;
 }) => {
   const settingsContext = useContext(SettingsContext);
   return (
@@ -53,6 +55,7 @@ const TasksTable = ({
           dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
           toggleFavourite={toggleFavourite}
           copyStringToClipboard={copyStringToClipboard}
+          setQuery={setQuery}
         />
       ) : (
         <Chronological
@@ -65,6 +68,7 @@ const TasksTable = ({
           dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
           toggleFavourite={toggleFavourite}
           copyStringToClipboard={copyStringToClipboard}
+          setQuery={setQuery}
         />
       )}
     </Box>

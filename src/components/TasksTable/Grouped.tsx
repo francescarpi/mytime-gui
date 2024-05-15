@@ -27,6 +27,7 @@ const Grouped = ({
   dispatchDefaultAddTaskValues,
   toggleFavourite,
   copyStringToClipboard,
+  setQuery,
 }: {
   tasks: Task[];
   addTask: CallableFunction;
@@ -37,6 +38,7 @@ const Grouped = ({
   dispatchDefaultAddTaskValues: CallableFunction;
   toggleFavourite: CallableFunction;
   copyStringToClipboard: CallableFunction;
+  setQuery: CallableFunction;
 }) => {
   const [taskDetails, setTaskDetails] = useState<Task | null>(null);
 
@@ -155,6 +157,7 @@ const Grouped = ({
                     task={task}
                     addTask={addTask}
                     stopTask={stopTask}
+                    setQuery={setQuery}
                   />
                 </TableCell>
               </TableRow>

@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 
 - Copy project, desc or ext. id to the clipboard on click over
+- Search results are cleaned once a new task is added
 
 ## [v0.6.1] - 2024-05-12
 
