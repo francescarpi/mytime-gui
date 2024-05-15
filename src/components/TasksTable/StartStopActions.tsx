@@ -8,17 +8,21 @@ const StartStopActions = ({
   task,
   addTask,
   stopTask,
+  setQuery,
 }: {
   task: Task;
   addTask: CallableFunction;
   stopTask: CallableFunction;
+  setQuery: CallableFunction;
 }) => {
+  const playTask = () => {
+    addTask(task.project, task.desc, task.external_id);
+    setQuery("");
+  };
+
   return task.end ? (
     <Tooltip title="Start task" placement="top">
-      <IconButton
-        size="small"
-        onClick={() => addTask(task.project, task.desc, task.external_id)}
-      >
+      <IconButton size="small" onClick={playTask}>
         <PlayCircleIcon />
       </IconButton>
     </Tooltip>

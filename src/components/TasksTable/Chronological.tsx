@@ -27,6 +27,7 @@ const Chronological = ({
   dispatchDefaultAddTaskValues,
   toggleFavourite,
   copyStringToClipboard,
+  setQuery,
 }: {
   tasks: Task[];
   addTask: CallableFunction;
@@ -37,6 +38,7 @@ const Chronological = ({
   dispatchDefaultAddTaskValues: CallableFunction;
   toggleFavourite: CallableFunction;
   copyStringToClipboard: CallableFunction;
+  setQuery: CallableFunction;
 }) => {
   const confirm = useConfirm();
   const deleteHandler = (id: number) => {
@@ -148,6 +150,7 @@ const Chronological = ({
                   task={task}
                   addTask={addTask}
                   stopTask={stopTask}
+                  setQuery={setQuery}
                 />
               </TableCell>
             </TableRow>

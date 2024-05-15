@@ -48,6 +48,8 @@ const App = () => {
 
   const { date, setDate, setPreviousDate, setNextDate, setToday } = useDate();
 
+  const { setQuery, totalWorked, result, searchMode } = useSearch({});
+
   const {
     tasks,
     groupedTasks,
@@ -62,8 +64,6 @@ const App = () => {
   const { toggleFavourite, favourites, loadFavorites } = useFavorites(refresh);
 
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
-
-  const { setQuery, totalWorked, result, searchMode } = useSearch({});
 
   useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
 
@@ -145,6 +145,7 @@ const App = () => {
                     setTaskToEdit={setTaskToEdit}
                     dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
                     toggleFavourite={toggleFavourite}
+                    setQuery={setQuery}
                   />
                 </CardContent>
               </Card>
