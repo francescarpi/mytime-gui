@@ -2,6 +2,8 @@ name: 'Publish'
 
 on:
   push:
+    branches:
+      - feat/tauri_v2_2
     tags:
       - "v*"
 
