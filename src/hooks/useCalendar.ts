@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 
 const useCalendar = () => {
   const [datesWidthTasks, setDatesWidthTasks] = useState<string[]>([]);

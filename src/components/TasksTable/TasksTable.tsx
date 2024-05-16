@@ -36,7 +36,7 @@ const TasksTable = ({
   const settingsContext = useContext(SettingsContext);
   const isViewGrouped = settingsContext.setting?.view_type === ViewType.Grouped;
   const props = {
-    tasks: isViewGrouped ? groupedTasks : tasks,
+    tasks: isViewGrouped && !searchMode ? groupedTasks : tasks,
     addTask,
     stopTask,
     copyToClipboard,

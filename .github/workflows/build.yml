@@ -19,7 +19,7 @@ jobs:
             args: '--target aarch64-apple-darwin'
           - platform: 'macos-latest' # for Intel based macs.
             args: '--target x86_64-apple-darwin'
-          - platform: 'ubuntu-20.04' # for Tauri v1 you could replace this with ubuntu-20.04.
+          - platform: 'ubuntu-latest'
             args: ''
           - platform: 'windows-latest'
             args: ''
@@ -29,11 +29,11 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-20.04'
+        if: matrix.platform == 'ubuntu-latest'
         # You can remove libayatana-appindicator3-dev if you don't use the system tray feature.
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libayatana-appindicator3-dev librsvg2-dev
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev
 
       - name: setup node
         uses: actions/setup-node@v4
@@ -60,9 +60,9 @@ jobs:
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REACT_APP_GITHUB_TOKEN: ${{ secrets.LIST_RELEASES_TOKEN }}
-          REACT_APP_GITHUB_OWNER: ${{ secrets.PROJECT_OWNER }}
-          REACT_APP_GITHUB_REPO_NAME: mytime-gui
+          VITE_APP_GITHUB_TOKEN: ${{ secrets.LIST_RELEASES_TOKEN }}
+          VITE_APP_GITHUB_OWNER: ${{ secrets.PROJECT_OWNER }}
+          VITE_APP_GITHUB_REPO_NAME: mytime-gui
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
           APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}

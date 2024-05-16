@@ -6,15 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.7.0] - 2024-05-16
+
 ### Added
 
-- Add a contribute link into info settings tab
+- Add a contribute and changelog links into the info settings tab
+- Tauri Framework V2
 
 ### Changed
 
 - Task table component code improved
 - Improve message when there are not tasks to send
 - Improve design of the info settings tab
+- Set the day to today on click on the header app logo
+
+### Fixed
+
+- Search results didn't show
 
 ## [v0.6.2] - 2024-05-15
 
