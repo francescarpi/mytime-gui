@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - Task table component code improved
+- Improve message when there are not tasks to send
 
 ## [v0.6.2] - 2024-05-15
 
