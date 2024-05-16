@@ -1,10 +1,10 @@
 import Box from "@mui/material/Box";
 import useInfo from "../../hooks/useInfo";
-import List from "@mui/material/List";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { invoke } from "@tauri-apps/api";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import Link from "@mui/material/Link";
 
 const Info = () => {
   const { info } = useInfo();
@@ -19,47 +19,40 @@ const Info = () => {
 
   return (
     <Box>
-      <List>
-        <Grid container spacing={2}>
-          <Grid item md={4}>
-            <strong>Version</strong>
-            <Box>{info.version}</Box>
-          </Grid>
-          <Grid item md={5}>
-            <strong>Authors</strong>
-            <Box>{info.authors}</Box>
-          </Grid>
-          <Grid item md={3}>
-            <strong>Total tasks</strong>
-            <Box>{info.total_tasks}</Box>
-          </Grid>
-          <Grid item md={12}>
-            <strong>Database path</strong>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              {info.db_path}
-              <Button onClick={showFolder}>Show folder</Button>
-            </Box>
-          </Grid>
-          <Grid item md={12} sx={{ mt: 2 }}>
-            <Box>
-              <Button
-                variant="outlined"
-                startIcon={<GitHubIcon />}
-                href="https://github.com/francescarpi/mytime-gui"
-                target="_blank"
-              >
-                Contribute
-              </Button>
-            </Box>
-          </Grid>
+      <Grid container spacing={2}>
+        <Grid item md={4}>
+          <strong>Version</strong>
+          <Box>{info.version}</Box>
         </Grid>
-      </List>
+        <Grid item md={5}>
+          <strong>Authors</strong>
+          <Box>{info.authors}</Box>
+        </Grid>
+        <Grid item md={3}>
+          <strong>Total tasks</strong>
+          <Box>{info.total_tasks}</Box>
+        </Grid>
+        <Grid item md={12}>
+          <strong>Database path</strong>
+          <Box>
+            <Link onClick={showFolder} href="#">
+              {info.db_path}
+            </Link>
+          </Box>
+        </Grid>
+        <Grid item md={12} sx={{ mt: 2 }}>
+          <Box>
+            <Button
+              variant="outlined"
+              startIcon={<GitHubIcon />}
+              href="https://github.com/francescarpi/mytime-gui"
+              target="_blank"
+            >
+              Contribute
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
     </Box>
   );
 };
