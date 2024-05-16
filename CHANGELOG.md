@@ -20,6 +20,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Improve design of the info settings tab
 - Set the day to today on click on the header app logo
 
+### Fixed
+
+- Search results didn't show
+
 ## [v0.6.2] - 2024-05-15
 
 ### Added
