@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Task } from "./useTasks";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 
 const useSearch = ({ limit = null }: { limit?: number | null }) => {
   const [query, setQuery] = useState<string>("");

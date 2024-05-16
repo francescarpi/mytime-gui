@@ -1,5 +1,5 @@
 import { useState, useEffect, useReducer } from "react";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 
 export interface RedmineActivity {
   id: number;

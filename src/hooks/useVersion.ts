@@ -19,9 +19,9 @@ const useVersion = () => {
   }, []);
 
   useEffect(() => {
-    const token = process.env.REACT_APP_GITHUB_TOKEN;
-    const owner = process.env.REACT_APP_GITHUB_OWNER;
-    const repo = process.env.REACT_APP_GITHUB_REPO_NAME;
+    const token = import.meta.env.VITE_APP_GITHUB_TOKEN;
+    const owner = import.meta.env.VITE_APP_GITHUB_OWNER;
+    const repo = import.meta.env.VITE_APP_GITHUB_REPO_NAME;
 
     if (!token || !owner || !repo || !version) {
       return;

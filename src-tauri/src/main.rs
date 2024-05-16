@@ -15,7 +15,8 @@ use std::sync::Mutex;
 
 use diesel::SqliteConnection;
 use models::Setting;
-use tauri::{command, State, SystemTray};
+use tauri::tray::TrayIconBuilder;
+use tauri::{command, State};
 
 use chrono::NaiveTime;
 use integrations::*;
@@ -215,7 +216,7 @@ fn info(app_handle: tauri::AppHandle, conn: State<'_, DbConn>) -> Value {
     let mut db = conn.0.lock().unwrap();
 
     json!({
-        "version": package_info.version,
+        "version": package_info.version.to_string(),
         "authors": package_info.authors,
         "db_path": db::db_path(),
         "total_tasks": TasksRepository::total_tasks(&mut db).unwrap(),
@@ -270,10 +271,11 @@ fn show_in_folder(path: String) {
 }
 
 fn main() {
-    let system_tray = SystemTray::new();
     tauri::Builder::default()
+        .plugin(tauri_plugin_shell::init())
         .manage(DbConn(Mutex::new(db::establish_connection())))
-        .setup(|_app| {
+        .setup(|app| {
+            TrayIconBuilder::new().build(app)?;
             env_logger::init();
             Ok(())
         })
@@ -297,7 +299,6 @@ fn main() {
             integrations::redmine::activities,
             integrations::redmine::project_activities,
         ])
-        .system_tray(system_tray)
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

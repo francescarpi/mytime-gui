@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { invoke } from "@tauri-apps/api";
+import { useState, useEffect } from "react";
+import { invoke } from "@tauri-apps/api/core";
 
 export interface AppInfo {
   version: string;
@@ -17,7 +17,7 @@ const useInfo = () => {
     });
   }, []);
 
-  return { info }
-}
+  return { info };
+};
 
 export default useInfo;

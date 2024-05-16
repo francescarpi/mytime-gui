@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import useInfo from "../../hooks/useInfo";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import Link from "@mui/material/Link";
 
