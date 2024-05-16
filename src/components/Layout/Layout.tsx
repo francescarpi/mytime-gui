@@ -30,6 +30,7 @@ const Layout = ({
   searchInputRef,
   newVersion,
   version,
+  setToday,
 }: {
   children: ReactNode;
   rightSideBarContent: ReactNode;
@@ -39,6 +40,7 @@ const Layout = ({
   searchInputRef: RefObject<HTMLInputElement>;
   newVersion: NewVersion | null;
   version: string | null;
+  setToday: CallableFunction;
 }) => {
   const settingContext = useContext(SettingsContext);
   const [query, setQuery] = useState<string>("");
@@ -64,7 +66,9 @@ const Layout = ({
         enableColorOnDark
       >
         <Toolbar>
-          <img src={Logo} width="35" alt="Logo" />
+          <Button sx={{ p: 0, m: 0, minWidth: 0 }} onClick={() => setToday()}>
+            <img src={Logo} width="35" alt="Logo" />
+          </Button>
           <Typography variant="h6" sx={{ ml: 1, flexGrow: 1 }}>
             MyTime
           </Typography>

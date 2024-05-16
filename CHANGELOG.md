@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Task table component code improved
 - Improve message when there are not tasks to send
 - Improve design of the info settings tab
+- Set the day to today on click on the header app logo
 
 ## [v0.6.2] - 2024-05-15
 

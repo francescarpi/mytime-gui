@@ -97,6 +97,7 @@ const App = () => {
               onEdit={editTask}
             />
             <Layout
+              setToday={setToday}
               summary={summary}
               onPressSync={() => setOpenSync(true)}
               setSearchQuery={setQuery}
