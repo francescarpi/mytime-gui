@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import { invoke } from "@tauri-apps/api/core";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import Link from "@mui/material/Link";
+import GradingIcon from "@mui/icons-material/Grading";
 
 const Info = () => {
   const { info } = useInfo();
@@ -41,16 +42,23 @@ const Info = () => {
           </Box>
         </Grid>
         <Grid item md={12} sx={{ mt: 2 }}>
-          <Box>
-            <Button
-              variant="outlined"
-              startIcon={<GitHubIcon />}
-              href="https://github.com/francescarpi/mytime-gui"
-              target="_blank"
-            >
-              Contribute
-            </Button>
-          </Box>
+          <Button
+            variant="outlined"
+            startIcon={<GitHubIcon />}
+            href="https://github.com/francescarpi/mytime-gui"
+            target="_blank"
+          >
+            Contribute
+          </Button>
+          <Button
+            sx={{ ml: 2 }}
+            variant="outlined"
+            startIcon={<GradingIcon />}
+            href="https://github.com/francescarpi/mytime-gui/blob/main/CHANGELOG.md"
+            target="_blank"
+          >
+            Changelog
+          </Button>
         </Grid>
       </Grid>
     </Box>
