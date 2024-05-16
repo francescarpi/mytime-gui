@@ -43,7 +43,8 @@ const Sync = (props: SyncProps) => {
           {slotHeader}
           {tasks.length === 0 && (
             <Alert severity="warning" variant="outlined" sx={{ mb: 2 }}>
-              No tasks to send. Only finished tasks with an external ID can be.
+              No tasks to send. Only finished tasks with an external ID can be
+              reported.
             </Alert>
           )}
           <TableContainer sx={{ maxHeight: 350 }}>

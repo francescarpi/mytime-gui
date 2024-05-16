@@ -34,6 +34,19 @@ const TasksTable = ({
   setQuery: CallableFunction;
 }) => {
   const settingsContext = useContext(SettingsContext);
+  const isViewGrouped = settingsContext.setting?.view_type === ViewType.Grouped;
+  const props = {
+    tasks: isViewGrouped ? groupedTasks : tasks,
+    addTask,
+    stopTask,
+    copyToClipboard,
+    deleteTask,
+    setTaskToEdit,
+    dispatchDefaultAddTaskValues,
+    toggleFavourite,
+    copyStringToClipboard,
+    setQuery,
+  };
   return (
     <Box
       sx={{
@@ -43,33 +56,10 @@ const TasksTable = ({
         height: 350,
       }}
     >
-      {settingsContext.setting?.view_type === ViewType.Grouped &&
-      !searchMode ? (
-        <Grouped
-          tasks={groupedTasks}
-          addTask={addTask}
-          stopTask={stopTask}
-          copyToClipboard={copyToClipboard}
-          deleteTask={deleteTask}
-          setTaskToEdit={setTaskToEdit}
-          dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
-          toggleFavourite={toggleFavourite}
-          copyStringToClipboard={copyStringToClipboard}
-          setQuery={setQuery}
-        />
+      {isViewGrouped && !searchMode ? (
+        <Grouped {...props} />
       ) : (
-        <Chronological
-          tasks={tasks}
-          addTask={addTask}
-          stopTask={stopTask}
-          copyToClipboard={copyToClipboard}
-          deleteTask={deleteTask}
-          setTaskToEdit={setTaskToEdit}
-          dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
-          toggleFavourite={toggleFavourite}
-          copyStringToClipboard={copyStringToClipboard}
-          setQuery={setQuery}
-        />
+        <Chronological {...props} />
       )}
     </Box>
   );

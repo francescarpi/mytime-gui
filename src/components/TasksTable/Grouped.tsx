@@ -11,11 +11,9 @@ import { formatDuration } from "../../utils/dates";
 import Button from "@mui/material/Button";
 import GroupedModal from "./GroupedModal";
 import SyncIndicator from "./SyncIndicator";
-import CopyStringToAddForm from "./CopyStringToAddForm";
 import CopyToClipboardBtn from "../CopyToClipboardBtn";
-import Box from "@mui/material/Box";
 import StartStopActions from "./StartStopActions";
-import CopyStringToClipboard from "./CopyStringToClipboard";
+import ProjDescExtId from "./ProjDescExtId";
 
 const Grouped = ({
   tasks,
@@ -80,61 +78,11 @@ const Grouped = ({
           <TableBody>
             {tasks.map((task) => (
               <TableRow key={`${task.id}-${task.reported}-${task.end}`}>
-                <TableCell>
-                  <Box
-                    sx={{
-                      textWrap: "nowrap",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <CopyStringToAddForm
-                      dispatchDefaultAddTaskValues={
-                        dispatchDefaultAddTaskValues
-                      }
-                      type="setProj"
-                      value={task.project}
-                    />
-                    <CopyStringToClipboard onClick={copyStringToClipboard}>
-                      {task.project}
-                    </CopyStringToClipboard>
-                  </Box>
-                </TableCell>
-                <TableCell>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <CopyStringToAddForm
-                      dispatchDefaultAddTaskValues={
-                        dispatchDefaultAddTaskValues
-                      }
-                      type="setDesc"
-                      value={task.desc}
-                    />
-                    <CopyStringToClipboard onClick={copyStringToClipboard}>
-                      {task.desc}
-                    </CopyStringToClipboard>
-                  </Box>
-                </TableCell>
-                <TableCell align="right">
-                  <Box
-                    sx={{
-                      textWrap: "nowrap",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "flex-end",
-                    }}
-                  >
-                    <CopyStringToAddForm
-                      dispatchDefaultAddTaskValues={
-                        dispatchDefaultAddTaskValues
-                      }
-                      type="setExtId"
-                      value={task.external_id}
-                    />
-                    <CopyStringToClipboard onClick={copyStringToClipboard}>
-                      {task.external_id}
-                    </CopyStringToClipboard>
-                  </Box>
-                </TableCell>
+                <ProjDescExtId
+                  task={task}
+                  dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+                  copyStringToClipboard={copyStringToClipboard}
+                />
                 <TableCell align="right">
                   {formatDuration(task.duration as number)}
                 </TableCell>
