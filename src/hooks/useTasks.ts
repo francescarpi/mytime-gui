@@ -53,6 +53,7 @@ const useTasks = (date: Dayjs, setToday: CallableFunction) => {
     }
     console.log("Interval registered");
     setIntervalId(setInterval(() => refresh(), REFRESH_INTERVAL));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh]);
 

@@ -145,6 +145,13 @@ fn group_tasks(conn: State<'_, DbConn>) -> Value {
 }
 
 #[command]
+fn last_task(conn: State<'_, DbConn>) -> Value {
+    let mut db = conn.0.lock().unwrap();
+    let task = TasksRepository::last_task(&mut db);
+    task.map(|task| json!(task)).unwrap_or(json!(null))
+}
+
+#[command]
 async fn send_to_integration(
     id: String,
     extra_param: Option<String>,
@@ -296,6 +303,7 @@ fn main() {
             favourites,
             info,
             show_in_folder,
+            last_task,
             integrations::redmine::activities,
             integrations::redmine::project_activities,
         ])

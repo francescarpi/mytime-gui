@@ -299,4 +299,16 @@ impl TasksRepository {
     pub fn total_tasks(c: &mut SqliteConnection) -> QueryResult<i64> {
         tasks::table.count().get_result(c)
     }
+
+    pub fn last_task(c: &mut SqliteConnection) -> QueryResult<Task> {
+        sql_query(
+            "
+            SELECT *
+            FROM tasks
+            ORDER BY DATE(start) DESC
+            LIMIT 1;
+            ",
+        )
+        .get_result(c)
+    }
 }

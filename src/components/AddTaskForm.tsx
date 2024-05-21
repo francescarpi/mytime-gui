@@ -7,6 +7,10 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import SearchExternalId from "./SearchExternalId";
+import { invoke } from "@tauri-apps/api/core";
+import { Task } from "../hooks/useTasks";
+import { useConfirm } from "material-ui-confirm";
+import dayjs from "dayjs";
 
 const AddTaskForm = ({
   sx,
@@ -28,6 +32,7 @@ const AddTaskForm = ({
   const [externalId, setExternalId] = useState("");
   const [showSearchExtId, setShowSearchExtId] = useState<boolean>(false);
   const submitRef = useRef<HTMLButtonElement>(null);
+  const confirm = useConfirm();
 
   const reset = () => {
     setProject("");
@@ -54,6 +59,17 @@ const AddTaskForm = ({
       setExternalId(defaultAddTaskValues.extId);
     }
   }, [defaultAddTaskValues]);
+
+  useEffect(() => {
+    invoke("last_task").then((resp) => {
+      let task = resp as Task | null;
+      if (task && dayjs(task.start).isBefore(dayjs(), "date")) {
+        confirm({
+          description: `Do you want to continue with the previous task: "${task.desc}"?`,
+        }).then(() => onSubmit(task.project, task.desc, task.external_id));
+      }
+    });
+  }, []);
 
   return (
     <>
