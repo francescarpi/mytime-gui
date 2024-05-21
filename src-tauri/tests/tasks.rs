@@ -6,7 +6,9 @@ pub mod common;
 mod tests {
     use crate::common::get_db_connection;
     use app::repositories::TasksRepository;
-    use chrono::{offset::Local, Datelike, NaiveTime, Timelike};
+    use app::schema::tasks;
+    use chrono::{offset::Local, Datelike, NaiveDateTime, NaiveTime, Timelike};
+    use diesel::prelude::*;
 
     #[test]
     fn add_task() {
@@ -303,5 +305,36 @@ mod tests {
         let _ = TasksRepository::toggle_favourite(&mut c, task.id);
         let tasks = TasksRepository::favourites(&mut c).unwrap();
         assert_eq!(tasks.len(), 0);
+    }
+
+    #[test]
+    fn last_task() {
+        // Setup
+        let mut c = get_db_connection();
+
+        // Test no tasks
+        let got = TasksRepository::last_task(&mut c);
+        let want = diesel::result::Error::NotFound;
+        assert_eq!(got.unwrap_err(), want);
+
+        // Add a task with "yesterday" as a start/end date
+        let now = Local::now().naive_local();
+        let yesterday = now.date() - chrono::Duration::days(1);
+        let start = NaiveDateTime::new(yesterday, NaiveTime::from_hms_opt(10, 0, 0).unwrap());
+        let end = NaiveDateTime::new(yesterday, NaiveTime::from_hms_opt(11, 0, 0).unwrap());
+
+        let _ = diesel::insert_into(tasks::table)
+            .values((
+                tasks::desc.eq("Test task".to_string()),
+                tasks::external_id.eq("1234".to_string()),
+                tasks::project.eq("FOO".to_string()),
+                tasks::start.eq(start),
+                tasks::end.eq(end),
+            ))
+            .execute(&mut c);
+
+        let got = TasksRepository::last_task(&mut c);
+        assert!(got.is_ok());
+        assert_eq!(got.unwrap().desc, "Test task");
     }
 }
