@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.8.0] - 2024-05-22
+
 ### Added
 
 - Allows you to continue with a task form the previous day
