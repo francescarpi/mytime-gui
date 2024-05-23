@@ -305,7 +305,7 @@ impl TasksRepository {
             "
             SELECT *
             FROM tasks
-            ORDER BY DATE(start) DESC
+            ORDER BY DATE(start) DESC, id DESC
             LIMIT 1;
             ",
         )
