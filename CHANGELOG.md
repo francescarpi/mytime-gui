@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- Upgrade some npm packages
+
 ## [v0.8.1] - 2024-05-23
 
 ### Fixed
