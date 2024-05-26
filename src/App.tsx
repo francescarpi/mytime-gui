@@ -86,7 +86,15 @@ const App = () => {
           autoHideDuration={5000}
           anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
         >
-          <ConfirmProvider>
+          <ConfirmProvider
+            defaultOptions={{
+              confirmationButtonProps: { variant: "contained" },
+              cancellationButtonProps: {
+                variant: "contained",
+                color: "secondary",
+              },
+            }}
+          >
             <SyncWrapper
               opened={openSync}
               onClose={() => setOpenSync(false)}

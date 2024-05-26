@@ -6,9 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.8.2] - 2024-05-26
+
 ### Changed
 
 - Upgrade some npm packages
+- Buttons color improved in the resume last task confirmation dialog
 
 ## [v0.8.1] - 2024-05-23
 
