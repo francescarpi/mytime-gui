@@ -24,21 +24,27 @@ fn db_exists() -> bool {
     Path::new(&db_path).exists()
 }
 
-fn create_db_file() {
-    fs::create_dir_all(db_dir().data_dir).unwrap();
+fn create_db_file() -> Result<(), std::io::Error> {
+    fs::create_dir_all(db_dir().data_dir)?;
     fs::File::create(db_path()).unwrap();
+    Ok(())
 }
 
-pub fn init() {
+pub fn init() -> Result<(), std::io::Error> {
     if !db_exists() {
-        create_db_file();
+        create_db_file()?;
     }
+    Ok(())
 }
 
-pub fn establish_connection() -> SqliteConnection {
-    init();
+pub fn establish_connection() -> Option<SqliteConnection> {
+    let resp = init();
+    if resp.is_err() {
+        return None;
+    }
+
     let db_url = format!("sqlite://{}", db_path());
     let mut conn = SqliteConnection::establish(&db_url).expect("Error connecting to database");
     conn.run_pending_migrations(MIGRATIONS).unwrap();
-    conn
+    Some(conn)
 }
