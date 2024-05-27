@@ -26,7 +26,7 @@ fn db_exists() -> bool {
 
 fn create_db_file() -> Result<(), std::io::Error> {
     fs::create_dir_all(db_dir().data_dir)?;
-    fs::File::create(db_path()).unwrap();
+    fs::File::create(db_path())?;
     Ok(())
 }
 
