@@ -280,7 +280,9 @@ fn show_in_folder(path: String) {
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
-        .manage(DbConn(Mutex::new(db::establish_connection())))
+        .manage(DbConn(Mutex::new(
+            db::establish_connection().expect("Error connecting to database"),
+        )))
         .setup(|app| {
             TrayIconBuilder::new().build(app)?;
             env_logger::init();
