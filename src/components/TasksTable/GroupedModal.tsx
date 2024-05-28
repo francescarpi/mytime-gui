@@ -13,7 +13,7 @@ import Button from "@mui/material/Button";
 import { useConfirm } from "material-ui-confirm";
 import { StyledBox } from "../../styles/modal";
 import EditDeleteActions from "./EditDeleteActions";
-import FavoriteAction from "./FavouriteAction";
+import TaskId from "./TaskId";
 
 const GroupedModal = ({
   task,
@@ -53,14 +53,7 @@ const GroupedModal = ({
               {task?.children?.map((child) => (
                 <TableRow key={`${child.id}-${child.reported}-${child.end}`}>
                   <TableCell align="center">
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <FavoriteAction
-                        task={child}
-                        sx={{ mr: 1 }}
-                        toggle={toggleFavourite}
-                      />
-                      {child.id.toString()}
-                    </Box>
+                    <TaskId task={child} toggleFavourite={toggleFavourite} />
                   </TableCell>
                   <TableCell align="right">
                     {dateToStrTime(child.start)}

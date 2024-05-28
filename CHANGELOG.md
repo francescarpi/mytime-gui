@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 
 - Add more checks establishing the database connection
+- Add a system to check if there are tasks which start or end time is overlapping with another one
 
 ## [v0.8.2] - 2024-05-26
 

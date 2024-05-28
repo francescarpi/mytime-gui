@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 export interface Task {
   id: number;
@@ -15,6 +15,7 @@ export interface Task {
   has_running_tasks?: boolean;
   children?: Task[];
   favourite: boolean;
+  task_with_conflict: number | null;
 }
 
 export interface Summary {
@@ -37,7 +38,26 @@ const useTasks = (date: Dayjs, setToday: CallableFunction) => {
   const refresh = useCallback(() => {
     const d = date.format("YYYY-MM-DD");
     console.log("Refresh", d);
-    invoke("tasks", { date: d }).then((res) => setTasks(res as Task[]));
+    invoke("tasks", { date: d }).then((res) => {
+      let _tasks = res as Task[];
+      let _newTasks: Task[] = [];
+
+      _tasks.forEach((_t1) => {
+        let task_with_conflict = null;
+        _tasks.forEach((_t2) => {
+          if (
+            _t2.end &&
+            dayjs(_t1.start).isBefore(_t2.end, "minute") &&
+            dayjs(_t1.end).isAfter(_t2.end, "minute")
+          ) {
+            task_with_conflict = _t2.id;
+          }
+        });
+        _newTasks.push({ ..._t1, task_with_conflict });
+      });
+
+      setTasks(_newTasks);
+    });
     invoke("summary", { date: d }).then((res) => setSummary(res as Summary));
   }, [date]);
 

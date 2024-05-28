@@ -10,11 +10,10 @@ import { formatDuration, dateToStrTime } from "../../utils/dates";
 import { useConfirm } from "material-ui-confirm";
 import SyncIndicator from "./SyncIndicator";
 import CopyToClipboardBtn from "../CopyToClipboardBtn";
-import Box from "@mui/material/Box";
 import EditDeleteActions from "./EditDeleteActions";
 import StartStopActions from "./StartStopActions";
-import FavoriteAction from "./FavouriteAction";
 import ProjDescExtId from "./ProjDescExtId";
+import TaskId from "./TaskId";
 
 const Chronological = ({
   tasks,
@@ -68,14 +67,7 @@ const Chronological = ({
           {tasks.map((task) => (
             <TableRow key={`${task.id}-${task.reported}-${task.end}`}>
               <TableCell align="center">
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <FavoriteAction
-                    task={task}
-                    sx={{ mr: 1 }}
-                    toggle={toggleFavourite}
-                  />
-                  {task.id.toString()}
-                </Box>
+                <TaskId task={task} toggleFavourite={toggleFavourite} />
               </TableCell>
               <ProjDescExtId
                 task={task}

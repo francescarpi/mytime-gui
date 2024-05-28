@@ -14,6 +14,7 @@ import SyncIndicator from "./SyncIndicator";
 import CopyToClipboardBtn from "../CopyToClipboardBtn";
 import StartStopActions from "./StartStopActions";
 import ProjDescExtId from "./ProjDescExtId";
+import WarningIcon from "@mui/icons-material/Warning";
 
 const Grouped = ({
   tasks,
@@ -97,6 +98,11 @@ const Grouped = ({
                     onClick={() => setTaskDetails(task)}
                   >
                     {(task.children as Task[]).length}
+                    {(task.children as Task[]).filter(
+                      (t) => t.task_with_conflict,
+                    ).length > 0 ? (
+                      <WarningIcon color="error" sx={{ ml: 1, fontSize: 16 }} />
+                    ) : null}
                   </Button>
                 </TableCell>
                 <TableCell align="right">
