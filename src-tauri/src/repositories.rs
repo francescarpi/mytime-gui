@@ -177,12 +177,19 @@ impl TasksRepository {
         date: NaiveDate,
     ) -> QueryResult<Duration> {
         let week_number = format!("{:02}", date.iso_week().week());
-        sql_query(format!(
-            "SELECT COALESCE(SUM({}), 0) AS duration FROM tasks WHERE STRFTIME('%W', start) = $1",
+        let year = date.year().to_string();
+
+        let sql = format!(
+            "SELECT COALESCE(SUM({}), 0) AS duration FROM tasks
+                WHERE STRFTIME('%W', start) = $1 AND
+                STRFTIME('%Y', start) = $2",
             DURATION_SQL
-        ))
-        .bind::<Text, _>(week_number)
-        .get_result(c)
+        );
+
+        sql_query(sql)
+            .bind::<Text, _>(week_number)
+            .bind::<Text, _>(year)
+            .get_result(c)
     }
 
     pub fn worked_during_the_month(
@@ -190,11 +197,16 @@ impl TasksRepository {
         date: NaiveDate,
     ) -> QueryResult<Duration> {
         let month_number = format!("{:02}", date.month0() + 1);
+        let year = date.year().to_string();
+
         sql_query(format!(
-            "SELECT COALESCE(SUM({}), 0) AS duration FROM tasks WHERE STRFTIME('%m', start) = $1",
+            "SELECT COALESCE(SUM({}), 0) AS duration FROM tasks
+                WHERE STRFTIME('%m', start) = $1 AND
+                STRFTIME('%Y', start) = $2",
             DURATION_SQL
         ))
         .bind::<Text, _>(month_number)
+        .bind::<Text, _>(year)
         .get_result(c)
     }
 
