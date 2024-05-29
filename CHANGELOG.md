@@ -6,9 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.8.3] - 2024-05-29
+
 ### Added
 
 - Add more checks establishing the database connection
+
+### Changed
+
+- Update some dependencies
+
+### Fixed
+
+- Bug fixed calculating the weekly and montly worked time
 
 ## [v0.8.2] - 2024-05-26
 
