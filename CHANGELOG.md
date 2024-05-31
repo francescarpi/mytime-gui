@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- Packages updated
+- Catch network error if it's not available
+
 ## [v0.8.3] - 2024-05-29
 
 ### Added
