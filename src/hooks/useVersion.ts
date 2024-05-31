@@ -50,6 +50,9 @@ const useVersion = () => {
               setNewVersion({ url: res.data.html_url, version: tagToVersion });
             }
           }
+        })
+        .catch(() => {
+          console.error("Error while checking for new version.");
         });
     }, 1000);
   }, [version]);
