@@ -11,10 +11,10 @@
   },
   "dependencies": {
     "@fontsource/roboto": "5.0.13",
-    "@mui/icons-material": "5.15.19",
+    "@mui/icons-material": "5.15.20",
     "@mui/lab": "5.0.0-alpha.170",
-    "@mui/material": "5.15.19",
-    "@mui/x-date-pickers": "7.6.2",
+    "@mui/material": "5.15.20",
+    "@mui/x-date-pickers": "7.7.0",
     "@octokit/core": "6.1.2",
     "@tauri-apps/api": "2.0.0-beta.13",
     "@tauri-apps/plugin-shell": "2.0.0-beta.6",
@@ -34,6 +34,6 @@
     "@types/semver": "7.5.8",
     "@vitejs/plugin-react": "4.3.1",
     "typescript": "5.4.5",
-    "vite": "5.2.13"
+    "vite": "5.3.1"
   }
 }
