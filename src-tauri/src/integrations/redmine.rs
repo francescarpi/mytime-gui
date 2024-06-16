@@ -98,7 +98,7 @@ impl Integration for Redmine {
         match client.request(Self::build_post_request(
             url.as_ref(),
             &body.to_string(),
-            token,
+            token.to_string(),
         )) {
             Ok(response) => {
                 if response.status() == Status::CREATED {
@@ -121,23 +121,22 @@ impl Redmine {
         Self {}
     }
 
-    fn build_post_request(url: &str, body: &str, token: &str) -> Request {
-        let mut request =
-            Request::builder(Method::POST, url.parse().unwrap()).with_body(body.to_string());
-        request
-            .append_header("Content-Type", "application/json")
-            .unwrap();
-        request.append_header("X-Redmine-API-Key", token).unwrap();
-        request
+    fn build_post_request(url: &str, body: &str, token: String) -> Request {
+        Request::builder(Method::POST, url.parse().unwrap())
+            .with_header("Content-Type", "application/json")
+            .unwrap()
+            .with_header("X-Redmine-API-Key", token)
+            .unwrap()
+            .with_body(body.to_string())
     }
 
-    fn build_get_request(url: &str, token: &str) -> Request {
-        let mut request = Request::builder(Method::GET, url.parse().unwrap()).build();
-        request
-            .append_header("Content-Type", "application/json")
-            .unwrap();
-        request.append_header("X-Redmine-API-Key", token).unwrap();
-        request
+    fn build_get_request(url: &str, token: String) -> Request {
+        Request::builder(Method::GET, url.parse().unwrap())
+            .with_header("Content-Type", "application/json")
+            .unwrap()
+            .with_header("X-Redmine-API-Key", token)
+            .unwrap()
+            .build()
     }
 
     pub fn activities(&self, settings: &Setting) -> Vec<RedmineTimeActivity> {
@@ -150,7 +149,7 @@ impl Redmine {
         );
         let token = &settings.integration_token.as_ref().unwrap();
         let client = Client::new();
-        match client.request(Self::build_get_request(url.as_ref(), token)) {
+        match client.request(Self::build_get_request(url.as_ref(), token.to_string())) {
             Ok(response) => {
                 if response.status() == Status::OK {
                     let response_body = response.into_body().to_string().unwrap();
@@ -179,7 +178,7 @@ impl Redmine {
             settings,
             vec![&"issues".to_string(), &format!("{}.json", external_id)],
         );
-        let response = client.request(Self::build_get_request(url.as_ref(), token));
+        let response = client.request(Self::build_get_request(url.as_ref(), token.to_string()));
         if response.is_err() {
             return Err(RedmineErrorType::GenericError);
         }
@@ -206,7 +205,7 @@ impl Redmine {
             ],
         );
         let url = format!("{}?include=time_entry_activities", url);
-        let response = client.request(Self::build_get_request(url.as_ref(), token));
+        let response = client.request(Self::build_get_request(url.as_ref(), token.to_string()));
 
         if response.is_err() {
             return Err(RedmineErrorType::GenericError);

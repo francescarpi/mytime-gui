@@ -2486,12 +2486,11 @@ checksum = "b15813163c1d831bf4a13c3610c05c0d03b39feb07f7e09fa234dac9b15aaf39"
 
 [[package]]
 name = "oxhttp"
-version = "0.1.7"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "64f8f4b616372a7e657a05100d1389325fc2f7d3fee5c9de05166d979cb2b729"
+checksum = "f3cc8fa85d054762930759faa582ba6b6dd0e115156229cdb8cca02b0e0451ae"
 dependencies = [
  "httparse",
- "lazy_static",
  "native-tls",
  "url",
 ]

@@ -17,7 +17,7 @@ serde_json = "1.0.114"
 serde = { version = "1.0.197", features = ["derive"] }
 rust-ini = "0.21.0"
 chrono = { version = "0.4.35", features = ["serde"] }
-oxhttp = { version = "0.1.7", features = ["native-tls"] }
+oxhttp = { version = "0.2.0", features = ["native-tls"] }
 platform-dirs = "0.3.0"
 diesel = { version = "2.2.1", features = ["chrono", "sqlite", "r2d2"] }
 diesel_migrations = "2.1.0"
