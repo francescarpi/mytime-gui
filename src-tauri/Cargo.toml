@@ -22,7 +22,7 @@ platform-dirs = "0.3.0"
 diesel = { version = "2.2.1", features = ["chrono", "sqlite", "r2d2"] }
 diesel_migrations = "2.1.0"
 libsqlite3-sys = { version = "0.28.0", features = ["bundled"] }
-url = "2.5.1"
+url = "2.5.2"
 log = "0.4.21"
 env_logger = "0.11.3"
 base64 = "0.22.1"
