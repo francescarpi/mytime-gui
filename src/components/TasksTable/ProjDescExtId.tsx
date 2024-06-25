@@ -54,11 +54,13 @@ const ProjDescExtId = ({
             justifyContent: "flex-end",
           }}
         >
-          <CopyStringToAddForm
-            dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
-            type="setExtId"
-            value={task.external_id}
-          />
+          {task.external_id && (
+            <CopyStringToAddForm
+              dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+              type="setExtId"
+              value={task.external_id}
+            />
+          )}
           <CopyStringToClipboard onClick={copyStringToClipboard}>
             {task.external_id}
           </CopyStringToClipboard>

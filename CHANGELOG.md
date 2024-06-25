@@ -11,6 +11,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Packages updated
 - Catch network error if it's not available
 
+### Fixed
+
+- Hide "copy to add form" icon when the external id is missing
+
 ## [v0.8.3] - 2024-05-29
 
 ### Added
