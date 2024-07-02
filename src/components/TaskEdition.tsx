@@ -23,7 +23,6 @@ const TaskEdition = ({
 }) => {
   const [project, setProject] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [externalId, setExternalId] = useState<string>("");
   const [start, setStart] = useState<Dayjs>(dayjs());
   const [end, setEnd] = useState<Dayjs | null>(null);
   const [errorsEnabled, setErrorsEnabled] = useState(false);
@@ -32,7 +31,6 @@ const TaskEdition = ({
   useEffect(() => {
     setProject(task?.project || "");
     setDescription(task?.desc || "");
-    setExternalId(task?.external_id || "");
 
     if (task?.start) setStart(dayjs(task.start));
     if (task?.end) {
@@ -69,7 +67,6 @@ const TaskEdition = ({
       ...(task as Task),
       project,
       desc: description,
-      externalId,
       start: start.format("HH:mm"),
       end: end ? end.format("HH:mm") : null,
     };
@@ -117,7 +114,7 @@ const TaskEdition = ({
                   }}
                 />
               </Grid>
-              <Grid item md={8}>
+              <Grid item md={10}>
                 <TextField
                   label="Description"
                   size="small"
@@ -133,22 +130,6 @@ const TaskEdition = ({
                     autoCapitalize: "off",
                     spellCheck: "false",
                     maxLength: 200,
-                  }}
-                />
-              </Grid>
-              <Grid item md={2}>
-                <TextField
-                  label="External Id"
-                  size="small"
-                  fullWidth
-                  value={externalId}
-                  onChange={(e) => setExternalId(e.target.value)}
-                  inputProps={{
-                    autoComplete: "off",
-                    autoCorrect: "off",
-                    autoCapitalize: "off",
-                    spellCheck: "false",
-                    maxLength: 50,
                   }}
                 />
               </Grid>

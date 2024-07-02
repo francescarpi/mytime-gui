@@ -20,7 +20,7 @@ const useClipboard = () => {
       .map((task) => {
         switch (mode) {
           case MODE_CSV:
-            return `${task.project},${task.desc},${task.external_id}`;
+            return `${task.project},${task.desc}`;
           case MODE_LIST:
           default:
             return `- [${task.project}] ${task.desc}`;

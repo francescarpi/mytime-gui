@@ -6,7 +6,6 @@ export interface Task {
   id: number;
   project: string;
   desc: string;
-  external_id: string;
   start: string;
   end: string | null;
   reported: boolean;
@@ -60,10 +59,7 @@ const useTasks = (date: Dayjs, setToday: CallableFunction) => {
   useEffect(() => {
     const grouped: Task[] = tasks.reduce((acc: Task[], task: Task) => {
       const existingTask: Task | undefined = acc.find(
-        (t: Task) =>
-          t.desc === task.desc &&
-          t.project === task.project &&
-          t.external_id === task.external_id,
+        (t: Task) => t.desc === task.desc && t.project === task.project,
       );
       if (existingTask) {
         existingTask.duration += task.duration;
@@ -86,8 +82,8 @@ const useTasks = (date: Dayjs, setToday: CallableFunction) => {
     setGroupedTasks(grouped);
   }, [tasks]);
 
-  const addTask = (project: string, desc: string, externalId: string) => {
-    invoke("create_task", { desc, project, externalId }).then(() => setToday());
+  const addTask = (project: string, desc: string) => {
+    invoke("create_task", { desc, project }).then(() => setToday());
   };
 
   const stopTask = (id: number) => {

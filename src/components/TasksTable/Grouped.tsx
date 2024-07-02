@@ -13,7 +13,7 @@ import GroupedModal from "./GroupedModal";
 import SyncIndicator from "./SyncIndicator";
 import CopyToClipboardBtn from "../CopyToClipboardBtn";
 import StartStopActions from "./StartStopActions";
-import ProjDescExtId from "./ProjDescExtId";
+import ProjDesc from "./ProjDesc";
 
 const Grouped = ({
   tasks,
@@ -66,7 +66,6 @@ const Grouped = ({
             <TableRow>
               <TableCell>Project</TableCell>
               <TableCell>Description</TableCell>
-              <TableCell align="right">External Id</TableCell>
               <TableCell align="right">Duration</TableCell>
               <TableCell align="center">Reported</TableCell>
               <TableCell align="center">Tasks</TableCell>
@@ -78,7 +77,7 @@ const Grouped = ({
           <TableBody>
             {tasks.map((task) => (
               <TableRow key={`${task.id}-${task.reported}-${task.end}`}>
-                <ProjDescExtId
+                <ProjDesc
                   task={task}
                   dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
                   copyStringToClipboard={copyStringToClipboard}

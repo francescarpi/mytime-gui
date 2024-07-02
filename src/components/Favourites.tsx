@@ -31,7 +31,7 @@ const Favourites = ({
   }, []);
 
   const startTask = (task: Task) => {
-    addTask(task.project, task.desc, task.external_id);
+    addTask(task.project, task.desc);
   };
 
   return (
@@ -57,7 +57,6 @@ const Favourites = ({
                     <Box>{task.desc}</Box>
                     <Typography variant="caption" color="text.secondary">
                       {task.project}
-                      {task.external_id && ` (${task.external_id})`}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
