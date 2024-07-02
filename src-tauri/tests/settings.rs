@@ -4,7 +4,6 @@ pub mod common;
 
 #[cfg(test)]
 mod tests {
-    use app::models::integration::IntegrationType;
     use app::models::view_type::ViewType;
     use app::models::work_hours::WorkHours;
     use app::repositories::SettingsRepository;
@@ -18,11 +17,6 @@ mod tests {
 
         // Test
         let settings = SettingsRepository::get_settings(&mut c).unwrap();
-        assert_eq!(settings.integration, None);
-        assert_eq!(settings.integration_url, None);
-        assert_eq!(settings.integration_token, None);
-        assert_eq!(settings.integration_username, None);
-        assert_eq!(settings.integration_extra_param, None);
         assert_eq!(settings.right_sidebar_open, false);
 
         assert_eq!(
@@ -59,25 +53,12 @@ mod tests {
         let mut settings = SettingsRepository::get_settings(&mut c).unwrap();
 
         // Test
-        settings.integration = Some(IntegrationType::Redmine);
-        settings.integration_url = Some("http://foo.com".to_string());
-        settings.integration_token = Some("12345".to_string());
-        settings.integration_username = Some("foo@foo.com".to_string());
-        settings.integration_extra_param = Some("1".to_string());
         settings.tour_completed = true;
         settings.right_sidebar_open = true;
 
         let response = SettingsRepository::update(&mut c, &settings);
         let settings = response.unwrap();
 
-        assert_eq!(settings.integration, Some(IntegrationType::Redmine));
-        assert_eq!(settings.integration_url, Some("http://foo.com".to_string()));
-        assert_eq!(settings.integration_token, Some("12345".to_string()));
-        assert_eq!(
-            Some("foo@foo.com".to_string()),
-            settings.integration_username,
-        );
-        assert_eq!(settings.integration_extra_param, Some("1".to_string()));
         assert_eq!(
             settings.work_hours,
             WorkHours {

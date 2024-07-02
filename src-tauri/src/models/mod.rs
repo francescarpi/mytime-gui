@@ -6,7 +6,7 @@ use diesel::{deserialize::Queryable, query_builder::AsChangeset};
 use serde::{Deserialize, Serialize};
 
 pub mod ids;
-pub mod integration;
+// pub mod integration;
 pub mod view_type;
 pub mod work_hours;
 
@@ -15,18 +15,13 @@ pub mod work_hours;
 #[diesel(table_name=settings, treat_none_as_null=true)]
 pub struct Setting {
     pub id: i32,
-    pub integration: Option<integration::IntegrationType>,
-    pub integration_url: Option<String>,
-    pub integration_token: Option<String>,
     pub work_hours: work_hours::WorkHours,
     pub theme: String,
     pub view_type: view_type::ViewType,
     pub dark_mode: bool,
     pub tour_completed: bool,
-    pub integration_extra_param: Option<String>,
     pub right_sidebar_open: bool,
     pub theme_secondary: String,
-    pub integration_username: Option<String>,
 }
 
 impl Setting {
@@ -57,9 +52,11 @@ impl Setting {
     }
 
     pub fn has_integration(&self) -> bool {
-        self.integration.is_some()
-            && self.integration_url.is_some()
-            && self.integration_token.is_some()
+        // self.integration.is_some()
+        //     && self.integration_url.is_some()
+        //     && self.integration_token.is_some()
+        // TODO: check
+        false
     }
 }
 

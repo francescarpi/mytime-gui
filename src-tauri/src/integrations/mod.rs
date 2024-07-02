@@ -38,14 +38,16 @@ pub trait Integration {
     ) -> Result<(), Error>;
 
     fn prepare_url(&self, settings: &Setting, suffix: Vec<&String>) -> String {
-        let mut url = Url::parse(settings.integration_url.as_ref().unwrap()).unwrap();
-        if !url.path().ends_with('/') {
-            url.path_segments_mut().unwrap().push("");
-        }
-        for s in suffix.iter() {
-            url.path_segments_mut().unwrap().push(s);
-        }
-        url.as_str().to_string()
+        // let mut url = Url::parse(settings.integration_url.as_ref().unwrap()).unwrap();
+        // if !url.path().ends_with('/') {
+        //     url.path_segments_mut().unwrap().push("");
+        // }
+        // for s in suffix.iter() {
+        //     url.path_segments_mut().unwrap().push(s);
+        // }
+        // url.as_str().to_string()
+        // TODO: check
+        "".to_string()
     }
 }
 

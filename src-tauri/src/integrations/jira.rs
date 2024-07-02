@@ -27,46 +27,48 @@ impl Integration for Jira {
         task: &GroupedTask,
         _extra_param: Option<String>,
     ) -> Result<(), Error> {
-        let url = self.prepare_url(
-            settings,
-            vec![
-                &"rest".to_string(),
-                &"api".to_string(),
-                &"latest".to_string(),
-                &"issue".to_string(),
-                &"TODO".to_string(),
-                &"worklog".to_string(),
-            ],
-        );
-        let token = &settings.integration_token.as_ref().unwrap();
-        let username = &settings.integration_username.as_ref().unwrap();
-        let body = serde_json::json!({
-                "timeSpentSeconds": task.duration,
-        });
-
-        let client = Client::new();
-        match client.request(Self::build_request(
-            url.as_ref(),
-            &body.to_string(),
-            username,
-            token,
-        )) {
-            Ok(response) => {
-                if response.status() == Status::NOT_FOUND {
-                    let response_body = response.into_body().to_string().unwrap();
-                    let response =
-                        serde_json::from_str::<JiraJorklogResponse>(&response_body).unwrap();
-                    return Err(Error::GenericError(response.error_message));
-                }
-
-                if response.status() == Status::CREATED {
-                    return Ok(());
-                }
-
-                Err(Error::GenericError(vec!["Unexpected error".to_string()]))
-            }
-            Err(_) => Err(Error::UnkownHostError),
-        }
+        // let url = self.prepare_url(
+        //     settings,
+        //     vec![
+        //         &"rest".to_string(),
+        //         &"api".to_string(),
+        //         &"latest".to_string(),
+        //         &"issue".to_string(),
+        //         &"TODO".to_string(),
+        //         &"worklog".to_string(),
+        //     ],
+        // );
+        // let token = &settings.integration_token.as_ref().unwrap();
+        // let username = &settings.integration_username.as_ref().unwrap();
+        // let body = serde_json::json!({
+        //         "timeSpentSeconds": task.duration,
+        // });
+        //
+        // let client = Client::new();
+        // match client.request(Self::build_request(
+        //     url.as_ref(),
+        //     &body.to_string(),
+        //     username,
+        //     token,
+        // )) {
+        //     Ok(response) => {
+        //         if response.status() == Status::NOT_FOUND {
+        //             let response_body = response.into_body().to_string().unwrap();
+        //             let response =
+        //                 serde_json::from_str::<JiraJorklogResponse>(&response_body).unwrap();
+        //             return Err(Error::GenericError(response.error_message));
+        //         }
+        //
+        //         if response.status() == Status::CREATED {
+        //             return Ok(());
+        //         }
+        //
+        //         Err(Error::GenericError(vec!["Unexpected error".to_string()]))
+        //     }
+        //     Err(_) => Err(Error::UnkownHostError),
+        // }
+        // TODO: check
+        Ok(())
     }
 }
 
