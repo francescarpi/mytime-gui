@@ -86,7 +86,7 @@ impl Integration for Redmine {
         let token = &settings.integration_token.as_ref().unwrap();
         let body = serde_json::json!({
             "time_entry": {
-                "issue_id": task.external_id,
+                "issue_id": "TODO".to_string(),
                 "hours": format_duration(task.duration),
                 "comments": task.desc,
                 "spent_on": task.date.to_string(),

@@ -87,18 +87,13 @@ fn summary(date: &str, conn: State<'_, DbConn>) -> Value {
 }
 
 #[command]
-fn create_task(
-    desc: String,
-    external_id: Option<String>,
-    project: Option<String>,
-    conn: State<'_, DbConn>,
-) {
+fn create_task(desc: String, project: Option<String>, conn: State<'_, DbConn>) {
     let mut db = conn.0.lock().unwrap();
     if let Some(task_id) = TasksRepository::get_current_working_task_id(&mut db) {
         let _task = TasksRepository::stop(&mut db, task_id);
     }
 
-    let _task = TasksRepository::add_task(&mut db, desc, external_id, project);
+    let _task = TasksRepository::add_task(&mut db, desc, project);
 }
 
 #[command]
@@ -112,7 +107,6 @@ fn edit_task(
     id: i32,
     project: Option<String>,
     desc: String,
-    external_id: Option<String>,
     start: String,
     end: Option<String>,
     conn: State<'_, DbConn>,
@@ -121,8 +115,7 @@ fn edit_task(
     let new_start = NaiveTime::parse_from_str(&start, "%H:%M").unwrap();
     let new_end = end.map(|end| NaiveTime::parse_from_str(&end, "%H:%M").unwrap());
 
-    let _task =
-        TasksRepository::edit(&mut db, id, desc, new_start, new_end, external_id, project).unwrap();
+    let _task = TasksRepository::edit(&mut db, id, desc, new_start, new_end, project).unwrap();
 }
 
 #[command]

@@ -34,14 +34,12 @@ impl TasksRepository {
     pub fn add_task(
         c: &mut SqliteConnection,
         desc: String,
-        external_id: Option<String>,
         project: Option<String>,
     ) -> QueryResult<TaskWithDuration> {
         let now = Local::now().naive_local();
         diesel::insert_into(tasks::table)
             .values((
                 tasks::desc.eq(desc),
-                tasks::external_id.eq(external_id),
                 tasks::project.eq(project),
                 tasks::start.eq(now),
             ))
@@ -101,7 +99,6 @@ impl TasksRepository {
         desc: String,
         start_time: NaiveTime,
         end_time: Option<NaiveTime>,
-        external_id: Option<String>,
         project: Option<String>,
     ) -> QueryResult<TaskWithDuration> {
         let task = Self::get_task(c, id).unwrap();
@@ -119,7 +116,6 @@ impl TasksRepository {
                 tasks::desc.eq(desc),
                 tasks::start.eq(new_start),
                 tasks::end.eq(new_end),
-                tasks::external_id.eq(external_id),
                 tasks::project.eq(project),
             ))
             .execute(c)?;
@@ -228,7 +224,6 @@ impl TasksRepository {
             "
             SELECT
                 GROUP_CONCAT(id, '-') AS id,
-                external_id,
                 SUM({}) AS duration,
                 desc,
                 STRFTIME('%Y-%m-%d', start) AS date,
@@ -238,10 +233,7 @@ impl TasksRepository {
             WHERE
                 end IS NOT NULL
                 AND reported = false
-                AND external_id IS NOT NULL
-                AND external_id != ''
             GROUP BY
-                external_id,
                 desc,
                 STRFTIME('%Y-%m-%d', start)
             ORDER BY

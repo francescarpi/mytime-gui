@@ -71,7 +71,6 @@ pub struct Task {
     pub start: NaiveDateTime,
     pub end: Option<NaiveDateTime>,
     pub reported: bool,
-    pub external_id: Option<String>,
     pub project: Option<String>,
     pub favourite: bool,
 }
@@ -84,7 +83,6 @@ pub struct TaskWithDuration {
     pub start: NaiveDateTime,
     pub end: Option<NaiveDateTime>,
     pub reported: bool,
-    pub external_id: Option<String>,
     pub project: Option<String>,
     pub favourite: bool,
     #[diesel(sql_type = Integer)]
@@ -103,8 +101,6 @@ pub struct Duration {
 pub struct GroupedTask {
     #[diesel(sql_type = Text)]
     pub id: String,
-    #[diesel(sql_type = Text)]
-    pub external_id: String,
     #[diesel(sql_type = Integer)]
     pub duration: i32,
     #[diesel(sql_type = Text)]

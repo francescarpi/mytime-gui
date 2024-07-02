@@ -34,7 +34,7 @@ impl Integration for Jira {
                 &"api".to_string(),
                 &"latest".to_string(),
                 &"issue".to_string(),
-                &task.external_id,
+                &"TODO".to_string(),
                 &"worklog".to_string(),
             ],
         );

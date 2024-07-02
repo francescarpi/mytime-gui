@@ -17,13 +17,12 @@ mod tests {
 
         // Test
         let now = Local::now().naive_local();
-        let response = TasksRepository::add_task(&mut c, "Test task".to_string(), None, None);
+        let response = TasksRepository::add_task(&mut c, "Test task".to_string(), None);
         let new_task = response.unwrap();
 
         assert_eq!(new_task.id, 1);
         assert_eq!(new_task.desc, "Test task");
         assert!(!new_task.reported);
-        assert_eq!(new_task.external_id, None);
         assert_eq!(new_task.project, None);
         assert_eq!(new_task.end, None);
         assert_eq!(new_task.start.date(), now.date());
@@ -37,7 +36,7 @@ mod tests {
     fn stop_task() {
         // Setup
         let mut c = get_db_connection();
-        let task = TasksRepository::add_task(&mut c, "Test task".to_string(), None, None).unwrap();
+        let task = TasksRepository::add_task(&mut c, "Test task".to_string(), None).unwrap();
 
         // Test
         let task = TasksRepository::stop(&mut c, task.id).expect("Error stopping task");
@@ -49,7 +48,7 @@ mod tests {
     fn edit_task() {
         // Setup
         let mut c = get_db_connection();
-        let task = TasksRepository::add_task(&mut c, "Test task".to_string(), None, None).unwrap();
+        let task = TasksRepository::add_task(&mut c, "Test task".to_string(), None).unwrap();
         TasksRepository::stop(&mut c, task.id).unwrap();
 
         // Test
@@ -61,13 +60,11 @@ mod tests {
             "Edited task".to_string(),
             start,
             end,
-            Some("1234".to_string()),
             Some("Foo".to_string()),
         );
 
         let new_task = new_task.unwrap();
         assert_eq!(new_task.desc, "Edited task");
-        assert_eq!(new_task.external_id, Some("1234".to_string()));
         assert_eq!(new_task.project, Some("Foo".to_string()));
         assert_eq!(new_task.start.time(), start);
         assert_eq!(Some(new_task.end.unwrap().time()), end);
@@ -78,7 +75,7 @@ mod tests {
     fn get_working_task() {
         // Setup
         let mut c = get_db_connection();
-        let _task = TasksRepository::add_task(&mut c, "Test task".to_string(), None, None).unwrap();
+        let _task = TasksRepository::add_task(&mut c, "Test task".to_string(), None).unwrap();
 
         // Test
         let task = TasksRepository::get_current_working_task_id(&mut c);
@@ -90,7 +87,7 @@ mod tests {
     fn tasks_with_duration_by_date() {
         // Setup
         let mut c = get_db_connection();
-        let _task = TasksRepository::add_task(&mut c, "Test task".to_string(), None, None).unwrap();
+        let _task = TasksRepository::add_task(&mut c, "Test task".to_string(), None).unwrap();
         let today = Local::now().naive_local().date();
 
         // Test
@@ -103,27 +100,15 @@ mod tests {
     fn search_tasks() {
         // Setup
         let mut c = get_db_connection();
-        let _ = TasksRepository::add_task(
-            &mut c,
-            "Task 1".to_string(),
-            None,
-            Some("Project 1".to_string()),
-        )
-        .unwrap();
-        let _ = TasksRepository::add_task(
-            &mut c,
-            "Task 2".to_string(),
-            None,
-            Some("Project 1".to_string()),
-        )
-        .unwrap();
-        let _ = TasksRepository::add_task(
-            &mut c,
-            "Task 3".to_string(),
-            None,
-            Some("Project 2".to_string()),
-        )
-        .unwrap();
+        let _ =
+            TasksRepository::add_task(&mut c, "Task 1".to_string(), Some("Project 1".to_string()))
+                .unwrap();
+        let _ =
+            TasksRepository::add_task(&mut c, "Task 2".to_string(), Some("Project 1".to_string()))
+                .unwrap();
+        let _ =
+            TasksRepository::add_task(&mut c, "Task 3".to_string(), Some("Project 2".to_string()))
+                .unwrap();
 
         // Test
         let tasks = TasksRepository::search_tasks_with_duration(&mut c, "Project 1", None).unwrap();
@@ -149,7 +134,7 @@ mod tests {
     fn worked() {
         // Setup
         let mut c = get_db_connection();
-        let _task = TasksRepository::add_task(&mut c, "Test task".to_string(), None, None).unwrap();
+        let _task = TasksRepository::add_task(&mut c, "Test task".to_string(), None).unwrap();
         let today = Local::now().naive_local().date();
 
         // Test
@@ -167,7 +152,7 @@ mod tests {
     fn tasks_running() {
         // Setup
         let mut c = get_db_connection();
-        let task = TasksRepository::add_task(&mut c, "Test task".to_string(), None, None).unwrap();
+        let task = TasksRepository::add_task(&mut c, "Test task".to_string(), None).unwrap();
 
         // Test
         let running = TasksRepository::are_tasks_running(&mut c);
@@ -182,7 +167,7 @@ mod tests {
     fn delete_task() {
         // Setup
         let mut c = get_db_connection();
-        let task = TasksRepository::add_task(&mut c, "Test task".to_string(), None, None).unwrap();
+        let task = TasksRepository::add_task(&mut c, "Test task".to_string(), None).unwrap();
 
         // Test
         let response = TasksRepository::delete_task(&mut c, task.id);
@@ -194,20 +179,8 @@ mod tests {
         // Setup
         let mut c = get_db_connection();
         let today = Local::now().naive_local().date();
-        let task1 = TasksRepository::add_task(
-            &mut c,
-            "Test task".to_string(),
-            Some("1234".to_string()),
-            None,
-        )
-        .unwrap();
-        let task2 = TasksRepository::add_task(
-            &mut c,
-            "Test task".to_string(),
-            Some("1234".to_string()),
-            None,
-        )
-        .unwrap();
+        let task1 = TasksRepository::add_task(&mut c, "Test task".to_string(), None).unwrap();
+        let task2 = TasksRepository::add_task(&mut c, "Test task".to_string(), None).unwrap();
 
         let _ = TasksRepository::stop(&mut c, task1.id);
         let _ = TasksRepository::stop(&mut c, task2.id);
@@ -217,7 +190,6 @@ mod tests {
 
         assert_eq!(response.len(), 1);
         assert_eq!(response[0].id, "1-2");
-        assert_eq!(response[0].external_id, "1234");
         assert!(response[0].duration >= 0);
         assert_eq!(response[0].desc, "Test task");
         assert_eq!(response[0].date, today);
@@ -230,20 +202,8 @@ mod tests {
     fn mark_tasks_as_reported() {
         // Setup
         let mut c = get_db_connection();
-        let task1 = TasksRepository::add_task(
-            &mut c,
-            "Test task".to_string(),
-            Some("1234".to_string()),
-            None,
-        )
-        .unwrap();
-        let task2 = TasksRepository::add_task(
-            &mut c,
-            "Test task".to_string(),
-            Some("1234".to_string()),
-            None,
-        )
-        .unwrap();
+        let task1 = TasksRepository::add_task(&mut c, "Test task".to_string(), None).unwrap();
+        let task2 = TasksRepository::add_task(&mut c, "Test task".to_string(), None).unwrap();
         let _ = TasksRepository::stop(&mut c, task1.id);
         let _ = TasksRepository::stop(&mut c, task2.id);
 
@@ -260,13 +220,7 @@ mod tests {
         // Setup
         let mut c = get_db_connection();
         let now = Local::now().naive_local();
-        let _ = TasksRepository::add_task(
-            &mut c,
-            "Test task".to_string(),
-            Some("1234".to_string()),
-            None,
-        )
-        .unwrap();
+        let _ = TasksRepository::add_task(&mut c, "Test task".to_string(), None).unwrap();
 
         // Test
         let response = TasksRepository::dates_with_tasks(&mut c, now.month(), now.year()).unwrap();
@@ -278,7 +232,7 @@ mod tests {
     fn toggle_favourite() {
         // Setup
         let mut c = get_db_connection();
-        let task = TasksRepository::add_task(&mut c, "Test task".to_string(), None, None).unwrap();
+        let task = TasksRepository::add_task(&mut c, "Test task".to_string(), None).unwrap();
         assert!(!task.favourite);
 
         // Test
@@ -295,7 +249,7 @@ mod tests {
     fn favourites() {
         // Setup
         let mut c = get_db_connection();
-        let task = TasksRepository::add_task(&mut c, "Test task".to_string(), None, None).unwrap();
+        let task = TasksRepository::add_task(&mut c, "Test task".to_string(), None).unwrap();
         let _ = TasksRepository::toggle_favourite(&mut c, task.id);
 
         // Test
@@ -326,7 +280,6 @@ mod tests {
         let _ = diesel::insert_into(tasks::table)
             .values((
                 tasks::desc.eq("Test task".to_string()),
-                tasks::external_id.eq("1234".to_string()),
                 tasks::project.eq("FOO".to_string()),
                 tasks::start.eq(start),
                 tasks::end.eq(end),
