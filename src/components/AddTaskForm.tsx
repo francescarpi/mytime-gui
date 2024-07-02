@@ -3,10 +3,6 @@ import { SxProps, Theme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { Button, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
-import IconButton from "@mui/material/IconButton";
-import SearchExternalId from "./SearchExternalId";
 import { invoke } from "@tauri-apps/api/core";
 import { Task } from "../hooks/useTasks";
 import { useConfirm } from "material-ui-confirm";
@@ -23,27 +19,23 @@ const AddTaskForm = ({
   defaultAddTaskValues: {
     proj: string;
     desc: string;
-    extId: string;
   };
   dispatchDefaultAddTaskValues: CallableFunction;
 }) => {
   const [project, setProject] = useState("");
   const [description, setDescription] = useState("");
-  const [externalId, setExternalId] = useState("");
-  const [showSearchExtId, setShowSearchExtId] = useState<boolean>(false);
   const submitRef = useRef<HTMLButtonElement>(null);
   const confirm = useConfirm();
 
   const reset = () => {
     setProject("");
     setDescription("");
-    setExternalId("");
     dispatchDefaultAddTaskValues({ type: "reset" });
   };
 
   const submit = (e: any) => {
     e.preventDefault();
-    onSubmit(project, description, externalId);
+    onSubmit(project, description);
     reset();
     submitRef.current?.focus();
   };
@@ -54,9 +46,6 @@ const AddTaskForm = ({
     }
     if (defaultAddTaskValues.desc !== "") {
       setDescription(defaultAddTaskValues.desc);
-    }
-    if (defaultAddTaskValues.extId !== "") {
-      setExternalId(defaultAddTaskValues.extId);
     }
   }, [defaultAddTaskValues]);
 
@@ -73,11 +62,6 @@ const AddTaskForm = ({
 
   return (
     <>
-      <SearchExternalId
-        open={showSearchExtId}
-        onClose={() => setShowSearchExtId(false)}
-        setExternalId={setExternalId}
-      />
       <Box sx={{ ...sx, flexgrow: 1 }}>
         <form onSubmit={submit}>
           <Grid container spacing={2}>
@@ -98,7 +82,7 @@ const AddTaskForm = ({
                 }}
               />
             </Grid>
-            <Grid item md={5}>
+            <Grid item md={8}>
               <TextField
                 label="Description"
                 size="small"
@@ -112,34 +96,6 @@ const AddTaskForm = ({
                   autoCapitalize: "off",
                   spellCheck: "false",
                   maxLength: 200,
-                }}
-              />
-            </Grid>
-            <Grid item md={3}>
-              <TextField
-                label="External Id"
-                size="small"
-                fullWidth
-                value={externalId}
-                onChange={(e) => setExternalId(e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        size="small"
-                        onClick={() => setShowSearchExtId(true)}
-                      >
-                        <SearchIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                inputProps={{
-                  autoComplete: "off",
-                  autoCorrect: "off",
-                  autoCapitalize: "off",
-                  spellCheck: "false",
-                  maxLength: 50,
                 }}
               />
             </Grid>
