@@ -1,12 +1,15 @@
 use crate::schema::*;
 use chrono::{Datelike, NaiveDate, NaiveDateTime};
-use diesel::deserialize::QueryableByName;
+use diesel::deserialize::{FromSqlRow, QueryableByName};
+use diesel::expression::AsExpression;
+use diesel::prelude::Insertable;
 use diesel::sql_types::{Date, Integer, Text};
 use diesel::{deserialize::Queryable, query_builder::AsChangeset};
 use serde::{Deserialize, Serialize};
 
 pub mod ids;
 // pub mod integration;
+pub mod utils;
 pub mod view_type;
 pub mod work_hours;
 
@@ -113,4 +116,20 @@ pub struct GroupedTask {
 pub struct DatesWithTasks {
     #[diesel(sql_type = Date)]
     pub date: NaiveDate,
+}
+
+#[derive(Debug, Insertable, Serialize, Deserialize)]
+#[diesel(table_name=integrations, treat_none_as_null=true)]
+pub struct NewIntegration {
+    pub itype: IntegrationType,
+    pub active: bool,
+    pub name: Option<String>,
+    pub config: utils::JsonField,
+}
+
+#[derive(AsExpression, Debug, FromSqlRow, Serialize, Deserialize)]
+#[diesel(sql_type=Text)]
+pub enum IntegrationType {
+    Redmine,
+    Jira,
 }

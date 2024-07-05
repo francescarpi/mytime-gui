@@ -1,6 +1,16 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
+    integrations (id) {
+        id -> Integer,
+        itype -> Text,
+        active -> Bool,
+        name -> Nullable<Text>,
+        config -> Text,
+    }
+}
+
+diesel::table! {
     settings (id) {
         id -> Integer,
         work_hours -> Text,
@@ -26,6 +36,7 @@ diesel::table! {
 }
 
 diesel::allow_tables_to_appear_in_same_query!(
+    integrations,
     settings,
     tasks,
 );

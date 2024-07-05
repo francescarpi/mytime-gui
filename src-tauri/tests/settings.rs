@@ -4,9 +4,12 @@ pub mod common;
 
 #[cfg(test)]
 mod tests {
+    use app::models::utils::JsonField;
     use app::models::view_type::ViewType;
     use app::models::work_hours::WorkHours;
+    use app::models::{IntegrationType, NewIntegration};
     use app::repositories::SettingsRepository;
+    use serde_json::json;
 
     use crate::common::get_db_connection;
 
@@ -77,5 +80,20 @@ mod tests {
         assert!(!settings.dark_mode);
         assert!(settings.tour_completed);
         assert!(settings.right_sidebar_open);
+    }
+
+    #[test]
+    fn add_integration() {
+        // Setup
+        let mut c = get_db_connection();
+
+        let redmine = NewIntegration {
+            itype: IntegrationType::Redmine,
+            active: true,
+            name: None,
+            config: JsonField(json!({"url": "https://redmine.org", "token": "123"})),
+        };
+
+        SettingsRepository::add_integration(&mut c, &redmine);
     }
 }

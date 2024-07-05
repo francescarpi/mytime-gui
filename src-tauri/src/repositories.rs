@@ -26,6 +26,13 @@ impl SettingsRepository {
             .expect("Error updating settings");
         Self::get_settings(c)
     }
+
+    pub fn add_integration(c: &mut SqliteConnection, integration: &NewIntegration) {
+        diesel::insert_into(integrations::table)
+            .values(integration)
+            .execute(c)
+            .expect("Error adding integration");
+    }
 }
 
 pub struct TasksRepository;

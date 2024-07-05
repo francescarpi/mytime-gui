@@ -1,7 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 pub mod db;
-pub mod integrations;
+// pub mod integrations;
 pub mod models;
 pub mod repositories;
 pub mod schema;
@@ -19,7 +19,7 @@ use tauri::tray::TrayIconBuilder;
 use tauri::{command, State};
 
 use chrono::NaiveTime;
-use integrations::*;
+// use integrations::*;
 use repositories::{SettingsRepository, TasksRepository};
 use serde::Serialize;
 use serde_json::{json, Value};
@@ -301,8 +301,8 @@ fn main() {
             info,
             show_in_folder,
             last_task,
-            integrations::redmine::activities,
-            integrations::redmine::project_activities,
+            // integrations::redmine::activities,
+            // integrations::redmine::project_activities,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

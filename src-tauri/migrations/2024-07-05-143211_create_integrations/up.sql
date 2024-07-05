@@ -1,0 +1,7 @@
+CREATE TABLE integrations (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    itype VARCHAR NOT NULL,
+    active BOOLEAN NOT NULL,
+    name VARCHAR,
+    config TEXT NOT NULL
+)
