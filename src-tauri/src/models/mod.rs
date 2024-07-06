@@ -1,9 +1,13 @@
+use std::str::FromStr;
+
 use crate::schema::*;
 use chrono::{Datelike, NaiveDate, NaiveDateTime};
 use diesel::deserialize::{FromSqlRow, QueryableByName};
 use diesel::expression::AsExpression;
 use diesel::prelude::Insertable;
+use diesel::serialize::{self, IsNull, Output, ToSql};
 use diesel::sql_types::{Date, Integer, Text};
+use diesel::sqlite::Sqlite;
 use diesel::{deserialize::Queryable, query_builder::AsChangeset};
 use serde::{Deserialize, Serialize};
 
@@ -127,9 +131,43 @@ pub struct NewIntegration {
     pub config: utils::JsonField,
 }
 
+// TODO: move this type (and all others) into a types file
+
 #[derive(AsExpression, Debug, FromSqlRow, Serialize, Deserialize)]
 #[diesel(sql_type=Text)]
 pub enum IntegrationType {
     Redmine,
     Jira,
+}
+
+impl ToString for IntegrationType {
+    fn to_string(&self) -> String {
+        match self {
+            IntegrationType::Redmine => String::from("redmine"),
+            IntegrationType::Jira => String::from("jira"),
+        }
+    }
+}
+
+impl FromStr for IntegrationType {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "redmine" => Ok(IntegrationType::Redmine),
+            "jira" => Ok(IntegrationType::Jira),
+            _ => Err(()),
+        }
+    }
+}
+
+impl ToSql<Text, Sqlite> for IntegrationType {
+    fn to_sql<'b>(&'b self, out: &mut Output<'b, '_, Sqlite>) -> serialize::Result {
+        out.set_value(self.to_string());
+        match self {
+            IntegrationType::Redmine => out.set_value("redmine"),
+            IntegrationType::Jira => out.set_value("jira"),
+        };
+        Ok(IsNull::No)
+    }
 }
