@@ -225,7 +225,7 @@ fn info(app_handle: tauri::AppHandle, conn: State<'_, DbConn>) -> Value {
     })
 }
 
-#[tauri::command]
+#[command]
 fn show_in_folder(path: String) {
     #[cfg(target_os = "windows")]
     {
@@ -272,6 +272,13 @@ fn show_in_folder(path: String) {
     }
 }
 
+#[command]
+fn integrations(conn: State<'_, DbConn>) -> Value {
+    let mut db = conn.0.lock().unwrap();
+    let integrations = SettingsRepository::integrations(&mut db).unwrap();
+    json!(integrations)
+}
+
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
@@ -301,6 +308,7 @@ fn main() {
             info,
             show_in_folder,
             last_task,
+            integrations,
             // integrations::redmine::activities,
             // integrations::redmine::project_activities,
         ])

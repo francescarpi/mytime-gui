@@ -12,7 +12,7 @@ use diesel::{
 };
 use serde::{Deserialize, Serialize};
 
-#[derive(AsExpression, Debug, FromSqlRow, Serialize, Deserialize, PartialEq)]
+#[derive(AsExpression, Debug, FromSqlRow, Serialize, Deserialize, PartialEq, Clone)]
 #[diesel(sql_type=Text)]
 pub enum IntegrationType {
     Redmine,

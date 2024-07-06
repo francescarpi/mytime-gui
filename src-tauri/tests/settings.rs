@@ -159,4 +159,28 @@ mod tests {
         );
         assert_eq!(inteagrations[2].config.0["token"], "123".to_string());
     }
+
+    #[test]
+    fn update_integration() {
+        // Setup
+        let mut c = get_db_connection();
+        let integration1 = NewIntegration {
+            itype: IntegrationType::Redmine,
+            active: false,
+            name: None,
+            config: JsonField(json!({"url": "https://redmine.org", "token": "123"})),
+        };
+        SettingsRepository::add_integration(&mut c, &integration1);
+        let integrations = SettingsRepository::integrations(&mut c).unwrap();
+        let mut integration = integrations[0].clone();
+
+        assert!(!integration.active);
+
+        // Test
+        integration.active = true;
+        SettingsRepository::update_integration(&mut c, &integration);
+
+        let integrations = SettingsRepository::integrations(&mut c).unwrap();
+        assert_eq!(integrations[0].active, true);
+    }
 }

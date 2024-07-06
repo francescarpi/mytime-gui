@@ -40,6 +40,13 @@ impl SettingsRepository {
     pub fn integrations(c: &mut SqliteConnection) -> QueryResult<Vec<Integration>> {
         integrations::table.load::<Integration>(c)
     }
+
+    pub fn update_integration(c: &mut SqliteConnection, integration: &Integration) {
+        diesel::update(integrations::table.find(integration.id))
+            .set(integration)
+            .execute(c)
+            .expect("Error updating integration");
+    }
 }
 
 pub struct TasksRepository;

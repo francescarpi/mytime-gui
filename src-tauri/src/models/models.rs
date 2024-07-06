@@ -123,7 +123,9 @@ pub struct NewIntegration {
     pub config: types::json_field::JsonField,
 }
 
-#[derive(Debug, Deserialize, Queryable, Selectable, QueryableByName)]
+#[derive(
+    Debug, Deserialize, Queryable, Selectable, QueryableByName, Serialize, AsChangeset, Clone,
+)]
 #[diesel(table_name=integrations)]
 pub struct Integration {
     pub id: i32,
