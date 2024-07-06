@@ -1,10 +1,4 @@
-import {
-  useEffect,
-  useMemo,
-  SyntheticEvent,
-  useState,
-  createElement,
-} from "react";
+import { useEffect, useMemo, SyntheticEvent, useState } from "react";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -17,11 +11,11 @@ import WorkingTime from "./WorkingTime";
 import Generic from "./Generic";
 import Shortcuts from "./Shortcuts";
 import Info from "./Info";
+import Integration from "./Integration";
 import { StyledBox } from "../../styles/modal";
 import { useSnackbar } from "notistack";
 import { Setting } from "../../hooks/useSettings";
 import { areEquals } from "../../utils/objects";
-import { getIntegrationSettingsComponent } from "../../integrations";
 
 const Settings = ({
   opened,
@@ -92,7 +86,9 @@ const Settings = ({
                 dispatchTheme={dispatchTheme}
               />
             </TabPanel>
-            <TabPanel value="2">Foo</TabPanel>
+            <TabPanel value="2">
+              <Integration />
+            </TabPanel>
             <TabPanel value="3">
               <WorkingTime setting={tmpSetting} setSetting={setTmpSetting} />
             </TabPanel>
