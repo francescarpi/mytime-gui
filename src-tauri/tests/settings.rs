@@ -89,16 +89,74 @@ mod tests {
 
     #[test]
     fn add_integration() {
-        // Setup
         let mut c = get_db_connection();
 
-        let redmine = NewIntegration {
+        // No integrations in the initial state
+        assert_eq!(SettingsRepository::integrations(&mut c).unwrap().len(), 0);
+
+        // Add first integration settings (redmine)
+        let integration1 = NewIntegration {
             itype: IntegrationType::Redmine,
             active: true,
             name: None,
             config: JsonField(json!({"url": "https://redmine.org", "token": "123"})),
         };
+        SettingsRepository::add_integration(&mut c, &integration1);
 
-        SettingsRepository::add_integration(&mut c, &redmine);
+        // Add first integration settings (jira 1)
+        let integration2 = NewIntegration {
+            itype: IntegrationType::Jira,
+            active: true,
+            name: None,
+            config: JsonField(json!({"url": "https://jira.org", "user": "foo", "token": "123"})),
+        };
+        SettingsRepository::add_integration(&mut c, &integration2);
+
+        // Add first integration settings (jira 2)
+        let integration3 = NewIntegration {
+            itype: IntegrationType::Jira,
+            active: true,
+            name: Some("Jira 2".to_string()),
+            config: JsonField(json!({"url": "https://jira.org", "user": "foo", "token": "123"})),
+        };
+        SettingsRepository::add_integration(&mut c, &integration3);
+
+        // Check total integrations
+        let inteagrations = SettingsRepository::integrations(&mut c).unwrap();
+        assert_eq!(inteagrations.len(), 3);
+
+        // Checking stored data
+        // Integration 1
+        assert_eq!(inteagrations[0].id, 1);
+        assert_eq!(inteagrations[0].itype, IntegrationType::Redmine);
+        assert!(inteagrations[0].active);
+        assert_eq!(inteagrations[0].name, None);
+        assert_eq!(
+            inteagrations[0].config.0["url"],
+            "https://redmine.org".to_string()
+        );
+        assert_eq!(inteagrations[0].config.0["token"], "123".to_string());
+
+        // Integration 2
+        assert_eq!(inteagrations[1].id, 2);
+        assert_eq!(inteagrations[1].itype, IntegrationType::Jira);
+        assert!(inteagrations[1].active);
+        assert_eq!(inteagrations[1].name, None);
+        assert_eq!(
+            inteagrations[1].config.0["url"],
+            "https://jira.org".to_string()
+        );
+        assert_eq!(inteagrations[1].config.0["token"], "123".to_string());
+
+        // Integration 3
+        assert_eq!(inteagrations[2].id, 3);
+        assert_eq!(inteagrations[2].itype, IntegrationType::Jira);
+        assert!(inteagrations[2].active);
+        assert_eq!(inteagrations[2].name, Some("Jira 2".to_string()));
+        assert_eq!(
+            inteagrations[2].config.0["url"],
+            "https://jira.org".to_string()
+        );
+        assert_eq!(inteagrations[2].config.0["token"], "123".to_string());
     }
 }

@@ -3,6 +3,7 @@ use chrono::{Datelike, NaiveDate, NaiveDateTime};
 use diesel::deserialize::QueryableByName;
 use diesel::prelude::Insertable;
 use diesel::sql_types::{Date, Integer, Text};
+use diesel::Selectable;
 use diesel::{deserialize::Queryable, query_builder::AsChangeset};
 use serde::{Deserialize, Serialize};
 
@@ -113,9 +114,19 @@ pub struct DatesWithTasks {
     pub date: NaiveDate,
 }
 
-#[derive(Debug, Insertable, Serialize, Deserialize, Queryable)]
+#[derive(Debug, Insertable, Serialize)]
 #[diesel(table_name=integrations, treat_none_as_null=true)]
 pub struct NewIntegration {
+    pub itype: types::integration_type::IntegrationType,
+    pub active: bool,
+    pub name: Option<String>,
+    pub config: types::json_field::JsonField,
+}
+
+#[derive(Debug, Deserialize, Queryable, Selectable, QueryableByName)]
+#[diesel(table_name=integrations)]
+pub struct Integration {
+    pub id: i32,
     pub itype: types::integration_type::IntegrationType,
     pub active: bool,
     pub name: Option<String>,

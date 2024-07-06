@@ -7,7 +7,8 @@ use diesel::SqliteConnection;
 use log;
 
 use crate::models::models::{
-    DatesWithTasks, Duration, GroupedTask, NewIntegration, Setting, Task, TaskWithDuration,
+    DatesWithTasks, Duration, GroupedTask, Integration, NewIntegration, Setting, Task,
+    TaskWithDuration,
 };
 use crate::schema::*;
 
@@ -34,6 +35,10 @@ impl SettingsRepository {
             .values(new_integration)
             .execute(c)
             .expect("Error adding integration");
+    }
+
+    pub fn integrations(c: &mut SqliteConnection) -> QueryResult<Vec<Integration>> {
+        integrations::table.load::<Integration>(c)
     }
 }
 

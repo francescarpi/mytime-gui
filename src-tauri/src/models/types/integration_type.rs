@@ -1,5 +1,7 @@
 use std::str::FromStr;
 
+use diesel::backend::Backend;
+use diesel::deserialize::{self, FromSql};
 use diesel::serialize;
 use diesel::{
     deserialize::FromSqlRow,
@@ -10,7 +12,7 @@ use diesel::{
 };
 use serde::{Deserialize, Serialize};
 
-#[derive(AsExpression, Debug, FromSqlRow, Serialize, Deserialize)]
+#[derive(AsExpression, Debug, FromSqlRow, Serialize, Deserialize, PartialEq)]
 #[diesel(sql_type=Text)]
 pub enum IntegrationType {
     Redmine,
@@ -46,5 +48,16 @@ impl ToSql<Text, Sqlite> for IntegrationType {
             IntegrationType::Jira => out.set_value("jira"),
         };
         Ok(IsNull::No)
+    }
+}
+
+impl FromSql<Text, Sqlite> for IntegrationType {
+    fn from_sql(value: <Sqlite as Backend>::RawValue<'_>) -> deserialize::Result<Self> {
+        let text: String = FromSql::<Text, Sqlite>::from_sql(value)?;
+        match text.as_str() {
+            "redmine" => Ok(IntegrationType::Redmine),
+            "jira" => Ok(IntegrationType::Jira),
+            _ => Err("Unknown integration type".into()),
+        }
     }
 }
