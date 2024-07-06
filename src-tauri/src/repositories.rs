@@ -6,7 +6,9 @@ use diesel::sql_types::{Integer, Text};
 use diesel::SqliteConnection;
 use log;
 
-use crate::models::*;
+use crate::models::models::{
+    DatesWithTasks, Duration, GroupedTask, NewIntegration, Setting, Task, TaskWithDuration,
+};
 use crate::schema::*;
 
 const DURATION_SQL: &str ="COALESCE(STRFTIME('%s', end), STRFTIME('%s', DATETIME('now', 'localtime'))) - STRFTIME('%s', start)";

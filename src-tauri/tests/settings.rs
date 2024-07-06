@@ -4,11 +4,16 @@ pub mod common;
 
 #[cfg(test)]
 mod tests {
-    use app::models::utils::JsonField;
-    use app::models::view_type::ViewType;
-    use app::models::work_hours::WorkHours;
-    use app::models::{IntegrationType, NewIntegration};
-    use app::repositories::SettingsRepository;
+    use app::{
+        models::{
+            models::NewIntegration,
+            types::{
+                integration_type::IntegrationType, json_field::JsonField, view_type::ViewType,
+                work_hours::WorkHours,
+            },
+        },
+        repositories::SettingsRepository,
+    };
     use serde_json::json;
 
     use crate::common::get_db_connection;

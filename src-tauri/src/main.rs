@@ -9,12 +9,12 @@ pub mod utils;
 
 use env_logger;
 use log;
+use models::models::Setting;
 use std::env;
 use std::process::Command;
 use std::sync::Mutex;
 
 use diesel::SqliteConnection;
-use models::Setting;
 use tauri::tray::TrayIconBuilder;
 use tauri::{command, State};
 
