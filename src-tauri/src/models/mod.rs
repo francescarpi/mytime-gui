@@ -118,7 +118,7 @@ pub struct DatesWithTasks {
     pub date: NaiveDate,
 }
 
-#[derive(Debug, Insertable, Serialize, Deserialize)]
+#[derive(Debug, Insertable, Serialize, Deserialize, Queryable)]
 #[diesel(table_name=integrations, treat_none_as_null=true)]
 pub struct NewIntegration {
     pub itype: IntegrationType,

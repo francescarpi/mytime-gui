@@ -27,9 +27,9 @@ impl SettingsRepository {
         Self::get_settings(c)
     }
 
-    pub fn add_integration(c: &mut SqliteConnection, integration: &NewIntegration) {
+    pub fn add_integration(c: &mut SqliteConnection, new_integration: &NewIntegration) {
         diesel::insert_into(integrations::table)
-            .values(integration)
+            .values(new_integration)
             .execute(c)
             .expect("Error adding integration");
     }
