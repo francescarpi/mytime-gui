@@ -92,17 +92,7 @@ const Settings = ({
                 dispatchTheme={dispatchTheme}
               />
             </TabPanel>
-            <TabPanel value="2">
-              {createElement(
-                getIntegrationSettingsComponent(
-                  tmpSetting?.integration as string,
-                ),
-                {
-                  setting: tmpSetting,
-                  setSetting: setTmpSetting,
-                },
-              )}
-            </TabPanel>
+            <TabPanel value="2">Foo</TabPanel>
             <TabPanel value="3">
               <WorkingTime setting={tmpSetting} setSetting={setTmpSetting} />
             </TabPanel>

@@ -1,4 +1,4 @@
-import Integration from "../components/Settings/Integration";
+import Integration from "../components/Settings/Integration.OLD";
 import RedmineIntegrationSettings from "./redmine/IntegrationSettings";
 import JiraIntegrationSettings from "./jira/IntegrationSettings";
 import Sync from "../components/Sync/Sync";

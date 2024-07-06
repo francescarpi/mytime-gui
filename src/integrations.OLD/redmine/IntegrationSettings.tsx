@@ -1,4 +1,4 @@
-import Integration from "../../components/Settings/Integration";
+import Integration from "../../components/Settings/Integration.OLD";
 import { Setting } from "../../hooks/useSettings";
 import Grid from "@mui/material/Grid";
 import RedmineActivitySelect from "./RedmineActivitySelect";
