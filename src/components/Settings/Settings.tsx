@@ -60,7 +60,7 @@ const Settings = ({
 
   return (
     <Modal open={opened} onClose={() => onClose()}>
-      <StyledBox>
+      <StyledBox width={1000}>
         <Typography variant="h5" sx={{ mb: 4 }}>
           Settings
         </Typography>
