@@ -3,6 +3,7 @@ export interface IntegrationField {
   label: string;
   maxLength: number;
   type: string;
+  gridWidth?: number;
 }
 
 export interface IntegrationConfig {
@@ -17,6 +18,7 @@ export const integrationsConfig: IntegrationConfig[] = [
     name: "Redmine",
     fields: [
       { id: "url", label: "URL", maxLength: 200, type: "url" },
+      // Add "default activity"
       {
         id: "token",
         label: "Token",
@@ -35,12 +37,14 @@ export const integrationsConfig: IntegrationConfig[] = [
         label: "User",
         maxLength: 100,
         type: "email",
+        gridWidth: 6,
       },
       {
         id: "token",
         label: "Token",
         maxLength: 100,
         type: "password",
+        gridWidth: 6,
       },
     ],
   },

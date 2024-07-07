@@ -5,7 +5,7 @@ export interface Integration {
   id: number;
   itype: string;
   active: boolean;
-  name: string;
+  name: string | null;
   config: string;
 }
 
