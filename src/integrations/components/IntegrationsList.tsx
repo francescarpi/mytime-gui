@@ -1,7 +1,7 @@
 import { Integration } from "../useIntegrations";
 import IntegrationRow from "./IntegrationRow";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
 
 const IntegrationsList = ({
   integrations,
@@ -10,12 +10,11 @@ const IntegrationsList = ({
 }) => {
   console.log(integrations);
   return (
-    <Box>
-      <Grid container spacing={1}>
-        <IntegrationRow />
-        <IntegrationRow />
-      </Grid>
-    </Box>
+    <Stack spacing={1} direction="row">
+      <IntegrationRow />
+      <IntegrationRow />
+      <IntegrationRow />
+    </Stack>
   );
 };
 

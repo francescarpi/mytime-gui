@@ -7,6 +7,9 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { integrationsConfig, IntegrationField } from "../config";
 import TextField from "@mui/material/TextField";
 import Switch from "@mui/material/Switch";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
 
 const IntegrationRow = ({}: {}) => {
   const [integrationType, setIntegrationType] = useState<string>("redmine");
@@ -16,7 +19,7 @@ const IntegrationRow = ({}: {}) => {
 
   const renderField = (field: IntegrationField, index: number) => {
     return (
-      <Grid item md={field.gridWidth} key={`row_${index}`}>
+      <Grid item md={12} key={`row_${index}`}>
         <TextField
           label={field.label}
           fullWidth
@@ -34,9 +37,9 @@ const IntegrationRow = ({}: {}) => {
   };
 
   return (
-    <Grid item md={12}>
-      <Grid container spacing={2}>
-        <Grid item md={2}>
+    <Card>
+      <CardHeader
+        title={
           <FormControl fullWidth>
             <InputLabel id="integrationType">Type</InputLabel>
             <Select
@@ -53,29 +56,31 @@ const IntegrationRow = ({}: {}) => {
               ))}
             </Select>
           </FormControl>
+        }
+        avatar={<Switch />}
+      />
+      <CardContent>
+        <Grid container spacing={1}>
+          <Grid item md={12}>
+            <TextField
+              label="Name"
+              fullWidth
+              type="text"
+              inputProps={{
+                autoComplete: "off",
+                autoCorrect: "off",
+                autoCapitalize: "off",
+                spellCheck: "false",
+                maxLength: 50,
+              }}
+            />
+          </Grid>
+          {integrationsConfig
+            .find((integration) => integration.id === integrationType)
+            ?.fields.map((field, index) => renderField(field, index))}
         </Grid>
-        <Grid item md={2}>
-          <TextField
-            label="Name"
-            fullWidth
-            type="text"
-            inputProps={{
-              autoComplete: "off",
-              autoCorrect: "off",
-              autoCapitalize: "off",
-              spellCheck: "false",
-              maxLength: 50,
-            }}
-          />
-        </Grid>
-        {integrationsConfig
-          .find((integration) => integration.id === integrationType)
-          ?.fields.map((field, index) => renderField(field, index))}
-        <Grid item md={1}>
-          <Switch />
-        </Grid>
-      </Grid>
-    </Grid>
+      </CardContent>
+    </Card>
   );
 };
 
