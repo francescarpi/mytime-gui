@@ -53,7 +53,7 @@ const IntegrationRow = ({
 
   const onDeleteIntegration = () => {
     confirm({
-      description: "Are you sure to delete this integration?",
+      description: "Are you sure to delete the integration?",
     }).then(() => onDelete(integration.id, index));
   };
 
@@ -134,9 +134,18 @@ const IntegrationRow = ({
           />
         </Grid>
         <Grid item md={1}>
-          <IconButton onClick={onDeleteIntegration}>
-            <DeleteIcon />
-          </IconButton>
+          <Box
+            sx={{
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <IconButton onClick={onDeleteIntegration}>
+              <DeleteIcon />
+            </IconButton>
+          </Box>
         </Grid>
         {integrationsConfig
           .find((i) => i.id === integration.itype)

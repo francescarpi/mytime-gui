@@ -68,18 +68,22 @@ const Settings = ({
       return true;
     }
 
+    tmpIntegrations.forEach((integration: Integration, index: number) => {
+      console.log(integration.config);
+    });
+
     if (tmpIntegrations.length !== integrations.length) {
       return true;
     }
 
-    let response = false;
+    let enable = false;
     tmpIntegrations.forEach((integration: Integration, index: number) => {
       if (!areEquals(integration, integrations[index])) {
-        response = true;
+        enable = true;
       }
     });
 
-    return response;
+    return enable;
   }, [tmpSetting, setting, tmpIntegrations, integrations]);
 
   const addIntegration = () => {
