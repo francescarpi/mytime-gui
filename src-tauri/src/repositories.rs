@@ -47,6 +47,12 @@ impl SettingsRepository {
             .execute(c)
             .expect("Error updating integration");
     }
+
+    pub fn delete_integration(c: &mut SqliteConnection, id: i32) {
+        diesel::delete(integrations::table.find(id))
+            .execute(c)
+            .expect("Error deleting integration");
+    }
 }
 
 pub struct TasksRepository;

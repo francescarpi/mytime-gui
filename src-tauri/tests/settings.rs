@@ -183,4 +183,25 @@ mod tests {
         let integrations = SettingsRepository::integrations(&mut c).unwrap();
         assert_eq!(integrations[0].active, true);
     }
+
+    #[test]
+    fn delete_integration() {
+        // Setup
+        let mut c = get_db_connection();
+        let integration1 = NewIntegration {
+            itype: IntegrationType::Redmine,
+            active: false,
+            name: None,
+            config: JsonField(json!({"url": "https://redmine.org", "token": "123"})),
+        };
+        SettingsRepository::add_integration(&mut c, &integration1);
+        let integrations = SettingsRepository::integrations(&mut c).unwrap();
+        assert_eq!(integrations.len(), 1);
+        let integration = integrations[0].clone();
+
+        // Test
+        SettingsRepository::delete_integration(&mut c, integration.id);
+        let integrations = SettingsRepository::integrations(&mut c).unwrap();
+        assert_eq!(integrations.len(), 0);
+    }
 }

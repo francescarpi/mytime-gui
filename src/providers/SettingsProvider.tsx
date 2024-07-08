@@ -36,9 +36,9 @@ const SettingsProvider = ({
     setting,
     saveSettings,
     changeViewType,
-    isIntegrationValid,
     toggleDarkMode,
     updateRightSidebarOpened,
+    integrations,
   } = useSettings();
 
   const [show, setShow] = useState<boolean>(false);
@@ -61,7 +61,7 @@ const SettingsProvider = ({
         setting,
         show: () => setShow(true),
         changeViewType,
-        isIntegrationValid,
+        isIntegrationValid: true, // TODO: check
         toggleDarkMode,
         updateRightSidebarOpened,
       }}
@@ -73,6 +73,7 @@ const SettingsProvider = ({
         saveSetting={saveSettings}
         dispatchTheme={dispatchTheme}
         refreshTasks={refreshTasks}
+        integrations={integrations}
       />
       {children}
     </SettingsContext.Provider>

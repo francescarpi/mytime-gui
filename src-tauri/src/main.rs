@@ -9,7 +9,7 @@ pub mod utils;
 
 use env_logger;
 use log;
-use models::models::Setting;
+use models::models::{Integration, NewIntegration, Setting};
 use std::env;
 use std::process::Command;
 use std::sync::Mutex;
@@ -279,6 +279,24 @@ fn integrations(conn: State<'_, DbConn>) -> Value {
     json!(integrations)
 }
 
+#[command]
+fn add_integration(conn: State<'_, DbConn>, integration: NewIntegration) {
+    let mut db = conn.0.lock().unwrap();
+    SettingsRepository::add_integration(&mut db, &integration);
+}
+
+#[command]
+fn update_integration(conn: State<'_, DbConn>, integration: Integration) {
+    let mut db = conn.0.lock().unwrap();
+    SettingsRepository::update_integration(&mut db, &integration);
+}
+
+#[command]
+fn delete_integration(conn: State<'_, DbConn>, id: i32) {
+    let mut db = conn.0.lock().unwrap();
+    SettingsRepository::delete_integration(&mut db, id);
+}
+
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
@@ -309,6 +327,9 @@ fn main() {
             show_in_folder,
             last_task,
             integrations,
+            add_integration,
+            update_integration,
+            delete_integration,
             // integrations::redmine::activities,
             // integrations::redmine::project_activities,
         ])

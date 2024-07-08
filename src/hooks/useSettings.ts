@@ -1,6 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { IntegrationType } from "../integrations";
 
 export enum ViewType {
   Grouped = "Grouped",
@@ -8,11 +7,6 @@ export enum ViewType {
 }
 
 export interface Setting {
-  integration: IntegrationType | null;
-  integration_url: string | null;
-  integration_token: string | null;
-  integration_username: string | null;
-  integration_extra_param: string | null;
   work_hours: {
     monday: number;
     tuesday: number;
@@ -30,15 +24,27 @@ export interface Setting {
   right_sidebar_open: boolean;
 }
 
+export interface Integration {
+  id: number | null;
+  itype: string;
+  active: boolean;
+  name: string | null;
+  config: any | null;
+}
+
 const useSettings = () => {
   const [setting, setSetting] = useState<Setting | null>(null);
-  const [isIntegrationValid, setIsIntegrationValid] = useState<boolean>(false);
+  const [integrations, setIntegrations] = useState<Integration[]>([]);
 
   const loadSettings = useCallback(() => {
     invoke("settings").then((res) => {
       console.log("Settings loaded", res);
       setSetting(res as Setting);
     });
+  }, []);
+
+  const loadIntegrations = useCallback(() => {
+    invoke("integrations").then((res) => setIntegrations(res as Integration[]));
   }, []);
 
   const changeViewType = useCallback(
@@ -68,28 +74,30 @@ const useSettings = () => {
     [setting],
   );
 
-  const saveSettings = (setting: Setting) =>
+  const saveSettings = (setting: Setting, integ: Integration[]) => {
+    console.log(integ);
     invoke("save_settings", { settings: setting }).then(() => loadSettings());
+
+    integ.forEach((integration) => {
+      const action =
+        integration.id === null ? "add_integration" : "update_integration";
+      invoke(action, { integration }).then(() => loadIntegrations());
+    });
+  };
 
   useEffect(() => {
     loadSettings();
-  }, [loadSettings]);
-
-  useEffect(() => {
-    setIsIntegrationValid(
-      setting?.integration !== null &&
-        setting?.integration_url !== null &&
-        setting?.integration_token !== null,
-    );
-  }, [setting]);
+    loadIntegrations();
+  }, [loadSettings, loadIntegrations]);
 
   return {
     setting,
-    isIntegrationValid,
     changeViewType,
     toggleDarkMode,
     saveSettings,
     updateRightSidebarOpened,
+    loadIntegrations,
+    integrations,
   };
 };
 

@@ -11,11 +11,11 @@ import WorkingTime from "./WorkingTime";
 import Generic from "./Generic";
 import Shortcuts from "./Shortcuts";
 import Info from "./Info";
-import Integration from "./Integration";
 import { StyledBox } from "../../styles/modal";
 import { useSnackbar } from "notistack";
-import { Setting } from "../../hooks/useSettings";
+import { Setting, Integration } from "../../hooks/useSettings";
 import { areEquals } from "../../utils/objects";
+import IntegrationsList from "../../integrations/components/IntegrationsList";
 
 const Settings = ({
   opened,
@@ -24,6 +24,7 @@ const Settings = ({
   saveSetting,
   dispatchTheme,
   refreshTasks,
+  integrations,
 }: {
   opened: boolean;
   onClose: CallableFunction;
@@ -31,9 +32,11 @@ const Settings = ({
   saveSetting: CallableFunction;
   dispatchTheme: CallableFunction;
   refreshTasks: CallableFunction;
+  integrations: Integration[];
 }) => {
   const [activeTab, setActiveTab] = useState<string>("1");
   const [tmpSetting, setTmpSetting] = useState<Setting | null>(null);
+  const [tmpIntegrations, setTmpIntegrations] = useState<Integration[]>([]);
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -42,8 +45,12 @@ const Settings = ({
     }
   }, [setting, opened]);
 
+  useEffect(() => {
+    setTmpIntegrations(integrations);
+  }, [integrations]);
+
   const saveHandler = () => {
-    saveSetting(tmpSetting);
+    saveSetting(tmpSetting, tmpIntegrations);
     refreshTasks();
     enqueueSnackbar("Settings saved", { variant: "success" });
     onClose();
@@ -54,9 +61,44 @@ const Settings = ({
     onClose();
   };
 
-  const disableSave = useMemo(() => {
-    return !setting || !tmpSetting || areEquals(setting, tmpSetting);
-  }, [tmpSetting, setting]);
+  const enableSave = useMemo(() => {
+    if (setting && tmpSetting && !areEquals(setting, tmpSetting)) {
+      return true;
+    }
+
+    if (tmpIntegrations.length !== integrations.length) {
+      return true;
+    }
+
+    let response = false;
+    tmpIntegrations.forEach((integration: Integration, index: number) => {
+      if (!areEquals(integration, integrations[index])) {
+        response = true;
+      }
+    });
+
+    return response;
+  }, [tmpSetting, setting, tmpIntegrations, integrations]);
+
+  const addIntegration = () => {
+    setTmpIntegrations([
+      ...tmpIntegrations,
+      {
+        id: null,
+        itype: "Redmine",
+        active: false,
+        name: null,
+        config: null,
+      },
+    ]);
+  };
+
+  const updateIntegration = (index: number, change: object) => {
+    const newElement = { ...tmpIntegrations[index], ...change };
+    const newList = [...tmpIntegrations];
+    newList[index] = newElement;
+    setTmpIntegrations(newList);
+  };
 
   return (
     <Modal open={opened} onClose={() => onClose()}>
@@ -87,7 +129,11 @@ const Settings = ({
               />
             </TabPanel>
             <TabPanel value="2">
-              <Integration />
+              <IntegrationsList
+                integrations={tmpIntegrations}
+                add={addIntegration}
+                update={updateIntegration}
+              />
             </TabPanel>
             <TabPanel value="3">
               <WorkingTime setting={tmpSetting} setSetting={setTmpSetting} />
@@ -108,7 +154,7 @@ const Settings = ({
             variant="contained"
             sx={{ ml: 2 }}
             onClick={saveHandler}
-            disabled={disableSave}
+            disabled={!enableSave}
           >
             Save
           </Button>
