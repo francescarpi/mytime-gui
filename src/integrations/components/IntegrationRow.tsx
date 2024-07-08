@@ -9,18 +9,25 @@ import Switch from "@mui/material/Switch";
 import { Integration } from "../../hooks/useSettings";
 import Box from "@mui/material/Box";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import { useConfirm } from "material-ui-confirm";
 
 const IntegrationRow = ({
   integration,
   visible,
   onChange,
   index,
+  onDelete,
 }: {
   integration: Integration;
   visible: boolean;
   onChange: CallableFunction;
   index: number;
+  onDelete: CallableFunction;
 }) => {
+  const confirm = useConfirm();
+
   const onChangeIntegrationType = (e: SelectChangeEvent) => {
     onChange(index, { itype: e.target.value });
   };
@@ -42,6 +49,12 @@ const IntegrationRow = ({
       [field]: e.target.value,
     };
     onChange(index, { config });
+  };
+
+  const onDeleteIntegration = () => {
+    confirm({
+      description: "Are you sure to delete this integration?",
+    }).then(() => onDelete(integration.id, index));
   };
 
   const renderField = (field: IntegrationField, index: number) => {
@@ -103,7 +116,7 @@ const IntegrationRow = ({
             </Select>
           </FormControl>
         </Grid>
-        <Grid item md={6}>
+        <Grid item md={5}>
           <TextField
             label="Name"
             fullWidth
@@ -119,6 +132,11 @@ const IntegrationRow = ({
               maxLength: 50,
             }}
           />
+        </Grid>
+        <Grid item md={1}>
+          <IconButton onClick={onDeleteIntegration}>
+            <DeleteIcon />
+          </IconButton>
         </Grid>
         {integrationsConfig
           .find((i) => i.id === integration.itype)

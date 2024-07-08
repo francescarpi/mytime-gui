@@ -39,6 +39,7 @@ const SettingsProvider = ({
     toggleDarkMode,
     updateRightSidebarOpened,
     integrations,
+    deleteIntegration,
   } = useSettings();
 
   const [show, setShow] = useState<boolean>(false);
@@ -74,6 +75,7 @@ const SettingsProvider = ({
         dispatchTheme={dispatchTheme}
         refreshTasks={refreshTasks}
         integrations={integrations}
+        deleteIntegration={deleteIntegration}
       />
       {children}
     </SettingsContext.Provider>

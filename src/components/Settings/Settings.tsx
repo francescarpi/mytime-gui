@@ -25,6 +25,7 @@ const Settings = ({
   dispatchTheme,
   refreshTasks,
   integrations,
+  deleteIntegration,
 }: {
   opened: boolean;
   onClose: CallableFunction;
@@ -33,6 +34,7 @@ const Settings = ({
   dispatchTheme: CallableFunction;
   refreshTasks: CallableFunction;
   integrations: Integration[];
+  deleteIntegration: CallableFunction;
 }) => {
   const [activeTab, setActiveTab] = useState<string>("1");
   const [tmpSetting, setTmpSetting] = useState<Setting | null>(null);
@@ -100,6 +102,16 @@ const Settings = ({
     setTmpIntegrations(newList);
   };
 
+  const delIntegration = (id: number, index: number) => {
+    if (id === null) {
+      const newList = [...tmpIntegrations];
+      newList.splice(index, 1);
+      setTmpIntegrations(newList);
+      return;
+    }
+    deleteIntegration(id);
+  };
+
   return (
     <Modal open={opened} onClose={() => onClose()}>
       <StyledBox width={1000}>
@@ -133,6 +145,7 @@ const Settings = ({
                 integrations={tmpIntegrations}
                 add={addIntegration}
                 update={updateIntegration}
+                deleteIntegration={delIntegration}
               />
             </TabPanel>
             <TabPanel value="3">

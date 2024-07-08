@@ -85,6 +85,9 @@ const useSettings = () => {
     });
   };
 
+  const deleteIntegration = (id: number) =>
+    invoke("delete_integration", { id }).then(() => loadIntegrations());
+
   useEffect(() => {
     loadSettings();
     loadIntegrations();
@@ -98,6 +101,7 @@ const useSettings = () => {
     updateRightSidebarOpened,
     loadIntegrations,
     integrations,
+    deleteIntegration,
   };
 };
 

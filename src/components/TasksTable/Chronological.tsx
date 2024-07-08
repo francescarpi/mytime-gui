@@ -41,8 +41,8 @@ const Chronological = ({
 }) => {
   const confirm = useConfirm();
   const deleteHandler = (id: number) => {
-    confirm({ description: "Are you sure you want to delete this task?" }).then(
-      () => deleteTask(id),
+    confirm({ description: "Are you sure to delete this task?" }).then(() =>
+      deleteTask(id),
     );
   };
 

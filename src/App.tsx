@@ -75,25 +75,25 @@ const App = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
-      <SettingsProvider
-        refreshTasks={refresh}
-        dispatchTheme={dispatchTheme}
-        setDarkMode={setDarkMode}
-        setViewModeGrouped={setViewModeGrouped}
+      <ConfirmProvider
+        defaultOptions={{
+          confirmationButtonProps: { variant: "contained" },
+          cancellationButtonProps: {
+            variant: "contained",
+            color: "secondary",
+          },
+        }}
       >
-        <SnackbarProvider
-          maxSnack={2}
-          autoHideDuration={5000}
-          anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+        <SettingsProvider
+          refreshTasks={refresh}
+          dispatchTheme={dispatchTheme}
+          setDarkMode={setDarkMode}
+          setViewModeGrouped={setViewModeGrouped}
         >
-          <ConfirmProvider
-            defaultOptions={{
-              confirmationButtonProps: { variant: "contained" },
-              cancellationButtonProps: {
-                variant: "contained",
-                color: "secondary",
-              },
-            }}
+          <SnackbarProvider
+            maxSnack={2}
+            autoHideDuration={5000}
+            anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
           >
             <SyncWrapper
               opened={openSync}
@@ -160,9 +160,9 @@ const App = () => {
                 </CardContent>
               </Card>
             </Layout>
-          </ConfirmProvider>
-        </SnackbarProvider>
-      </SettingsProvider>
+          </SnackbarProvider>
+        </SettingsProvider>
+      </ConfirmProvider>
     </ThemeProvider>
   );
 };
