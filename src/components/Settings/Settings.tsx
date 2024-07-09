@@ -64,22 +64,31 @@ const Settings = ({
   };
 
   const enableSave = useMemo(() => {
-    if (setting && tmpSetting && !areEquals(setting, tmpSetting)) {
-      return true;
-    }
+    let enable = false;
 
-    tmpIntegrations.forEach((integration: Integration, index: number) => {
-      console.log(integration.config);
-    });
+    if (setting && tmpSetting && !areEquals(setting, tmpSetting)) {
+      enable = true;
+    }
 
     if (tmpIntegrations.length !== integrations.length) {
-      return true;
+      enable = true;
     }
 
-    let enable = false;
     tmpIntegrations.forEach((integration: Integration, index: number) => {
       if (!areEquals(integration, integrations[index])) {
         enable = true;
+      }
+    });
+
+    tmpIntegrations.forEach((integration: Integration) => {
+      if (integration.config === null) {
+        enable = false;
+      } else {
+        Object.keys(integration.config).forEach((key) => {
+          if (!integration.config[key]) {
+            enable = false;
+          }
+        });
       }
     });
 

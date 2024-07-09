@@ -28,6 +28,7 @@ const IntegrationsList = ({
   return (
     <Box>
       <Box>
+        <div>{JSON.stringify(integrations)}</div>
         <span>Add integrations to configure.</span>
         <Button
           onClick={() => add()}

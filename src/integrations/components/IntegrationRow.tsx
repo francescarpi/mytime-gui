@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
@@ -27,6 +28,16 @@ const IntegrationRow = ({
   onDelete: CallableFunction;
 }) => {
   const confirm = useConfirm();
+
+  useEffect(() => {
+    const config: any = integration.config || {};
+    integrationsConfig
+      .find((i) => i.id === integration.itype)
+      ?.fields.map((field) => {
+        if (!config[field.id]) config[field.id] = "";
+      });
+    onChange(index, { config });
+  }, []);
 
   const onChangeIntegrationType = (e: SelectChangeEvent) => {
     onChange(index, { itype: e.target.value });
@@ -65,7 +76,7 @@ const IntegrationRow = ({
           required={true}
           fullWidth
           type={field.type}
-          value={(integration.config && integration.config[field.id]) || ""}
+          value={integration.config?.[field.id] || ""}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             onChangeConfig(field.id, e)
           }

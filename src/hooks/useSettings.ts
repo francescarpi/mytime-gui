@@ -75,7 +75,6 @@ const useSettings = () => {
   );
 
   const saveSettings = (setting: Setting, integ: Integration[]) => {
-    console.log(integ);
     invoke("save_settings", { settings: setting }).then(() => loadSettings());
 
     integ.forEach((integration) => {
