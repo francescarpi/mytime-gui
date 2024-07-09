@@ -105,7 +105,11 @@ const IntegrationRow = ({
             label="Active"
             labelPlacement="start"
             control={
-              <Switch checked={integration.active} onChange={onChangeActive} />
+              <Switch
+                checked={integration.active}
+                onChange={onChangeActive}
+                color="success"
+              />
             }
           />
         </Grid>
