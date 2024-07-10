@@ -5,6 +5,7 @@ export interface SyncTask {
   id: string;
   date: string;
   desc: string;
+  project: string;
   duration: number;
   external_id: string;
   ids: number[];

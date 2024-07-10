@@ -192,6 +192,7 @@ mod tests {
         assert_eq!(response[0].id, "1-2");
         assert!(response[0].duration >= 0);
         assert_eq!(response[0].desc, "Test task");
+        assert_eq!(response[0].project, None);
         assert_eq!(response[0].date, today);
         assert_eq!(response[0].ids.0.len(), 2);
         assert_eq!(response[0].ids.0[0], task1.id);

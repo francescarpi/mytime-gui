@@ -2,7 +2,7 @@ import { useContext, useEffect, useState, useReducer } from "react";
 import * as React from "react";
 import { SettingsContext } from "../../providers/SettingsProvider";
 import useSync from "../../hooks/useSync";
-import { SuccessType } from "./types";
+import { SuccessType, TaskData } from "./types";
 import Modal from "@mui/material/Modal";
 import { StyledBox } from "../../styles/modal";
 import Typography from "@mui/material/Typography";
@@ -26,6 +26,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 
+// TODO: move to reducers file
 const successReducer = (state: SuccessType, action: any) => {
   switch (action.type) {
     case "reset":
@@ -43,6 +44,22 @@ const successReducer = (state: SuccessType, action: any) => {
   return state;
 };
 
+const taskDataReducer = (state: TaskData, action: any) => {
+  switch (action.type) {
+    case "reset":
+      return {};
+    case "setExternalId":
+      return {
+        ...state,
+        [action.id]: {
+          [action.integrationId]: { externalId: action.externalId },
+        },
+      };
+  }
+  return state;
+};
+
+// TODO: change component name
 const SyncWrapper = ({
   opened,
   onClose,
@@ -58,6 +75,7 @@ const SyncWrapper = ({
   const [isSending, setIsSending] = useState<boolean>(false);
   const settingContext = useContext(SettingsContext);
   const { activeIntegrations } = settingContext;
+  const [taskData, dispatchTaskData] = useReducer(taskDataReducer, {});
 
   // Reset some data when the modal is opened/closed
   useEffect(() => {
@@ -133,7 +151,9 @@ const SyncWrapper = ({
                 {tasks.map((task) => (
                   <React.Fragment key={task.id}>
                     <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-                      <TableCell align="left">{task.desc}</TableCell>
+                      <TableCell align="left">
+                        [{task.project}] {task.desc}
+                      </TableCell>
                       <TableCell align="left">{task.date}</TableCell>
                       <TableCell align="right">
                         {formatDuration(task.duration)}
@@ -164,8 +184,18 @@ const SyncWrapper = ({
                                       label="External Id"
                                       size="small"
                                       fullWidth
-                                      value={""}
-                                      onChange={(_e) => {}}
+                                      value={
+                                        taskData[task.id]?.[int.id as number]
+                                          ?.externalId || ""
+                                      }
+                                      onChange={(e) =>
+                                        dispatchTaskData({
+                                          type: "setExternalId",
+                                          id: task.id,
+                                          integrationId: int.id,
+                                          externalId: e.target.value,
+                                        })
+                                      }
                                       InputProps={{
                                         endAdornment: (
                                           <InputAdornment position="end">

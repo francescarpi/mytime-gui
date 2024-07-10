@@ -2,7 +2,7 @@ use crate::schema::*;
 use chrono::{Datelike, NaiveDate, NaiveDateTime};
 use diesel::deserialize::QueryableByName;
 use diesel::prelude::Insertable;
-use diesel::sql_types::{Date, Integer, Text};
+use diesel::sql_types::{Date, Integer, Nullable, Text};
 use diesel::Selectable;
 use diesel::{deserialize::Queryable, query_builder::AsChangeset};
 use serde::{Deserialize, Serialize};
@@ -97,6 +97,8 @@ pub struct GroupedTask {
     pub date: NaiveDate,
     #[diesel(sql_type = Text)]
     pub ids: types::list_ids::ListIds,
+    #[diesel(sql_type = Nullable<Text>)]
+    pub project: Option<String>,
 }
 
 #[derive(Deserialize, Queryable, QueryableByName, Debug, Serialize)]
