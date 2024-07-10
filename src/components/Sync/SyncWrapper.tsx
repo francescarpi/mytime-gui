@@ -49,12 +49,14 @@ const taskDataReducer = (state: TaskData, action: any) => {
     case "reset":
       return {};
     case "setExternalId":
-      return {
-        ...state,
-        [action.id]: {
-          [action.integrationId]: { externalId: action.externalId },
-        },
+      const newState = { ...state };
+      if (!newState[action.id]) {
+        newState[action.id] = {};
+      }
+      newState[action.id][action.integrationId] = {
+        externalId: action.externalId,
       };
+      return newState;
   }
   return state;
 };
@@ -181,6 +183,10 @@ const SyncWrapper = ({
                                   </Box>
                                   <Box sx={{ mt: "1rem" }}>
                                     <TextField
+                                      error={
+                                        !taskData[task.id]?.[int.id as number]
+                                          ?.externalId
+                                      }
                                       label="External Id"
                                       size="small"
                                       fullWidth
