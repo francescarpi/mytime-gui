@@ -54,11 +54,11 @@ const IntegrationRow = ({
 
   const onChangeConfig = (
     field: string,
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement> | string,
   ) => {
     const config = {
       ...(integration.config || {}),
-      [field]: e.target.value,
+      [field]: typeof e === "string" ? e : e.target.value,
     };
     onChange(index, { config });
   };
@@ -100,8 +100,8 @@ const IntegrationRow = ({
           <SelectCustom
             apiAction={field.apiAction as string}
             apiId={integration.id}
-            value={null}
-            onChange={() => {}}
+            value={integration.config?.[field.id] || null}
+            onChange={(value: string) => onChangeConfig(field.id, value)}
             disabled={!integration.id}
           />
         </Grid>

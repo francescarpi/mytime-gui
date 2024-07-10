@@ -3,11 +3,10 @@ use crate::models::models::{GroupedTask, Setting};
 use crate::repositories::SettingsRepository;
 // use crate::utils::dates::format_duration;
 use crate::{integrations, DbConn};
-// use oxhttp::model::{Method, Request, Status};
-// use oxhttp::model::{Method, Request};
-// use oxhttp::Client;
+use oxhttp::model::{Method, Request, Status};
+use oxhttp::Client;
 use serde::{Deserialize, Serialize};
-use serde_json;
+use serde_json::{self, Value};
 use tauri::{command, State};
 
 #[derive(Debug, Deserialize)]
@@ -133,42 +132,41 @@ impl Redmine {
     //         .unwrap()
     //         .with_body(body.to_string())
     // }
-    //
-    // fn build_get_request(url: &str, token: String) -> Request {
-    //     Request::builder(Method::GET, url.parse().unwrap())
-    //         .with_header("Content-Type", "application/json")
-    //         .unwrap()
-    //         .with_header("X-Redmine-API-Key", token)
-    //         .unwrap()
-    //         .build()
-    // }
 
-    pub fn activities(&self, _settings: &Setting) -> Vec<RedmineTimeActivity> {
-        // let url = self.prepare_url(
-        //     settings,
-        //     vec![
-        //         &"enumerations".to_string(),
-        //         &"time_entry_activities.json".to_string(),
-        //     ],
-        // );
-        // let token = &settings.integration_token.as_ref().unwrap();
-        // let client = Client::new();
-        // match client.request(Self::build_get_request(url.as_ref(), token.to_string())) {
-        //     Ok(response) => {
-        //         if response.status() == Status::OK {
-        //             let response_body = response.into_body().to_string().unwrap();
-        //
-        //             let activities =
-        //                 serde_json::from_str::<RedmineTimeActivities>(&response_body).unwrap();
-        //
-        //             return activities.time_entry_activities;
-        //         }
-        //         vec![]
-        //     }
-        //     Err(_) => vec![],
-        // }
-        // TODO: check
-        vec![]
+    fn build_get_request(url: &str, token: String) -> Request {
+        Request::builder(Method::GET, url.parse().unwrap())
+            .with_header("Content-Type", "application/json")
+            .unwrap()
+            .with_header("X-Redmine-API-Key", token)
+            .unwrap()
+            .build()
+    }
+
+    pub fn activities(&self, config: Value) -> Vec<RedmineTimeActivity> {
+        let url = self.prepare_url(
+            &config,
+            vec![
+                &"enumerations".to_string(),
+                &"time_entry_activities.json".to_string(),
+            ],
+        );
+        log::info!("redmine url: {}", url);
+        let token = config["token"].as_str().unwrap();
+        let client = Client::new();
+        match client.request(Self::build_get_request(url.as_ref(), token.to_string())) {
+            Ok(response) => {
+                if response.status() == Status::OK {
+                    let response_body = response.into_body().to_string().unwrap();
+
+                    let activities =
+                        serde_json::from_str::<RedmineTimeActivities>(&response_body).unwrap();
+
+                    return activities.time_entry_activities;
+                }
+                vec![]
+            }
+            Err(_) => vec![],
+        }
     }
 
     pub fn project_activities(
@@ -235,32 +233,26 @@ pub async fn activities(
 ) -> Result<serde_json::Value, serde_json::Value> {
     let mut db = conn.0.lock().unwrap();
     let integration = SettingsRepository::integration(&mut db, id).unwrap();
-    dbg!(&integration);
-
-    // let settings = SettingsRepository::get_settings(&mut db).unwrap();
-    // if settings.has_integration() {
-    //     return Ok(serde_json::json!(
-    //         integrations::redmine::Redmine::new().activities(&settings)
-    //     ));
-    // }
-    Ok(serde_json::json!([]))
+    return Ok(serde_json::json!(
+        integrations::redmine::Redmine::new().activities(integration.config.0)
+    ));
 }
 
 #[command]
 pub async fn project_activities(
-    external_id: String,
-    conn: State<'_, DbConn>,
+    _external_id: String,
+    _conn: State<'_, DbConn>,
 ) -> Result<serde_json::Value, serde_json::Value> {
-    let mut db = conn.0.lock().unwrap();
-    let settings = SettingsRepository::get_settings(&mut db).unwrap();
-    if settings.has_integration() {
-        return match integrations::redmine::Redmine::new()
-            .project_activities(&settings, external_id)
-        {
-            Ok(activities) => Ok(serde_json::json!(activities)),
-            Err(_) => Err(serde_json::json!([])),
-        };
-    }
+    // let mut db = conn.0.lock().unwrap();
+    // let settings = SettingsRepository::get_settings(&mut db).unwrap();
+    // if settings.has_integration() {
+    //     return match integrations::redmine::Redmine::new()
+    //         .project_activities(&settings, external_id)
+    //     {
+    //         Ok(activities) => Ok(serde_json::json!(activities)),
+    //         Err(_) => Err(serde_json::json!([])),
+    //     };
+    // }
 
     Ok(serde_json::json!([]))
 }

@@ -28,7 +28,7 @@ const SelectCustom = ({
   const [items, setItems] = useState<SelectItem[]>([]);
 
   useEffect(() => {
-    if (apiAction && apiId) {
+    if (apiAction && apiId && items.length === 0) {
       invoke(apiAction, { id: apiId }).then((res) => {
         const elements = (res as any).map((a: any) => ({
           value: a.id,
@@ -36,8 +36,7 @@ const SelectCustom = ({
         })) as SelectItem[];
 
         elements.sort((a, b) => a.label.localeCompare(b.label));
-        console.log(elements);
-        // setActivities(actv);
+        setItems(elements);
       });
     }
   }, []);

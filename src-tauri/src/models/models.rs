@@ -49,14 +49,6 @@ impl Setting {
         total += self.work_hours.sunday;
         total * 3600.0
     }
-
-    pub fn has_integration(&self) -> bool {
-        // self.integration.is_some()
-        //     && self.integration_url.is_some()
-        //     && self.integration_token.is_some()
-        // TODO: check
-        true
-    }
 }
 
 #[derive(Deserialize, Debug, Queryable, QueryableByName, Serialize)]

@@ -2,8 +2,9 @@ use crate::models::models::{GroupedTask, Setting};
 // use crate::models::types::integration_type::IntegrationType;
 // use jira::Jira;
 use redmine::Redmine;
+use serde_json::Value;
 use std::fmt;
-// use url::Url;
+use url::Url;
 
 pub mod jira;
 pub mod redmine;
@@ -37,17 +38,15 @@ pub trait Integration {
         extra_param: Option<String>,
     ) -> Result<(), Error>;
 
-    fn prepare_url(&self, _settings: &Setting, _suffix: Vec<&String>) -> String {
-        // let mut url = Url::parse(settings.integration_url.as_ref().unwrap()).unwrap();
-        // if !url.path().ends_with('/') {
-        //     url.path_segments_mut().unwrap().push("");
-        // }
-        // for s in suffix.iter() {
-        //     url.path_segments_mut().unwrap().push(s);
-        // }
-        // url.as_str().to_string()
-        // TODO: check
-        "".to_string()
+    fn prepare_url(&self, config: &Value, suffix: Vec<&String>) -> String {
+        let mut url = Url::parse(&config["url"].as_str().unwrap()).unwrap();
+        if !url.path().ends_with('/') {
+            url.path_segments_mut().unwrap().push("");
+        }
+        for s in suffix.iter() {
+            url.path_segments_mut().unwrap().push(s);
+        }
+        url.as_str().to_string()
     }
 }
 
