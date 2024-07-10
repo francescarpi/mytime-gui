@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import * as React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
@@ -13,6 +15,8 @@ import Alert from "@mui/material/Alert";
 import { formatDuration } from "../../utils/dates";
 import { StyledBox } from "../../styles/modal";
 import { SyncProps } from "./types";
+import { SettingsContext } from "../../providers/SettingsProvider";
+import Grid from "@mui/material/Grid";
 
 const Sync = (props: SyncProps) => {
   const {
@@ -25,13 +29,14 @@ const Sync = (props: SyncProps) => {
     sendHandler,
     tasksSent,
     slotHeader,
-    slotTableHeader,
-    slotTableRow,
   } = props;
 
   if (!opened) {
     return null;
   }
+
+  const settingContext = useContext(SettingsContext);
+  const { activeIntegrations } = settingContext;
 
   return (
     <Modal open={opened} onClose={() => onClose()}>
@@ -55,32 +60,42 @@ const Sync = (props: SyncProps) => {
                   <TableCell align="left">Date</TableCell>
                   <TableCell align="right">Duration</TableCell>
                   <TableCell align="right" sx={{ textWrap: "nowrap" }}>
-                    External Id
-                  </TableCell>
-                  <TableCell align="right" sx={{ textWrap: "nowrap" }}>
                     Task Ids
                   </TableCell>
-                  {slotTableHeader}
-                  <TableCell align="center">Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {tasks.map((task) => (
-                  <TableRow key={task.id}>
-                    <TableCell align="left">{task.desc}</TableCell>
-                    <TableCell align="left" sx={{ textWrap: "nowrap" }}>
-                      {task.date}
-                    </TableCell>
-                    <TableCell align="right">
-                      {formatDuration(task.duration)}
-                    </TableCell>
-                    <TableCell align="right">{task.external_id}</TableCell>
-                    <TableCell align="right">{task.ids.join(", ")}</TableCell>
-                    {slotTableRow && slotTableRow(task)}
-                    <TableCell align="center">
-                      <TaskIcon task={task} success={success} />
-                    </TableCell>
-                  </TableRow>
+                  <React.Fragment key={task.id}>
+                    <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+                      <TableCell align="left">{task.desc}</TableCell>
+                      <TableCell align="left" sx={{ textWrap: "nowrap" }}>
+                        {task.date}
+                      </TableCell>
+                      <TableCell align="right">
+                        {formatDuration(task.duration)}
+                      </TableCell>
+                      <TableCell align="right">{task.ids.join(", ")}</TableCell>
+                    </TableRow>
+                    <TableRow sx={{ paddingY: 0 }}>
+                      <TableCell colSpan={5}>
+                        {activeIntegrations.map((int) => (
+                          <Grid container key={`int_${int.id}`}>
+                            <Grid item md={2}></Grid>
+                            <Grid item md={4}>
+                              {int.name || int.itype}
+                            </Grid>
+                            <Grid item md={4}>
+                              Input
+                            </Grid>
+                            <Grid item md={2}>
+                              <TaskIcon task={task} success={success} />
+                            </Grid>
+                          </Grid>
+                        ))}
+                      </TableCell>
+                    </TableRow>
+                  </React.Fragment>
                 ))}
               </TableBody>
             </Table>

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { invoke } from "@tauri-apps/api/core";
 
 export enum ViewType {
@@ -87,6 +87,11 @@ const useSettings = () => {
   const deleteIntegration = (id: number) =>
     invoke("delete_integration", { id }).then(() => loadIntegrations());
 
+  const activeIntegrations = useMemo(
+    () => integrations.filter((i) => i.active),
+    [integrations],
+  );
+
   useEffect(() => {
     loadSettings();
     loadIntegrations();
@@ -101,6 +106,7 @@ const useSettings = () => {
     loadIntegrations,
     integrations,
     deleteIntegration,
+    activeIntegrations,
   };
 };
 

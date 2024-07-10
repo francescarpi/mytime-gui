@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useState, useEffect } from "react";
-import { Setting, ViewType } from "../hooks/useSettings";
+import { Setting, ViewType, Integration } from "../hooks/useSettings";
 import useSettings from "../hooks/useSettings";
 import Settings from "../components/Settings/Settings";
 
@@ -10,6 +10,7 @@ const SettingsContext = createContext<{
   changeViewType: CallableFunction;
   toggleDarkMode: CallableFunction;
   updateRightSidebarOpened: CallableFunction;
+  activeIntegrations: Integration[];
 }>({
   setting: null,
   isIntegrationValid: false,
@@ -17,6 +18,7 @@ const SettingsContext = createContext<{
   changeViewType: () => {},
   toggleDarkMode: () => {},
   updateRightSidebarOpened: () => {},
+  activeIntegrations: [],
 });
 
 const SettingsProvider = ({
@@ -40,6 +42,7 @@ const SettingsProvider = ({
     updateRightSidebarOpened,
     integrations,
     deleteIntegration,
+    activeIntegrations,
   } = useSettings();
 
   const [show, setShow] = useState<boolean>(false);
@@ -65,6 +68,7 @@ const SettingsProvider = ({
         isIntegrationValid: true, // TODO: check
         toggleDarkMode,
         updateRightSidebarOpened,
+        activeIntegrations,
       }}
     >
       <Settings
