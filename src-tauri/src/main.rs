@@ -1,14 +1,14 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 pub mod db;
-// pub mod integrations;
+pub mod integrations;
 pub mod models;
 pub mod repositories;
 pub mod schema;
 pub mod utils;
 
 use env_logger;
-use log;
+// use log;
 use models::models::{Integration, NewIntegration, Setting};
 use std::env;
 use std::process::Command;
@@ -19,7 +19,7 @@ use tauri::tray::TrayIconBuilder;
 use tauri::{command, State};
 
 use chrono::NaiveTime;
-// use integrations::*;
+use integrations::redmine;
 use repositories::{SettingsRepository, TasksRepository};
 use serde::Serialize;
 use serde_json::{json, Value};
@@ -146,9 +146,9 @@ fn last_task(conn: State<'_, DbConn>) -> Value {
 
 #[command]
 async fn send_to_integration(
-    id: String,
-    extra_param: Option<String>,
-    conn: State<'_, DbConn>,
+    _id: String,
+    _extra_param: Option<String>,
+    _conn: State<'_, DbConn>,
 ) -> Result<(), String> {
     // let mut db = conn.0.lock().unwrap();
     // let settings = SettingsRepository::get_settings(&mut db).unwrap();
@@ -330,7 +330,7 @@ fn main() {
             add_integration,
             update_integration,
             delete_integration,
-            // integrations::redmine::activities,
+            redmine::activities,
             // integrations::redmine::project_activities,
         ])
         .run(tauri::generate_context!())

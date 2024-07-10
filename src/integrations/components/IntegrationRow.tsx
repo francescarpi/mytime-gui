@@ -13,6 +13,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import { useConfirm } from "material-ui-confirm";
+import SelectCustom from "../../components/SelectCustom";
 
 const IntegrationRow = ({
   integration,
@@ -69,27 +70,43 @@ const IntegrationRow = ({
   };
 
   const renderField = (field: IntegrationField, index: number) => {
-    return (
-      <Grid item md={field.gridWidth || 12} key={`row_${index}`}>
-        <TextField
-          label={field.label}
-          required={true}
-          fullWidth
-          type={field.type}
-          value={integration.config?.[field.id] || ""}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            onChangeConfig(field.id, e)
-          }
-          inputProps={{
-            autoComplete: "off",
-            autoCorrect: "off",
-            autoCapitalize: "off",
-            spellCheck: "false",
-            maxLength: field.maxLength,
-          }}
-        />
-      </Grid>
-    );
+    if (field.componentType === "input") {
+      return (
+        <Grid item md={field.gridWidth || 12} key={`row_${index}`}>
+          <TextField
+            label={field.label}
+            required={true}
+            fullWidth
+            type={field.type}
+            value={integration.config?.[field.id] || ""}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              onChangeConfig(field.id, e)
+            }
+            inputProps={{
+              autoComplete: "off",
+              autoCorrect: "off",
+              autoCapitalize: "off",
+              spellCheck: "false",
+              maxLength: field.maxLength,
+            }}
+          />
+        </Grid>
+      );
+    }
+
+    if (field.componentType === "select") {
+      return (
+        <Grid item md={field.gridWidth || 12} key={`row_${index}`}>
+          <SelectCustom
+            apiAction={field.apiAction as string}
+            value={null}
+            onChange={() => {}}
+            disabled={false}
+          />
+        </Grid>
+      );
+    }
+    return "";
   };
 
   return (
