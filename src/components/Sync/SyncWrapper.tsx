@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useReducer } from "react";
+import { useContext, useEffect, useState, useReducer, useMemo } from "react";
 import * as React from "react";
 import { SettingsContext } from "../../providers/SettingsProvider";
 import useSync from "../../hooks/useSync";
@@ -125,6 +125,10 @@ const SyncWrapper = ({
     });
   };
 
+  const formValid = useMemo(() => {
+    return false;
+  }, []);
+
   return (
     <Modal open={opened} onClose={() => onClose()}>
       <StyledBox width={1000}>
@@ -166,7 +170,11 @@ const SyncWrapper = ({
                       <TableCell colSpan={4}>
                         <Grid container spacing={2}>
                           {activeIntegrations.map((int) => (
-                            <Grid item md={6} key={`int_${int.id}`}>
+                            <Grid
+                              item
+                              md={activeIntegrations.length === 1 ? 12 : 6}
+                              key={`int_${int.id}`}
+                            >
                               <Card variant="outlined">
                                 <CardContent>
                                   <Box
@@ -249,7 +257,7 @@ const SyncWrapper = ({
                 variant="contained"
                 sx={{ ml: 2 }}
                 onClick={sendHandler}
-                disabled={isSending || tasksSent}
+                disabled={isSending || tasksSent || !formValid}
               >
                 Send
               </Button>
