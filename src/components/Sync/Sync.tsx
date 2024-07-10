@@ -17,6 +17,12 @@ import { StyledBox } from "../../styles/modal";
 import { SyncProps } from "./types";
 import { SettingsContext } from "../../providers/SettingsProvider";
 import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
 
 const Sync = (props: SyncProps) => {
   const {
@@ -69,30 +75,64 @@ const Sync = (props: SyncProps) => {
                   <React.Fragment key={task.id}>
                     <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
                       <TableCell align="left">{task.desc}</TableCell>
-                      <TableCell align="left" sx={{ textWrap: "nowrap" }}>
-                        {task.date}
-                      </TableCell>
+                      <TableCell align="left">{task.date}</TableCell>
                       <TableCell align="right">
                         {formatDuration(task.duration)}
                       </TableCell>
                       <TableCell align="right">{task.ids.join(", ")}</TableCell>
                     </TableRow>
                     <TableRow sx={{ paddingY: 0 }}>
-                      <TableCell colSpan={5}>
-                        {activeIntegrations.map((int) => (
-                          <Grid container key={`int_${int.id}`}>
-                            <Grid item md={2}></Grid>
-                            <Grid item md={4}>
-                              {int.name || int.itype}
+                      <TableCell colSpan={4}>
+                        <Grid container spacing={2}>
+                          {activeIntegrations.map((int) => (
+                            <Grid item md={6} key={`int_${int.id}`}>
+                              <Card>
+                                <CardContent>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <Typography>
+                                      {int.name || int.itype}
+                                    </Typography>
+                                    <TaskIcon task={task} success={success} />
+                                  </Box>
+                                  <Box sx={{ mt: "1rem" }}>
+                                    <TextField
+                                      label="External Id"
+                                      size="small"
+                                      fullWidth
+                                      value={""}
+                                      onChange={(_e) => {}}
+                                      InputProps={{
+                                        endAdornment: (
+                                          <InputAdornment position="end">
+                                            <IconButton
+                                              size="small"
+                                              onClick={() => {}}
+                                            >
+                                              <SearchIcon />
+                                            </IconButton>
+                                          </InputAdornment>
+                                        ),
+                                      }}
+                                      inputProps={{
+                                        autoComplete: "off",
+                                        autoCorrect: "off",
+                                        autoCapitalize: "off",
+                                        spellCheck: "false",
+                                        maxLength: 50,
+                                      }}
+                                    />
+                                  </Box>
+                                </CardContent>
+                              </Card>
                             </Grid>
-                            <Grid item md={4}>
-                              Input
-                            </Grid>
-                            <Grid item md={2}>
-                              <TaskIcon task={task} success={success} />
-                            </Grid>
-                          </Grid>
-                        ))}
+                          ))}
+                        </Grid>
                       </TableCell>
                     </TableRow>
                   </React.Fragment>
