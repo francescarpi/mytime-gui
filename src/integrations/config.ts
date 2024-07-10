@@ -65,7 +65,7 @@ export const integrationsConfig: IntegrationConfig[] = [
         maxLength: 100,
         type: "email",
         gridWidth: 4,
-        componentType: "select",
+        componentType: "input",
       },
       {
         id: "token",
@@ -73,7 +73,7 @@ export const integrationsConfig: IntegrationConfig[] = [
         maxLength: 100,
         type: "password",
         gridWidth: 4,
-        componentType: "select",
+        componentType: "input",
       },
     ],
   },
