@@ -204,4 +204,25 @@ mod tests {
         let integrations = SettingsRepository::integrations(&mut c).unwrap();
         assert_eq!(integrations.len(), 0);
     }
+
+    #[test]
+    fn get_integration() {
+        // Setup
+        let mut c = get_db_connection();
+        let integration1 = NewIntegration {
+            itype: IntegrationType::Redmine,
+            active: false,
+            name: None,
+            config: JsonField(json!({"url": "https://redmine.org", "token": "123"})),
+        };
+        SettingsRepository::add_integration(&mut c, &integration1);
+        let integrations = SettingsRepository::integrations(&mut c).unwrap();
+        assert_eq!(integrations.len(), 1);
+        let added_integration = integrations[0].clone();
+
+        // Test
+        let integration = SettingsRepository::integration(&mut c, added_integration.id).unwrap();
+        assert_eq!(integration.id, added_integration.id);
+        assert_eq!(integration.itype, added_integration.itype);
+    }
 }

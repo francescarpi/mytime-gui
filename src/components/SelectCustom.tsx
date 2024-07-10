@@ -12,12 +12,14 @@ export interface SelectItem {
 
 const SelectCustom = ({
   apiAction,
+  apiId,
   onChange,
   value,
   size = "medium",
   disabled = false,
 }: {
-  apiAction: string;
+  apiAction: string | undefined;
+  apiId: number | null;
   onChange: CallableFunction;
   value: string | null;
   size?: "small" | "medium";
@@ -26,27 +28,29 @@ const SelectCustom = ({
   const [items, setItems] = useState<SelectItem[]>([]);
 
   useEffect(() => {
-    invoke(apiAction).then((res) => {
-      const elements = (res as any).map((a: any) => ({
-        value: a.id,
-        label: a.name,
-      })) as SelectItem[];
+    if (apiAction && apiId) {
+      invoke(apiAction, { id: apiId }).then((res) => {
+        const elements = (res as any).map((a: any) => ({
+          value: a.id,
+          label: a.name,
+        })) as SelectItem[];
 
-      elements.sort((a, b) => a.label.localeCompare(b.label));
-      console.log(elements);
-      // setActivities(actv);
-    });
+        elements.sort((a, b) => a.label.localeCompare(b.label));
+        console.log(elements);
+        // setActivities(actv);
+      });
+    }
   }, []);
 
   return (
     <FormControl fullWidth size={size}>
       {size !== "small" && (
-        <InputLabel id="redmineActivity">Default Activity</InputLabel>
+        <InputLabel id="customSelect">Default Activity</InputLabel>
       )}
       <Select
         size={size}
-        labelId="redmineActivity"
-        id="redmineActivity"
+        labelId="customSelect"
+        id="customSelect"
         label={size === "medium" ? "Default Activity for Redmine" : undefined}
         value={value || ""}
         onChange={(e) => onChange(e.target.value)}

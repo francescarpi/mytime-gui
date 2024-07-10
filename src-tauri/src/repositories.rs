@@ -41,6 +41,10 @@ impl SettingsRepository {
         integrations::table.load::<Integration>(c)
     }
 
+    pub fn integration(c: &mut SqliteConnection, id: i32) -> QueryResult<Integration> {
+        integrations::table.find(id).get_result::<Integration>(c)
+    }
+
     pub fn update_integration(c: &mut SqliteConnection, integration: &Integration) {
         diesel::update(integrations::table.find(integration.id))
             .set(integration)

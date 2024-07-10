@@ -55,7 +55,7 @@ impl Setting {
         //     && self.integration_url.is_some()
         //     && self.integration_token.is_some()
         // TODO: check
-        false
+        true
     }
 }
 

@@ -6,6 +6,7 @@ export interface IntegrationField {
   type: string;
   gridWidth?: number;
   apiAction?: string;
+  defaultValue?: string;
 }
 
 export interface IntegrationConfig {
@@ -42,6 +43,7 @@ export const integrationsConfig: IntegrationConfig[] = [
         gridWidth: 4,
         componentType: "select",
         apiAction: "activities",
+        defaultValue: "-1",
       },
     ],
   },

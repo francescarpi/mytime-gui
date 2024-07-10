@@ -229,14 +229,20 @@ impl Redmine {
 }
 
 #[command]
-pub async fn activities(conn: State<'_, DbConn>) -> Result<serde_json::Value, serde_json::Value> {
+pub async fn activities(
+    conn: State<'_, DbConn>,
+    id: i32,
+) -> Result<serde_json::Value, serde_json::Value> {
     let mut db = conn.0.lock().unwrap();
-    let settings = SettingsRepository::get_settings(&mut db).unwrap();
-    if settings.has_integration() {
-        return Ok(serde_json::json!(
-            integrations::redmine::Redmine::new().activities(&settings)
-        ));
-    }
+    let integration = SettingsRepository::integration(&mut db, id).unwrap();
+    dbg!(&integration);
+
+    // let settings = SettingsRepository::get_settings(&mut db).unwrap();
+    // if settings.has_integration() {
+    //     return Ok(serde_json::json!(
+    //         integrations::redmine::Redmine::new().activities(&settings)
+    //     ));
+    // }
     Ok(serde_json::json!([]))
 }
 

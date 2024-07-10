@@ -35,7 +35,7 @@ const IntegrationRow = ({
     integrationsConfig
       .find((i) => i.id === integration.itype)
       ?.fields.map((field) => {
-        if (!config[field.id]) config[field.id] = "";
+        if (!config[field.id]) config[field.id] = field.defaultValue || "";
       });
     onChange(index, { config });
   }, []);
@@ -99,9 +99,10 @@ const IntegrationRow = ({
         <Grid item md={field.gridWidth || 12} key={`row_${index}`}>
           <SelectCustom
             apiAction={field.apiAction as string}
+            apiId={integration.id}
             value={null}
             onChange={() => {}}
-            disabled={false}
+            disabled={!integration.id}
           />
         </Grid>
       );
