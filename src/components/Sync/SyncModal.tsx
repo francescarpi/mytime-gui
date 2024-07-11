@@ -95,50 +95,83 @@ const SyncWrapper = ({
 
   // Handler to send tasks to the integration
   const sendHandler = () => {
-    setIsSending(true);
+    // setIsSending(true);
+
     dispatchSuccess({ type: "reset" });
 
-    const promises = tasks.map(async (task) => {
-      if (success[task.id] && success[task.id].success) {
-        dispatchSuccess({ type: "success", id: task.id });
-        return;
-      }
+    const promises: Promise<void>[] = [];
 
-      dispatchSuccess({ type: "sending", id: task.id });
-      return send(task.id, task.extra_param)
-        .then(() => dispatchSuccess({ type: "success", id: task.id }))
-        .catch((error) => {
-          console.log(error);
-          dispatchSuccess({
-            type: "error",
-            id: task.id,
-            error,
-          });
-        });
-    });
+    tasks.map((task) =>
+      activeIntegrations.map((int) => {
+        promises.push(
+          send(
+            task.id,
+            int.id as number,
+            taskData[task.id][int.id as number].externalId,
+          ),
+        );
+      }),
+    );
 
-    // When all tasks are sent, refresh the tasks list
-    Promise.all(promises).then(() => {
-      setIsSending(false);
-      setTasksSent(true);
-      refreshTasks();
-    });
+    // const promises = tasks.map(async (task) => {
+    //   if (success[task.id] && success[task.id].success) {
+    //     dispatchSuccess({ type: "success", id: task.id });
+    //     return;
+    //   }
+    //
+    //   dispatchSuccess({ type: "sending", id: task.id });
+    //
+    //   return send(task.id)
+    //     .then(() => dispatchSuccess({ type: "success", id: task.id }))
+    //     .catch((error) => {
+    //       console.log(error);
+    //       dispatchSuccess({
+    //         type: "error",
+    //         id: task.id,
+    //         error,
+    //       });
+    //     });
+    // });
+    //
+    // // When all tasks are sent, refresh the tasks list
+    // Promise.all(promises).then(() => {
+    //   setIsSending(false);
+    //   setTasksSent(true);
+    //   refreshTasks();
+    // });
   };
 
   const formValid = useMemo(() => {
-    return false;
-  }, []);
+    let valid = true;
+
+    if (activeIntegrations.length == 0) {
+      return false;
+    }
+
+    activeIntegrations.forEach((int) =>
+      tasks.forEach((tsk) => {
+        if (!taskData[tsk.id]?.[int.id as number]?.externalId) {
+          valid = false;
+        }
+      }),
+    );
+    return valid;
+  }, [taskData]);
 
   return (
     <Modal open={opened} onClose={() => onClose()}>
       <StyledBox width={1000}>
-        <Typography variant="h5" sx={{ mb: 4 }}>
-          Send tasks to integations
-        </Typography>
+        <Typography variant="h5">Send tasks to integations</Typography>
         <Box>
           {tasks.length === 0 && (
-            <Alert severity="warning" variant="outlined" sx={{ mb: 2 }}>
+            <Alert severity="warning" variant="outlined" sx={{ mb: 2, mt: 2 }}>
               No tasks to send. Only finished tasks can be reported.
+            </Alert>
+          )}
+          {activeIntegrations.length === 0 && (
+            <Alert severity="warning" variant="outlined" sx={{ mb: 2, mt: 2 }}>
+              No active integrations defined. Please, go to settintgs and set or
+              active at least one integration.
             </Alert>
           )}
           <TableContainer sx={{ maxHeight: 350 }} component={Paper}>

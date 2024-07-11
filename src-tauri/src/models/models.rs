@@ -128,3 +128,23 @@ pub struct Integration {
     pub name: Option<String>,
     pub config: types::json_field::JsonField,
 }
+
+#[derive(Debug, Deserialize, Serialize, Insertable)]
+#[diesel(table_name=integrations_log)]
+pub struct NewIntegrationLog {
+    pub task_id: String,
+    pub integration_id: i32,
+    pub external_id: String,
+}
+
+#[derive(Debug, Deserialize, Queryable)]
+#[diesel(table_name=integrations_log)]
+pub struct IntegrationLog {
+    pub id: i32,
+    pub task_id: String,
+    pub integration_id: i32,
+    pub external_id: String,
+    pub status: String,
+    pub created_at: NaiveDateTime,
+    pub log: Option<String>,
+}

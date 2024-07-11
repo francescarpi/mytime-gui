@@ -1,6 +1,6 @@
 use super::{Error, Integration};
 use crate::models::models::{GroupedTask, Setting};
-use crate::repositories::SettingsRepository;
+use crate::repositories::IntegrationsRepository;
 // use crate::utils::dates::format_duration;
 use crate::{integrations, DbConn};
 use oxhttp::model::{Method, Request, Status};
@@ -232,7 +232,7 @@ pub async fn activities(
     id: i32,
 ) -> Result<serde_json::Value, serde_json::Value> {
     let mut db = conn.0.lock().unwrap();
-    let integration = SettingsRepository::integration(&mut db, id).unwrap();
+    let integration = IntegrationsRepository::integration(&mut db, id).unwrap();
     return Ok(serde_json::json!(
         integrations::redmine::Redmine::new().activities(integration.config.0)
     ));

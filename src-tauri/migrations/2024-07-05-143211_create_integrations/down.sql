@@ -1,2 +1,2 @@
 -- This file should undo anything in `up.sql`
-DROP TABLE integrations
+DROP TABLE integration_log

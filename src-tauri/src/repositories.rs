@@ -7,29 +7,17 @@ use diesel::SqliteConnection;
 use log;
 
 use crate::models::models::{
-    DatesWithTasks, Duration, GroupedTask, Integration, NewIntegration, Setting, Task,
-    TaskWithDuration,
+    DatesWithTasks, Duration, GroupedTask, Integration, IntegrationLog, NewIntegration,
+    NewIntegrationLog, Setting, Task, TaskWithDuration,
 };
 use crate::schema::*;
 
 const DURATION_SQL: &str ="COALESCE(STRFTIME('%s', end), STRFTIME('%s', DATETIME('now', 'localtime'))) - STRFTIME('%s', start)";
 const DEFAULT_TASKS_ORDER: &str = "start DESC, id";
 
-pub struct SettingsRepository;
+pub struct IntegrationsRepository;
 
-impl SettingsRepository {
-    pub fn get_settings(c: &mut SqliteConnection) -> QueryResult<Setting> {
-        settings::table.first::<Setting>(c)
-    }
-
-    pub fn update(c: &mut SqliteConnection, setting: &Setting) -> QueryResult<Setting> {
-        diesel::update(settings::table.find(setting.id))
-            .set(setting)
-            .execute(c)
-            .expect("Error updating settings");
-        Self::get_settings(c)
-    }
-
+impl IntegrationsRepository {
     pub fn add_integration(c: &mut SqliteConnection, new_integration: &NewIntegration) {
         diesel::insert_into(integrations::table)
             .values(new_integration)
@@ -56,6 +44,63 @@ impl SettingsRepository {
         diesel::delete(integrations::table.find(id))
             .execute(c)
             .expect("Error deleting integration");
+    }
+
+    pub fn add_integration_log(
+        c: &mut SqliteConnection,
+        new_integration_log: &NewIntegrationLog,
+    ) -> QueryResult<IntegrationLog> {
+        diesel::insert_into(integrations_log::table)
+            .values(new_integration_log)
+            .execute(c)
+            .expect("Error adding integration log");
+        Self::get_integration_log(
+            c,
+            &new_integration_log.task_id,
+            new_integration_log.integration_id,
+        )
+    }
+
+    pub fn get_integration_log(
+        c: &mut SqliteConnection,
+        task_id: &String,
+        integration_id: i32,
+    ) -> QueryResult<IntegrationLog> {
+        integrations_log::table
+            .filter(integrations_log::task_id.eq(task_id))
+            .filter(integrations_log::integration_id.eq(integration_id))
+            .get_result::<IntegrationLog>(c)
+    }
+
+    pub fn get_or_create_integration_log(
+        c: &mut SqliteConnection,
+        new_integration_log: &NewIntegrationLog,
+    ) -> IntegrationLog {
+        if let Ok(log) = Self::get_integration_log(
+            c,
+            &new_integration_log.task_id,
+            new_integration_log.integration_id,
+        ) {
+            log
+        } else {
+            Self::add_integration_log(c, new_integration_log).unwrap()
+        }
+    }
+}
+
+pub struct SettingsRepository;
+
+impl SettingsRepository {
+    pub fn get_settings(c: &mut SqliteConnection) -> QueryResult<Setting> {
+        settings::table.first::<Setting>(c)
+    }
+
+    pub fn update(c: &mut SqliteConnection, setting: &Setting) -> QueryResult<Setting> {
+        diesel::update(settings::table.find(setting.id))
+            .set(setting)
+            .execute(c)
+            .expect("Error updating settings");
+        Self::get_settings(c)
     }
 }
 

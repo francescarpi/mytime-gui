@@ -11,6 +11,18 @@ diesel::table! {
 }
 
 diesel::table! {
+    integrations_log (id) {
+        id -> Integer,
+        task_id -> Text,
+        integration_id -> Integer,
+        external_id -> Text,
+        status -> Text,
+        created_at -> Timestamp,
+        log -> Nullable<Text>,
+    }
+}
+
+diesel::table! {
     settings (id) {
         id -> Integer,
         work_hours -> Text,
@@ -35,8 +47,11 @@ diesel::table! {
     }
 }
 
+diesel::joinable!(integrations_log -> integrations (integration_id));
+
 diesel::allow_tables_to_appear_in_same_query!(
     integrations,
+    integrations_log,
     settings,
     tasks,
 );

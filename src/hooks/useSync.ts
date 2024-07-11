@@ -28,11 +28,16 @@ const useSync = () => {
     });
   }, []);
 
-  const send = (id: string, extraParam: string | null): Promise<void> => {
-    console.log("Send task with ID:", id, extraParam);
+  const send = (
+    taskId: string,
+    integrationId: number,
+    externalId: string,
+  ): Promise<void> => {
+    console.log("Send task with data:", taskId, integrationId, externalId);
     return invoke("send_to_integration", {
-      id,
-      extraParam,
+      taskId,
+      integrationId,
+      externalId,
     });
   };
 

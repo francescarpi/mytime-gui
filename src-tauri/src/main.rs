@@ -20,7 +20,7 @@ use tauri::{command, State};
 
 use chrono::NaiveTime;
 use integrations::redmine;
-use repositories::{SettingsRepository, TasksRepository};
+use repositories::{IntegrationsRepository, SettingsRepository, TasksRepository};
 use serde::Serialize;
 use serde_json::{json, Value};
 
@@ -146,11 +146,22 @@ fn last_task(conn: State<'_, DbConn>) -> Value {
 
 #[command]
 async fn send_to_integration(
-    _id: String,
-    _extra_param: Option<String>,
-    _conn: State<'_, DbConn>,
+    task_id: String,
+    integration_id: i32,
+    external_id: String,
+    conn: State<'_, DbConn>,
 ) -> Result<(), String> {
-    // let mut db = conn.0.lock().unwrap();
+    let mut db = conn.0.lock().unwrap();
+    // TODO: log coud exists. Create method get_or_create
+    IntegrationsRepository::add_integration_log(
+        &mut db,
+        &models::models::NewIntegrationLog {
+            task_id,
+            integration_id,
+            external_id,
+        },
+    );
+
     // let settings = SettingsRepository::get_settings(&mut db).unwrap();
     // let skip_send = env::var("SKIP_SEND").unwrap_or_default() == "true";
     //
@@ -275,26 +286,26 @@ fn show_in_folder(path: String) {
 #[command]
 fn integrations(conn: State<'_, DbConn>) -> Value {
     let mut db = conn.0.lock().unwrap();
-    let integrations = SettingsRepository::integrations(&mut db).unwrap();
+    let integrations = IntegrationsRepository::integrations(&mut db).unwrap();
     json!(integrations)
 }
 
 #[command]
 fn add_integration(conn: State<'_, DbConn>, integration: NewIntegration) {
     let mut db = conn.0.lock().unwrap();
-    SettingsRepository::add_integration(&mut db, &integration);
+    IntegrationsRepository::add_integration(&mut db, &integration);
 }
 
 #[command]
 fn update_integration(conn: State<'_, DbConn>, integration: Integration) {
     let mut db = conn.0.lock().unwrap();
-    SettingsRepository::update_integration(&mut db, &integration);
+    IntegrationsRepository::update_integration(&mut db, &integration);
 }
 
 #[command]
 fn delete_integration(conn: State<'_, DbConn>, id: i32) {
     let mut db = conn.0.lock().unwrap();
-    SettingsRepository::delete_integration(&mut db, id);
+    IntegrationsRepository::delete_integration(&mut db, id);
 }
 
 fn main() {

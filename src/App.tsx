@@ -8,7 +8,7 @@ import Layout from "./components/Layout/Layout";
 import TasksTable from "./components/TasksTable/TasksTable";
 import AddTaskForm from "./components/AddTaskForm";
 import TaskEdition from "./components/TaskEdition";
-import SyncWrapper from "./components/Sync/SyncWrapper";
+import SyncModal from "./components/Sync/SyncModal";
 import { SettingsProvider } from "./providers/SettingsProvider";
 
 import useDate from "./hooks/useDate";
@@ -95,7 +95,7 @@ const App = () => {
             autoHideDuration={5000}
             anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
           >
-            <SyncWrapper
+            <SyncModal
               opened={openSync}
               onClose={() => setOpenSync(false)}
               refreshTasks={refresh}
