@@ -8,6 +8,7 @@ mod tests {
     use crate::common::get_db_connection;
 
     use app::models::models::{NewIntegration, NewIntegrationLog};
+    use app::models::types::integration_log_status::IntegrationLogStatus;
     use app::models::types::integration_type::IntegrationType;
     use app::models::types::json_field::JsonField;
     use app::repositories::IntegrationsRepository;
@@ -154,7 +155,7 @@ mod tests {
         assert_eq!(log.task_id, "1-2-3".to_string());
         assert_eq!(log.integration_id, integration.id);
         assert_eq!(log.external_id, "12345".to_string());
-        assert_eq!(log.status, "sending".to_string()); // TODO: change by object
+        assert_eq!(log.status, IntegrationLogStatus::Sending);
         assert_eq!(log.log, None);
     }
 

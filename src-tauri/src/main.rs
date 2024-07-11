@@ -152,42 +152,43 @@ async fn send_to_integration(
     conn: State<'_, DbConn>,
 ) -> Result<(), String> {
     let mut db = conn.0.lock().unwrap();
-    // TODO: log coud exists. Create method get_or_create
-    IntegrationsRepository::add_integration_log(
+    let integration_log = IntegrationsRepository::get_or_create_integration_log(
         &mut db,
         &models::models::NewIntegrationLog {
-            task_id,
+            task_id: task_id.clone(),
             integration_id,
             external_id,
         },
     );
+    let integration_cfg = IntegrationsRepository::integration(&mut db, integration_id).unwrap();
+    let skip_send = env::var("SKIP_SEND").unwrap_or_default() == "true";
+    let tasks = TasksRepository::grouped_tasks(&mut db).unwrap();
+    let task = tasks.iter().find(|task| task.id == task_id).unwrap();
 
-    // let settings = SettingsRepository::get_settings(&mut db).unwrap();
-    // let skip_send = env::var("SKIP_SEND").unwrap_or_default() == "true";
-    //
-    // if let Some(integration) = get_integration(&settings) {
-    //     let tasks = TasksRepository::grouped_tasks(&mut db).unwrap();
-    //     let task = tasks.iter().find(|task| task.id == id).unwrap();
-    //
-    //     log::info!("sending task: {:?}", task.id);
-    //
-    //     if skip_send {
-    //         let _ = TasksRepository::mark_tasks_as_reported(&mut db, &task.ids.0);
-    //         Ok(())
-    //     } else {
-    //         match integration.send_task(&settings, task, extra_param) {
-    //             Ok(_) => {
-    //                 let _ = TasksRepository::mark_tasks_as_reported(&mut db, &task.ids.0);
-    //                 Ok(())
-    //             }
-    //             Err(err) => Err(err.to_string()),
-    //         }
-    //     }
-    // } else {
-    //     Err(integrations::Error::IntegrationDoesNotExistError.to_string())
-    // }
-    // TODO: check
-    Ok(())
+    log::info!("sending task: {:?}", task.id);
+
+    if let Some(integration) = get_integration(&settings) {
+        //     let tasks = TasksRepository::grouped_tasks(&mut db).unwrap();
+        //     let task = tasks.iter().find(|task| task.id == id).unwrap();
+        //
+        //     log::info!("sending task: {:?}", task.id);
+        //
+        //     if skip_send {
+        //         let _ = TasksRepository::mark_tasks_as_reported(&mut db, &task.ids.0);
+        //         Ok(())
+        //     } else {
+        //         match integration.send_task(&settings, task, extra_param) {
+        //             Ok(_) => {
+        //                 let _ = TasksRepository::mark_tasks_as_reported(&mut db, &task.ids.0);
+        //                 Ok(())
+        //             }
+        //             Err(err) => Err(err.to_string()),
+        //         }
+        //     }
+        Ok(())
+    } else {
+        Err(integrations::Error::IntegrationDoesNotExistError.to_string())
+    }
 }
 
 #[command]

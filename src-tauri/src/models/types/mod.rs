@@ -1,3 +1,4 @@
+pub mod integration_log_status;
 pub mod integration_type;
 pub mod json_field;
 pub mod list_ids;

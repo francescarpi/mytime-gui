@@ -144,7 +144,7 @@ pub struct IntegrationLog {
     pub task_id: String,
     pub integration_id: i32,
     pub external_id: String,
-    pub status: String,
+    pub status: types::integration_log_status::IntegrationLogStatus,
     pub created_at: NaiveDateTime,
     pub log: Option<String>,
 }
