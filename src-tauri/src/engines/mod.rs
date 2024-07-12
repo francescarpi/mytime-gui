@@ -1,6 +1,6 @@
-use crate::models::models::{GroupedTask, Setting};
-// use crate::models::types::integration_type::IntegrationType;
-// use jira::Jira;
+use crate::models::models::{GroupedTask, Integration, IntegrationLog};
+use crate::models::types::integration_type::IntegrationType;
+use jira::Jira;
 use redmine::Redmine;
 use serde_json::Value;
 use std::fmt;
@@ -9,10 +9,10 @@ use url::Url;
 pub mod jira;
 pub mod redmine;
 
-// Integration errors
+// Engine errors
 #[derive(Debug)]
 pub enum Error {
-    IntegrationDoesNotExistError,
+    EngineDoesNotExistError,
     UnauthorizedError,
     UnkownHostError,
     GenericError(Vec<String>),
@@ -21,7 +21,7 @@ pub enum Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Error::IntegrationDoesNotExistError => write!(f, "Integration type does not exist"),
+            Error::EngineDoesNotExistError => write!(f, "Engine type does not exist"),
             Error::UnauthorizedError => write!(f, "Unauthorized"),
             Error::UnkownHostError => write!(f, "Unkown host"),
             Error::GenericError(e) => write!(f, "{:?}", e.join(", ")),
@@ -29,13 +29,12 @@ impl fmt::Display for Error {
     }
 }
 
-// Integration trait
-pub trait Integration {
+pub trait Engine {
     fn send_task(
         &self,
-        settings: &Setting,
+        config: &Value,
+        integration_log: &IntegrationLog,
         task: &GroupedTask,
-        extra_param: Option<String>,
     ) -> Result<(), Error>;
 
     fn prepare_url(&self, config: &Value, suffix: Vec<&String>) -> String {
@@ -50,13 +49,9 @@ pub trait Integration {
     }
 }
 
-// Method that receive a settings struct and depends on the settings.integration
-// returns an implementation of the Integration trait (Redmine or Jira)
-pub fn get_integration(_settings: &Setting) -> Option<Box<dyn Integration>> {
-    // match settings.integration {
-    //     Some(IntegrationType::Redmine) => Some(Box::new(Redmine::new())),
-    //     Some(IntegrationType::Jira) => Some(Box::new(Jira::new())),
-    //     _ => None,
-    // }
-    Some(Box::new(Redmine::new()))
+pub fn get_engine(integration: &Integration) -> Option<Box<dyn Engine>> {
+    match integration.itype {
+        IntegrationType::Redmine => Some(Box::new(Redmine::new())),
+        IntegrationType::Jira => Some(Box::new(Jira::new())),
+    }
 }

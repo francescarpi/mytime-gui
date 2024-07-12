@@ -1,8 +1,8 @@
-use super::{Error, Integration};
-use crate::models::models::{GroupedTask, Setting};
+use super::{Engine, Error};
+use crate::models::models::{GroupedTask, IntegrationLog, Setting};
 use crate::repositories::IntegrationsRepository;
-// use crate::utils::dates::format_duration;
-use crate::{integrations, DbConn};
+use crate::utils::dates::format_duration;
+use crate::DbConn;
 use oxhttp::model::{Method, Request, Status};
 use oxhttp::Client;
 use serde::{Deserialize, Serialize};
@@ -75,47 +75,44 @@ impl Default for Redmine {
     }
 }
 
-impl Integration for Redmine {
+impl Engine for Redmine {
     fn send_task(
         &self,
-        _settings: &Setting,
-        _task: &GroupedTask,
-        _extra_param: Option<String>,
+        config: &Value,
+        integration_log: &IntegrationLog,
+        task: &GroupedTask,
     ) -> Result<(), Error> {
-        //     let url = self.prepare_url(settings, vec![&"time_entries.json".to_string()]);
-        //     let token = &settings.integration_token.as_ref().unwrap();
-        //     let body = serde_json::json!({
-        //         "time_entry": {
-        //             "issue_id": "TODO".to_string(),
-        //             "hours": format_duration(task.duration),
-        //             "comments": task.desc,
-        //             "spent_on": task.date.to_string(),
-        //             "activity_id": extra_param,
-        //         }
-        //     });
-        //
-        //     let client = Client::new();
-        //     match client.request(Self::build_post_request(
-        //         url.as_ref(),
-        //         &body.to_string(),
-        //         token.to_string(),
-        //     )) {
-        //         Ok(response) => {
-        //             if response.status() == Status::CREATED {
-        //                 return Ok(());
-        //             }
-        //             if response.status() == Status::UNAUTHORIZED {
-        //                 return Err(Error::UnauthorizedError);
-        //             }
-        //             let response_body = response.into_body().to_string().unwrap();
-        //             let error = serde_json::from_str::<RedmineError>(&response_body).unwrap();
-        //             Err(Error::GenericError(error.errors))
-        //         }
-        //         Err(_) => Err(Error::UnkownHostError),
-        //     }
-        // }
-        // TODO: check
-        Ok(())
+        let url = self.prepare_url(config, vec![&"time_entries.json".to_string()]);
+        let token = config["token"].as_str().unwrap();
+        let body = serde_json::json!({
+            "time_entry": {
+                "issue_id": integration_log.external_id,
+                "hours": format_duration(task.duration),
+                "comments": task.desc,
+                "spent_on": task.date.to_string(),
+                "activity_id": config["activity"].as_str().unwrap(),
+            }
+        });
+
+        let client = Client::new();
+        match client.request(Self::build_post_request(
+            url.as_ref(),
+            &body.to_string(),
+            token.to_string(),
+        )) {
+            Ok(response) => {
+                if response.status() == Status::CREATED {
+                    return Ok(());
+                }
+                if response.status() == Status::UNAUTHORIZED {
+                    return Err(Error::UnauthorizedError);
+                }
+                let response_body = response.into_body().to_string().unwrap();
+                let error = serde_json::from_str::<RedmineError>(&response_body).unwrap();
+                Err(Error::GenericError(error.errors))
+            }
+            Err(_) => Err(Error::UnkownHostError),
+        }
     }
 }
 
@@ -124,14 +121,14 @@ impl Redmine {
         Self {}
     }
 
-    // fn build_post_request(url: &str, body: &str, token: String) -> Request {
-    //     Request::builder(Method::POST, url.parse().unwrap())
-    //         .with_header("Content-Type", "application/json")
-    //         .unwrap()
-    //         .with_header("X-Redmine-API-Key", token)
-    //         .unwrap()
-    //         .with_body(body.to_string())
-    // }
+    fn build_post_request(url: &str, body: &str, token: String) -> Request {
+        Request::builder(Method::POST, url.parse().unwrap())
+            .with_header("Content-Type", "application/json")
+            .unwrap()
+            .with_header("X-Redmine-API-Key", token)
+            .unwrap()
+            .with_body(body.to_string())
+    }
 
     fn build_get_request(url: &str, token: String) -> Request {
         Request::builder(Method::GET, url.parse().unwrap())
@@ -234,7 +231,7 @@ pub async fn activities(
     let mut db = conn.0.lock().unwrap();
     let integration = IntegrationsRepository::integration(&mut db, id).unwrap();
     return Ok(serde_json::json!(
-        integrations::redmine::Redmine::new().activities(integration.config.0)
+        Redmine::new().activities(integration.config.0)
     ));
 }
 

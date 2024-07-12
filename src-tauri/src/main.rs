@@ -1,14 +1,14 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 pub mod db;
-pub mod integrations;
+pub mod engines;
 pub mod models;
 pub mod repositories;
 pub mod schema;
 pub mod utils;
 
 use env_logger;
-// use log;
+use log;
 use models::models::{Integration, NewIntegration, Setting};
 use std::env;
 use std::process::Command;
@@ -19,7 +19,8 @@ use tauri::tray::TrayIconBuilder;
 use tauri::{command, State};
 
 use chrono::NaiveTime;
-use integrations::redmine;
+use engines::get_engine;
+use engines::redmine;
 use repositories::{IntegrationsRepository, SettingsRepository, TasksRepository};
 use serde::Serialize;
 use serde_json::{json, Value};
@@ -160,34 +161,28 @@ async fn send_to_integration(
             external_id,
         },
     );
-    let integration_cfg = IntegrationsRepository::integration(&mut db, integration_id).unwrap();
+    let integration = IntegrationsRepository::integration(&mut db, integration_id).unwrap();
     let skip_send = env::var("SKIP_SEND").unwrap_or_default() == "true";
     let tasks = TasksRepository::grouped_tasks(&mut db).unwrap();
     let task = tasks.iter().find(|task| task.id == task_id).unwrap();
 
     log::info!("sending task: {:?}", task.id);
 
-    if let Some(integration) = get_integration(&settings) {
-        //     let tasks = TasksRepository::grouped_tasks(&mut db).unwrap();
-        //     let task = tasks.iter().find(|task| task.id == id).unwrap();
-        //
-        //     log::info!("sending task: {:?}", task.id);
-        //
-        //     if skip_send {
-        //         let _ = TasksRepository::mark_tasks_as_reported(&mut db, &task.ids.0);
-        //         Ok(())
-        //     } else {
-        //         match integration.send_task(&settings, task, extra_param) {
-        //             Ok(_) => {
-        //                 let _ = TasksRepository::mark_tasks_as_reported(&mut db, &task.ids.0);
-        //                 Ok(())
-        //             }
-        //             Err(err) => Err(err.to_string()),
-        //         }
-        //     }
-        Ok(())
+    if let Some(engine) = get_engine(&integration) {
+        if skip_send {
+            let _ = TasksRepository::mark_tasks_as_reported(&mut db, &task.ids.0);
+            Ok(())
+        } else {
+            match engine.send_task(&integration.config.0, &integration_log, task) {
+                Ok(_) => {
+                    // let _ = TasksRepository::mark_tasks_as_reported(&mut db, &task.ids.0);
+                    Ok(())
+                }
+                Err(err) => Err(err.to_string()),
+            }
+        }
     } else {
-        Err(integrations::Error::IntegrationDoesNotExistError.to_string())
+        Err(engines::Error::EngineDoesNotExistError.to_string())
     }
 }
 
