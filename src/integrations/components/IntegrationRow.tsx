@@ -5,7 +5,6 @@ import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { integrationsConfig, IntegrationField } from "../config";
-import TextField from "@mui/material/TextField";
 import Switch from "@mui/material/Switch";
 import { Integration } from "../../hooks/useSettings";
 import Box from "@mui/material/Box";
@@ -13,7 +12,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import { useConfirm } from "material-ui-confirm";
-import SelectCustom from "../../components/SelectCustom";
+import SelectCustom from "../../components/atoms/SelectCustom";
+import InputCustom from "../../components/atoms/InputCustom";
 
 const IntegrationRow = ({
   integration,
@@ -73,22 +73,15 @@ const IntegrationRow = ({
     if (field.componentType === "input") {
       return (
         <Grid item md={field.gridWidth || 12} key={`row_${index}`}>
-          <TextField
+          <InputCustom
             label={field.label}
-            required={true}
-            fullWidth
-            type={field.type}
             value={integration.config?.[field.id] || ""}
+            type={field.type}
+            size="medium"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               onChangeConfig(field.id, e)
             }
-            inputProps={{
-              autoComplete: "off",
-              autoCorrect: "off",
-              autoCapitalize: "off",
-              spellCheck: "false",
-              maxLength: field.maxLength,
-            }}
+            maxLength={field.maxLength}
           />
         </Grid>
       );
@@ -150,20 +143,13 @@ const IntegrationRow = ({
           </FormControl>
         </Grid>
         <Grid item md={5}>
-          <TextField
+          <InputCustom
             label="Name"
-            fullWidth
-            type="text"
             required={false}
             value={integration.name || ""}
             onChange={onChangeName}
-            inputProps={{
-              autoComplete: "off",
-              autoCorrect: "off",
-              autoCapitalize: "off",
-              spellCheck: "false",
-              maxLength: 50,
-            }}
+            maxLength={50}
+            size="medium"
           />
         </Grid>
         <Grid item md={1}>

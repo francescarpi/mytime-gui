@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { SxProps, Theme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import { Button, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { invoke } from "@tauri-apps/api/core";
 import { Task } from "../hooks/useTasks";
 import { useConfirm } from "material-ui-confirm";
 import dayjs from "dayjs";
+import InputCustom from "./atoms/InputCustom";
+import Button from "@mui/material/Button/Button";
 
 const AddTaskForm = ({
   sx,
@@ -55,7 +56,7 @@ const AddTaskForm = ({
       if (task && dayjs(task.start).isBefore(dayjs(), "date")) {
         confirm({
           description: `Do you want to continue with the previous task: "${task.desc}"?`,
-        }).then(() => onSubmit(task.project, task.desc, task.external_id));
+        }).then(() => onSubmit(task.project, task.desc));
       }
     });
   }, []);
@@ -66,37 +67,18 @@ const AddTaskForm = ({
         <form onSubmit={submit}>
           <Grid container spacing={2}>
             <Grid item md={2}>
-              <TextField
+              <InputCustom
                 label="Project"
-                size="small"
-                fullWidth
-                required
                 value={project}
                 onChange={(e) => setProject(e.target.value)}
-                inputProps={{
-                  autoComplete: "off",
-                  autoCorrect: "off",
-                  autoCapitalize: "off",
-                  spellCheck: "false",
-                  maxLength: 100,
-                }}
               />
             </Grid>
             <Grid item md={8}>
-              <TextField
+              <InputCustom
                 label="Description"
-                size="small"
-                fullWidth
-                required
                 value={description}
+                maxLength={200}
                 onChange={(e) => setDescription(e.target.value)}
-                inputProps={{
-                  autoComplete: "off",
-                  autoCorrect: "off",
-                  autoCapitalize: "off",
-                  spellCheck: "false",
-                  maxLength: 200,
-                }}
               />
             </Grid>
             <Grid item md={1}>

@@ -8,7 +8,7 @@ mod tests {
 
     use app::models::types::view_type::ViewType;
     use app::models::types::work_hours::WorkHours;
-    use app::repositories::SettingsRepository;
+    use app::repositories::settings::SettingsRepository;
 
     #[test]
     fn create_default_settings() {

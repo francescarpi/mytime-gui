@@ -3,7 +3,6 @@ import Modal from "@mui/material/Modal";
 import { StyledBox } from "../styles/modal";
 import { Task } from "../hooks/useTasks";
 import Typography from "@mui/material/Typography";
-import { Button, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -11,6 +10,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs, { Dayjs } from "dayjs";
 import { useSnackbar } from "notistack";
+import InputCustom from "./atoms/InputCustom";
+import Button from "@mui/material/Button/Button";
 
 const TaskEdition = ({
   task,
@@ -96,41 +97,25 @@ const TaskEdition = ({
             </Typography>
             <Grid container spacing={2}>
               <Grid item md={2}>
-                <TextField
+                <InputCustom
                   label="Project"
-                  size="small"
-                  fullWidth
-                  required
+                  size="medium"
                   value={project}
                   onChange={(e) => setProject(e.target.value)}
+                  maxLength={100}
                   helperText={!project && "Project is required"}
                   error={errorsEnabled && !project}
-                  inputProps={{
-                    autoComplete: "off",
-                    autoCorrect: "off",
-                    autoCapitalize: "off",
-                    spellCheck: "false",
-                    maxLength: 100,
-                  }}
                 />
               </Grid>
               <Grid item md={10}>
-                <TextField
+                <InputCustom
                   label="Description"
-                  size="small"
-                  fullWidth
-                  required
+                  size="medium"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   helperText={!description && "Description is required"}
                   error={errorsEnabled && !description}
-                  inputProps={{
-                    autoComplete: "off",
-                    autoCorrect: "off",
-                    autoCapitalize: "off",
-                    spellCheck: "false",
-                    maxLength: 200,
-                  }}
+                  maxLength={200}
                 />
               </Grid>
               <Grid item md={2}>

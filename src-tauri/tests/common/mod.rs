@@ -1,7 +1,7 @@
 use app::models::models::{Integration, NewIntegration};
 use app::models::types::integration_type::IntegrationType;
 use app::models::types::json_field::JsonField;
-use app::repositories::IntegrationsRepository;
+use app::repositories::integrations::IntegrationsRepository;
 use diesel::{Connection, SqliteConnection};
 use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 use serde_json::json;

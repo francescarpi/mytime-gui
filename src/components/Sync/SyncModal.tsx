@@ -18,13 +18,10 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import TaskIcon from "./TaskIcon";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import { successReducer, taskDataReducer } from "./reducers";
+import InputCustom from "../atoms/InputCustom";
 
 const SyncModal = ({
   opened,
@@ -190,14 +187,10 @@ const SyncModal = ({
                                     <TaskIcon task={task} success={success} />
                                   </Box>
                                   <Box sx={{ mt: "1rem" }}>
-                                    <TextField
-                                      error={
-                                        !taskData[task.id]?.[int.id as number]
-                                          ?.externalId
-                                      }
+                                    <InputCustom
                                       label="External Id"
-                                      size="small"
-                                      fullWidth
+                                      showSearch={true}
+                                      maxLength={50}
                                       value={
                                         taskData[task.id]?.[int.id as number]
                                           ?.externalId || ""
@@ -210,25 +203,10 @@ const SyncModal = ({
                                           externalId: e.target.value,
                                         })
                                       }
-                                      InputProps={{
-                                        endAdornment: (
-                                          <InputAdornment position="end">
-                                            <IconButton
-                                              size="small"
-                                              onClick={() => {}}
-                                            >
-                                              <SearchIcon />
-                                            </IconButton>
-                                          </InputAdornment>
-                                        ),
-                                      }}
-                                      inputProps={{
-                                        autoComplete: "off",
-                                        autoCorrect: "off",
-                                        autoCapitalize: "off",
-                                        spellCheck: "false",
-                                        maxLength: 50,
-                                      }}
+                                      error={
+                                        !taskData[task.id]?.[int.id as number]
+                                          ?.externalId
+                                      }
                                     />
                                   </Box>
                                 </CardContent>

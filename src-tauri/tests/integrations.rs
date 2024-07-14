@@ -11,7 +11,7 @@ mod tests {
     use app::models::types::integration_log_status::IntegrationLogStatus;
     use app::models::types::integration_type::IntegrationType;
     use app::models::types::json_field::JsonField;
-    use app::repositories::IntegrationsRepository;
+    use app::repositories::integrations::IntegrationsRepository;
     use serde_json::json;
 
     #[test]

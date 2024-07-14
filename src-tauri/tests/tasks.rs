@@ -5,7 +5,7 @@ pub mod common;
 #[cfg(test)]
 mod tests {
     use crate::common::get_db_connection;
-    use app::repositories::TasksRepository;
+    use app::repositories::tasks::TasksRepository;
     use app::schema::tasks;
     use chrono::{offset::Local, Datelike, NaiveDateTime, NaiveTime, Timelike};
     use diesel::prelude::*;

@@ -7,15 +7,7 @@ export enum ViewType {
 }
 
 export interface Setting {
-  work_hours: {
-    monday: number;
-    tuesday: number;
-    wednesday: number;
-    thursday: number;
-    friday: number;
-    saturday: number;
-    sunday: number;
-  };
+  work_hours: { [key: string]: number };
   theme: string;
   theme_secondary: string;
   view_type: ViewType;
