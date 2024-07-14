@@ -1,6 +1,6 @@
 use super::Engine;
 use super::Error;
-use crate::models::models::{GroupedTask, Integration, IntegrationLog};
+use crate::models::models::{GroupedTask, IntegrationLog};
 use base64::{engine::general_purpose::STANDARD, Engine as _};
 use oxhttp::model::{Method, Request};
 use serde::Deserialize;

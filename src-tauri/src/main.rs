@@ -21,7 +21,9 @@ use tauri::{command, State};
 use chrono::NaiveTime;
 use engines::get_engine;
 use engines::redmine;
-use repositories::{IntegrationsRepository, SettingsRepository, TasksRepository};
+use repositories::integrations::IntegrationsRepository;
+use repositories::settings::SettingsRepository;
+use repositories::tasks::TasksRepository;
 use serde::Serialize;
 use serde_json::{json, Value};
 
@@ -178,7 +180,10 @@ async fn send_to_integration(
                     // let _ = TasksRepository::mark_tasks_as_reported(&mut db, &task.ids.0);
                     Ok(())
                 }
-                Err(err) => Err(err.to_string()),
+                Err(err) => {
+                    // TODO: update log
+                    Err(err.to_string())
+                }
             }
         }
     } else {
@@ -304,6 +309,15 @@ fn delete_integration(conn: State<'_, DbConn>, id: i32) {
     IntegrationsRepository::delete_integration(&mut db, id);
 }
 
+#[command]
+fn integration_log(conn: State<'_, DbConn>, task_id: String, integration_id: i32) -> Value {
+    let mut db = conn.0.lock().unwrap();
+    match IntegrationsRepository::get_integration_log(&mut db, &task_id, integration_id) {
+        Ok(log) => json!(log),
+        Err(_) => json!(null),
+    }
+}
+
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
@@ -337,6 +351,7 @@ fn main() {
             add_integration,
             update_integration,
             delete_integration,
+            integration_log,
             redmine::activities,
             // integrations::redmine::project_activities,
         ])

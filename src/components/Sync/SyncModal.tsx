@@ -2,7 +2,6 @@ import { useContext, useEffect, useState, useReducer, useMemo } from "react";
 import * as React from "react";
 import { SettingsContext } from "../../providers/SettingsProvider";
 import useSync from "../../hooks/useSync";
-import { SuccessType, TaskData } from "./types";
 import Modal from "@mui/material/Modal";
 import { StyledBox } from "../../styles/modal";
 import Typography from "@mui/material/Typography";
@@ -25,44 +24,9 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
+import { successReducer, taskDataReducer } from "./reducers";
 
-// TODO: move to reducers file
-const successReducer = (state: SuccessType, action: any) => {
-  switch (action.type) {
-    case "reset":
-      return {};
-    case "sending":
-      return { ...state, [action.id]: { sending: true } };
-    case "success":
-      return { ...state, [action.id]: { success: true, sending: false } };
-    case "error":
-      return {
-        ...state,
-        [action.id]: { success: false, error: action.error, sending: false },
-      };
-  }
-  return state;
-};
-
-const taskDataReducer = (state: TaskData, action: any) => {
-  switch (action.type) {
-    case "reset":
-      return {};
-    case "setExternalId":
-      const newState = { ...state };
-      if (!newState[action.id]) {
-        newState[action.id] = {};
-      }
-      newState[action.id][action.integrationId] = {
-        externalId: action.externalId,
-      };
-      return newState;
-  }
-  return state;
-};
-
-// TODO: change component name
-const SyncWrapper = ({
+const SyncModal = ({
   opened,
   onClose,
   refreshTasks,
@@ -71,18 +35,21 @@ const SyncWrapper = ({
   onClose: CallableFunction;
   refreshTasks: CallableFunction;
 }) => {
-  const { tasks, loadTasks, send } = useSync();
-  const [tasksSent, setTasksSent] = useState<boolean>(false);
-  const [success, dispatchSuccess] = useReducer(successReducer, {});
-  const [isSending, setIsSending] = useState<boolean>(false);
   const settingContext = useContext(SettingsContext);
   const { activeIntegrations } = settingContext;
+
+  const { tasks, loadTasks, send, loadTasksData } = useSync(activeIntegrations);
+  const [tasksSent, setTasksSent] = useState<boolean>(false);
+  const [isSending, setIsSending] = useState<boolean>(false);
+  const [success, dispatchSuccess] = useReducer(successReducer, {});
   const [taskData, dispatchTaskData] = useReducer(taskDataReducer, {});
 
   // Reset some data when the modal is opened/closed
   useEffect(() => {
     loadTasks();
+    loadTasksData();
     dispatchSuccess({ type: "reset" });
+    dispatchTaskData({ type: "reset" });
     setTasksSent(false);
   }, [opened, loadTasks]);
 
@@ -302,4 +269,4 @@ const SyncWrapper = ({
   );
 };
 
-export default SyncWrapper;
+export default SyncModal;

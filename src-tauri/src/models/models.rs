@@ -137,7 +137,7 @@ pub struct NewIntegrationLog {
     pub external_id: String,
 }
 
-#[derive(Debug, Deserialize, Queryable)]
+#[derive(Debug, Deserialize, Serialize, Queryable)]
 #[diesel(table_name=integrations_log)]
 pub struct IntegrationLog {
     pub id: i32,

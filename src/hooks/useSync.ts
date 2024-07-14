@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { Integration } from "./useSettings";
 
 export interface SyncTask {
   id: string;
@@ -12,8 +13,17 @@ export interface SyncTask {
   extra_param: string | null;
 }
 
-const useSync = () => {
+export interface IntegrationLog {
+  external_id: string;
+  integration_id: number;
+  task_id: string;
+  status: string;
+  log: string;
+}
+
+const useSync = (activeIntegrations: Integration[]) => {
   const [tasks, setTasks] = useState<SyncTask[]>([]);
+  const [integrationLogs, setIntegrationLogs] = useState<IntegrationLog[]>([]);
 
   const loadTasks = useCallback(() => {
     invoke("group_tasks").then((ts) => {
@@ -48,7 +58,21 @@ const useSync = () => {
     setTasks(newTasks);
   };
 
-  return { tasks, loadTasks, send, updateTaskExtraParam };
+  const loadTasksData = useCallback(() => {
+    tasks.forEach((task) =>
+      activeIntegrations.forEach((integration) => {
+        invoke("integration_log", {
+          taskId: task.id,
+          integrationId: integration.id,
+        }).then((resp) => {
+          console.log(resp);
+        });
+        console.log("Load task data for task:", task.id, integration.id);
+      }),
+    );
+  }, [tasks, activeIntegrations]);
+
+  return { tasks, loadTasks, send, updateTaskExtraParam, loadTasksData };
 };
 
 export default useSync;
