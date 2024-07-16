@@ -22,6 +22,7 @@ import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import { successReducer, taskDataReducer } from "./reducers";
 import InputCustom from "../atoms/InputCustom";
+import { invoke } from "@tauri-apps/api/core";
 
 const SyncModal = ({
   opened,
@@ -48,6 +49,23 @@ const SyncModal = ({
     dispatchSuccess({ type: "reset" });
     dispatchTaskData({ type: "reset" });
     setTasksSent(false);
+
+    activeIntegrations.forEach((int) =>
+      tasks.forEach((tsk) => {
+        dispatchTaskData({ type: "init", id: tsk.id, integrationId: int.id });
+        invoke("integration_log", {
+          taskId: tsk.id,
+          integrationId: int.id,
+        }).then((resp) =>
+          dispatchTaskData({
+            type: "setExternalId",
+            id: tsk.id,
+            integrationId: int.id,
+            externalId: resp.external_id,
+          }),
+        );
+      }),
+    );
   }, [opened, loadTasks]);
 
   // The modal cannot been closes if tasks are being sent
@@ -112,6 +130,7 @@ const SyncModal = ({
       return false;
     }
 
+    // TODO: add a flag in taskData
     activeIntegrations.forEach((int) =>
       tasks.forEach((tsk) => {
         if (!taskData[tsk.id]?.[int.id as number]?.externalId) {
@@ -126,6 +145,7 @@ const SyncModal = ({
     <Modal open={opened} onClose={() => onClose()}>
       <StyledBox width={1000}>
         <Typography variant="h5">Send tasks to integations</Typography>
+        {JSON.stringify(taskData)}
         <Box>
           {tasks.length === 0 && (
             <Alert severity="warning" variant="outlined" sx={{ mb: 2, mt: 2 }}>
@@ -187,27 +207,35 @@ const SyncModal = ({
                                     <TaskIcon task={task} success={success} />
                                   </Box>
                                   <Box sx={{ mt: "1rem" }}>
-                                    <InputCustom
-                                      label="External Id"
-                                      showSearch={true}
-                                      maxLength={50}
-                                      value={
-                                        taskData[task.id]?.[int.id as number]
-                                          ?.externalId || ""
-                                      }
-                                      onChange={(e) =>
-                                        dispatchTaskData({
-                                          type: "setExternalId",
-                                          id: task.id,
-                                          integrationId: int.id,
-                                          externalId: e.target.value,
-                                        })
-                                      }
-                                      error={
-                                        !taskData[task.id]?.[int.id as number]
-                                          ?.externalId
-                                      }
-                                    />
+                                    {taskData[task.id] &&
+                                      taskData[task.id][int.id as number] && (
+                                        <InputCustom
+                                          label="External Id"
+                                          showSearch={true}
+                                          maxLength={50}
+                                          isLoading={
+                                            taskData[task.id][int.id as number]
+                                              .loadingExternalId
+                                          }
+                                          value={
+                                            taskData[task.id][int.id as number]
+                                              .externalId
+                                          }
+                                          onChange={(e) =>
+                                            dispatchTaskData({
+                                              type: "setExternalId",
+                                              id: task.id,
+                                              integrationId: int.id,
+                                              externalId: e.target.value,
+                                            })
+                                          }
+                                          error={
+                                            !taskData[task.id]?.[
+                                              int.id as number
+                                            ]?.externalId
+                                          }
+                                        />
+                                      )}
                                   </Box>
                                 </CardContent>
                               </Card>

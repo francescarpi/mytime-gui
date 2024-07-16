@@ -9,14 +9,6 @@ export type SuccessType = {
   };
 };
 
-export type TaskData = {
-  [key: string]: {
-    [key: string]: {
-      externalId: string;
-    };
-  };
-};
-
 export interface SyncProps {
   opened: boolean;
   onClose: CallableFunction;

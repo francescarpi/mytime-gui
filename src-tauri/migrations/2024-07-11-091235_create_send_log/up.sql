@@ -4,7 +4,7 @@ CREATE TABLE integrations_log (
     task_id VARCHAR NOT NULL,
     integration_id INTEGER NOT NULL,
     external_id VARCHAR NOT NULL,
-    status VARCHAR NOT NULL DEFAULT 'sending',
+    status VARCHAR NOT NULL DEFAULT 'pending',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     log TEXT DEFAULT NULL,
 

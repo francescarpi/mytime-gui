@@ -3,6 +3,7 @@ import { ChangeEventHandler } from "react";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const InputCustom = ({
   label,
@@ -15,6 +16,8 @@ const InputCustom = ({
   showSearch = false,
   required = true,
   helperText = "",
+  isLoading = false,
+  disabled = false,
 }: {
   label: string;
   value: string;
@@ -26,7 +29,26 @@ const InputCustom = ({
   showSearch?: boolean;
   required?: boolean;
   helperText?: boolean | string;
+  isLoading?: boolean;
+  disabled?: boolean;
 }) => {
+  const renderAdornment = () => {
+    if (isLoading) {
+      return <CircularProgress size={16} color="inherit" />;
+    }
+
+    if (showSearch) {
+      return (
+        <InputAdornment position="end">
+          <IconButton size="small" onClick={() => {}}>
+            <SearchIcon />
+          </IconButton>
+        </InputAdornment>
+      );
+    }
+    return null;
+  };
+
   return (
     <TextField
       label={label}
@@ -38,14 +60,9 @@ const InputCustom = ({
       type={type}
       onChange={onChange}
       helperText={helperText}
+      disabled={disabled || isLoading}
       InputProps={{
-        endAdornment: showSearch && (
-          <InputAdornment position="end">
-            <IconButton size="small" onClick={() => {}}>
-              <SearchIcon />
-            </IconButton>
-          </InputAdornment>
-        ),
+        endAdornment: renderAdornment(),
       }}
       inputProps={{
         autoComplete: "off",

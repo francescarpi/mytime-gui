@@ -1,4 +1,4 @@
-import { SuccessType, TaskData } from "./types";
+import { SuccessType } from "./types";
 
 export const successReducer = (state: SuccessType, action: any) => {
   switch (action.type) {
@@ -17,17 +17,34 @@ export const successReducer = (state: SuccessType, action: any) => {
   return state;
 };
 
+export type TaskData = {
+  [key: string]: {
+    [key: string]: {
+      externalId: string;
+      status: string;
+      loadingExternalId: boolean;
+    };
+  };
+};
+
 export const taskDataReducer = (state: TaskData, action: any) => {
+  const newState = { ...state };
   switch (action.type) {
     case "reset":
       return {};
-    case "setExternalId":
-      const newState = { ...state };
-      if (!newState[action.id]) {
-        newState[action.id] = {};
-      }
+    case "init":
+      newState[action.id] = {};
       newState[action.id][action.integrationId] = {
+        externalId: "",
+        status: "Pending",
+        loadingExternalId: true,
+      };
+      return newState;
+    case "setExternalId":
+      newState[action.id][action.integrationId] = {
+        ...newState[action.id][action.integrationId],
         externalId: action.externalId,
+        loadingExternalId: false,
       };
       return newState;
   }

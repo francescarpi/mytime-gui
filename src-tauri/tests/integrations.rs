@@ -155,7 +155,7 @@ mod tests {
         assert_eq!(log.task_id, "1-2-3".to_string());
         assert_eq!(log.integration_id, integration.id);
         assert_eq!(log.external_id, "12345".to_string());
-        assert_eq!(log.status, IntegrationLogStatus::Sending);
+        assert_eq!(log.status, IntegrationLogStatus::Pending);
         assert_eq!(log.log, None);
     }
 
