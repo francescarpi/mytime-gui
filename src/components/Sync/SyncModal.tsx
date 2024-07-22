@@ -23,6 +23,7 @@ import Paper from "@mui/material/Paper";
 import { successReducer, taskDataReducer } from "./reducers";
 import InputCustom from "../atoms/InputCustom";
 import { invoke } from "@tauri-apps/api/core";
+import { IntegrationLog } from "./types";
 
 const SyncModal = ({
   opened,
@@ -56,14 +57,22 @@ const SyncModal = ({
         invoke("integration_log", {
           taskId: tsk.id,
           integrationId: int.id,
-        }).then((resp) =>
-          dispatchTaskData({
-            type: "setExternalId",
-            id: tsk.id,
-            integrationId: int.id,
-            externalId: resp.external_id,
-          }),
-        );
+        }).then((resp) => {
+          if (resp) {
+            dispatchTaskData({
+              type: "setExternalId",
+              id: tsk.id,
+              integrationId: int.id,
+              externalId: (resp as IntegrationLog).external_id,
+            });
+          } else {
+            dispatchTaskData({
+              type: "stopLoading",
+              id: tsk.id,
+              integrationId: int.id,
+            });
+          }
+        });
       }),
     );
   }, [opened, loadTasks]);

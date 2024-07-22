@@ -47,6 +47,12 @@ export const taskDataReducer = (state: TaskData, action: any) => {
         loadingExternalId: false,
       };
       return newState;
+    case "stopLoading":
+      newState[action.id][action.integrationId] = {
+        ...newState[action.id][action.integrationId],
+        loadingExternalId: false,
+      };
+      return newState;
   }
   return state;
 };

@@ -24,3 +24,7 @@ export interface SyncProps {
   slotTableHeader?: ReactNode;
   slotTableRow?: CallableFunction | null;
 }
+
+export interface IntegrationLog {
+  external_id: string;
+}
