@@ -1,8 +1,8 @@
 use super::{Engine, Error};
+use crate::api::DbConn;
 use crate::models::models::{GroupedTask, IntegrationLog, Setting};
 use crate::repositories::integrations::IntegrationsRepository;
 use crate::utils::dates::format_duration;
-use crate::DbConn;
 use oxhttp::model::{Method, Request, Status};
 use oxhttp::Client;
 use serde::{Deserialize, Serialize};
