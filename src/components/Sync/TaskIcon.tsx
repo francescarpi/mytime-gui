@@ -1,32 +1,24 @@
-import { SyncTask } from "../../hooks/useSync";
 import CloudOffIcon from "@mui/icons-material/CloudOff";
 import CloudDoneIcon from "@mui/icons-material/CloudDone";
 import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
-import { SuccessType } from "./types";
 
-const TaskIcon = ({
-  task,
-  success,
-}: {
-  task: SyncTask;
-  success: SuccessType;
-}) => {
-  if (success[task.id] === undefined) {
+const TaskIcon = ({ status, message }: { status: string; message: string }) => {
+  if (status === "Pending") {
     return <CloudOffIcon />;
   }
 
-  if (success[task.id].sending) {
+  if (status === "Sending") {
     return <CircularProgress size={20} />;
   }
 
-  if (success[task.id].success) {
+  if (status === "Success") {
     return <CloudDoneIcon color="success" />;
   }
 
   return (
-    <Tooltip title={success[task.id].error}>
+    <Tooltip title={message}>
       <ThunderstormIcon color="error" />
     </Tooltip>
   );

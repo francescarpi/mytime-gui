@@ -1,33 +1,15 @@
-import { SuccessType } from "./types";
-
-export const successReducer = (state: SuccessType, action: any) => {
-  switch (action.type) {
-    case "reset":
-      return {};
-    case "sending":
-      return { ...state, [action.id]: { sending: true } };
-    case "success":
-      return { ...state, [action.id]: { success: true, sending: false } };
-    case "error":
-      return {
-        ...state,
-        [action.id]: { success: false, error: action.error, sending: false },
-      };
-  }
-  return state;
-};
-
 export type TaskData = {
   [key: string]: {
     [key: string]: {
       externalId: string;
       status: string;
       loadingExternalId: boolean;
+      errorMessage: string;
     };
   };
 };
 
-export const taskDataReducer = (state: TaskData, action: any) => {
+const taskDataReducer = (state: TaskData, action: any) => {
   const newState = { ...state };
   switch (action.type) {
     case "reset":
@@ -38,6 +20,7 @@ export const taskDataReducer = (state: TaskData, action: any) => {
         externalId: "",
         status: "Pending",
         loadingExternalId: true,
+        errorMessage: "",
       };
       return newState;
     case "setExternalId":
@@ -53,6 +36,27 @@ export const taskDataReducer = (state: TaskData, action: any) => {
         loadingExternalId: false,
       };
       return newState;
+    case "setSending":
+      newState[action.id][action.integrationId] = {
+        ...newState[action.id][action.integrationId],
+        status: "Sending",
+      };
+      return newState;
+    case "setSuccess":
+      newState[action.id][action.integrationId] = {
+        ...newState[action.id][action.integrationId],
+        status: "Success",
+      };
+      return newState;
+    case "setError":
+      newState[action.id][action.integrationId] = {
+        ...newState[action.id][action.integrationId],
+        status: "Error",
+        errorMessage: action.errorMessage,
+      };
+      return newState;
   }
   return state;
 };
+
+export default taskDataReducer;

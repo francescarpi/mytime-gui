@@ -20,7 +20,7 @@ import CardContent from "@mui/material/CardContent";
 import TaskIcon from "./TaskIcon";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
-import { successReducer, taskDataReducer } from "./reducers";
+import taskDataReducer from "./taskDataReducer";
 import InputCustom from "../atoms/InputCustom";
 import { invoke } from "@tauri-apps/api/core";
 import { IntegrationLog } from "./types";
@@ -40,14 +40,12 @@ const SyncModal = ({
   const { tasks, loadTasks, send, loadTasksData } = useSync(activeIntegrations);
   const [tasksSent, setTasksSent] = useState<boolean>(false);
   const [isSending, setIsSending] = useState<boolean>(false);
-  const [success, dispatchSuccess] = useReducer(successReducer, {});
   const [taskData, dispatchTaskData] = useReducer(taskDataReducer, {});
 
   // Reset some data when the modal is opened/closed
   useEffect(() => {
     loadTasks();
     loadTasksData();
-    dispatchSuccess({ type: "reset" });
     dispatchTaskData({ type: "reset" });
     setTasksSent(false);
 
@@ -86,50 +84,48 @@ const SyncModal = ({
 
   // Handler to send tasks to the integration
   const sendHandler = () => {
-    // setIsSending(true);
-
-    dispatchSuccess({ type: "reset" });
-
+    setIsSending(true);
     const promises: Promise<void>[] = [];
 
     tasks.map((task) =>
       activeIntegrations.map((int) => {
+        dispatchTaskData({
+          type: "setSending",
+          id: task.id,
+          integrationId: int.id,
+        });
         promises.push(
           send(
             task.id,
             int.id as number,
             taskData[task.id][int.id as number].externalId,
-          ),
+          )
+            .then(() => {
+              dispatchTaskData({
+                type: "setSuccess",
+                id: task.id,
+                integrationId: int.id,
+              });
+            })
+            .catch((err) => {
+              dispatchTaskData({
+                type: "setError",
+                id: task.id,
+                integrationId: int.id,
+                errorMessage: JSON.parse(err),
+              });
+            }),
         );
       }),
     );
 
-    // const promises = tasks.map(async (task) => {
-    //   if (success[task.id] && success[task.id].success) {
-    //     dispatchSuccess({ type: "success", id: task.id });
-    //     return;
-    //   }
-    //
-    //   dispatchSuccess({ type: "sending", id: task.id });
-    //
-    //   return send(task.id)
-    //     .then(() => dispatchSuccess({ type: "success", id: task.id }))
-    //     .catch((error) => {
-    //       console.log(error);
-    //       dispatchSuccess({
-    //         type: "error",
-    //         id: task.id,
-    //         error,
-    //       });
-    //     });
-    // });
-    //
-    // // When all tasks are sent, refresh the tasks list
-    // Promise.all(promises).then(() => {
-    //   setIsSending(false);
-    //   setTasksSent(true);
-    //   refreshTasks();
-    // });
+    // When all tasks are sent, refresh the tasks list
+    Promise.all(promises).then(() => {
+      console.log("All tasks sent");
+      setIsSending(false);
+      // setTasksSent(true);
+      // refreshTasks();
+    });
   };
 
   const formValid = useMemo(() => {
@@ -213,7 +209,19 @@ const SyncModal = ({
                                     <Typography>
                                       {int.name || int.itype}
                                     </Typography>
-                                    <TaskIcon task={task} success={success} />
+                                    {taskData[task.id] &&
+                                      taskData[task.id][int.id as number] && (
+                                        <TaskIcon
+                                          status={
+                                            taskData[task.id][int.id as number]
+                                              .status
+                                          }
+                                          message={
+                                            taskData[task.id][int.id as number]
+                                              .errorMessage
+                                          }
+                                        />
+                                      )}
                                   </Box>
                                   <Box sx={{ mt: "1rem" }}>
                                     {taskData[task.id] &&
