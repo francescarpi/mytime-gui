@@ -226,10 +226,10 @@ impl Redmine {
 #[command]
 pub async fn activities(
     conn: State<'_, DbConn>,
-    id: i32,
+    integration_id: i32,
 ) -> Result<serde_json::Value, serde_json::Value> {
     let mut db = conn.0.lock().unwrap();
-    let integration = IntegrationsRepository::integration(&mut db, id).unwrap();
+    let integration = IntegrationsRepository::integration(&mut db, integration_id).unwrap();
     return Ok(serde_json::json!(
         Redmine::new().activities(integration.config.0)
     ));

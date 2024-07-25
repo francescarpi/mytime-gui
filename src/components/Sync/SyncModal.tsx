@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState, useReducer, useMemo } from "react";
-import * as React from "react";
 import { SettingsContext } from "../../providers/SettingsProvider";
 import useSync from "../../hooks/useSync";
 import Modal from "@mui/material/Modal";
@@ -13,17 +12,12 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { formatDuration } from "../../utils/dates";
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import TaskIcon from "./TaskIcon";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import taskDataReducer from "./taskDataReducer";
-import InputCustom from "../atoms/InputCustom";
 import { invoke } from "@tauri-apps/api/core";
 import { IntegrationLog } from "./types";
+import TaskRow from "./TaskRow";
 
 const SyncModal = ({
   opened,
@@ -123,8 +117,7 @@ const SyncModal = ({
     Promise.all(promises).then(() => {
       console.log("All tasks sent");
       setIsSending(false);
-      // setTasksSent(true);
-      // refreshTasks();
+      refreshTasks();
     });
   };
 
@@ -150,7 +143,6 @@ const SyncModal = ({
     <Modal open={opened} onClose={() => onClose()}>
       <StyledBox width={1000}>
         <Typography variant="h5">Send tasks to integations</Typography>
-        {JSON.stringify(taskData)}
         <Box>
           {tasks.length === 0 && (
             <Alert severity="warning" variant="outlined" sx={{ mb: 2, mt: 2 }}>
@@ -177,91 +169,13 @@ const SyncModal = ({
               </TableHead>
               <TableBody>
                 {tasks.map((task) => (
-                  <React.Fragment key={task.id}>
-                    <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-                      <TableCell align="left">
-                        [{task.project}] {task.desc}
-                      </TableCell>
-                      <TableCell align="left">{task.date}</TableCell>
-                      <TableCell align="right">
-                        {formatDuration(task.duration)}
-                      </TableCell>
-                      <TableCell align="right">{task.ids.join(", ")}</TableCell>
-                    </TableRow>
-                    <TableRow sx={{ paddingY: 0 }}>
-                      <TableCell colSpan={4}>
-                        <Grid container spacing={2}>
-                          {activeIntegrations.map((int) => (
-                            <Grid
-                              item
-                              md={activeIntegrations.length === 1 ? 12 : 6}
-                              key={`int_${int.id}`}
-                            >
-                              <Card variant="outlined">
-                                <CardContent>
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                      justifyContent: "space-between",
-                                      alignItems: "center",
-                                    }}
-                                  >
-                                    <Typography>
-                                      {int.name || int.itype}
-                                    </Typography>
-                                    {taskData[task.id] &&
-                                      taskData[task.id][int.id as number] && (
-                                        <TaskIcon
-                                          status={
-                                            taskData[task.id][int.id as number]
-                                              .status
-                                          }
-                                          message={
-                                            taskData[task.id][int.id as number]
-                                              .errorMessage
-                                          }
-                                        />
-                                      )}
-                                  </Box>
-                                  <Box sx={{ mt: "1rem" }}>
-                                    {taskData[task.id] &&
-                                      taskData[task.id][int.id as number] && (
-                                        <InputCustom
-                                          label="External Id"
-                                          showSearch={true}
-                                          maxLength={50}
-                                          isLoading={
-                                            taskData[task.id][int.id as number]
-                                              .loadingExternalId
-                                          }
-                                          value={
-                                            taskData[task.id][int.id as number]
-                                              .externalId
-                                          }
-                                          onChange={(e) =>
-                                            dispatchTaskData({
-                                              type: "setExternalId",
-                                              id: task.id,
-                                              integrationId: int.id,
-                                              externalId: e.target.value,
-                                            })
-                                          }
-                                          error={
-                                            !taskData[task.id]?.[
-                                              int.id as number
-                                            ]?.externalId
-                                          }
-                                        />
-                                      )}
-                                  </Box>
-                                </CardContent>
-                              </Card>
-                            </Grid>
-                          ))}
-                        </Grid>
-                      </TableCell>
-                    </TableRow>
-                  </React.Fragment>
+                  <TaskRow
+                    key={task.id}
+                    task={task}
+                    activeIntegrations={activeIntegrations}
+                    taskData={taskData}
+                    dispatchTaskData={dispatchTaskData}
+                  />
                 ))}
               </TableBody>
             </Table>

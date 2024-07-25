@@ -12,14 +12,14 @@ export interface SelectItem {
 
 const SelectCustom = ({
   apiAction,
-  apiId,
+  apiParams,
   onChange,
   value,
   size = "medium",
   disabled = false,
 }: {
   apiAction: string | undefined;
-  apiId: number | null;
+  apiParams: { [key: string]: any };
   onChange: CallableFunction;
   value: string | null;
   size?: "small" | "medium";
@@ -28,8 +28,8 @@ const SelectCustom = ({
   const [items, setItems] = useState<SelectItem[]>([]);
 
   useEffect(() => {
-    if (apiAction && apiId && items.length === 0) {
-      invoke(apiAction, { id: apiId }).then((res) => {
+    if (apiAction && apiParams && items.length === 0) {
+      invoke(apiAction, apiParams).then((res) => {
         const elements = (res as any).map((a: any) => ({
           value: a.id,
           label: a.name,

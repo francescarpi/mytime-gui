@@ -3,7 +3,7 @@ export interface IntegrationField {
   label: string;
   componentType: string;
   maxLength?: number;
-  type: string;
+  type?: string;
   gridWidth?: number;
   apiAction?: string;
   defaultValue?: string;
@@ -12,14 +12,15 @@ export interface IntegrationField {
 export interface IntegrationConfig {
   id: string;
   name: string;
-  fields: IntegrationField[];
+  settingsFields: IntegrationField[];
+  syncFields: IntegrationField[];
 }
 
-export const integrationsConfig: IntegrationConfig[] = [
-  {
+export const integrationsConfig: { [key: string]: IntegrationConfig } = {
+  Redmine: {
     id: "Redmine",
     name: "Redmine",
-    fields: [
+    settingsFields: [
       {
         id: "url",
         label: "URL",
@@ -39,7 +40,16 @@ export const integrationsConfig: IntegrationConfig[] = [
       {
         id: "activity",
         label: "Default Activity",
-        type: "password",
+        gridWidth: 4,
+        componentType: "select",
+        apiAction: "activities",
+        defaultValue: "-1",
+      },
+    ],
+    syncFields: [
+      {
+        id: "activity",
+        label: "Default Activity",
         gridWidth: 4,
         componentType: "select",
         apiAction: "activities",
@@ -47,10 +57,10 @@ export const integrationsConfig: IntegrationConfig[] = [
       },
     ],
   },
-  {
+  Jira: {
     id: "Jira",
     name: "Jira",
-    fields: [
+    settingsFields: [
       {
         id: "url",
         label: "URL",
@@ -76,5 +86,6 @@ export const integrationsConfig: IntegrationConfig[] = [
         componentType: "input",
       },
     ],
+    syncFields: [],
   },
-];
+};
