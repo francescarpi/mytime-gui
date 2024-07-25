@@ -1,6 +1,6 @@
 use super::{Engine, Error};
 use crate::api::DbConn;
-use crate::models::models::{GroupedTask, IntegrationLog, Setting};
+use crate::models::models::{GroupedTask, IntegrationLog};
 use crate::repositories::integrations::IntegrationsRepository;
 use crate::utils::dates::format_duration;
 use oxhttp::model::{Method, Request, Status};
@@ -60,7 +60,7 @@ pub struct RedmineProjectResponse {
     pub project: RedmineProject,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub enum RedmineErrorType {
     IssueNotFound,
     GenericError,
@@ -168,58 +168,57 @@ impl Redmine {
 
     pub fn project_activities(
         &self,
-        _settings: &Setting,
-        _external_id: String,
+        config: Value,
+        external_id: &String,
     ) -> Result<Vec<RedmineProjectActivity>, RedmineErrorType> {
-        // let client = Client::new();
-        // let token = &settings.integration_token.as_ref().unwrap();
-        //
-        // // Get issue
-        // let url = self.prepare_url(
-        //     settings,
-        //     vec![&"issues".to_string(), &format!("{}.json", external_id)],
-        // );
-        // let response = client.request(Self::build_get_request(url.as_ref(), token.to_string()));
-        // if response.is_err() {
-        //     return Err(RedmineErrorType::GenericError);
-        // }
-        //
-        // let unwrapped_response = response.unwrap();
-        //
-        // if unwrapped_response.status() == Status::NOT_FOUND
-        //     || unwrapped_response.status() == Status::FORBIDDEN
-        // {
-        //     return Err(RedmineErrorType::IssueNotFound);
-        // }
-        //
-        // let issue_response = serde_json::from_str::<RedmineIssueResponse>(
-        //     &unwrapped_response.into_body().to_string().unwrap(),
-        // )
-        // .unwrap();
-        //
-        // // Get project
-        // let url = self.prepare_url(
-        //     settings,
-        //     vec![
-        //         &"projects".to_string(),
-        //         &format!("{}.json", issue_response.issue.project.id),
-        //     ],
-        // );
-        // let url = format!("{}?include=time_entry_activities", url);
-        // let response = client.request(Self::build_get_request(url.as_ref(), token.to_string()));
-        //
-        // if response.is_err() {
-        //     return Err(RedmineErrorType::GenericError);
-        // }
-        //
-        // let project_response = serde_json::from_str::<RedmineProjectResponse>(
-        //     &response.unwrap().into_body().to_string().unwrap(),
-        // )
-        // .unwrap();
-        //
-        // Ok(project_response.project.time_entry_activities)
-        // TODO: check
-        Ok(vec![])
+        let client = Client::new();
+        let token = config["token"].as_str().unwrap();
+
+        // Get issue
+        let url = self.prepare_url(
+            &config,
+            vec![&"issues".to_string(), &format!("{}.json", external_id)],
+        );
+
+        let response = client.request(Self::build_get_request(url.as_ref(), token.to_string()));
+        if response.is_err() {
+            return Err(RedmineErrorType::GenericError);
+        }
+
+        let unwrapped_response = response.unwrap();
+
+        if unwrapped_response.status() == Status::NOT_FOUND
+            || unwrapped_response.status() == Status::FORBIDDEN
+        {
+            return Err(RedmineErrorType::IssueNotFound);
+        }
+
+        let issue_response = serde_json::from_str::<RedmineIssueResponse>(
+            &unwrapped_response.into_body().to_string().unwrap(),
+        )
+        .unwrap();
+
+        // Get project
+        let url = self.prepare_url(
+            &config,
+            vec![
+                &"projects".to_string(),
+                &format!("{}.json", issue_response.issue.project.id),
+            ],
+        );
+        let url = format!("{}?include=time_entry_activities", url);
+        let response = client.request(Self::build_get_request(url.as_ref(), token.to_string()));
+
+        if response.is_err() {
+            return Err(RedmineErrorType::GenericError);
+        }
+
+        let project_response = serde_json::from_str::<RedmineProjectResponse>(
+            &response.unwrap().into_body().to_string().unwrap(),
+        )
+        .unwrap();
+
+        Ok(project_response.project.time_entry_activities)
     }
 }
 
@@ -230,26 +229,21 @@ pub async fn activities(
 ) -> Result<serde_json::Value, serde_json::Value> {
     let mut db = conn.0.lock().unwrap();
     let integration = IntegrationsRepository::integration(&mut db, integration_id).unwrap();
-    return Ok(serde_json::json!(
+    Ok(serde_json::json!(
         Redmine::new().activities(integration.config.0)
-    ));
+    ))
 }
 
 #[command]
 pub async fn project_activities(
-    _external_id: String,
-    _conn: State<'_, DbConn>,
+    conn: State<'_, DbConn>,
+    external_id: String,
+    integration_id: i32,
 ) -> Result<serde_json::Value, serde_json::Value> {
-    // let mut db = conn.0.lock().unwrap();
-    // let settings = SettingsRepository::get_settings(&mut db).unwrap();
-    // if settings.has_integration() {
-    //     return match integrations::redmine::Redmine::new()
-    //         .project_activities(&settings, external_id)
-    //     {
-    //         Ok(activities) => Ok(serde_json::json!(activities)),
-    //         Err(_) => Err(serde_json::json!([])),
-    //     };
-    // }
+    let mut db = conn.0.lock().unwrap();
+    let integration = IntegrationsRepository::integration(&mut db, integration_id).unwrap();
 
-    Ok(serde_json::json!([]))
+    Ok(serde_json::json!(
+        Redmine::new().project_activities(integration.config.0, &external_id)
+    ))
 }

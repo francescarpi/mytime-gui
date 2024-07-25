@@ -52,7 +52,7 @@ fn main() {
             api::integrations::integration_log,
             api::integrations::send_to_integration,
             redmine::activities,
-            // integrations::redmine::project_activities,
+            redmine::project_activities,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

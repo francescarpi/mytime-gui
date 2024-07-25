@@ -28,7 +28,10 @@ const TaskRow = ({
 }) => {
   const renderFields = (integration: Integration) => {
     const fields = integrationsConfig[integration.itype].syncFields;
-    const apiParams = { integrationId: integration.id };
+    const apiParams = {
+      integrationId: integration.id,
+      externalId: taskData[task.id][integration.id as number].externalId,
+    };
     return (
       <RenderFields
         fields={fields}
@@ -85,11 +88,12 @@ const TaskRow = ({
                       {taskData[task.id] &&
                         taskData[task.id][int.id as number] && (
                           <Grid container spacing={1}>
-                            <Grid item md={12}>
+                            <Grid item md={6}>
                               <InputCustom
                                 label="External Id"
                                 showSearch={true}
                                 maxLength={50}
+                                size="medium"
                                 isLoading={
                                   taskData[task.id][int.id as number]
                                     .loadingExternalId

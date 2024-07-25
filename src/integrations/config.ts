@@ -50,9 +50,9 @@ export const integrationsConfig: { [key: string]: IntegrationConfig } = {
       {
         id: "activity",
         label: "Default Activity",
-        gridWidth: 4,
+        gridWidth: 6,
         componentType: "select",
-        apiAction: "activities",
+        apiAction: "project_activities",
         defaultValue: "-1",
       },
     ],

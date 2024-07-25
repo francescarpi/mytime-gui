@@ -49,6 +49,17 @@ impl IntegrationsRepository {
         )
     }
 
+    pub fn update_external_id(
+        c: &mut SqliteConnection,
+        log: &IntegrationLog,
+        external_id: &String,
+    ) {
+        diesel::update(integrations_log::table.find(log.id))
+            .set(integrations_log::external_id.eq(external_id))
+            .execute(c)
+            .expect("Error updating integration log");
+    }
+
     pub fn get_integration_log(
         c: &mut SqliteConnection,
         task_id: &String,
@@ -69,6 +80,7 @@ impl IntegrationsRepository {
             &new_integration_log.task_id,
             new_integration_log.integration_id,
         ) {
+            Self::update_external_id(c, &log, &new_integration_log.external_id);
             log
         } else {
             Self::add_integration_log(c, new_integration_log).unwrap()
