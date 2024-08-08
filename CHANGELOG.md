@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changes
+
+- Rust and node dependencies updated
+
 ## [v0.8.4] - 2024-06-25
 
 ### Changed
