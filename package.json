@@ -1,5 +1,5 @@
 {
-  "name": "mytime-next",
+  "name": "mytime",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,30 +10,30 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "@fontsource/roboto": "5.0.13",
-    "@mui/icons-material": "5.15.20",
-    "@mui/lab": "5.0.0-alpha.170",
-    "@mui/material": "5.15.20",
-    "@mui/x-date-pickers": "7.7.1",
+    "@fontsource/roboto": "5.0.14",
+    "@mui/icons-material": "5.16.6",
+    "@mui/lab": "5.0.0-alpha.173",
+    "@mui/material": "5.16.6",
+    "@mui/x-date-pickers": "7.12.0",
     "@octokit/core": "6.1.2",
-    "@tauri-apps/api": "2.0.0-beta.13",
-    "@tauri-apps/plugin-shell": "2.0.0-beta.6",
-    "dayjs": "1.11.11",
+    "@tauri-apps/api": "2.0.0-rc.0",
+    "@tauri-apps/plugin-shell": "2.0.0-rc.0",
+    "dayjs": "1.11.12",
     "material-ui-confirm": "3.0.16",
-    "mui-color-input": "2.0.3",
+    "mui-color-input": "3.0.0",
     "notistack": "3.0.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "semver": "7.6.2"
+    "semver": "7.6.3"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "2.0.0-beta.20",
-    "@types/node": "20.14.8",
+    "@tauri-apps/cli": "2.0.0-rc.2",
+    "@types/node": "22.1.0",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
     "@types/semver": "7.5.8",
     "@vitejs/plugin-react": "4.3.1",
-    "typescript": "5.5.2",
-    "vite": "5.3.1"
+    "typescript": "5.5.4",
+    "vite": "5.4.0"
   }
 }

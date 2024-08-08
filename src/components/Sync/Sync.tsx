@@ -67,7 +67,9 @@ const Sync = (props: SyncProps) => {
               <TableBody>
                 {tasks.map((task) => (
                   <TableRow key={task.id}>
-                    <TableCell align="left">{task.desc}</TableCell>
+                    <TableCell align="left">
+                      {task.project && "[" + task.project + "]"} {task.desc}
+                    </TableCell>
                     <TableCell align="left" sx={{ textWrap: "nowrap" }}>
                       {task.date}
                     </TableCell>

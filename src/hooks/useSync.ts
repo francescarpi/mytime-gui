@@ -9,6 +9,7 @@ export interface SyncTask {
   external_id: string;
   ids: number[];
   extra_param: string | null;
+  project: string | null;
 }
 
 const useSync = () => {
