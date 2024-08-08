@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+
+- Add the 'project' column into the tasks to sync table
+
 ### Changes
 
 - Rust and node dependencies updated

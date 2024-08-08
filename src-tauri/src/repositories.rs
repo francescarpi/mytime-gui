@@ -232,7 +232,8 @@ impl TasksRepository {
                 SUM({}) AS duration,
                 desc,
                 STRFTIME('%Y-%m-%d', start) AS date,
-                GROUP_CONCAT(id) AS ids
+                GROUP_CONCAT(id) AS ids,
+                project
             FROM
                 tasks
             WHERE
@@ -243,7 +244,8 @@ impl TasksRepository {
             GROUP BY
                 external_id,
                 desc,
-                STRFTIME('%Y-%m-%d', start)
+                STRFTIME('%Y-%m-%d', start),
+                project
             ORDER BY
                 STRFTIME('%Y-%m-%d', start) DESC,
                 id
