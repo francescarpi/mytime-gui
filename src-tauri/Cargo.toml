@@ -21,7 +21,6 @@ oxhttp = { version = "0.2.0", features = ["native-tls"] }
 platform-dirs = "0.3.0"
 diesel = { version = "2.2.2", features = ["chrono", "sqlite", "r2d2"] }
 diesel_migrations = "2.2.0"
-# libsqlite3-sys = { version = "0.30.1", features = ["bundled"] }
 url = "2.5.2"
 log = "0.4.22"
 env_logger = "0.11.5"
@@ -29,3 +28,6 @@ base64 = "0.22.1"
 
 [target.'cfg(target_os = "linux")'.dependencies]
 fork = "0.2.0"
+
+[target.'cfg(target_os = "windows")'.dependencies]
+libsqlite3-sys = { version = "0.30.1", features = ["bundled"] }
