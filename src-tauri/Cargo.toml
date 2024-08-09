@@ -26,6 +26,7 @@ url = "2.5.2"
 log = "0.4.22"
 env_logger = "0.11.5"
 base64 = "0.22.1"
+tauri-plugin-process = "2.0.0-rc.0"
 
 [target.'cfg(target_os = "linux")'.dependencies]
 fork = "0.2.0"

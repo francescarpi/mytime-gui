@@ -15,6 +15,7 @@
     "core:menu:default",
     "core:tray:default",
     "shell:allow-open",
-    "updater:default"
+    "updater:default",
+    "process:default"
   ]
 }
