@@ -29,3 +29,6 @@ base64 = "0.22.1"
 
 [target.'cfg(target_os = "linux")'.dependencies]
 fork = "0.2.0"
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-updater = "2.0.0-rc.0"

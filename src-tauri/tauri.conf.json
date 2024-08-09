@@ -1,6 +1,6 @@
 {
   "productName": "mytime",
-  "version": "0.8.4",
+  "version": "0.8.3",
   "identifier": "com.farpi.mytime",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -28,6 +28,15 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "createUpdaterArtifacts": true
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEE4MTE5MkRGQTNERjc4MEYKUldRUGVOK2ozNUlScU9XMmtQUHh2VVdERjNNRWh6bktJNE85UXh2OWFHbzlrbkJzUjFHTGxXeU4K",
+      "endpoints": [
+        "https://github.com/francescarpi/mytime-gui/releases/latest/download/latest.json"
+      ]
+    }
   }
 }
