@@ -20,7 +20,6 @@ import appTheme from "./styles/theme";
 import useClipboard from "./hooks/useClipboard";
 import useVersion from "./hooks/useVersion";
 import useFavorites from "./hooks/useFavourites";
-import useLoading from "./components/Loading/Hook";
 
 import TasksTableActionsHeader from "./components/TasksTableActionsHeader";
 import Card from "@mui/material/Card";
@@ -74,8 +73,6 @@ const App = () => {
 
   const { newVersion, version } = useVersion();
 
-  const useLoadingInstance = useLoading();
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -90,7 +87,7 @@ const App = () => {
           autoHideDuration={5000}
           anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
         >
-          <LoadingProvider hook={useLoadingInstance}>
+          <LoadingProvider>
             <ConfirmProvider
               defaultOptions={{
                 confirmationButtonProps: { variant: "contained" },
@@ -118,7 +115,6 @@ const App = () => {
                 searchInputRef={searchInputRef}
                 newVersion={newVersion}
                 version={version}
-                loadingHook={useLoadingInstance}
                 rightSideBarContent={
                   <Favourites
                     favourites={favourites}

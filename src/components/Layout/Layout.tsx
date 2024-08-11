@@ -22,6 +22,7 @@ import Slide from "@mui/material/Slide";
 import { Update } from "@tauri-apps/plugin-updater";
 import { useConfirm } from "material-ui-confirm";
 import { relaunch } from "@tauri-apps/plugin-process";
+import LoadingContext from "../Loading/Context";
 
 const Layout = ({
   children,
@@ -33,7 +34,6 @@ const Layout = ({
   newVersion,
   version,
   setToday,
-  loadingHook,
 }: {
   children: ReactNode;
   rightSideBarContent: ReactNode;
@@ -44,12 +44,12 @@ const Layout = ({
   newVersion: Update | null;
   version: string | null;
   setToday: CallableFunction;
-  loadingHook: any;
 }) => {
   const settingContext = useContext(SettingsContext);
+  const loadingContext = useContext(LoadingContext);
   const [query, setQuery] = useState<string>("");
   const confirm = useConfirm();
-  const { showLoading, setProgress } = loadingHook;
+  const { setVisible, setText, setProgress } = loadingContext;
 
   const onSearchKeyPress = (e: any) => {
     if (e.code === "Escape") {
@@ -68,8 +68,9 @@ const Layout = ({
     confirm({
       description: "Do you want download and install the next version?",
     }).then(() => {
-      showLoading("Installing new version...");
       // TODO: should we move this logic inside a hook?
+      setText("Installing new version...");
+      setVisible(true);
       let totalSize = 0;
       let downloadedSize = 0;
       let progress = 0;

@@ -11,11 +11,13 @@ const useVersion = () => {
       setVersion(version);
     });
 
-    check().then((update) => {
-      if (update?.available) {
-        setNewVersion(update);
-      }
-    });
+    setTimeout(() => {
+      check().then((update) => {
+        if (update?.available) {
+          setNewVersion(update);
+        }
+      });
+    }, 2000);
   }, []);
 
   return { version, newVersion };

@@ -1,22 +1,22 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { Typography, CircularProgress, Backdrop } from "@mui/material";
 
 import LoadingContext from "./Context";
 
-const LoadingProvider = ({
-  children,
-  hook,
-}: {
-  children: ReactNode;
-  hook: any;
-}) => {
-  const { visible, text, progress } = hook;
+const LoadingProvider = ({ children }: { children: ReactNode }) => {
+  const [text, setText] = useState<string>("Loading...");
+  const [visible, setVisible] = useState<boolean>(false);
+  const [progress, setProgress] = useState<string>("");
 
   return (
     <LoadingContext.Provider
       value={{
         text,
+        setText,
         visible,
+        setVisible,
+        progress,
+        setProgress,
       }}
     >
       <Backdrop
