@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.8.5] - 2024-08-11
+
 ### Added
 
 - Add the 'project' column into the tasks to sync table
