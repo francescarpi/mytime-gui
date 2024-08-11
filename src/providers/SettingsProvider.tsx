@@ -3,6 +3,7 @@ import { Setting, ViewType } from "../hooks/useSettings";
 import useSettings from "../hooks/useSettings";
 import Settings from "../components/Settings/Settings";
 
+// TODO: move into the settings folder?
 const SettingsContext = createContext<{
   setting: Setting | null;
   isIntegrationValid: boolean;

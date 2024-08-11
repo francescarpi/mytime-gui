@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 
 - Add the 'project' column into the tasks to sync table
-- Add the tauri plugin for auto detect new versions, download and install them
+- Enable tauri's updater plugin to detect and install next versions automatically
 
 ### Changes
 

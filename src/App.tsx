@@ -10,6 +10,7 @@ import AddTaskForm from "./components/AddTaskForm";
 import TaskEdition from "./components/TaskEdition";
 import SyncWrapper from "./components/Sync/SyncWrapper";
 import { SettingsProvider } from "./providers/SettingsProvider";
+import LoadingProvider from "./components/Loading/Provider";
 
 import useDate from "./hooks/useDate";
 import useKeyboard from "./hooks/useKeyboard";
@@ -19,6 +20,7 @@ import appTheme from "./styles/theme";
 import useClipboard from "./hooks/useClipboard";
 import useVersion from "./hooks/useVersion";
 import useFavorites from "./hooks/useFavourites";
+import useLoading from "./components/Loading/Hook";
 
 import TasksTableActionsHeader from "./components/TasksTableActionsHeader";
 import Card from "@mui/material/Card";
@@ -72,6 +74,8 @@ const App = () => {
 
   const { newVersion, version } = useVersion();
 
+  const useLoadingInstance = useLoading();
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -86,81 +90,86 @@ const App = () => {
           autoHideDuration={5000}
           anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
         >
-          <ConfirmProvider
-            defaultOptions={{
-              confirmationButtonProps: { variant: "contained" },
-              cancellationButtonProps: {
-                variant: "contained",
-                color: "secondary",
-              },
-            }}
-          >
-            <SyncWrapper
-              opened={openSync}
-              onClose={() => setOpenSync(false)}
-              refreshTasks={refresh}
-            />
-            <TaskEdition
-              task={taskToEdit}
-              onClose={() => setTaskToEdit(null)}
-              onEdit={editTask}
-            />
-            <Layout
-              setToday={setToday}
-              summary={summary}
-              onPressSync={() => setOpenSync(true)}
-              setSearchQuery={setQuery}
-              searchInputRef={searchInputRef}
-              newVersion={newVersion}
-              version={version}
-              rightSideBarContent={
-                <Favourites
-                  favourites={favourites}
-                  load={loadFavorites}
-                  addTask={addTask}
-                  toggleFavourite={toggleFavourite}
-                />
-              }
+          <LoadingProvider hook={useLoadingInstance}>
+            <ConfirmProvider
+              defaultOptions={{
+                confirmationButtonProps: { variant: "contained" },
+                cancellationButtonProps: {
+                  variant: "contained",
+                  color: "secondary",
+                },
+              }}
             >
-              <AddTaskForm
-                sx={{ mb: 2 }}
-                onSubmit={addTask}
-                defaultAddTaskValues={defaultAddTaskValues}
-                dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+              <SyncWrapper
+                opened={openSync}
+                onClose={() => setOpenSync(false)}
+                refreshTasks={refresh}
               />
-              <Card variant="outlined">
-                <CardContent>
-                  <TasksTableActionsHeader
-                    searchResult={result}
-                    totalWorked={totalWorked}
-                    setPreviousDate={setPreviousDate}
-                    setNextDate={setNextDate}
-                    date={date}
-                    setDate={setDate}
-                    copyTasks={copyTasks}
-                    viewModeGrouped={viewModeGrouped}
-                    groupedTasks={groupedTasks}
-                    tasks={tasks}
-                    setQuery={setQuery}
-                  />
-                  <TasksTable
-                    searchMode={searchMode}
-                    tasks={searchMode ? result : tasks}
-                    groupedTasks={groupedTasks}
+              <TaskEdition
+                task={taskToEdit}
+                onClose={() => setTaskToEdit(null)}
+                onEdit={editTask}
+              />
+              <Layout
+                setToday={setToday}
+                summary={summary}
+                onPressSync={() => setOpenSync(true)}
+                setSearchQuery={setQuery}
+                searchInputRef={searchInputRef}
+                newVersion={newVersion}
+                version={version}
+                loadingHook={useLoadingInstance}
+                rightSideBarContent={
+                  <Favourites
+                    favourites={favourites}
+                    load={loadFavorites}
                     addTask={addTask}
-                    stopTask={stopTask}
-                    copyToClipboard={copyTask}
-                    copyStringToClipboard={copyString}
-                    deleteTask={deleteTask}
-                    setTaskToEdit={setTaskToEdit}
-                    dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
                     toggleFavourite={toggleFavourite}
-                    setQuery={setQuery}
                   />
-                </CardContent>
-              </Card>
-            </Layout>
-          </ConfirmProvider>
+                }
+              >
+                <AddTaskForm
+                  sx={{ mb: 2 }}
+                  onSubmit={addTask}
+                  defaultAddTaskValues={defaultAddTaskValues}
+                  dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
+                />
+                <Card variant="outlined">
+                  <CardContent>
+                    <TasksTableActionsHeader
+                      searchResult={result}
+                      totalWorked={totalWorked}
+                      setPreviousDate={setPreviousDate}
+                      setNextDate={setNextDate}
+                      date={date}
+                      setDate={setDate}
+                      copyTasks={copyTasks}
+                      viewModeGrouped={viewModeGrouped}
+                      groupedTasks={groupedTasks}
+                      tasks={tasks}
+                      setQuery={setQuery}
+                    />
+                    <TasksTable
+                      searchMode={searchMode}
+                      tasks={searchMode ? result : tasks}
+                      groupedTasks={groupedTasks}
+                      addTask={addTask}
+                      stopTask={stopTask}
+                      copyToClipboard={copyTask}
+                      copyStringToClipboard={copyString}
+                      deleteTask={deleteTask}
+                      setTaskToEdit={setTaskToEdit}
+                      dispatchDefaultAddTaskValues={
+                        dispatchDefaultAddTaskValues
+                      }
+                      toggleFavourite={toggleFavourite}
+                      setQuery={setQuery}
+                    />
+                  </CardContent>
+                </Card>
+              </Layout>
+            </ConfirmProvider>
+          </LoadingProvider>
         </SnackbarProvider>
       </SettingsProvider>
     </ThemeProvider>

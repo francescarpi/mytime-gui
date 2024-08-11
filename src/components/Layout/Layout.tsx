@@ -33,6 +33,7 @@ const Layout = ({
   newVersion,
   version,
   setToday,
+  loadingHook,
 }: {
   children: ReactNode;
   rightSideBarContent: ReactNode;
@@ -43,10 +44,12 @@ const Layout = ({
   newVersion: Update | null;
   version: string | null;
   setToday: CallableFunction;
+  loadingHook: any;
 }) => {
   const settingContext = useContext(SettingsContext);
   const [query, setQuery] = useState<string>("");
   const confirm = useConfirm();
+  const { showLoading, setProgress } = loadingHook;
 
   const onSearchKeyPress = (e: any) => {
     if (e.code === "Escape") {
@@ -65,9 +68,32 @@ const Layout = ({
     confirm({
       description: "Do you want download and install the next version?",
     }).then(() => {
-      newVersion?.downloadAndInstall().then(() => {
-        relaunch();
-      });
+      showLoading("Installing new version...");
+      // TODO: should we move this logic inside a hook?
+      let totalSize = 0;
+      let downloadedSize = 0;
+      let progress = 0;
+      newVersion
+        ?.downloadAndInstall((downloadProgress) => {
+          switch (downloadProgress.event) {
+            case "Started":
+              totalSize = downloadProgress.data.contentLength as number;
+              break;
+            case "Progress":
+              downloadedSize += downloadProgress.data.chunkLength;
+              progress = totalSize
+                ? Math.round((downloadedSize / totalSize) * 100)
+                : 0;
+              setProgress(`${progress}%`);
+              break;
+            case "Finished":
+              setProgress("Relaunching...");
+              break;
+          }
+        })
+        .then(() => {
+          relaunch();
+        });
     });
   }, [newVersion]);
 
