@@ -4,7 +4,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 import { ViewType } from "../hooks/useSettings";
-import { SettingsContext } from "../providers/SettingsProvider";
+import { SettingsContext } from "./Settings/Provider";
 
 const ViewTypeSelector = () => {
   const settingsContext = useContext(SettingsContext);

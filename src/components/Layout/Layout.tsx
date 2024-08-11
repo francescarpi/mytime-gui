@@ -1,4 +1,4 @@
-import { ReactNode, RefObject, useContext, useState } from "react";
+import { ReactNode, RefObject, useContext, useState, useCallback } from "react";
 import { Search, SearchIconWrapper, StyledInputBase } from "./styles";
 import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
@@ -13,13 +13,16 @@ import Badge from "@mui/material/Badge";
 import GoalProgress from "./GoalProgress";
 import { DarkModeSwitch } from "../../styles/switch";
 import { debounce } from "@mui/material/utils";
-import { SettingsContext } from "../../providers/SettingsProvider";
+import { SettingsContext } from "../Settings/Provider";
 import Button from "@mui/material/Button";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import Logo from "../../statics/images/logo.png";
-import { NewVersion } from "../../hooks/useVersion";
 import Slide from "@mui/material/Slide";
+import { Update } from "@tauri-apps/plugin-updater";
+import { useConfirm } from "material-ui-confirm";
+import { relaunch } from "@tauri-apps/plugin-process";
+import LoadingContext from "../Loading/Context";
 
 const Layout = ({
   children,
@@ -38,12 +41,15 @@ const Layout = ({
   onPressSync: CallableFunction;
   setSearchQuery: CallableFunction;
   searchInputRef: RefObject<HTMLInputElement>;
-  newVersion: NewVersion | null;
+  newVersion: Update | null;
   version: string | null;
   setToday: CallableFunction;
 }) => {
   const settingContext = useContext(SettingsContext);
+  const loadingContext = useContext(LoadingContext);
   const [query, setQuery] = useState<string>("");
+  const confirm = useConfirm();
+  const { setVisible, setText, setProgress } = loadingContext;
 
   const onSearchKeyPress = (e: any) => {
     if (e.code === "Escape") {
@@ -57,6 +63,40 @@ const Layout = ({
       !settingContext.setting?.right_sidebar_open,
     );
   };
+
+  const handleUpdate = useCallback(() => {
+    confirm({
+      description: "Do you want download and install the next version?",
+    }).then(() => {
+      // TODO: should we move this logic inside a hook?
+      setText("Installing new version...");
+      setVisible(true);
+      let totalSize = 0;
+      let downloadedSize = 0;
+      let progress = 0;
+      newVersion
+        ?.downloadAndInstall((downloadProgress) => {
+          switch (downloadProgress.event) {
+            case "Started":
+              totalSize = downloadProgress.data.contentLength as number;
+              break;
+            case "Progress":
+              downloadedSize += downloadProgress.data.chunkLength;
+              progress = totalSize
+                ? Math.round((downloadedSize / totalSize) * 100)
+                : 0;
+              setProgress(`${progress}%`);
+              break;
+            case "Finished":
+              setProgress("Relaunching...");
+              break;
+          }
+        })
+        .then(() => {
+          relaunch();
+        });
+    });
+  }, [newVersion]);
 
   return settingContext.setting ? (
     <Box sx={{ flexGrow: 1 }}>
@@ -184,8 +224,7 @@ const Layout = ({
               {newVersion && (
                 <Button
                   size="small"
-                  href={newVersion.url}
-                  target="_blank"
+                  onClick={() => handleUpdate()}
                   color="warning"
                   variant="outlined"
                   sx={{ ml: 2 }}

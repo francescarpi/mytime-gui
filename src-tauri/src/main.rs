@@ -279,6 +279,8 @@ fn show_in_folder(path: String) {
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_process::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
         .manage(DbConn(Mutex::new(
             db::establish_connection().expect("Error connecting to database"),

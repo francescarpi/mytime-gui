@@ -3,7 +3,7 @@ import Chronological from "./Chronological";
 import Grouped from "./Grouped";
 import Box from "@mui/material/Box";
 import { Task } from "../../hooks/useTasks";
-import { SettingsContext } from "../../providers/SettingsProvider";
+import { SettingsContext } from "../Settings/Provider";
 import { ViewType } from "../../hooks/useSettings";
 
 const TasksTable = ({

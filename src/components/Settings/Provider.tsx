@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useState, useEffect } from "react";
-import { Setting, ViewType } from "../hooks/useSettings";
-import useSettings from "../hooks/useSettings";
-import Settings from "../components/Settings/Settings";
+import useSettings, { Setting, ViewType } from "../../hooks/useSettings";
+import Settings from "./Settings";
 
 const SettingsContext = createContext<{
   setting: Setting | null;
