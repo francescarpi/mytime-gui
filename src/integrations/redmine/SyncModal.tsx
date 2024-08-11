@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "../../providers/SettingsProvider";
+import { SettingsContext } from "../../components/Settings/Provider";
 import Sync from "../../components/Sync/Sync";
 import Alert from "@mui/material/Alert";
 import TableCell from "@mui/material/TableCell";

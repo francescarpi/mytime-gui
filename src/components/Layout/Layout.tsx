@@ -13,7 +13,7 @@ import Badge from "@mui/material/Badge";
 import GoalProgress from "./GoalProgress";
 import { DarkModeSwitch } from "../../styles/switch";
 import { debounce } from "@mui/material/utils";
-import { SettingsContext } from "../../providers/SettingsProvider";
+import { SettingsContext } from "../Settings/Provider";
 import Button from "@mui/material/Button";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";

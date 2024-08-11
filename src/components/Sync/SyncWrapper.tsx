@@ -5,7 +5,7 @@ import {
   useState,
   useReducer,
 } from "react";
-import { SettingsContext } from "../../providers/SettingsProvider";
+import { SettingsContext } from "../Settings/Provider";
 import { getSyncComponent } from "../../integrations";
 import useSync from "../../hooks/useSync";
 import { SuccessType } from "./types";

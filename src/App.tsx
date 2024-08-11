@@ -9,7 +9,7 @@ import TasksTable from "./components/TasksTable/TasksTable";
 import AddTaskForm from "./components/AddTaskForm";
 import TaskEdition from "./components/TaskEdition";
 import SyncWrapper from "./components/Sync/SyncWrapper";
-import { SettingsProvider } from "./providers/SettingsProvider";
+import { SettingsProvider } from "./components/Settings/Provider";
 import LoadingProvider from "./components/Loading/Provider";
 
 import useDate from "./hooks/useDate";

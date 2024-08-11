@@ -6,7 +6,7 @@ import LoadingContext from "./Context";
 const LoadingProvider = ({ children }: { children: ReactNode }) => {
   const [text, setText] = useState<string>("Loading...");
   const [visible, setVisible] = useState<boolean>(false);
-  const [progress, setProgress] = useState<string>("");
+  const [progress, setProgress] = useState<string>("0%");
 
   return (
     <LoadingContext.Provider

@@ -9,7 +9,7 @@ const LoadingContext = createContext<{
   setProgress: (text: string) => void;
 }>({
   text: "Loading...",
-  progress: "",
+  progress: "0%",
   visible: false,
   setVisible: () => {},
   setText: () => {},
