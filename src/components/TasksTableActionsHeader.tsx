@@ -1,13 +1,12 @@
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import { Grid, Typography, Button } from "@mui/material";
 import { Dayjs } from "dayjs";
+import SearchOffIcon from "@mui/icons-material/SearchOff";
+
 import { Task } from "../hooks/useTasks";
 import { formatDuration } from "../utils/dates";
 import CopyToClipboardBtn from "./CopyToClipboardBtn";
-import DateSelector from "./DateSelector";
 import ViewTypeSelector from "./ViewTypeSelector";
-import Button from "@mui/material/Button";
-import SearchOffIcon from "@mui/icons-material/SearchOff";
+import DateSelector from "./DateSelector";
 
 const TasksTableActionsHeader = ({
   searchResult,

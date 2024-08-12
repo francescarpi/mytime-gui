@@ -1,4 +1,5 @@
 import { ReactNode, useState } from "react";
+
 import { Typography, CircularProgress, Backdrop } from "@mui/material";
 
 import LoadingContext from "./Context";

@@ -1,8 +1,7 @@
-import LinearProgress from "@mui/material/LinearProgress";
-import Box from "@mui/material/Box";
+import { LinearProgress, Box, Typography } from "@mui/material";
 import { SxProps, Theme } from "@mui/material/styles";
+
 import { formatDuration } from "../../utils/dates";
-import Typography from "@mui/material/Typography";
 
 const GoalProgress = ({
   sx,

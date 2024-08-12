@@ -1,16 +1,14 @@
 import { useState, useEffect, useMemo } from "react";
-import Modal from "@mui/material/Modal";
-import { StyledBox } from "../styles/modal";
-import { Task } from "../hooks/useTasks";
-import Typography from "@mui/material/Typography";
-import { Button, TextField } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
+
+import { Modal, Typography, Button, TextField, Grid, Box } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs, { Dayjs } from "dayjs";
 import { useSnackbar } from "notistack";
+
+import { StyledBox } from "../styles/modal";
+import { Task } from "../hooks/useTasks";
 
 const TaskEdition = ({
   task,

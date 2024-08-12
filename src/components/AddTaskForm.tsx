@@ -1,16 +1,21 @@
 import { useState, useRef, useEffect } from "react";
+
 import { SxProps, Theme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import { Button, TextField } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import InputAdornment from "@mui/material/InputAdornment";
+import {
+  Button,
+  TextField,
+  Grid,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import IconButton from "@mui/material/IconButton";
-import SearchExternalId from "./SearchExternalId";
 import { invoke } from "@tauri-apps/api/core";
-import { Task } from "../hooks/useTasks";
 import { useConfirm } from "material-ui-confirm";
 import dayjs from "dayjs";
+
+import { Task } from "../hooks/useTasks";
+import SearchExternalId from "./SearchExternalId";
 
 const AddTaskForm = ({
   sx,

@@ -1,8 +1,5 @@
 import { Setting } from "../../hooks/useSettings";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
+import { Box, Grid, TextField, Typography } from "@mui/material";
 
 const WorkingTime = ({
   setting,

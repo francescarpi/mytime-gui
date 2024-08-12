@@ -1,5 +1,5 @@
-import TableCell from "@mui/material/TableCell";
-import Box from "@mui/material/Box";
+import { TableCell, Box } from "@mui/material";
+
 import CopyStringToAddForm from "./CopyStringToAddForm";
 import CopyStringToClipboard from "./CopyStringToClipboard";
 import { Task } from "../../hooks/useTasks";

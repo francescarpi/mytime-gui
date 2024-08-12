@@ -1,8 +1,8 @@
-import { Task } from "../../hooks/useTasks";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
+import { Tooltip, IconButton } from "@mui/material";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
+
+import { Task } from "../../hooks/useTasks";
 
 const StartStopActions = ({
   task,

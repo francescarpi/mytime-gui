@@ -5,14 +5,10 @@ import {
   useState,
   createElement,
 } from "react";
-import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Tab from "@mui/material/Tab";
-import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
+
+import { Modal, Typography, Box, Button, Tab } from "@mui/material";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+
 import WorkingTime from "./WorkingTime";
 import Generic from "./Generic";
 import Shortcuts from "./Shortcuts";

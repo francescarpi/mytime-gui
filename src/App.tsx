@@ -22,8 +22,7 @@ import useVersion from "./hooks/useVersion";
 import useFavorites from "./hooks/useFavourites";
 
 import TasksTableActionsHeader from "./components/TasksTableActionsHeader";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+import { Card, CardContent } from "@mui/material";
 import Favourites from "./components/Favourites";
 import { defaultAddTaskValuesReducer, themeReducer } from "./reducers";
 

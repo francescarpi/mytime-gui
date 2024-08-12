@@ -1,9 +1,10 @@
-import { SyncTask } from "../../hooks/useSync";
 import CloudOffIcon from "@mui/icons-material/CloudOff";
 import CloudDoneIcon from "@mui/icons-material/CloudDone";
 import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
 import CircularProgress from "@mui/material/CircularProgress";
-import Tooltip from "@mui/material/Tooltip";
+import { Tooltip } from "@mui/material";
+
+import { SyncTask } from "../../hooks/useSync";
 import { SuccessType } from "./types";
 
 const TaskIcon = ({

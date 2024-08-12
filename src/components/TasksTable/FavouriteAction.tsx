@@ -1,9 +1,9 @@
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
-import { Task } from "../../hooks/useTasks";
+import { Tooltip, IconButton } from "@mui/material";
 import { SxProps, Theme } from "@mui/material/styles";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+
+import { Task } from "../../hooks/useTasks";
 
 const FavoriteAction = ({
   task,

@@ -1,12 +1,16 @@
 import { ReactNode } from "react";
-import Box from "@mui/material/Box";
-import { Setting } from "../../hooks/useSettings";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
+
+import {
+  Box,
+  TextField,
+  Grid,
+  InputLabel,
+  MenuItem,
+  FormControl,
+} from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+
+import { Setting } from "../../hooks/useSettings";
 
 const Integration = ({
   setting,

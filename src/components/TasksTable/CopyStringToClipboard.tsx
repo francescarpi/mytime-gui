@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import Box from "@mui/material/Box";
+
+import { Box } from "@mui/material";
 import { useSnackbar } from "notistack";
 
 const CopyStringToClipboard = ({

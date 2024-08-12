@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import Modal from "@mui/material/Modal";
-import { StyledBox } from "../styles/modal";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
+
+import { Modal, Box, Typography, Autocomplete, TextField } from "@mui/material";
 import { debounce } from "@mui/material/utils";
+
+import { StyledBox } from "../styles/modal";
 import { Task } from "../hooks/useTasks";
 import useSearch from "../hooks/useSearch";
 
