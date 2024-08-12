@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Previous tasks longer than four days cannot been continued
 - Packages updated
+- Refactor some React code
 
 ## [v0.8.5] - 2024-08-11
 
