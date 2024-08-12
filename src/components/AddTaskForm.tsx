@@ -63,7 +63,11 @@ const AddTaskForm = ({
   useEffect(() => {
     invoke("last_task").then((resp) => {
       let task = resp as Task | null;
-      if (task && dayjs(task.start).isBefore(dayjs(), "date")) {
+      if (
+        task &&
+        dayjs(task.start).isBefore(dayjs(), "date") &&
+        dayjs().diff(dayjs(task.start), "day") < 4
+      ) {
         confirm({
           description: `Do you want to continue with the previous task: "${task.desc}"?`,
         }).then(() => onSubmit(task.project, task.desc, task.external_id));

@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- Previous tasks longer than four days cannot been continued
+
 ## [v0.8.5] - 2024-08-11
 
 ### Added
@@ -13,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Add the 'project' column into the tasks to sync table
 - Enable tauri's updater plugin to detect and install next versions automatically
 
-### Changes
+### Changed
 
 - Rust and node dependencies updated
 
