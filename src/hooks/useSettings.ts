@@ -13,15 +13,7 @@ export interface Setting {
   integration_token: string | null;
   integration_username: string | null;
   integration_extra_param: string | null;
-  work_hours: {
-    monday: number;
-    tuesday: number;
-    wednesday: number;
-    thursday: number;
-    friday: number;
-    saturday: number;
-    sunday: number;
-  };
+  work_hours: { [key: string]: number };
   theme: string;
   theme_secondary: string;
   view_type: ViewType;

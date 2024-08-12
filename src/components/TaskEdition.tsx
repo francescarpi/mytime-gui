@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 
-import { Modal, Typography, Button, TextField, Grid, Box } from "@mui/material";
+import { Modal, Typography, Button, Grid, Box } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
@@ -9,6 +9,7 @@ import { useSnackbar } from "notistack";
 
 import { StyledBox } from "../styles/modal";
 import { Task } from "../hooks/useTasks";
+import MyInputField from "./atoms/MyInputField";
 
 const TaskEdition = ({
   task,
@@ -97,57 +98,34 @@ const TaskEdition = ({
             </Typography>
             <Grid container spacing={2}>
               <Grid item md={2}>
-                <TextField
+                <MyInputField
                   label="Project"
-                  size="small"
-                  fullWidth
-                  required
+                  size="medium"
                   value={project}
                   onChange={(e) => setProject(e.target.value)}
+                  maxLength={100}
                   helperText={!project && "Project is required"}
                   error={errorsEnabled && !project}
-                  inputProps={{
-                    autoComplete: "off",
-                    autoCorrect: "off",
-                    autoCapitalize: "off",
-                    spellCheck: "false",
-                    maxLength: 100,
-                  }}
                 />
               </Grid>
               <Grid item md={8}>
-                <TextField
+                <MyInputField
                   label="Description"
-                  size="small"
-                  fullWidth
-                  required
+                  size="medium"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
+                  maxLength={200}
                   helperText={!description && "Description is required"}
                   error={errorsEnabled && !description}
-                  inputProps={{
-                    autoComplete: "off",
-                    autoCorrect: "off",
-                    autoCapitalize: "off",
-                    spellCheck: "false",
-                    maxLength: 200,
-                  }}
                 />
               </Grid>
               <Grid item md={2}>
-                <TextField
+                <MyInputField
                   label="External Id"
-                  size="small"
-                  fullWidth
+                  size="medium"
                   value={externalId}
                   onChange={(e) => setExternalId(e.target.value)}
-                  inputProps={{
-                    autoComplete: "off",
-                    autoCorrect: "off",
-                    autoCapitalize: "off",
-                    spellCheck: "false",
-                    maxLength: 50,
-                  }}
+                  maxLength={50}
                 />
               </Grid>
               <Grid item md={2}>
