@@ -1,32 +1,34 @@
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Button from "@mui/material/Button";
+import {
+  Box,
+  Modal,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Button,
+  Alert,
+} from "@mui/material";
+
 import TaskIcon from "./TaskIcon";
-import Alert from "@mui/material/Alert";
 import { formatDuration } from "../../utils/dates";
 import { StyledBox } from "../../styles/modal";
 import { SyncProps } from "./types";
 
-const Sync = (props: SyncProps) => {
+const GenericSyncModal = (props: SyncProps) => {
   const {
     opened,
     onClose,
     tasks,
     integrationName,
     success,
-    isSending,
     sendHandler,
-    tasksSent,
     slotHeader,
     slotTableHeader,
     slotTableRow,
+    disableSend,
   } = props;
 
   if (!opened) {
@@ -92,7 +94,7 @@ const Sync = (props: SyncProps) => {
               variant="contained"
               onClick={() => onClose()}
               color="secondary"
-              disabled={isSending}
+              disabled={disableSend}
             >
               Close
             </Button>
@@ -101,7 +103,7 @@ const Sync = (props: SyncProps) => {
                 variant="contained"
                 sx={{ ml: 2 }}
                 onClick={() => sendHandler()}
-                disabled={isSending || tasksSent}
+                disabled={disableSend}
               >
                 Send
               </Button>
@@ -113,4 +115,4 @@ const Sync = (props: SyncProps) => {
   );
 };
 
-export default Sync;
+export default GenericSyncModal;

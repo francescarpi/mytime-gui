@@ -15,11 +15,10 @@ export interface SyncProps {
   tasks: SyncTask[];
   integrationName: string;
   success: SuccessType;
-  isSending: boolean;
   sendHandler: CallableFunction;
-  tasksSent: boolean;
+  disableSend: boolean;
+  setDisableSend: CallableFunction;
   updateTaskExtraParam?: CallableFunction;
-  setTasksSent?: CallableFunction;
   slotHeader?: ReactNode;
   slotTableHeader?: ReactNode;
   slotTableRow?: CallableFunction | null;

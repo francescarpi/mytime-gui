@@ -5,6 +5,7 @@ import {
   useState,
   useReducer,
 } from "react";
+
 import { SettingsContext } from "../Settings/Provider";
 import { getSyncComponent } from "../../integrations";
 import useSync from "../../hooks/useSync";
@@ -37,28 +38,27 @@ const SyncWrapper = ({
   refreshTasks: CallableFunction;
 }) => {
   const { tasks, loadTasks, send, updateTaskExtraParam } = useSync();
-  const [tasksSent, setTasksSent] = useState<boolean>(false);
+  const [disableSend, setDisableSend] = useState<boolean>(false);
   const [success, dispatchSuccess] = useReducer(successReducer, {});
-  const [isSending, setIsSending] = useState<boolean>(false);
   const settingContext = useContext(SettingsContext);
 
   // Reset some data when the modal is opened/closed
   useEffect(() => {
     loadTasks();
     dispatchSuccess({ type: "reset" });
-    setTasksSent(false);
+    setDisableSend(false);
   }, [opened, loadTasks]);
 
   // The modal cannot been closes if tasks are being sent
   const closeHandler = () => {
-    if (!isSending) {
+    if (!disableSend) {
       onClose();
     }
   };
 
   // Handler to send tasks to the integration
   const sendHandler = () => {
-    setIsSending(true);
+    setDisableSend(true);
     dispatchSuccess({ type: "reset" });
 
     const promises = tasks.map(async (task) => {
@@ -82,8 +82,7 @@ const SyncWrapper = ({
 
     // When all tasks are sent, refresh the tasks list
     Promise.all(promises).then(() => {
-      setIsSending(false);
-      setTasksSent(true);
+      setDisableSend(true);
       refreshTasks();
     });
   };
@@ -96,11 +95,10 @@ const SyncWrapper = ({
       tasks,
       integrationName: settingContext.setting?.integration || "",
       success,
-      isSending,
-      tasksSent,
       sendHandler,
       updateTaskExtraParam,
-      setTasksSent,
+      disableSend,
+      setDisableSend,
     },
   );
 };

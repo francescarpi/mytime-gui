@@ -1,12 +1,10 @@
 import { ReactNode } from "react";
-import Box from "@mui/material/Box";
-import { Setting } from "../../hooks/useSettings";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
+
+import { Box, Grid, InputLabel, MenuItem, FormControl } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+
+import { Setting } from "../../hooks/useSettings";
+import MyInputField from "../atoms/MyInputField";
 
 const Integration = ({
   setting,
@@ -45,18 +43,12 @@ const Integration = ({
           </FormControl>
         </Grid>
         <Grid item md={6}>
-          <TextField
+          <MyInputField
             label="URL"
-            fullWidth
             value={setting?.integration_url || ""}
             onChange={onChangeIntegrationUrl}
-            inputProps={{
-              autoComplete: "off",
-              autoCorrect: "off",
-              autoCapitalize: "off",
-              spellCheck: "false",
-              maxLength: 200,
-            }}
+            maxLength={200}
+            size="medium"
           />
         </Grid>
         {children}

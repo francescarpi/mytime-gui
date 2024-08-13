@@ -7,11 +7,10 @@ const useVersion = () => {
   const [newVersion, setNewVersion] = useState<Update | null>(null);
 
   useEffect(() => {
-    getVersion().then((version) => {
-      setVersion(version);
-    });
-
     setTimeout(() => {
+      getVersion().then((version) => {
+        setVersion(version);
+      });
       check().then((update) => {
         if (update?.available) {
           setNewVersion(update);

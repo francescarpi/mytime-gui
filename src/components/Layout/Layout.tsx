@@ -1,28 +1,32 @@
 import { ReactNode, RefObject, useContext, useState, useCallback } from "react";
-import { Search, SearchIconWrapper, StyledInputBase } from "./styles";
-import Toolbar from "@mui/material/Toolbar";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+
+import {
+  Toolbar,
+  AppBar,
+  Box,
+  Typography,
+  IconButton,
+  Badge,
+  Button,
+  Slide,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import IconButton from "@mui/material/IconButton";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { Summary } from "../../hooks/useTasks";
-import Badge from "@mui/material/Badge";
-import GoalProgress from "./GoalProgress";
-import { DarkModeSwitch } from "../../styles/switch";
 import { debounce } from "@mui/material/utils";
-import { SettingsContext } from "../Settings/Provider";
-import Button from "@mui/material/Button";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-import Logo from "../../statics/images/logo.png";
-import Slide from "@mui/material/Slide";
 import { Update } from "@tauri-apps/plugin-updater";
 import { useConfirm } from "material-ui-confirm";
 import { relaunch } from "@tauri-apps/plugin-process";
+
+import { Summary } from "../../hooks/useTasks";
+import GoalProgress from "./GoalProgress";
+import { DarkModeSwitch } from "../../styles/switch";
+import { SettingsContext } from "../Settings/Provider";
+import Logo from "../../statics/images/logo.png";
 import LoadingContext from "../Loading/Context";
+import { Search, SearchIconWrapper, StyledInputBase } from "./styles";
 
 const Layout = ({
   children,

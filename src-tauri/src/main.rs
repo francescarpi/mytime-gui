@@ -54,7 +54,7 @@ fn tasks(date: &str, conn: State<'_, DbConn>) -> Result<Value, Value> {
 }
 
 #[command]
-fn summary(date: &str, conn: State<'_, DbConn>) -> Value {
+async fn summary(date: &str, conn: State<'_, DbConn>) -> Result<Value, Value> {
     let mut db = conn.0.lock().unwrap();
     let date = chrono::NaiveDate::parse_from_str(date, "%Y-%m-%d").unwrap();
 
@@ -75,7 +75,7 @@ fn summary(date: &str, conn: State<'_, DbConn>) -> Value {
 
     let unreported_tasks = TasksRepository::grouped_tasks(&mut db).unwrap();
 
-    json!(Summary {
+    Ok(json!(Summary {
         worked_week,
         worked_today,
         worked_month,
@@ -83,7 +83,7 @@ fn summary(date: &str, conn: State<'_, DbConn>) -> Value {
         goal_week,
         is_running,
         pending_sync_tasks: unreported_tasks.len(),
-    })
+    }))
 }
 
 #[command]

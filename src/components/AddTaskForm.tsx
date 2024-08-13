@@ -1,16 +1,15 @@
 import { useState, useRef, useEffect } from "react";
+
 import { SxProps, Theme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import { Button, TextField } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
-import IconButton from "@mui/material/IconButton";
-import SearchExternalId from "./SearchExternalId";
+import { Button, Grid } from "@mui/material";
 import { invoke } from "@tauri-apps/api/core";
-import { Task } from "../hooks/useTasks";
 import { useConfirm } from "material-ui-confirm";
 import dayjs from "dayjs";
+
+import { Task } from "../hooks/useTasks";
+import SearchExternalId from "./SearchExternalId";
+import MyInputField from "./atoms/MyInputField";
 
 const AddTaskForm = ({
   sx,
@@ -63,7 +62,11 @@ const AddTaskForm = ({
   useEffect(() => {
     invoke("last_task").then((resp) => {
       let task = resp as Task | null;
-      if (task && dayjs(task.start).isBefore(dayjs(), "date")) {
+      if (
+        task &&
+        dayjs(task.start).isBefore(dayjs(), "date") &&
+        dayjs().diff(dayjs(task.start), "day") < 4
+      ) {
         confirm({
           description: `Do you want to continue with the previous task: "${task.desc}"?`,
         }).then(() => onSubmit(task.project, task.desc, task.external_id));
@@ -82,65 +85,28 @@ const AddTaskForm = ({
         <form onSubmit={submit}>
           <Grid container spacing={2}>
             <Grid item md={2}>
-              <TextField
+              <MyInputField
                 label="Project"
-                size="small"
-                fullWidth
-                required
                 value={project}
                 onChange={(e) => setProject(e.target.value)}
-                inputProps={{
-                  autoComplete: "off",
-                  autoCorrect: "off",
-                  autoCapitalize: "off",
-                  spellCheck: "false",
-                  maxLength: 100,
-                }}
               />
             </Grid>
             <Grid item md={5}>
-              <TextField
+              <MyInputField
                 label="Description"
-                size="small"
-                fullWidth
-                required
                 value={description}
+                maxLength={200}
                 onChange={(e) => setDescription(e.target.value)}
-                inputProps={{
-                  autoComplete: "off",
-                  autoCorrect: "off",
-                  autoCapitalize: "off",
-                  spellCheck: "false",
-                  maxLength: 200,
-                }}
               />
             </Grid>
             <Grid item md={3}>
-              <TextField
+              <MyInputField
                 label="External Id"
-                size="small"
-                fullWidth
                 value={externalId}
+                maxLength={50}
                 onChange={(e) => setExternalId(e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        size="small"
-                        onClick={() => setShowSearchExtId(true)}
-                      >
-                        <SearchIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                inputProps={{
-                  autoComplete: "off",
-                  autoCorrect: "off",
-                  autoCapitalize: "off",
-                  spellCheck: "false",
-                  maxLength: 50,
-                }}
+                showSearch={true}
+                searchHandler={() => setShowSearchExtId(true)}
               />
             </Grid>
             <Grid item md={1}>

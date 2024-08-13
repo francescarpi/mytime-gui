@@ -1,6 +1,7 @@
-import { Setting } from "../../hooks/useSettings";
 import { MuiColorInput } from "mui-color-input";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
+
+import { Setting } from "../../hooks/useSettings";
 
 const Generic = ({
   setting,

@@ -7,6 +7,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import InfoIcon from "@mui/icons-material/Info";
 import Tooltip from "@mui/material/Tooltip";
 import Link from "@mui/material/Link";
+import MyInputField from "../../components/atoms/MyInputField";
 
 const JiraIntegrationSettings = ({
   setting,
@@ -23,19 +24,13 @@ const JiraIntegrationSettings = ({
   return (
     <Integration setting={setting} setSetting={setSetting}>
       <Grid item md={6}>
-        <TextField
+        <MyInputField
           label="Username (email)"
-          fullWidth
           value={setting?.integration_username || ""}
           onChange={onChangeUsername}
+          maxLength={100}
           type="email"
-          inputProps={{
-            autoComplete: "off",
-            autoCorrect: "off",
-            autoCapitalize: "off",
-            spellCheck: "false",
-            maxLength: 100,
-          }}
+          size="medium"
         />
       </Grid>
       <Grid item md={6}>

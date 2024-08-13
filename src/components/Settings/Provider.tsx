@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useState, useEffect } from "react";
+
 import useSettings, { Setting, ViewType } from "../../hooks/useSettings";
 import Settings from "./Settings";
 

@@ -1,15 +1,18 @@
+import {
+  Box,
+  Typography,
+  Modal,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Button,
+} from "@mui/material";
+
 import { Task } from "../../hooks/useTasks";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import { formatDuration, dateToStrTime } from "../../utils/dates";
-import Button from "@mui/material/Button";
 import { useConfirm } from "material-ui-confirm";
 import { StyledBox } from "../../styles/modal";
 import EditDeleteActions from "./EditDeleteActions";

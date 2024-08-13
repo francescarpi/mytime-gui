@@ -1,11 +1,9 @@
-import Box from "@mui/material/Box";
-import useInfo from "../../hooks/useInfo";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
+import { Box, Grid, Button, Link } from "@mui/material";
 import { invoke } from "@tauri-apps/api/core";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import Link from "@mui/material/Link";
 import GradingIcon from "@mui/icons-material/Grading";
+
+import useInfo from "../../hooks/useInfo";
 
 const Info = () => {
   const { info } = useInfo();

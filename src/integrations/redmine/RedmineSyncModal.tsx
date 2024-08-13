@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "../../components/Settings/Provider";
-import Sync from "../../components/Sync/Sync";
+import GenericSyncModal from "../../components/Sync/GenericSyncModal";
 import Alert from "@mui/material/Alert";
 import TableCell from "@mui/material/TableCell";
 import Box from "@mui/material/Box";
@@ -13,7 +13,8 @@ import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import Tooltip from "@mui/material/Tooltip";
 
 const SyncModal = (props: SyncProps) => {
-  const { opened, tasks, success, updateTaskExtraParam, setTasksSent } = props;
+  const { opened, tasks, success, updateTaskExtraParam, setDisableSend } =
+    props;
 
   const settingContext = useContext(SettingsContext);
   const { activities, projectActivities, loadRedmineProjectActivities } =
@@ -23,7 +24,13 @@ const SyncModal = (props: SyncProps) => {
   useEffect(() => {
     setTimeout(() => {
       // Load the project activities for each task
-      if (opened && tasks.length && !loadingActivities) {
+      if (
+        opened &&
+        tasks.length &&
+        !loadingActivities &&
+        Object.keys(projectActivities).length === 0
+      ) {
+        setDisableSend(true);
         setLoadingActivities(true);
         const uniqueExternalIds = Object.keys(
           tasks.reduce((acc: { [key: string]: boolean }, task: SyncTask) => {
@@ -32,10 +39,12 @@ const SyncModal = (props: SyncProps) => {
           }, {}),
         );
 
-        uniqueExternalIds.forEach((externalId) => {
-          if (projectActivities[externalId] === undefined) {
-            loadRedmineProjectActivities(externalId);
-          }
+        const activitiesPromises: Array<Promise<void>> = uniqueExternalIds
+          .filter((externalId) => projectActivities[externalId] === undefined)
+          .map((externalId) => loadRedmineProjectActivities(externalId));
+
+        Promise.all(activitiesPromises).then(() => {
+          setDisableSend(false);
         });
 
         setLoadingActivities(false);
@@ -81,9 +90,9 @@ const SyncModal = (props: SyncProps) => {
   ]);
 
   const handleChangeActivity = (task: SyncTask, activity: string) => {
-    if (updateTaskExtraParam && setTasksSent) {
+    if (updateTaskExtraParam && setDisableSend) {
       updateTaskExtraParam(task.id, activity);
-      setTasksSent(false);
+      setDisableSend(false);
     }
   };
 
@@ -129,7 +138,7 @@ const SyncModal = (props: SyncProps) => {
   };
 
   return (
-    <Sync
+    <GenericSyncModal
       slotHeader={renderHeader()}
       slotTableHeader={<TableCell align="center">Activity</TableCell>}
       slotTableRow={renderRow}

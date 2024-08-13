@@ -1,7 +1,6 @@
 import { useCallback, useContext } from "react";
 
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
 import { ViewType } from "../hooks/useSettings";
 import { SettingsContext } from "./Settings/Provider";
