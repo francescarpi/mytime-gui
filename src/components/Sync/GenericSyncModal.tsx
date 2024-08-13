@@ -17,19 +17,18 @@ import { formatDuration } from "../../utils/dates";
 import { StyledBox } from "../../styles/modal";
 import { SyncProps } from "./types";
 
-const Sync = (props: SyncProps) => {
+const GenericSyncModal = (props: SyncProps) => {
   const {
     opened,
     onClose,
     tasks,
     integrationName,
     success,
-    isSending,
     sendHandler,
-    tasksSent,
     slotHeader,
     slotTableHeader,
     slotTableRow,
+    disableSend,
   } = props;
 
   if (!opened) {
@@ -95,7 +94,7 @@ const Sync = (props: SyncProps) => {
               variant="contained"
               onClick={() => onClose()}
               color="secondary"
-              disabled={isSending}
+              disabled={disableSend}
             >
               Close
             </Button>
@@ -104,7 +103,7 @@ const Sync = (props: SyncProps) => {
                 variant="contained"
                 sx={{ ml: 2 }}
                 onClick={() => sendHandler()}
-                disabled={isSending || tasksSent}
+                disabled={disableSend}
               >
                 Send
               </Button>
@@ -116,4 +115,4 @@ const Sync = (props: SyncProps) => {
   );
 };
 
-export default Sync;
+export default GenericSyncModal;
