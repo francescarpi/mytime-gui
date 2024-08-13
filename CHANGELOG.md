@@ -12,6 +12,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Packages updated
 - Refactor some React code
 
+### Fixed
+
+- Disable 'send' button while redmine's activites are loading
+
 ## [v0.8.5] - 2024-08-11
 
 ### Added
