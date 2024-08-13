@@ -1,5 +1,5 @@
 import { Setting } from "../../hooks/useSettings";
-import { Box, Grid, TextField, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 
 import MyInputField from "../atoms/MyInputField";
 
