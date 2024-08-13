@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.8.6] - 2024-08-13
+
 ### Changed
 
 - Previous tasks longer than four days cannot been continued
