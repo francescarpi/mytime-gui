@@ -82,7 +82,7 @@ const AddTaskForm = ({
         setExternalId={setExternalId}
       />
       <Box sx={{ ...sx, flexgrow: 1 }}>
-        <form onSubmit={submit}>
+        <form onSubmit={submit} data-testid="add-task-form">
           <Grid container spacing={2}>
             <Grid item md={2}>
               <MyInputField

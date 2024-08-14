@@ -52,10 +52,6 @@ const TaskEdition = ({
 
   const submit = (e: any) => {
     e.preventDefault();
-    console.log("Form valid: ", e.target.checkValidity());
-    console.log("Start is valid: ", startIsValid);
-    console.log("End is valid: ", endIsValid);
-
     if (
       !e.target.checkValidity() ||
       !startIsValid ||

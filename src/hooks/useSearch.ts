@@ -12,7 +12,6 @@ const useSearch = ({ limit = null }: { limit?: number | null }) => {
     if (query === "") {
       setResult([]);
     } else {
-      console.log("Search tasks with query: ", query);
       invoke("search", { query, limit }).then((res) => {
         const totalWorked = (res as Task[]).reduce(
           (acc, task) => acc + task.duration,

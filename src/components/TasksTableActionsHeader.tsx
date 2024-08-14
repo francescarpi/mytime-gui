@@ -46,7 +46,7 @@ const TasksTableActionsHeader = ({
       </Button>
     </Typography>
   ) : (
-    <Grid container sx={{ mb: 2 }}>
+    <Grid container sx={{ mb: 2 }} data-testid="tasks-filter">
       <DateSelector
         setPrevious={setPreviousDate}
         setNext={setNextDate}

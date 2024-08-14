@@ -28,7 +28,6 @@ const useSettings = () => {
 
   const loadSettings = useCallback(() => {
     invoke("settings").then((res) => {
-      console.log("Settings loaded", res);
       setSetting(res as Setting);
     });
   }, []);

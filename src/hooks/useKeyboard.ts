@@ -36,7 +36,6 @@ const useKeyboard = (
   );
 
   useEffect(() => {
-    console.log("Register keydown event");
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);

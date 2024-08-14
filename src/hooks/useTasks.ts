@@ -36,7 +36,6 @@ const useTasks = (date: Dayjs, setToday: CallableFunction) => {
 
   const refresh = useCallback(() => {
     const d = date.format("YYYY-MM-DD");
-    console.log("Refresh", d);
     invoke("tasks", { date: d }).then((res) => setTasks(res as Task[]));
     invoke("summary", { date: d }).then((res) => setSummary(res as Summary));
   }, [date]);
@@ -47,11 +46,9 @@ const useTasks = (date: Dayjs, setToday: CallableFunction) => {
 
   useEffect(() => {
     if (intervalId) {
-      console.log(`Previous Interval cleared: ${intervalId}`);
       clearInterval(intervalId);
       setIntervalId(null);
     }
-    console.log("Interval registered");
     setIntervalId(setInterval(() => refresh(), REFRESH_INTERVAL));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
