@@ -57,6 +57,7 @@ const TasksTable = ({
         width: "100%",
         height: 350,
       }}
+      data-testid="tasks-table"
     >
       {isViewGrouped && !searchMode ? (
         <Grouped {...props} />

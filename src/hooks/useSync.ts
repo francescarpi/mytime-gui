@@ -28,13 +28,11 @@ const useSync = () => {
     });
   }, []);
 
-  const send = (id: string, extraParam: string | null): Promise<void> => {
-    console.log("Send task with ID:", id, extraParam);
-    return invoke("send_to_integration", {
+  const send = (id: string, extraParam: string | null): Promise<void> =>
+    invoke("send_to_integration", {
       id,
       extraParam,
     });
-  };
 
   const updateTaskExtraParam = (id: string, extraParam: string | null) => {
     const newTasks = [...tasks];

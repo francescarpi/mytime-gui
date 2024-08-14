@@ -62,7 +62,6 @@ const useRedmine = () => {
   }, []);
 
   const loadRedmineProjectActivities = async (externalId: string) => {
-    console.log("load project activities", externalId);
     dispatchProjectActivities({ type: "init", id: externalId });
     return invoke("project_activities", { externalId })
       .then((res: any) => {

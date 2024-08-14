@@ -71,7 +71,6 @@ const SyncWrapper = ({
       return send(task.id, task.extra_param)
         .then(() => dispatchSuccess({ type: "success", id: task.id }))
         .catch((error) => {
-          console.log(error);
           dispatchSuccess({
             type: "error",
             id: task.id,

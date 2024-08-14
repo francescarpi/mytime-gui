@@ -1,0 +1,27 @@
+name: Node Tests
+
+on:
+  push:
+
+jobs:
+  rust_tests:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Run tests
+        run: |
+          npm ci
+          npm run test
