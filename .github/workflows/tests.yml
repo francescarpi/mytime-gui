@@ -35,13 +35,13 @@ jobs:
         run: |
           cd src-tauri
           cargo test
-    node_tests:
-      permissions:
-        contents: write
-      strategy:
-        fail-fast: false
-        matrix:
-          platform: [macos-latest, ubuntu-latest, windows-latest]
-      runs-on: ${{ matrix.platform }}
-    steps:
-      - uses: actions/checkout@v3
+  node_tests:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.platform }}
+  steps:
+    - uses: actions/checkout@v3
