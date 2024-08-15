@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export const defaultSettings = {
   dark_mode: true,
   id: 1,
@@ -31,3 +33,15 @@ export const defaultSummary = {
   worked_today: 0,
   worked_week: 0,
 };
+
+export const task1 = (date: Dayjs) => ({
+  desc: "Task 1",
+  duration: 60,
+  end: date.hour(10).minute(1).second(0),
+  external_id: "12345",
+  favourite: false,
+  id: 1,
+  project: "FOO",
+  reported: true,
+  start: date.hour(10).minute(0).second(0),
+});

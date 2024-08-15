@@ -67,7 +67,10 @@ const Chronological = ({
         </TableHead>
         <TableBody>
           {tasks.map((task) => (
-            <TableRow key={`${task.id}-${task.reported}-${task.end}`}>
+            <TableRow
+              key={`${task.id}-${task.reported}-${task.end}`}
+              data-testid="task-row"
+            >
               <TableCell align="center">
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <FavoriteAction

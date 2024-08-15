@@ -81,7 +81,10 @@ const Grouped = ({
           </TableHead>
           <TableBody>
             {tasks.map((task) => (
-              <TableRow key={`${task.id}-${task.reported}-${task.end}`}>
+              <TableRow
+                key={`${task.id}-${task.reported}-${task.end}`}
+                data-testid="task-row"
+              >
                 <ProjDescExtId
                   task={task}
                   dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
