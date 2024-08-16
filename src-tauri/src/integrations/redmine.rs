@@ -1,6 +1,6 @@
 use super::{Error, Integration};
 use crate::models::{GroupedTask, Setting};
-use crate::repositories::SettingsRepository;
+use crate::repositories::settings::SettingsRepository;
 use crate::utils::dates::format_duration;
 use crate::{integrations, DbConn};
 use oxhttp::model::{Method, Request, Status};

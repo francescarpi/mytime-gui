@@ -20,7 +20,7 @@ use tauri::{command, State};
 
 use chrono::NaiveTime;
 use integrations::*;
-use repositories::{SettingsRepository, TasksRepository};
+use repositories::{settings::SettingsRepository, tasks::TasksRepository};
 use serde::Serialize;
 use serde_json::{json, Value};
 

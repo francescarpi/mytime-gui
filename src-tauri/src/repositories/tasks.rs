@@ -1,32 +1,14 @@
-use chrono::Local;
-use chrono::{Datelike, NaiveDate, NaiveTime};
+use chrono::{Datelike, Local, NaiveDate, NaiveTime};
 use diesel::dsl::sql_query;
 use diesel::prelude::*;
 use diesel::sql_types::{Integer, Text};
-use diesel::SqliteConnection;
-use log;
+use diesel::{QueryResult, SqliteConnection};
 
-use crate::models::*;
-use crate::schema::*;
+use crate::models::{DatesWithTasks, Duration, GroupedTask, Task, TaskWithDuration};
+use crate::schema::tasks;
 
 const DURATION_SQL: &str ="COALESCE(STRFTIME('%s', end), STRFTIME('%s', DATETIME('now', 'localtime'))) - STRFTIME('%s', start)";
 const DEFAULT_TASKS_ORDER: &str = "start DESC, id";
-
-pub struct SettingsRepository;
-
-impl SettingsRepository {
-    pub fn get_settings(c: &mut SqliteConnection) -> QueryResult<Setting> {
-        settings::table.first::<Setting>(c)
-    }
-
-    pub fn update(c: &mut SqliteConnection, setting: &Setting) -> QueryResult<Setting> {
-        diesel::update(settings::table.find(setting.id))
-            .set(setting)
-            .execute(c)
-            .expect("Error updating settings");
-        Self::get_settings(c)
-    }
-}
 
 pub struct TasksRepository;
 

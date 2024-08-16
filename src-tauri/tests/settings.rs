@@ -7,7 +7,7 @@ mod tests {
     use app::models::integration::IntegrationType;
     use app::models::view_type::ViewType;
     use app::models::work_hours::WorkHours;
-    use app::repositories::SettingsRepository;
+    use app::repositories::settings::SettingsRepository;
 
     use crate::common::get_db_connection;
 
