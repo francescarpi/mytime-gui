@@ -10,6 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Add frontend tests using vitest
 
+### Changed
+
+- Refactor on repositories
+- Refactor on commands
+
 ## [v0.8.6] - 2024-08-13
 
 ### Changed
