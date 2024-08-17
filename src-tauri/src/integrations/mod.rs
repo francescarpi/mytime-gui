@@ -1,5 +1,4 @@
-use crate::models::integration::IntegrationType;
-use crate::models::{GroupedTask, Setting};
+use crate::models::{integration::IntegrationType, settings::Setting, tasks::GroupedTask};
 use jira::Jira;
 use redmine::Redmine;
 use std::fmt;

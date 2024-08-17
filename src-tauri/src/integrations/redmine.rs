@@ -1,5 +1,6 @@
 use super::{Error, Integration};
-use crate::models::{GroupedTask, Setting};
+use crate::models::settings::Setting;
+use crate::models::tasks::GroupedTask;
 use crate::repositories::settings::SettingsRepository;
 use crate::utils::dates::format_duration;
 use crate::{integrations, DbConn};

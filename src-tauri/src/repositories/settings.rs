@@ -1,4 +1,4 @@
-use crate::models::Setting;
+use crate::models::settings::Setting;
 use crate::schema::settings;
 use diesel::prelude::*;
 use diesel::{QueryResult, SqliteConnection};

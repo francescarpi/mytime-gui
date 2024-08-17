@@ -4,7 +4,7 @@ use tauri::{command, State};
 
 use crate::{
     db,
-    models::Setting,
+    models::settings::Setting,
     repositories::{settings::SettingsRepository, tasks::TasksRepository},
 };
 
