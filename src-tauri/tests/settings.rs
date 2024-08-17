@@ -5,7 +5,7 @@ pub mod common;
 #[cfg(test)]
 mod tests {
     use app::models::integration::IntegrationType;
-    use app::models::view_type::ViewType;
+    use app::models::types::view_type::ViewType;
     use app::models::work_hours::WorkHours;
     use app::repositories::settings::SettingsRepository;
 
