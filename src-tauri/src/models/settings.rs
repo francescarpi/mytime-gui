@@ -3,7 +3,10 @@ use chrono::{Datelike, NaiveDate};
 use diesel::{deserialize::Queryable, query_builder::AsChangeset};
 use serde::{Deserialize, Serialize};
 
-use super::{integration, types::view_type::ViewType, work_hours};
+use super::{
+    integration,
+    types::{view_type::ViewType, work_hours::WorkHours},
+};
 
 // Setting is a struct that represents the settings for the app.
 #[derive(Deserialize, Debug, Queryable, AsChangeset, Serialize)]
@@ -13,7 +16,7 @@ pub struct Setting {
     pub integration: Option<integration::IntegrationType>,
     pub integration_url: Option<String>,
     pub integration_token: Option<String>,
-    pub work_hours: work_hours::WorkHours,
+    pub work_hours: WorkHours,
     pub theme: String,
     pub view_type: ViewType,
     pub dark_mode: bool,

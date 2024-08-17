@@ -6,7 +6,7 @@ pub mod common;
 mod tests {
     use app::models::integration::IntegrationType;
     use app::models::types::view_type::ViewType;
-    use app::models::work_hours::WorkHours;
+    use app::models::types::work_hours::WorkHours;
     use app::repositories::settings::SettingsRepository;
 
     use crate::common::get_db_connection;
