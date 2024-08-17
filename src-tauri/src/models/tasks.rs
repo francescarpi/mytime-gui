@@ -5,7 +5,7 @@ use diesel::deserialize::QueryableByName;
 use diesel::sql_types::{Date, Integer, Nullable, Text};
 use serde::{Deserialize, Serialize};
 
-use super::ids;
+use super::types::list_ids::ListIds;
 
 #[derive(Deserialize, Debug, Queryable, QueryableByName, Serialize)]
 #[diesel(table_name=tasks)]
@@ -56,7 +56,7 @@ pub struct GroupedTask {
     #[diesel(sql_type = Date)]
     pub date: NaiveDate,
     #[diesel(sql_type = Text)]
-    pub ids: ids::ListIds,
+    pub ids: ListIds,
     #[diesel(sql_type = Nullable<Text>)]
     pub project: Option<String>,
 }
