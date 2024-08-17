@@ -3,9 +3,9 @@ use serde::Serialize;
 use serde_json::{json, Value};
 use tauri::{command, State};
 
-use crate::repositories::{settings::SettingsRepository, tasks::TasksRepository};
+use crate::{db::DbConn, settings::repository::SettingsRepository};
 
-use super::DbConn;
+use super::repository::TasksRepository;
 
 #[derive(Debug, Clone, Serialize)]
 struct Summary {

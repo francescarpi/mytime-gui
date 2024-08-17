@@ -1,7 +1,8 @@
-use crate::models::settings::Setting;
 use crate::schema::settings;
 use diesel::prelude::*;
 use diesel::{QueryResult, SqliteConnection};
+
+use super::models::Setting;
 
 pub struct SettingsRepository;
 

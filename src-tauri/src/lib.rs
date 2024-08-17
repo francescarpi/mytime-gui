@@ -1,4 +1,5 @@
-pub mod models;
-pub mod repositories;
+pub mod db;
 pub mod schema;
+pub mod settings;
+pub mod tasks;
 pub mod utils;

@@ -3,18 +3,18 @@ use std::process::Command;
 use tauri::{command, State};
 
 use crate::{
-    db,
-    models::settings::Setting,
-    repositories::{settings::SettingsRepository, tasks::TasksRepository},
+    db::{self, DbConn},
+    settings::repository::SettingsRepository,
+    tasks::repository::TasksRepository,
 };
-
-use super::DbConn;
 
 #[cfg(target_os = "linux")]
 use std::{fs::metadata, path::PathBuf};
 
 #[cfg(target_os = "linux")]
 use fork::{daemon, Fork};
+
+use super::models::Setting;
 
 #[command]
 pub fn settings(conn: State<'_, DbConn>) -> Value {

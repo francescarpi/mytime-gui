@@ -4,10 +4,10 @@ pub mod common;
 
 #[cfg(test)]
 mod tests {
-    use app::models::types::integration_type::IntegrationType;
-    use app::models::types::view_type::ViewType;
-    use app::models::types::work_hours::WorkHours;
-    use app::repositories::settings::SettingsRepository;
+    use app::settings::{
+        repository::SettingsRepository,
+        types::{integration_type::IntegrationType, view_type::ViewType, work_hours::WorkHours},
+    };
 
     use crate::common::get_db_connection;
 

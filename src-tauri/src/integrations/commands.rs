@@ -2,11 +2,10 @@ use std::env;
 use tauri::{command, State};
 
 use crate::{
-    get_integration, integrations,
-    repositories::{settings::SettingsRepository, tasks::TasksRepository},
+    db::DbConn, settings::repository::SettingsRepository, tasks::repository::TasksRepository,
 };
 
-use super::DbConn;
+use super::{get_integration, Error};
 
 #[command]
 pub async fn send_to_integration(
@@ -37,6 +36,6 @@ pub async fn send_to_integration(
             }
         }
     } else {
-        Err(integrations::Error::IntegrationDoesNotExistError.to_string())
+        Err(Error::IntegrationDoesNotExistError.to_string())
     }
 }

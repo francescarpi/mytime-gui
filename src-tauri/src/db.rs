@@ -1,9 +1,13 @@
 use diesel::{Connection, SqliteConnection};
 use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 use platform_dirs::AppDirs;
+use std::sync::Mutex;
 use std::{fs, path::Path};
 
 const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
+
+#[derive()]
+pub struct DbConn(pub Mutex<SqliteConnection>);
 
 fn db_dir() -> AppDirs {
     AppDirs::new(Some("mytime"), true).unwrap()

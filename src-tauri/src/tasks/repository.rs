@@ -4,8 +4,9 @@ use diesel::prelude::*;
 use diesel::sql_types::{Integer, Text};
 use diesel::{QueryResult, SqliteConnection};
 
-use crate::models::tasks::{DatesWithTasks, Duration, GroupedTask, Task, TaskWithDuration};
 use crate::schema::tasks;
+
+use super::models::{DatesWithTasks, Duration, GroupedTask, Task, TaskWithDuration};
 
 const DURATION_SQL: &str ="COALESCE(STRFTIME('%s', end), STRFTIME('%s', DATETIME('now', 'localtime'))) - STRFTIME('%s', start)";
 const DEFAULT_TASKS_ORDER: &str = "start DESC, id";

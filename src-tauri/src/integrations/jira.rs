@@ -1,5 +1,5 @@
-use crate::models::settings::Setting;
-use crate::models::tasks::GroupedTask;
+use crate::settings::models::Setting;
+use crate::tasks::models::GroupedTask;
 
 use super::{Error, Integration};
 use base64::{engine::general_purpose::STANDARD, Engine as _};

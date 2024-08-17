@@ -1,11 +1,14 @@
-use crate::models::{
-    settings::Setting, tasks::GroupedTask, types::integration_type::IntegrationType,
-};
 use jira::Jira;
 use redmine::Redmine;
 use std::fmt;
 use url::Url;
 
+use crate::{
+    settings::{models::Setting, types::integration_type::IntegrationType},
+    tasks::models::GroupedTask,
+};
+
+pub mod commands;
 pub mod jira;
 pub mod redmine;
 
