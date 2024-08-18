@@ -8,12 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- Add frontend tests using vitest
+- Add frontend tests with vitest
 
 ### Changed
 
-- Refactor on repositories
-- Refactor on commands
+- Code refactored
 
 ## [v0.8.6] - 2024-08-13
 
