@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use app::utils::dates;
+    use crate::utils::dates::dates;
 
     #[test]
     fn format_durations() {

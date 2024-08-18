@@ -1,5 +1,7 @@
+use crate::settings::models::Setting;
+use crate::tasks::models::GroupedTask;
+
 use super::{Error, Integration};
-use crate::models::{GroupedTask, Setting};
 use base64::{engine::general_purpose::STANDARD, Engine as _};
 use oxhttp::model::{Method, Request, Status};
 use oxhttp::Client;

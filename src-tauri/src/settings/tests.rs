@@ -1,15 +1,14 @@
-extern crate app;
-
-pub mod common;
-
 #[cfg(test)]
 mod tests {
-    use app::models::integration::IntegrationType;
-    use app::models::view_type::ViewType;
-    use app::models::work_hours::WorkHours;
-    use app::repositories::SettingsRepository;
-
-    use crate::common::get_db_connection;
+    use crate::{
+        settings::{
+            repository::SettingsRepository,
+            types::{
+                integration_type::IntegrationType, view_type::ViewType, work_hours::WorkHours,
+            },
+        },
+        tests::get_db_connection,
+    };
 
     #[test]
     fn create_default_settings() {
