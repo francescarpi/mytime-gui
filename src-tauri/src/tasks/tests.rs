@@ -1,11 +1,6 @@
-extern crate app;
-
-pub mod common;
-
 #[cfg(test)]
 mod tests {
-    use crate::common::get_db_connection;
-    use app::{schema::tasks, tasks::repository::TasksRepository};
+    use crate::{schema::tasks, tasks::repository::TasksRepository, tests::get_db_connection};
     use chrono::{offset::Local, Datelike, NaiveDateTime, NaiveTime, Timelike};
     use diesel::prelude::*;
 

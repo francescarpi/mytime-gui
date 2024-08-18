@@ -5,6 +5,7 @@ pub mod integrations;
 pub mod schema;
 pub mod settings;
 pub mod tasks;
+pub mod tests;
 pub mod utils;
 
 use env_logger;

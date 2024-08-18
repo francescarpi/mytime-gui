@@ -4,7 +4,7 @@ use crate::integrations;
 use crate::settings::models::Setting;
 use crate::settings::repository::SettingsRepository;
 use crate::tasks::models::GroupedTask;
-use crate::utils::dates::format_duration;
+use crate::utils::dates::dates::format_duration;
 use oxhttp::model::{Method, Request, Status};
 use oxhttp::Client;
 use serde::{Deserialize, Serialize};
