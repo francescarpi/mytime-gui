@@ -4,17 +4,13 @@ diesel::table! {
     settings (id) {
         id -> Integer,
         integration -> Nullable<Text>,
-        integration_url -> Nullable<Text>,
-        integration_token -> Nullable<Text>,
         work_hours -> Text,
         theme -> Text,
         view_type -> Text,
         dark_mode -> Bool,
-        tour_completed -> Bool,
-        integration_extra_param -> Nullable<Text>,
         right_sidebar_open -> Bool,
         theme_secondary -> Text,
-        integration_username -> Nullable<Text>,
+        integration_config -> Text,
     }
 }
 
@@ -31,4 +27,7 @@ diesel::table! {
     }
 }
 
-diesel::allow_tables_to_appear_in_same_query!(settings, tasks,);
+diesel::allow_tables_to_appear_in_same_query!(
+    settings,
+    tasks,
+);

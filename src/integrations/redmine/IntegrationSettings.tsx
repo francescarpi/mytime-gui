@@ -16,14 +16,20 @@ const RedmineIntegrationSettings = ({
   setSetting: CallableFunction;
 }) => {
   const { activities } = useRedmine();
-  const onChangeRedmineActivity = (value: string) => {
-    setSetting({
-      ...setting,
-      integration_extra_param: value,
-    });
+  const onChangeRedmineActivity = (default_activity: string) => {
+    const integration_config = {
+      ...setting?.integration_config,
+      default_activity,
+    };
+    setSetting({ ...setting, integration_config });
   };
-  const onChangeIntegrationToken = (e: any) =>
-    setSetting({ ...setting, integration_token: e.target.value });
+  const onChangeIntegrationToken = (e: any) => {
+    const integration_config = {
+      ...setting?.integration_config,
+      token: e.target.value,
+    };
+    setSetting({ ...setting, integration_config });
+  };
 
   return (
     <Integration setting={setting} setSetting={setSetting}>
@@ -31,7 +37,7 @@ const RedmineIntegrationSettings = ({
         <TextField
           label="Token"
           fullWidth
-          value={setting?.integration_token || ""}
+          value={setting?.integration_config?.token || ""}
           onChange={onChangeIntegrationToken}
           type="password"
           inputProps={{
@@ -55,7 +61,7 @@ const RedmineIntegrationSettings = ({
       <Grid item md={6}>
         <RedmineActivitySelect
           activities={activities}
-          value={setting?.integration_extra_param || null}
+          value={setting?.integration_config?.default_activity || null}
           onChange={onChangeRedmineActivity}
           disabled={!activities.length}
         />

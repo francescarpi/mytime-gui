@@ -40,8 +40,8 @@ impl Integration for Jira {
                 &"worklog".to_string(),
             ],
         );
-        let token = &settings.integration_token.as_ref().unwrap();
-        let username = &settings.integration_username.as_ref().unwrap();
+        let token = &settings.integration_config.0["url"].as_str().unwrap();
+        let username = &settings.integration_config.0["email"].as_str().unwrap();
         let body = serde_json::json!({
                 "timeSpentSeconds": task.duration,
         });
@@ -69,6 +69,11 @@ impl Integration for Jira {
             }
             Err(_) => Err(Error::UnkownHostError),
         }
+    }
+
+    fn is_valid(&self, settings: &Setting) -> bool {
+        let value = &settings.integration_config.0;
+        value["url"].is_string() && value["token"].is_string() && value["email"].is_string()
     }
 }
 

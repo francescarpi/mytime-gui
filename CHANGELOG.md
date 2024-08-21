@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - Code refactored
+- Integration configuration changed to json (BREAKING CHANGE!)
 
 ## [v0.8.6] - 2024-08-13
 

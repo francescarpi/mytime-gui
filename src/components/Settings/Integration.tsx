@@ -20,8 +20,13 @@ const Integration = ({
     setSetting({ ...setting, integration });
   };
 
-  const onChangeIntegrationUrl = (e: any) =>
-    setSetting({ ...setting, integration_url: e.target.value });
+  const onChangeIntegrationUrl = (e: any) => {
+    const integration_config = {
+      ...setting?.integration_config,
+      url: e.target.value,
+    };
+    setSetting({ ...setting, integration_config });
+  };
 
   return (
     <Box>
@@ -45,7 +50,7 @@ const Integration = ({
         <Grid item md={6}>
           <MyInputField
             label="URL"
-            value={setting?.integration_url || ""}
+            value={setting?.integration_config?.url || ""}
             onChange={onChangeIntegrationUrl}
             maxLength={200}
             size="medium"
