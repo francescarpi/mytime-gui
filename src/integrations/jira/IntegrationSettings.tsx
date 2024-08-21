@@ -16,21 +16,23 @@ const JiraIntegrationSettings = ({
   setting: Setting | null;
   setSetting: CallableFunction;
 }) => {
-  const onChangeUsername = (e: any) => {
-    const integration_config = {
-      ...setting?.integration_config,
-      email: e.target.value,
-    };
-    setSetting({ ...setting, integration_config });
-  };
+  const onChangeUsername = (e: any) =>
+    setSetting({
+      ...setting,
+      integration_config: {
+        ...setting?.integration_config,
+        email: e.target.value,
+      },
+    });
 
-  const onChangeIntegrationToken = (e: any) => {
-    const integration_config = {
-      ...setting?.integration_config,
-      token: e.target.value,
-    };
-    setSetting({ ...setting, integration_config });
-  };
+  const onChangeIntegrationToken = (e: any) =>
+    setSetting({
+      ...setting,
+      integration_config: {
+        ...setting?.integration_config,
+        token: e.target.value,
+      },
+    });
 
   return (
     <Integration setting={setting} setSetting={setSetting}>

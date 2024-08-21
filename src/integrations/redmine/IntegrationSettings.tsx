@@ -16,20 +16,23 @@ const RedmineIntegrationSettings = ({
   setSetting: CallableFunction;
 }) => {
   const { activities } = useRedmine();
-  const onChangeRedmineActivity = (default_activity: string) => {
-    const integration_config = {
-      ...setting?.integration_config,
-      default_activity,
-    };
-    setSetting({ ...setting, integration_config });
-  };
-  const onChangeIntegrationToken = (e: any) => {
-    const integration_config = {
-      ...setting?.integration_config,
-      token: e.target.value,
-    };
-    setSetting({ ...setting, integration_config });
-  };
+  const onChangeRedmineActivity = (default_activity: string) =>
+    setSetting({
+      ...setting,
+      integration_config: {
+        ...setting?.integration_config,
+        default_activity,
+      },
+    });
+
+  const onChangeIntegrationToken = (e: any) =>
+    setSetting({
+      ...setting,
+      integration_config: {
+        ...setting?.integration_config,
+        token: e.target.value,
+      },
+    });
 
   return (
     <Integration setting={setting} setSetting={setSetting}>

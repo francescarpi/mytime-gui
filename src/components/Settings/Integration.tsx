@@ -20,13 +20,14 @@ const Integration = ({
     setSetting({ ...setting, integration });
   };
 
-  const onChangeIntegrationUrl = (e: any) => {
-    const integration_config = {
-      ...setting?.integration_config,
-      url: e.target.value,
-    };
-    setSetting({ ...setting, integration_config });
-  };
+  const onChangeIntegrationUrl = (e: any) =>
+    setSetting({
+      ...setting,
+      integration_config: {
+        ...setting?.integration_config,
+        url: e.target.value,
+      },
+    });
 
   return (
     <Box>
