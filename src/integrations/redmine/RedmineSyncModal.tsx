@@ -63,7 +63,8 @@ const SyncModal = (props: SyncProps) => {
     // Set the default activity for redmine tasks
     const defaultActivityName = activities.find(
       (act) =>
-        act.id.toString() === settingContext.setting?.integration_extra_param,
+        act.id.toString() ===
+        settingContext.setting?.integration_config["default_activity"],
     )?.name;
 
     if (defaultActivityName) {
@@ -97,7 +98,7 @@ const SyncModal = (props: SyncProps) => {
   };
 
   const renderHeader = () => {
-    if (settingContext.setting?.integration_extra_param) {
+    if (settingContext.setting?.integration_config["default_activity"]) {
       return null;
     }
 

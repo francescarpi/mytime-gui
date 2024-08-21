@@ -5,14 +5,12 @@ import Settings from "./Settings";
 
 const SettingsContext = createContext<{
   setting: Setting | null;
-  isIntegrationValid: boolean;
   show: CallableFunction;
   changeViewType: CallableFunction;
   toggleDarkMode: CallableFunction;
   updateRightSidebarOpened: CallableFunction;
 }>({
   setting: null,
-  isIntegrationValid: false,
   show: () => {},
   changeViewType: () => {},
   toggleDarkMode: () => {},
@@ -36,7 +34,6 @@ const SettingsProvider = ({
     setting,
     saveSettings,
     changeViewType,
-    isIntegrationValid,
     toggleDarkMode,
     updateRightSidebarOpened,
   } = useSettings();
@@ -61,7 +58,6 @@ const SettingsProvider = ({
         setting,
         show: () => setShow(true),
         changeViewType,
-        isIntegrationValid,
         toggleDarkMode,
         updateRightSidebarOpened,
       }}

@@ -1,3 +1,5 @@
+use std::vec;
+
 use super::{Error, Integration};
 use crate::db::DbConn;
 use crate::integrations;
@@ -85,7 +87,7 @@ impl Integration for Redmine {
         extra_param: Option<String>,
     ) -> Result<(), Error> {
         let url = self.prepare_url(settings, vec![&"time_entries.json".to_string()]);
-        let token = &settings.integration_token.as_ref().unwrap();
+        let token = &settings.integration_config.0["token"].as_str().unwrap();
         let body = serde_json::json!({
             "time_entry": {
                 "issue_id": task.external_id,
@@ -115,6 +117,13 @@ impl Integration for Redmine {
             }
             Err(_) => Err(Error::UnkownHostError),
         }
+    }
+
+    fn is_valid(&self, settings: &Setting) -> bool {
+        let value = &settings.integration_config.0;
+        value["url"].is_string()
+            && value["token"].is_string()
+            && value["default_activity"].is_string()
     }
 }
 
@@ -149,7 +158,7 @@ impl Redmine {
                 &"time_entry_activities.json".to_string(),
             ],
         );
-        let token = &settings.integration_token.as_ref().unwrap();
+        let token = &settings.integration_config.0["token"].as_str().unwrap();
         let client = Client::new();
         match client.request(Self::build_get_request(url.as_ref(), token.to_string())) {
             Ok(response) => {
@@ -173,7 +182,7 @@ impl Redmine {
         external_id: String,
     ) -> Result<Vec<RedmineProjectActivity>, RedmineErrorType> {
         let client = Client::new();
-        let token = &settings.integration_token.as_ref().unwrap();
+        let token = &settings.integration_config.0["token"].as_str().unwrap();
 
         // Get issue
         let url = self.prepare_url(
@@ -226,7 +235,9 @@ impl Redmine {
 pub async fn activities(conn: State<'_, DbConn>) -> Result<serde_json::Value, serde_json::Value> {
     let mut db = conn.0.lock().unwrap();
     let settings = SettingsRepository::get_settings(&mut db).unwrap();
-    if settings.has_integration() {
+    if settings.integration_config.0["url"].is_string()
+        && settings.integration_config.0["token"].is_string()
+    {
         return Ok(serde_json::json!(
             integrations::redmine::Redmine::new().activities(&settings)
         ));
@@ -241,7 +252,9 @@ pub async fn project_activities(
 ) -> Result<serde_json::Value, serde_json::Value> {
     let mut db = conn.0.lock().unwrap();
     let settings = SettingsRepository::get_settings(&mut db).unwrap();
-    if settings.has_integration() {
+    if settings.integration_config.0["url"].is_string()
+        && settings.integration_config.0["token"].is_string()
+    {
         return match integrations::redmine::Redmine::new()
             .project_activities(&settings, external_id)
         {

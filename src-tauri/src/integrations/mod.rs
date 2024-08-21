@@ -11,6 +11,7 @@ use crate::{
 pub mod commands;
 pub mod jira;
 pub mod redmine;
+pub mod tests;
 
 // Integration errors
 #[derive(Debug)]
@@ -42,7 +43,7 @@ pub trait Integration {
     ) -> Result<(), Error>;
 
     fn prepare_url(&self, settings: &Setting, suffix: Vec<&String>) -> String {
-        let mut url = Url::parse(settings.integration_url.as_ref().unwrap()).unwrap();
+        let mut url = Url::parse(settings.integration_config.0["url"].as_str().unwrap()).unwrap();
         if !url.path().ends_with('/') {
             url.path_segments_mut().unwrap().push("");
         }
@@ -51,6 +52,8 @@ pub trait Integration {
         }
         url.as_str().to_string()
     }
+
+    fn is_valid(&self, settings: &Setting) -> bool;
 }
 
 // Method that receive a settings struct and depends on the settings.integration

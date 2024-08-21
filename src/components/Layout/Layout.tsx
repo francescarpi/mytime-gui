@@ -147,7 +147,7 @@ const Layout = ({
               <BookmarkBorderIcon />
             )}
           </IconButton>
-          {settingContext.isIntegrationValid && (
+          {settingContext.setting?.integration_valid && (
             <IconButton
               color="inherit"
               sx={{ ml: 1 }}

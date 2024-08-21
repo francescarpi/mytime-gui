@@ -1,27 +1,26 @@
-use crate::schema::*;
+use crate::{integrations::get_integration, schema::*};
 use chrono::{Datelike, NaiveDate};
 use diesel::{deserialize::Queryable, query_builder::AsChangeset};
-use serde::{Deserialize, Serialize};
+use serde::{ser::SerializeStruct, Deserialize, Serialize, Serializer};
 
-use super::types::{integration_type::IntegrationType, view_type::ViewType, work_hours::WorkHours};
+use super::types::{
+    integration_type::IntegrationType, json_field::JsonField, view_type::ViewType,
+    work_hours::WorkHours,
+};
 
 // Setting is a struct that represents the settings for the app.
-#[derive(Deserialize, Debug, Queryable, AsChangeset, Serialize)]
+#[derive(Deserialize, Debug, Queryable, AsChangeset)]
 #[diesel(table_name=settings, treat_none_as_null=true)]
 pub struct Setting {
     pub id: i32,
     pub integration: Option<IntegrationType>,
-    pub integration_url: Option<String>,
-    pub integration_token: Option<String>,
     pub work_hours: WorkHours,
     pub theme: String,
     pub view_type: ViewType,
     pub dark_mode: bool,
-    pub tour_completed: bool,
-    pub integration_extra_param: Option<String>,
     pub right_sidebar_open: bool,
     pub theme_secondary: String,
-    pub integration_username: Option<String>,
+    pub integration_config: JsonField,
 }
 
 impl Setting {
@@ -51,9 +50,36 @@ impl Setting {
         total * 3600.0
     }
 
-    pub fn has_integration(&self) -> bool {
-        self.integration.is_some()
-            && self.integration_url.is_some()
-            && self.integration_token.is_some()
+    pub fn integration_valid(&self) -> bool {
+        if self.integration.is_none() {
+            return false;
+        }
+
+        let integration = get_integration(self);
+        if integration.is_none() {
+            return false;
+        }
+
+        integration.unwrap().is_valid(self)
+    }
+}
+
+impl Serialize for Setting {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut state = serializer.serialize_struct("Setting", 10)?;
+        state.serialize_field("id", &self.id)?;
+        state.serialize_field("integration", &self.integration)?;
+        state.serialize_field("work_hours", &self.work_hours)?;
+        state.serialize_field("theme", &self.theme)?;
+        state.serialize_field("view_type", &self.view_type)?;
+        state.serialize_field("dark_mode", &self.dark_mode)?;
+        state.serialize_field("right_sidebar_open", &self.right_sidebar_open)?;
+        state.serialize_field("theme_secondary", &self.theme_secondary)?;
+        state.serialize_field("integration_config", &self.integration_config)?;
+        state.serialize_field("integration_valid", &self.integration_valid())?;
+        state.end()
     }
 }

@@ -1,10 +1,13 @@
 #[cfg(test)]
 mod tests {
+    use serde_json::json;
+
     use crate::{
         settings::{
             repository::SettingsRepository,
             types::{
-                integration_type::IntegrationType, view_type::ViewType, work_hours::WorkHours,
+                integration_type::IntegrationType, json_field::JsonField, view_type::ViewType,
+                work_hours::WorkHours,
             },
         },
         tests::get_db_connection,
@@ -18,10 +21,7 @@ mod tests {
         // Test
         let settings = SettingsRepository::get_settings(&mut c).unwrap();
         assert_eq!(settings.integration, None);
-        assert_eq!(settings.integration_url, None);
-        assert_eq!(settings.integration_token, None);
-        assert_eq!(settings.integration_username, None);
-        assert_eq!(settings.integration_extra_param, None);
+        assert_eq!(settings.integration_config.0, json!({}));
         assert_eq!(settings.right_sidebar_open, false);
 
         assert_eq!(
@@ -48,7 +48,6 @@ mod tests {
         assert_eq!(settings.view_type, ViewType::Chronological);
 
         assert!(!settings.dark_mode);
-        assert!(!settings.tour_completed);
     }
 
     #[test]
@@ -59,24 +58,16 @@ mod tests {
 
         // Test
         settings.integration = Some(IntegrationType::Redmine);
-        settings.integration_url = Some("http://foo.com".to_string());
-        settings.integration_token = Some("12345".to_string());
-        settings.integration_username = Some("foo@foo.com".to_string());
-        settings.integration_extra_param = Some("1".to_string());
-        settings.tour_completed = true;
+        settings.integration_config = JsonField(
+            json!({"url": "https://integration.com", "token": "1234", "default_activity": "1"}),
+        );
         settings.right_sidebar_open = true;
 
         let response = SettingsRepository::update(&mut c, &settings);
         let settings = response.unwrap();
 
         assert_eq!(settings.integration, Some(IntegrationType::Redmine));
-        assert_eq!(settings.integration_url, Some("http://foo.com".to_string()));
-        assert_eq!(settings.integration_token, Some("12345".to_string()));
-        assert_eq!(
-            Some("foo@foo.com".to_string()),
-            settings.integration_username,
-        );
-        assert_eq!(settings.integration_extra_param, Some("1".to_string()));
+        assert!(settings.integration_valid());
         assert_eq!(
             settings.work_hours,
             WorkHours {
@@ -93,7 +84,6 @@ mod tests {
         assert_eq!(settings.theme_secondary, "#ce93d8");
         assert_eq!(settings.view_type, ViewType::Chronological);
         assert!(!settings.dark_mode);
-        assert!(settings.tour_completed);
         assert!(settings.right_sidebar_open);
     }
 }

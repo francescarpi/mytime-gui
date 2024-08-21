@@ -9,10 +9,8 @@ export enum ViewType {
 
 export interface Setting {
   integration: IntegrationType | null;
-  integration_url: string | null;
-  integration_token: string | null;
-  integration_username: string | null;
-  integration_extra_param: string | null;
+  integration_config: any;
+  integration_valid: boolean;
   work_hours: { [key: string]: number };
   theme: string;
   theme_secondary: string;
@@ -24,7 +22,6 @@ export interface Setting {
 
 const useSettings = () => {
   const [setting, setSetting] = useState<Setting | null>(null);
-  const [isIntegrationValid, setIsIntegrationValid] = useState<boolean>(false);
 
   const loadSettings = useCallback(() => {
     invoke("settings").then((res) => {
@@ -66,17 +63,8 @@ const useSettings = () => {
     loadSettings();
   }, [loadSettings]);
 
-  useEffect(() => {
-    setIsIntegrationValid(
-      setting?.integration !== null &&
-        setting?.integration_url !== null &&
-        setting?.integration_token !== null,
-    );
-  }, [setting]);
-
   return {
     setting,
-    isIntegrationValid,
     changeViewType,
     toggleDarkMode,
     saveSettings,

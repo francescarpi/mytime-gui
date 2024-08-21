@@ -17,16 +17,29 @@ const JiraIntegrationSettings = ({
   setSetting: CallableFunction;
 }) => {
   const onChangeUsername = (e: any) =>
-    setSetting({ ...setting, integration_username: e.target.value });
+    setSetting({
+      ...setting,
+      integration_config: {
+        ...setting?.integration_config,
+        email: e.target.value,
+      },
+    });
+
   const onChangeIntegrationToken = (e: any) =>
-    setSetting({ ...setting, integration_token: e.target.value });
+    setSetting({
+      ...setting,
+      integration_config: {
+        ...setting?.integration_config,
+        token: e.target.value,
+      },
+    });
 
   return (
     <Integration setting={setting} setSetting={setSetting}>
       <Grid item md={6}>
         <MyInputField
           label="Username (email)"
-          value={setting?.integration_username || ""}
+          value={setting?.integration_config?.email || ""}
           onChange={onChangeUsername}
           maxLength={100}
           type="email"
@@ -37,7 +50,7 @@ const JiraIntegrationSettings = ({
         <TextField
           label="Token"
           fullWidth
-          value={setting?.integration_token || ""}
+          value={setting?.integration_config?.token || ""}
           onChange={onChangeIntegrationToken}
           type="password"
           InputProps={{
