@@ -39,6 +39,7 @@ const SyncWrapper = ({
 }) => {
   const { tasks, loadTasks, send, updateTaskExtraParam } = useSync();
   const [disableSend, setDisableSend] = useState<boolean>(false);
+  const [disableClose, setDisableClose] = useState<boolean>(false);
   const [success, dispatchSuccess] = useReducer(successReducer, {});
   const settingContext = useContext(SettingsContext);
 
@@ -59,6 +60,7 @@ const SyncWrapper = ({
   // Handler to send tasks to the integration
   const sendHandler = () => {
     setDisableSend(true);
+    setDisableClose(true);
     dispatchSuccess({ type: "reset" });
 
     const promises = tasks.map(async (task) => {
@@ -81,7 +83,7 @@ const SyncWrapper = ({
 
     // When all tasks are sent, refresh the tasks list
     Promise.all(promises).then(() => {
-      setDisableSend(true);
+      setDisableClose(false);
       refreshTasks();
     });
   };
@@ -98,6 +100,7 @@ const SyncWrapper = ({
       updateTaskExtraParam,
       disableSend,
       setDisableSend,
+      disableClose,
     },
   );
 };

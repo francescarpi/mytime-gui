@@ -29,6 +29,7 @@ const GenericSyncModal = (props: SyncProps) => {
     slotTableHeader,
     slotTableRow,
     disableSend,
+    disableClose,
   } = props;
 
   if (!opened) {
@@ -94,7 +95,7 @@ const GenericSyncModal = (props: SyncProps) => {
               variant="contained"
               onClick={() => onClose()}
               color="secondary"
-              disabled={disableSend}
+              disabled={disableClose}
             >
               Close
             </Button>

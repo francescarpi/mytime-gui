@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.8.8] - 2024-08-26
+
+### Fixed
+
+- Fix status of close button in the sync modal
+
 ## [v0.8.7] - 2024-08-24
 
 ### Added

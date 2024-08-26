@@ -17,6 +17,7 @@ export interface SyncProps {
   success: SuccessType;
   sendHandler: CallableFunction;
   disableSend: boolean;
+  disableClose: boolean;
   setDisableSend: CallableFunction;
   updateTaskExtraParam?: CallableFunction;
   slotHeader?: ReactNode;
