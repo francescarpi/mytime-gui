@@ -107,6 +107,7 @@ const AddTaskForm = ({
                 onChange={(e) => setExternalId(e.target.value)}
                 showSearch={true}
                 searchHandler={() => setShowSearchExtId(true)}
+                required={false}
               />
             </Grid>
             <Grid item md={1}>
