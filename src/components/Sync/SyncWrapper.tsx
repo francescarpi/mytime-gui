@@ -52,7 +52,7 @@ const SyncWrapper = ({
 
   // The modal cannot been closes if tasks are being sent
   const closeHandler = () => {
-    if (!disableSend) {
+    if (!disableClose) {
       onClose();
     }
   };

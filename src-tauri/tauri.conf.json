@@ -1,6 +1,6 @@
 {
   "productName": "mytime",
-  "version": "0.8.8",
+  "version": "0.8.9",
   "identifier": "com.farpi.mytime",
   "build": {
     "beforeDevCommand": "npm run dev",
