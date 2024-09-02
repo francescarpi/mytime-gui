@@ -1,7 +1,8 @@
-import { Box, Grid, Button, Link } from "@mui/material";
+import { Box, Button, Link } from "@mui/material";
 import { invoke } from "@tauri-apps/api/core";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import GradingIcon from "@mui/icons-material/Grading";
+import Grid from "@mui/material/Grid2";
 
 import useInfo from "../../hooks/useInfo";
 
@@ -19,19 +20,19 @@ const Info = () => {
   return (
     <Box>
       <Grid container spacing={2}>
-        <Grid item md={4}>
+        <Grid size={4}>
           <strong>Version</strong>
           <Box>{info.version}</Box>
         </Grid>
-        <Grid item md={5}>
+        <Grid size={5}>
           <strong>Authors</strong>
           <Box>{info.authors}</Box>
         </Grid>
-        <Grid item md={3}>
+        <Grid size={3}>
           <strong>Total tasks</strong>
           <Box>{info.total_tasks}</Box>
         </Grid>
-        <Grid item md={12}>
+        <Grid size={12}>
           <strong>Database path</strong>
           <Box>
             <Link onClick={showFolder} href="#">
@@ -39,7 +40,7 @@ const Info = () => {
             </Link>
           </Box>
         </Grid>
-        <Grid item md={12} sx={{ mt: 2 }}>
+        <Grid size={12} sx={{ mt: 2 }}>
           <Button
             variant="outlined"
             startIcon={<GitHubIcon />}

@@ -1,5 +1,5 @@
 import { MuiColorInput } from "mui-color-input";
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 
 import { Setting } from "../../hooks/useSettings";
 
@@ -24,7 +24,7 @@ const Generic = ({
 
   return (
     <Grid container spacing={2}>
-      <Grid item md={6}>
+      <Grid size={6}>
         <MuiColorInput
           format="hex"
           value={setting?.theme || "#1976d2"}
@@ -33,7 +33,7 @@ const Generic = ({
           onChange={onChangeTheme}
         />
       </Grid>
-      <Grid item md={6}>
+      <Grid size={6}>
         <MuiColorInput
           format="hex"
           value={setting?.theme_secondary || "#ce93d8"}

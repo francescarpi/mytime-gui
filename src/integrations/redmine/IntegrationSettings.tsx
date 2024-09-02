@@ -1,6 +1,6 @@
 import Integration from "../../components/Settings/Integration";
 import { Setting } from "../../hooks/useSettings";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import RedmineActivitySelect from "./RedmineActivitySelect";
 import useRedmine from "./useRedmine";
 import TextField from "@mui/material/TextField";
@@ -36,7 +36,7 @@ const RedmineIntegrationSettings = ({
 
   return (
     <Integration setting={setting} setSetting={setSetting}>
-      <Grid item md={6}>
+      <Grid size={6}>
         <TextField
           label="Token"
           fullWidth
@@ -61,7 +61,7 @@ const RedmineIntegrationSettings = ({
           }}
         />
       </Grid>
-      <Grid item md={6}>
+      <Grid size={6}>
         <RedmineActivitySelect
           activities={activities}
           value={setting?.integration_config?.default_activity || null}

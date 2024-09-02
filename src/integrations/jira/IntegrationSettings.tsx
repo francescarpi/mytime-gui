@@ -1,7 +1,7 @@
 import React from "react";
 import Integration from "../../components/Settings/Integration";
 import { Setting } from "../../hooks/useSettings";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import InfoIcon from "@mui/icons-material/Info";
@@ -36,7 +36,7 @@ const JiraIntegrationSettings = ({
 
   return (
     <Integration setting={setting} setSetting={setSetting}>
-      <Grid item md={6}>
+      <Grid size={6}>
         <MyInputField
           label="Username (email)"
           value={setting?.integration_config?.email || ""}
@@ -46,7 +46,7 @@ const JiraIntegrationSettings = ({
           size="medium"
         />
       </Grid>
-      <Grid item md={6}>
+      <Grid size={6}>
         <TextField
           label="Token"
           fullWidth

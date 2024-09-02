@@ -1,9 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
 
-import { Modal, Typography, Button, Grid, Box } from "@mui/material";
+import { Modal, Typography, Button, Box } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import Grid from "@mui/material/Grid2";
 import dayjs, { Dayjs } from "dayjs";
 import { useSnackbar } from "notistack";
 
@@ -93,7 +94,7 @@ const TaskEdition = ({
               Task Edition
             </Typography>
             <Grid container spacing={2}>
-              <Grid item md={2}>
+              <Grid size={2}>
                 <MyInputField
                   label="Project"
                   size="medium"
@@ -104,7 +105,7 @@ const TaskEdition = ({
                   error={errorsEnabled && !project}
                 />
               </Grid>
-              <Grid item md={8}>
+              <Grid size={8}>
                 <MyInputField
                   label="Description"
                   size="medium"
@@ -115,7 +116,7 @@ const TaskEdition = ({
                   error={errorsEnabled && !description}
                 />
               </Grid>
-              <Grid item md={2}>
+              <Grid size={2}>
                 <MyInputField
                   label="External Id"
                   size="medium"
@@ -124,7 +125,7 @@ const TaskEdition = ({
                   maxLength={50}
                 />
               </Grid>
-              <Grid item md={2}>
+              <Grid size={2}>
                 <TimePicker
                   label="Start"
                   format="HH:mm"
@@ -142,7 +143,7 @@ const TaskEdition = ({
                 />
               </Grid>
               {task?.end && (
-                <Grid item md={2}>
+                <Grid size={2}>
                   <TimePicker
                     label="End"
                     format="HH:mm"

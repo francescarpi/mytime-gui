@@ -2,10 +2,11 @@ import { useState, useRef, useEffect } from "react";
 
 import { SxProps, Theme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import { Button, Grid } from "@mui/material";
+import { Button } from "@mui/material";
 import { invoke } from "@tauri-apps/api/core";
 import { useConfirm } from "material-ui-confirm";
 import dayjs from "dayjs";
+import Grid from "@mui/material/Grid2";
 
 import { Task } from "../hooks/useTasks";
 import SearchExternalId from "./SearchExternalId";
@@ -84,14 +85,14 @@ const AddTaskForm = ({
       <Box sx={{ ...sx, flexgrow: 1 }}>
         <form onSubmit={submit} data-testid="add-task-form">
           <Grid container spacing={2}>
-            <Grid item md={2}>
+            <Grid size={2}>
               <MyInputField
                 label="Project"
                 value={project}
                 onChange={(e) => setProject(e.target.value)}
               />
             </Grid>
-            <Grid item md={5}>
+            <Grid size={5}>
               <MyInputField
                 label="Description"
                 value={description}
@@ -99,7 +100,7 @@ const AddTaskForm = ({
                 onChange={(e) => setDescription(e.target.value)}
               />
             </Grid>
-            <Grid item md={3}>
+            <Grid size={3}>
               <MyInputField
                 label="External Id"
                 value={externalId}
@@ -110,10 +111,10 @@ const AddTaskForm = ({
                 required={false}
               />
             </Grid>
-            <Grid item md={1}>
+            <Grid size={1}>
               <Button onClick={reset}>Reset</Button>
             </Grid>
-            <Grid item md={1}>
+            <Grid size={1}>
               <Button variant="contained" type="submit" ref={submitRef}>
                 Add
               </Button>

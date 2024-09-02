@@ -1,6 +1,7 @@
 import { Setting } from "../../hooks/useSettings";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useMemo } from "react";
+import Grid from "@mui/material/Grid2";
 
 import MyInputField from "../atoms/MyInputField";
 
@@ -42,7 +43,7 @@ const WorkingTime = ({
     <Box>
       <Grid container spacing={2}>
         {weekdays.map((day) => (
-          <Grid item md={3} key={day}>
+          <Grid size={3} key={day}>
             <MyInputField
               label={day}
               value={setting?.work_hours[day].toString() || "0"}

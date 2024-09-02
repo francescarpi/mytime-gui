@@ -1,4 +1,4 @@
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 
 interface Shortcut {
   key: string;
@@ -16,7 +16,7 @@ const Shortcuts = () => {
   return (
     <Grid container spacing={2}>
       {shortcuts.map((shortcut, index) => (
-        <Grid item key={index} md={6}>
+        <Grid key={index} size={6}>
           <div>
             <strong>{shortcut.key}</strong>: {shortcut.action}
           </div>
