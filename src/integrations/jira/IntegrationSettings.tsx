@@ -53,36 +53,38 @@ const JiraIntegrationSettings = ({
           value={setting?.integration_config?.token || ""}
           onChange={onChangeIntegrationToken}
           type="password"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <Tooltip
-                  title={
-                    <React.Fragment>
-                      <div>
-                        Go{" "}
-                        <Link
-                          href="https://id.atlassian.com/manage-profile/security/api-tokens"
-                          target="_blank"
-                        >
-                          here
-                        </Link>{" "}
-                        to generate a token
-                      </div>
-                    </React.Fragment>
-                  }
-                >
-                  <InfoIcon />
-                </Tooltip>
-              </InputAdornment>
-            ),
-          }}
-          inputProps={{
-            autoComplete: "off",
-            autoCorrect: "off",
-            autoCapitalize: "off",
-            spellCheck: "false",
-            maxLength: 255,
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Tooltip
+                    title={
+                      <React.Fragment>
+                        <div>
+                          Go{" "}
+                          <Link
+                            href="https://id.atlassian.com/manage-profile/security/api-tokens"
+                            target="_blank"
+                          >
+                            here
+                          </Link>{" "}
+                          to generate a token
+                        </div>
+                      </React.Fragment>
+                    }
+                  >
+                    <InfoIcon />
+                  </Tooltip>
+                </InputAdornment>
+              ),
+            },
+            htmlInput: {
+              autoComplete: "off",
+              autoCorrect: "off",
+              autoCapitalize: "off",
+              spellCheck: "false",
+              maxLength: 255,
+            },
           }}
         />
       </Grid>

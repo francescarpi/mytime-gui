@@ -43,21 +43,23 @@ const RedmineIntegrationSettings = ({
           value={setting?.integration_config?.token || ""}
           onChange={onChangeIntegrationToken}
           type="password"
-          inputProps={{
-            autoComplete: "off",
-            autoCorrect: "off",
-            autoCapitalize: "off",
-            spellCheck: "false",
-            maxLength: 255,
-          }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <Tooltip title="Go to your my account (https://<my-domain>/my/account) page to generate a token.">
-                  <InfoIcon />
-                </Tooltip>
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Tooltip title="Go to your my account (https://<my-domain>/my/account) page to generate a token.">
+                    <InfoIcon />
+                  </Tooltip>
+                </InputAdornment>
+              ),
+            },
+            htmlInput: {
+              autoComplete: "off",
+              autoCorrect: "off",
+              autoCapitalize: "off",
+              spellCheck: "false",
+              maxLength: 255,
+            },
           }}
         />
       </Grid>

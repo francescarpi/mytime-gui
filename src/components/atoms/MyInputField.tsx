@@ -66,15 +66,17 @@ const MyInputField = ({
       onChange={onChange}
       helperText={helperText}
       disabled={disabled || isLoading}
-      InputProps={{
-        endAdornment: renderAdornment(),
-      }}
-      inputProps={{
-        autoComplete: "off",
-        autoCorrect: "off",
-        autoCapitalize: "off",
-        spellCheck: "false",
-        maxLength: { maxLength },
+      slotProps={{
+        input: {
+          endAdornment: renderAdornment(),
+        },
+        htmlInput: {
+          autoComplete: "off",
+          autoCorrect: "off",
+          autoCapitalize: "off",
+          spellCheck: "false",
+          maxLength: { maxLength },
+        },
       }}
     />
   );
