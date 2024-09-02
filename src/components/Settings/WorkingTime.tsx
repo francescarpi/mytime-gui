@@ -1,5 +1,6 @@
 import { Setting } from "../../hooks/useSettings";
 import { Box, Grid, Typography } from "@mui/material";
+import { useMemo } from "react";
 
 import MyInputField from "../atoms/MyInputField";
 
@@ -29,6 +30,14 @@ const WorkingTime = ({
       },
     });
 
+  const total = useMemo(
+    () =>
+      weekdays
+        .map((wd) => setting?.work_hours[wd] || 0)
+        .reduce((acc, value) => acc + value, 0),
+    [setting],
+  );
+
   return (
     <Box>
       <Grid container spacing={2}>
@@ -45,6 +54,9 @@ const WorkingTime = ({
       </Grid>
       <Typography sx={{ mt: 1 }} variant="subtitle2">
         You can use decimals. For instance: 8.75 = 8h45m
+      </Typography>
+      <Typography variant="subtitle2">
+        Total week work time: {total} hours
       </Typography>
     </Box>
   );
