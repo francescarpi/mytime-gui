@@ -8,11 +8,11 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "2.0.0-rc.5", features = [] }
+tauri-build = { version = "2.0.0-rc.7", features = [] }
 
 [dependencies]
-tauri = { version = "2.0.0-rc.5", features = ["tray-icon"] }
-tauri-plugin-shell = "2.0.0-rc.2"
+tauri = { version = "2.0.0-rc.8", features = ["tray-icon"] }
+tauri-plugin-shell = "2.0.0-rc.3"
 serde_json = "1.0.127"
 serde = { version = "1.0.209", features = ["derive"] }
 rust-ini = "0.21.1"
@@ -26,10 +26,10 @@ url = "2.5.2"
 log = "0.4.22"
 env_logger = "0.11.5"
 base64 = "0.22.1"
-tauri-plugin-process = "2.0.0-rc.0"
+tauri-plugin-process = "2.0.0-rc.1"
 
 [target.'cfg(target_os = "linux")'.dependencies]
 fork = "0.2.0"
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
-tauri-plugin-updater = "2.0.0-rc.1"
+tauri-plugin-updater = "2.0.0-rc.2"
