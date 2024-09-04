@@ -19,7 +19,7 @@ rust-ini = "0.21.1"
 chrono = { version = "0.4.38", features = ["serde"] }
 oxhttp = { version = "0.2.1", features = ["native-tls"] }
 platform-dirs = "0.3.0"
-diesel = { version = "2.2.3", features = ["chrono", "sqlite", "r2d2"] }
+diesel = { version = "2.2.4", features = ["chrono", "sqlite", "r2d2"] }
 diesel_migrations = "2.2.0"
 libsqlite3-sys = { version = "0.30.1", features = ["bundled"] }
 url = "2.5.2"
