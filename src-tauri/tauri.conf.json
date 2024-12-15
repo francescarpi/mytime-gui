@@ -1,6 +1,6 @@
 {
   "productName": "mytime",
-  "version": "0.8.10",
+  "version": "0.8.11",
   "identifier": "com.farpi.mytime",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -8,7 +8,8 @@
     "beforeBuildCommand": "npm run build",
     "frontendDist": "../dist"
   },
-  "app": {"windows": [
+  "app": {
+    "windows": [
       {
         "title": "MyTime",
         "width": 1200,
@@ -22,13 +23,6 @@
   "bundle": {
     "active": true,
     "targets": "all",
-    "icon": [
-      "icons/32x32.png",
-      "icons/128x128.png",
-      "icons/128x128@2x.png",
-      "icons/icon.icns",
-      "icons/icon.ico"
-    ],
     "createUpdaterArtifacts": true
   },
   "plugins": {

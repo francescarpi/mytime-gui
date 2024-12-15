@@ -23,7 +23,9 @@ fn main() {
             db::establish_connection().expect("Error connecting to database"),
         )))
         .setup(|app| {
-            TrayIconBuilder::new().build(app)?;
+            TrayIconBuilder::new()
+                .icon(app.default_window_icon().unwrap().clone())
+                .build(app)?;
             env_logger::init();
             Ok(())
         })
