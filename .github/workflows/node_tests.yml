@@ -23,5 +23,5 @@ jobs:
 
       - name: Run tests
         run: |
-          npm ci
+          npm ci --force
           npm run test

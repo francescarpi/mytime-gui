@@ -13,7 +13,7 @@ const SettingsContext = createContext<{
   setting: null,
   show: () => {},
   changeViewType: () => {},
-  toggleDarkMode: () => {},
+  toggleDarkMode: (_value: boolean) => {},
   updateRightSidebarOpened: () => {},
 });
 

@@ -1,6 +1,6 @@
 {
   "productName": "mytime",
-  "version": "0.8.10",
+  "version": "0.8.11",
   "identifier": "com.farpi.mytime",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -8,7 +8,8 @@
     "beforeBuildCommand": "npm run build",
     "frontendDist": "../dist"
   },
-  "app": {"windows": [
+  "app": {
+    "windows": [
       {
         "title": "MyTime",
         "width": 1200,
