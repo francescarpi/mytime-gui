@@ -4,7 +4,7 @@ const useKeyboard = (
   setPreviousDate: CallableFunction,
   setNextDate: CallableFunction,
   setToday: CallableFunction,
-  searchInputRef: RefObject<HTMLInputElement>,
+  searchInputRef: RefObject<HTMLInputElement | null>,
 ) => {
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {

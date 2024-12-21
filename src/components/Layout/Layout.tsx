@@ -1,4 +1,12 @@
-import { ReactNode, RefObject, useContext, useState, useCallback } from "react";
+import {
+  ReactNode,
+  RefObject,
+  useContext,
+  useState,
+  useCallback,
+  ChangeEvent,
+  KeyboardEventHandler,
+} from "react";
 
 import {
   Toolbar,
@@ -44,7 +52,7 @@ const Layout = ({
   summary: Summary | null;
   onPressSync: CallableFunction;
   setSearchQuery: CallableFunction;
-  searchInputRef: RefObject<HTMLInputElement>;
+  searchInputRef: RefObject<HTMLInputElement | null>;
   newVersion: Update | null;
   version: string | null;
   setToday: CallableFunction;
@@ -133,7 +141,7 @@ const Layout = ({
               }}
               value={query}
               onChange={debounce((e) => setSearchQuery(e.target.value), 500)}
-              onKeyDown={(e) => onSearchKeyPress(e)}
+              onKeyDown={(e: KeyboardEventHandler) => onSearchKeyPress(e)}
             />
           </Search>
           <IconButton
@@ -240,7 +248,9 @@ const Layout = ({
           )}
           <DarkModeSwitch
             checked={Boolean(settingContext.setting?.dark_mode)}
-            onChange={(e) => settingContext.toggleDarkMode(e.target.checked)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              settingContext.toggleDarkMode(e.target.checked)
+            }
           />
         </Toolbar>
       </AppBar>
