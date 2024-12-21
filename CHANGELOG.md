@@ -6,13 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.8.11] - 2024-12-21
+
 ### Changed
 
-- Node and rust packages updated
+- Node packages updated
+- Rust packages updated
 
 ### Fixed
 
-- Try icon is showed again
+- Fix a bug where the try and app icons weren't show properly
 
 ## [v0.8.10] - 2024-09-02
 
