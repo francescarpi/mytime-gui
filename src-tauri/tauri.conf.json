@@ -38,6 +38,24 @@
       "endpoints": [
         "https://github.com/francescarpi/mytime-gui/releases/latest/download/latest.json"
       ]
+    },
+    "cli": {
+      "description": "MyTime CLI",
+      "args": [
+        {
+          "short": "t",
+          "name": "tasks",
+          "description": "List of tasks",
+          "takesValue": true
+        },
+        {
+          "short": "s",
+          "name": "summary",
+          "description": "Tasks summary",
+          "takesValue": true
+        }
+      ],
+      "subcommands": {}
     }
   }
 }

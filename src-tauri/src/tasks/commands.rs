@@ -1,4 +1,4 @@
-use chrono::NaiveTime;
+use chrono::{Local, NaiveTime};
 use serde::Serialize;
 use serde_json::{json, Value};
 use tauri::{command, State};
@@ -21,7 +21,8 @@ struct Summary {
 #[command]
 pub fn tasks(date: &str, conn: State<'_, DbConn>) -> Result<Value, Value> {
     let mut db = conn.0.lock().unwrap();
-    let date = chrono::NaiveDate::parse_from_str(date, "%Y-%m-%d").unwrap();
+    let date = chrono::NaiveDate::parse_from_str(date, "%Y-%m-%d")
+        .unwrap_or(Local::now().naive_local().date());
     TasksRepository::tasks_with_duration_by_date(&mut db, date)
         .map(|tasks| json!(tasks))
         .map_err(|_| json!([]))
@@ -30,7 +31,8 @@ pub fn tasks(date: &str, conn: State<'_, DbConn>) -> Result<Value, Value> {
 #[command]
 pub async fn summary(date: &str, conn: State<'_, DbConn>) -> Result<Value, Value> {
     let mut db = conn.0.lock().unwrap();
-    let date = chrono::NaiveDate::parse_from_str(date, "%Y-%m-%d").unwrap();
+    let date = chrono::NaiveDate::parse_from_str(date, "%Y-%m-%d")
+        .unwrap_or(Local::now().naive_local().date());
 
     let worked_week = TasksRepository::worked_during_the_week(&mut db, date)
         .map(|w| w.duration)
