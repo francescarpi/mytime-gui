@@ -164,7 +164,7 @@ impl TasksRepository {
 
         let sql = format!(
             "SELECT COALESCE(SUM({}), 0) AS duration FROM tasks
-                WHERE STRFTIME('%W', start) = $1 AND
+                WHERE STRFTIME('%V', start) = $1 AND
                 STRFTIME('%Y', start) = $2",
             DURATION_SQL
         );

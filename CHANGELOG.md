@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [v0.8.12] - 2025-01-10
+
+### Fixed
+
+- Fix how week worked time is calculated
+
 ## [v0.8.11] - 2024-12-21
 
 ### Changed
