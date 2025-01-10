@@ -11,10 +11,10 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@fontsource/roboto": "5.1.0",
-    "@mui/icons-material": "6.2.1",
-    "@mui/lab": "6.0.0-beta.20",
-    "@mui/material": "6.2.1",
+    "@fontsource/roboto": "5.1.1",
+    "@mui/icons-material": "6.3.0",
+    "@mui/lab": "6.0.0-beta.21",
+    "@mui/material": "6.3.0",
     "@mui/x-date-pickers": "7.23.3",
     "@octokit/core": "6.1.2",
     "@tauri-apps/api": "2.1.1",
@@ -32,14 +32,14 @@
   "devDependencies": {
     "@tauri-apps/cli": "2.1.0",
     "@testing-library/react": "16.1.0",
-    "@types/node": "22.10.2",
+    "@types/node": "22.10.3",
     "@types/react": "19.0.2",
     "@types/react-dom": "19.0.2",
     "@types/semver": "7.5.8",
     "@vitejs/plugin-react": "4.3.4",
     "jsdom": "25.0.1",
     "typescript": "5.7.2",
-    "vite": "6.0.5",
+    "vite": "6.0.6",
     "vitest": "2.1.8"
   }
 }
