@@ -1,5 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+use tauri_plugin_cli::CliExt;
+pub mod cli;
 pub mod db;
 pub mod integrations;
 pub mod schema;
@@ -13,12 +15,14 @@ use std::env;
 use std::sync::Mutex;
 
 use tauri::tray::TrayIconBuilder;
+use tauri::Manager;
 
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_cli::init())
         .manage(db::DbConn(Mutex::new(
             db::establish_connection().expect("Error connecting to database"),
         )))
@@ -26,7 +30,23 @@ fn main() {
             TrayIconBuilder::new()
                 .icon(app.default_window_icon().unwrap().clone())
                 .build(app)?;
+
             env_logger::init();
+
+            let handle = app.handle();
+            let state = handle.state::<db::DbConn>();
+
+            match app.cli().matches() {
+                Ok(matches) => {
+                    if matches.args.is_empty() {
+                        return Ok(());
+                    }
+                    println!("{}", cli::parse_matches(matches.args, state));
+                    std::process::exit(0);
+                }
+                Err(_) => {}
+            }
+
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
