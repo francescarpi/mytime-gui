@@ -113,7 +113,7 @@ const Layout = ({
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="fixed"
-        sx={{ top: 0, bottom: "auto" }}
+        sx={{ top: 0, bottom: "auto", paddingTop: 2 }}
         enableColorOnDark
       >
         <Toolbar>
@@ -182,7 +182,7 @@ const Layout = ({
       <Box
         sx={{
           position: "fixed",
-          top: 64,
+          top: 74,
           bottom: 48,
           left: 0,
           right: 0,
@@ -255,7 +255,7 @@ const Layout = ({
       </AppBar>
     </Box>
   ) : (
-    <Box sx={{ p: 2 }}>Loading...</Box>
+    <Box sx={{ pt: 4, px: 2 }}>Loading...</Box>
   );
 };
 

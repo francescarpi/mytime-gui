@@ -12,8 +12,10 @@
     "windows": [
       {
         "title": "MyTime",
+        "hiddenTitle": true,
         "width": 1200,
-        "height": 700
+        "height": 700,
+        "titleBarStyle": "Overlay"
       }
     ],
     "security": {
