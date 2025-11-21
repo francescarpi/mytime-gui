@@ -1,6 +1,6 @@
 import Integration from "../../components/Settings/Integration";
 import { Setting } from "../../hooks/useSettings";
-import Grid from "@mui/material/Grid2";
+import { Grid } from "@mui/material";
 import RedmineActivitySelect from "./RedmineActivitySelect";
 import useRedmine from "./useRedmine";
 import TextField from "@mui/material/TextField";

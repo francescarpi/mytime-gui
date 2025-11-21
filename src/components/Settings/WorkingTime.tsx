@@ -1,7 +1,7 @@
 import { Setting } from "../../hooks/useSettings";
 import { Box, Typography } from "@mui/material";
 import { useMemo } from "react";
-import Grid from "@mui/material/Grid2";
+import { Grid } from "@mui/material";
 
 import MyInputField from "../atoms/MyInputField";
 

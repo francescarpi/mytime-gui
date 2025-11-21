@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 import { invoke } from "@tauri-apps/api/core";
 import { useConfirm } from "material-ui-confirm";
 import dayjs from "dayjs";
-import Grid from "@mui/material/Grid2";
+import { Grid } from "@mui/material";
 
 import { Task } from "../hooks/useTasks";
 import SearchExternalId from "./SearchExternalId";
