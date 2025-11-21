@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from 'react'
 
 import {
   Typography,
@@ -12,11 +12,11 @@ import {
   Paper,
   Tooltip,
   IconButton,
-} from "@mui/material";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
+} from '@mui/material'
+import PlayCircleIcon from '@mui/icons-material/PlayCircle'
+import BookmarkIcon from '@mui/icons-material/Bookmark'
 
-import { Task } from "../hooks/useTasks";
+import { Task } from '../hooks/useTasks'
 
 const Favourites = ({
   favourites,
@@ -24,19 +24,19 @@ const Favourites = ({
   addTask,
   toggleFavourite,
 }: {
-  favourites: Task[];
-  load: CallableFunction;
-  addTask: CallableFunction;
-  toggleFavourite: CallableFunction;
+  favourites: Task[]
+  load: CallableFunction
+  addTask: CallableFunction
+  toggleFavourite: CallableFunction
 }) => {
   useEffect(() => {
-    load();
+    load()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   const startTask = (task: Task) => {
-    addTask(task.project, task.desc, task.external_id);
-  };
+    addTask(task.project, task.desc, task.external_id)
+  }
 
   return (
     <Box>
@@ -45,7 +45,7 @@ const Favourites = ({
       </Typography>
       <Box>
         <TableContainer component={Paper} variant="outlined">
-          <Table sx={{ minWidth: "100%" }} size="small">
+          <Table sx={{ minWidth: '100%' }} size="small">
             <TableHead>
               <TableRow>
                 <TableCell>Description</TableCell>
@@ -66,10 +66,7 @@ const Favourites = ({
                   </TableCell>
                   <TableCell align="right">
                     <Tooltip title="Unmark favourite" placement="top">
-                      <IconButton
-                        size="small"
-                        onClick={() => toggleFavourite(task.id)}
-                      >
+                      <IconButton size="small" onClick={() => toggleFavourite(task.id)}>
                         <BookmarkIcon />
                       </IconButton>
                     </Tooltip>
@@ -86,7 +83,7 @@ const Favourites = ({
         </TableContainer>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default Favourites;
+export default Favourites

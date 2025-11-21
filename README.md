@@ -18,10 +18,10 @@ Synchronize your tasks:
 
 ## Database
 
-It uses *sqlite3* to manage the database. It's stored at:
+It uses _sqlite3_ to manage the database. It's stored at:
 
-* Linux & Mac: `$HOME/.local/share/mytime/mytime.sqlite`
-* Windows: `C:\Users\%USERNAME%\AppData\Local\mytime\mytime.sqlite`
+- Linux & Mac: `$HOME/.local/share/mytime/mytime.sqlite`
+- Windows: `C:\Users\%USERNAME%\AppData\Local\mytime\mytime.sqlite`
 
 ## Development
 
@@ -45,12 +45,11 @@ npm run tauri build
 
 ### Redmine
 
-* Go to your account ("https://YOUR-DOMAIN/my/account")
-* The API access key is in the right sidebar
-
+- Go to your account ("https://YOUR-DOMAIN/my/account")
+- The API access key is in the right sidebar
 
 ### Jira
 
-* Go to the tokens generator [page](https://id.atlassian.com/manage-profile/security/api-tokens)
-* Use them in the config.
-* The username is your email
+- Go to the tokens generator [page](https://id.atlassian.com/manage-profile/security/api-tokens)
+- Use them in the config.
+- The username is your email

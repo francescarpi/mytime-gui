@@ -1,6 +1,6 @@
 // sum.test.js
-import { expect, test } from "vitest";
+import { expect, test } from 'vitest'
 
-test("ping", () => {
-  expect("ping").toBe("ping");
-});
+test('ping', () => {
+  expect('ping').toBe('ping')
+})

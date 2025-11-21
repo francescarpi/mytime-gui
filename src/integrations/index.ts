@@ -1,30 +1,30 @@
-import Integration from "../components/Settings/Integration";
-import RedmineIntegrationSettings from "./redmine/IntegrationSettings";
-import JiraIntegrationSettings from "./jira/IntegrationSettings";
-import GenericSyncModal from "../components/Sync/GenericSyncModal";
-import RedmineSyncModal from "./redmine/RedmineSyncModal";
+import Integration from '../components/Settings/Integration'
+import RedmineIntegrationSettings from './redmine/IntegrationSettings'
+import JiraIntegrationSettings from './jira/IntegrationSettings'
+import GenericSyncModal from '../components/Sync/GenericSyncModal'
+import RedmineSyncModal from './redmine/RedmineSyncModal'
 
 export enum IntegrationType {
-  Redmine = "Redmine",
-  Jira = "Jira",
+  Redmine = 'Redmine',
+  Jira = 'Jira',
 }
 
 export const getIntegrationSettingsComponent = (integration: string) => {
   switch (integration) {
     case IntegrationType.Redmine:
-      return RedmineIntegrationSettings;
+      return RedmineIntegrationSettings
     case IntegrationType.Jira:
-      return JiraIntegrationSettings;
+      return JiraIntegrationSettings
     default:
-      return Integration;
+      return Integration
   }
-};
+}
 
 export const getSyncComponent = (integration: string) => {
   switch (integration) {
     case IntegrationType.Redmine:
-      return RedmineSyncModal;
+      return RedmineSyncModal
     default:
-      return GenericSyncModal;
+      return GenericSyncModal
   }
-};
+}

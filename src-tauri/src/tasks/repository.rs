@@ -6,7 +6,7 @@ use diesel::{QueryResult, SqliteConnection};
 
 use crate::schema::tasks;
 
-use super::models::{DatesWithTasks, Duration, GroupedTask, Task, TaskWithDuration};
+use super::models::{DatesWithTasks, Duration, GroupedTask, SummaryTask, Task, TaskWithDuration};
 
 const DURATION_SQL: &str ="COALESCE(STRFTIME('%s', end), STRFTIME('%s', DATETIME('now', 'localtime'))) - STRFTIME('%s', start)";
 const DEFAULT_TASKS_ORDER: &str = "start DESC, id";
@@ -236,6 +236,37 @@ impl TasksRepository {
             DURATION_SQL
         ))
         .load(c)
+    }
+
+    pub fn summary_tasks(c: &mut SqliteConnection) -> QueryResult<Vec<SummaryTask>> {
+        let query = format!(
+            "
+            SELECT
+                GROUP_CONCAT(id, '-') AS id,
+                SUM({}) AS duration,
+                desc,
+                STRFTIME('%Y-%m-%d', start) AS date,
+                GROUP_CONCAT(id) AS ids,
+                project
+            FROM
+                tasks
+            WHERE
+                end IS NOT NULL
+                AND reported = false
+                AND (external_id IS NULL OR external_id == '')
+            GROUP BY
+                external_id,
+                desc,
+                STRFTIME('%Y-%m-%d', start),
+                project
+            ORDER BY
+                STRFTIME('%Y-%m-%d', start) DESC,
+                id
+        ",
+            DURATION_SQL
+        );
+
+        sql_query(query).load(c)
     }
 
     pub fn mark_tasks_as_reported(

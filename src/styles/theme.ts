@@ -1,10 +1,10 @@
-import { createTheme } from "@mui/material/styles";
-import { Theme } from "../models";
+import { createTheme } from '@mui/material/styles'
+import { Theme } from '../models'
 
 const appTheme = (darkMode: boolean, theme: Theme) =>
   createTheme({
     palette: {
-      mode: darkMode ? "dark" : "light",
+      mode: darkMode ? 'dark' : 'light',
       primary: {
         main: theme.primaryPreview || theme.primary,
       },
@@ -12,6 +12,6 @@ const appTheme = (darkMode: boolean, theme: Theme) =>
         main: theme.secondaryPreview || theme.secondary,
       },
     },
-  });
+  })
 
-export default appTheme;
+export default appTheme

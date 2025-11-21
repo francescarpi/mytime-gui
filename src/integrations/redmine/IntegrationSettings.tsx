@@ -1,21 +1,21 @@
-import Integration from "../../components/Settings/Integration";
-import { Setting } from "../../hooks/useSettings";
-import { Grid } from "@mui/material";
-import RedmineActivitySelect from "./RedmineActivitySelect";
-import useRedmine from "./useRedmine";
-import TextField from "@mui/material/TextField";
-import InfoIcon from "@mui/icons-material/Info";
-import Tooltip from "@mui/material/Tooltip";
-import InputAdornment from "@mui/material/InputAdornment";
+import Integration from '../../components/Settings/Integration'
+import { Setting } from '../../hooks/useSettings'
+import { Grid } from '@mui/material'
+import RedmineActivitySelect from './RedmineActivitySelect'
+import useRedmine from './useRedmine'
+import TextField from '@mui/material/TextField'
+import InfoIcon from '@mui/icons-material/Info'
+import Tooltip from '@mui/material/Tooltip'
+import InputAdornment from '@mui/material/InputAdornment'
 
 const RedmineIntegrationSettings = ({
   setting,
   setSetting,
 }: {
-  setting: Setting | null;
-  setSetting: CallableFunction;
+  setting: Setting | null
+  setSetting: CallableFunction
 }) => {
-  const { activities } = useRedmine();
+  const { activities } = useRedmine()
   const onChangeRedmineActivity = (default_activity: string) =>
     setSetting({
       ...setting,
@@ -23,7 +23,7 @@ const RedmineIntegrationSettings = ({
         ...setting?.integration_config,
         default_activity,
       },
-    });
+    })
 
   const onChangeIntegrationToken = (e: any) =>
     setSetting({
@@ -32,7 +32,7 @@ const RedmineIntegrationSettings = ({
         ...setting?.integration_config,
         token: e.target.value,
       },
-    });
+    })
 
   return (
     <Integration setting={setting} setSetting={setSetting}>
@@ -40,7 +40,7 @@ const RedmineIntegrationSettings = ({
         <TextField
           label="Token"
           fullWidth
-          value={setting?.integration_config?.token || ""}
+          value={setting?.integration_config?.token || ''}
           onChange={onChangeIntegrationToken}
           type="password"
           slotProps={{
@@ -54,10 +54,10 @@ const RedmineIntegrationSettings = ({
               ),
             },
             htmlInput: {
-              autoComplete: "off",
-              autoCorrect: "off",
-              autoCapitalize: "off",
-              spellCheck: "false",
+              autoComplete: 'off',
+              autoCorrect: 'off',
+              autoCapitalize: 'off',
+              spellCheck: 'false',
               maxLength: 255,
             },
           }}
@@ -72,7 +72,7 @@ const RedmineIntegrationSettings = ({
         />
       </Grid>
     </Integration>
-  );
-};
+  )
+}
 
-export default RedmineIntegrationSettings;
+export default RedmineIntegrationSettings

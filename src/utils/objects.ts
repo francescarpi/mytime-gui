@@ -1,26 +1,26 @@
 const areEquals = (obj1: any, obj2: any) => {
   if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 === null || obj2 === null) {
-    return obj1 === obj2;
+    return obj1 === obj2
   }
 
-  const keys1 = Object.keys(obj1);
-  const keys2 = Object.keys(obj2);
+  const keys1 = Object.keys(obj1)
+  const keys2 = Object.keys(obj2)
 
   if (keys1.length !== keys2.length) {
-    return false;
+    return false
   }
 
   for (let key of keys1) {
     if (!obj2.hasOwnProperty(key)) {
-      return false;
+      return false
     }
 
     if (!areEquals(obj1[key], obj2[key])) {
-      return false;
+      return false
     }
   }
 
-  return true;
+  return true
 }
 
-export { areEquals };
+export { areEquals }

@@ -1,16 +1,16 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from 'react'
 
-import { SxProps, Theme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import { Button } from "@mui/material";
-import { invoke } from "@tauri-apps/api/core";
-import { useConfirm } from "material-ui-confirm";
-import dayjs from "dayjs";
-import { Grid } from "@mui/material";
+import { SxProps, Theme } from '@mui/material/styles'
+import Box from '@mui/material/Box'
+import { Button } from '@mui/material'
+import { invoke } from '@tauri-apps/api/core'
+import { useConfirm } from 'material-ui-confirm'
+import dayjs from 'dayjs'
+import { Grid } from '@mui/material'
 
-import { Task } from "../hooks/useTasks";
-import SearchExternalId from "./SearchExternalId";
-import MyInputField from "./atoms/MyInputField";
+import { Task } from '../hooks/useTasks'
+import SearchExternalId from './SearchExternalId'
+import MyInputField from './atoms/MyInputField'
 
 const AddTaskForm = ({
   sx,
@@ -18,62 +18,58 @@ const AddTaskForm = ({
   defaultAddTaskValues,
   dispatchDefaultAddTaskValues,
 }: {
-  sx?: SxProps<Theme>;
-  onSubmit: CallableFunction;
+  sx?: SxProps<Theme>
+  onSubmit: CallableFunction
   defaultAddTaskValues: {
-    proj: string;
-    desc: string;
-    extId: string;
-  };
-  dispatchDefaultAddTaskValues: CallableFunction;
+    proj: string
+    desc: string
+    extId: string
+  }
+  dispatchDefaultAddTaskValues: CallableFunction
 }) => {
-  const [project, setProject] = useState("");
-  const [description, setDescription] = useState("");
-  const [externalId, setExternalId] = useState("");
-  const [showSearchExtId, setShowSearchExtId] = useState<boolean>(false);
-  const submitRef = useRef<HTMLButtonElement>(null);
-  const confirm = useConfirm();
+  const [project, setProject] = useState('')
+  const [description, setDescription] = useState('')
+  const [externalId, setExternalId] = useState('')
+  const [showSearchExtId, setShowSearchExtId] = useState<boolean>(false)
+  const submitRef = useRef<HTMLButtonElement>(null)
+  const confirm = useConfirm()
 
   const reset = () => {
-    setProject("");
-    setDescription("");
-    setExternalId("");
-    dispatchDefaultAddTaskValues({ type: "reset" });
-  };
+    setProject('')
+    setDescription('')
+    setExternalId('')
+    dispatchDefaultAddTaskValues({ type: 'reset' })
+  }
 
   const submit = (e: any) => {
-    e.preventDefault();
-    onSubmit(project, description, externalId);
-    reset();
-    submitRef.current?.focus();
-  };
+    e.preventDefault()
+    onSubmit(project, description, externalId)
+    reset()
+    submitRef.current?.focus()
+  }
 
   useEffect(() => {
-    if (defaultAddTaskValues.proj !== "") {
-      setProject(defaultAddTaskValues.proj);
+    if (defaultAddTaskValues.proj !== '') {
+      setProject(defaultAddTaskValues.proj)
     }
-    if (defaultAddTaskValues.desc !== "") {
-      setDescription(defaultAddTaskValues.desc);
+    if (defaultAddTaskValues.desc !== '') {
+      setDescription(defaultAddTaskValues.desc)
     }
-    if (defaultAddTaskValues.extId !== "") {
-      setExternalId(defaultAddTaskValues.extId);
+    if (defaultAddTaskValues.extId !== '') {
+      setExternalId(defaultAddTaskValues.extId)
     }
-  }, [defaultAddTaskValues]);
+  }, [defaultAddTaskValues])
 
   useEffect(() => {
-    invoke("last_task").then((resp) => {
-      let task = resp as Task | null;
-      if (
-        task &&
-        dayjs(task.start).isBefore(dayjs(), "date") &&
-        dayjs().diff(dayjs(task.start), "day") < 4
-      ) {
+    invoke('last_task').then((resp) => {
+      let task = resp as Task | null
+      if (task && dayjs(task.start).isBefore(dayjs(), 'date') && dayjs().diff(dayjs(task.start), 'day') < 4) {
         confirm({
           description: `Do you want to continue with the previous task: "${task.desc}"?`,
-        }).then(() => onSubmit(task.project, task.desc, task.external_id));
+        }).then(() => onSubmit(task.project, task.desc, task.external_id))
       }
-    });
-  }, []);
+    })
+  }, [])
 
   return (
     <>
@@ -86,11 +82,7 @@ const AddTaskForm = ({
         <form onSubmit={submit} data-testid="add-task-form">
           <Grid container spacing={2}>
             <Grid size={2}>
-              <MyInputField
-                label="Project"
-                value={project}
-                onChange={(e) => setProject(e.target.value)}
-              />
+              <MyInputField label="Project" value={project} onChange={(e) => setProject(e.target.value)} />
             </Grid>
             <Grid size={5}>
               <MyInputField
@@ -123,7 +115,7 @@ const AddTaskForm = ({
         </form>
       </Box>
     </>
-  );
-};
+  )
+}
 
-export default AddTaskForm;
+export default AddTaskForm

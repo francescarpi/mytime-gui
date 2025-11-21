@@ -1,76 +1,73 @@
-import { useState, useRef, useReducer } from "react";
-import { ConfirmProvider } from "material-ui-confirm";
-import { ThemeProvider } from "@mui/material/styles";
-import { SnackbarProvider } from "notistack";
-import CssBaseline from "@mui/material/CssBaseline";
+import { useState, useRef, useReducer } from 'react'
+import { ConfirmProvider } from 'material-ui-confirm'
+import { ThemeProvider } from '@mui/material/styles'
+import { SnackbarProvider } from 'notistack'
+import CssBaseline from '@mui/material/CssBaseline'
 
-import Layout from "./components/Layout/Layout";
-import TasksTable from "./components/TasksTable/TasksTable";
-import AddTaskForm from "./components/AddTaskForm";
-import TaskEdition from "./components/TaskEdition";
-import SyncWrapper from "./components/Sync/SyncWrapper";
-import { SettingsProvider } from "./components/Settings/Provider";
-import LoadingProvider from "./components/Loading/Provider";
+import Layout from './components/Layout/Layout'
+import TasksTable from './components/TasksTable/TasksTable'
+import AddTaskForm from './components/AddTaskForm'
+import TaskEdition from './components/TaskEdition'
+import SyncWrapper from './components/Sync/SyncWrapper'
+import { SettingsProvider } from './components/Settings/Provider'
+import LoadingProvider from './components/Loading/Provider'
+import { Summary } from './components/Summary'
 
-import useDate from "./hooks/useDate";
-import useKeyboard from "./hooks/useKeyboard";
-import useTasks, { Task } from "./hooks/useTasks";
-import useSearch from "./hooks/useSearch";
-import appTheme from "./styles/theme";
-import useClipboard from "./hooks/useClipboard";
-import useVersion from "./hooks/useVersion";
-import useFavorites from "./hooks/useFavourites";
+import useDate from './hooks/useDate'
+import useKeyboard from './hooks/useKeyboard'
+import useTasks, { Task } from './hooks/useTasks'
+import useSearch from './hooks/useSearch'
+import appTheme from './styles/theme'
+import useClipboard from './hooks/useClipboard'
+import useVersion from './hooks/useVersion'
+import useFavorites from './hooks/useFavourites'
 
-import TasksTableActionsHeader from "./components/TasksTableActionsHeader";
-import { Card, CardContent } from "@mui/material";
-import Favourites from "./components/Favourites";
-import { defaultAddTaskValuesReducer, themeReducer } from "./reducers";
+import TasksTableActionsHeader from './components/TasksTableActionsHeader'
+import { Card, CardContent } from '@mui/material'
+import Favourites from './components/Favourites'
+import { defaultAddTaskValuesReducer, themeReducer } from './reducers'
 
 const App = () => {
-  const [openSync, setOpenSync] = useState<boolean>(false);
+  const [openSync, setOpenSync] = useState<boolean>(false)
+  const [openSummary, setOpenSummary] = useState<boolean>(false)
 
   const [theme, dispatchTheme] = useReducer(themeReducer, {
-    primary: "#1976d2",
-    secondary: "#ce93d8",
+    primary: '#1976d2',
+    secondary: '#ce93d8',
     primaryPreview: null,
     secondaryPreview: null,
-  });
-  const [darkMode, setDarkMode] = useState<boolean>(false);
-  const defaultTheme = appTheme(darkMode, theme);
+  })
+  const [darkMode, setDarkMode] = useState<boolean>(false)
+  const defaultTheme = appTheme(darkMode, theme)
 
-  const [viewModeGrouped, setViewModeGrouped] = useState<boolean>(false);
+  const [viewModeGrouped, setViewModeGrouped] = useState<boolean>(false)
 
-  const [defaultAddTaskValues, dispatchDefaultAddTaskValues] = useReducer(
-    defaultAddTaskValuesReducer,
-    { proj: "", desc: "", extId: "" },
-  );
+  const [defaultAddTaskValues, dispatchDefaultAddTaskValues] = useReducer(defaultAddTaskValuesReducer, {
+    proj: '',
+    desc: '',
+    extId: '',
+  })
 
-  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const searchInputRef = useRef<HTMLInputElement | null>(null)
 
-  const { date, setDate, setPreviousDate, setNextDate, setToday } = useDate();
+  const { date, setDate, setPreviousDate, setNextDate, setToday } = useDate()
 
-  const { setQuery, totalWorked, result, searchMode } = useSearch({});
+  const { setQuery, totalWorked, result, searchMode } = useSearch({})
 
-  const {
-    tasks,
-    groupedTasks,
-    addTask,
-    stopTask,
-    deleteTask,
-    editTask,
-    summary,
-    refresh,
-  } = useTasks(date, setToday);
+  const { tasks, groupedTasks, addTask, stopTask, deleteTask, editTask, summary, refresh } = useTasks(
+    date,
+    setToday,
+  )
 
-  const { toggleFavourite, favourites, loadFavorites } = useFavorites(refresh);
+  const { toggleFavourite, favourites, loadFavorites } = useFavorites(refresh)
 
-  const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
+  const [taskToEdit, setTaskToEdit] = useState<Task | null>(null)
 
-  useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef);
+  useKeyboard(setPreviousDate, setNextDate, setToday, searchInputRef)
 
-  const { copyTask, copyTasks, copyString } = useClipboard();
+  const { copyTask, copyTasks, copyString } = useClipboard()
 
-  const { newVersion, version } = useVersion();
+  const { newVersion, version } = useVersion()
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -84,32 +81,26 @@ const App = () => {
         <SnackbarProvider
           maxSnack={2}
           autoHideDuration={5000}
-          anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+          anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
         >
           <LoadingProvider>
             <ConfirmProvider
               defaultOptions={{
-                confirmationButtonProps: { variant: "contained" },
+                confirmationButtonProps: { variant: 'contained' },
                 cancellationButtonProps: {
-                  variant: "contained",
-                  color: "secondary",
+                  variant: 'contained',
+                  color: 'secondary',
                 },
               }}
             >
-              <SyncWrapper
-                opened={openSync}
-                onClose={() => setOpenSync(false)}
-                refreshTasks={refresh}
-              />
-              <TaskEdition
-                task={taskToEdit}
-                onClose={() => setTaskToEdit(null)}
-                onEdit={editTask}
-              />
+              <SyncWrapper opened={openSync} onClose={() => setOpenSync(false)} refreshTasks={refresh} />
+              <Summary open={openSummary} onClose={() => setOpenSummary(false)} />
+              <TaskEdition task={taskToEdit} onClose={() => setTaskToEdit(null)} onEdit={editTask} />
               <Layout
                 setToday={setToday}
                 summary={summary}
                 onPressSync={() => setOpenSync(true)}
+                onPressSummary={() => setOpenSummary(true)}
                 setSearchQuery={setQuery}
                 searchInputRef={searchInputRef}
                 newVersion={newVersion}
@@ -154,9 +145,7 @@ const App = () => {
                       copyStringToClipboard={copyString}
                       deleteTask={deleteTask}
                       setTaskToEdit={setTaskToEdit}
-                      dispatchDefaultAddTaskValues={
-                        dispatchDefaultAddTaskValues
-                      }
+                      dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
                       toggleFavourite={toggleFavourite}
                       setQuery={setQuery}
                     />
@@ -168,7 +157,7 @@ const App = () => {
         </SnackbarProvider>
       </SettingsProvider>
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default App;
+export default App

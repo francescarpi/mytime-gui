@@ -1,45 +1,40 @@
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler } from 'react'
 
-import {
-  TextField,
-  InputAdornment,
-  IconButton,
-  CircularProgress,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+import { TextField, InputAdornment, IconButton, CircularProgress } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search'
 
 const MyInputField = ({
   label,
   value,
   onChange,
-  size = "small",
+  size = 'small',
   maxLength = 100,
-  type = "text",
+  type = 'text',
   error = false,
   showSearch = false,
   searchHandler = () => {},
   required = true,
-  helperText = "",
+  helperText = '',
   isLoading = false,
   disabled = false,
 }: {
-  label: string;
-  value: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
-  size?: "small" | "medium";
-  maxLength?: number;
-  type?: string;
-  error?: boolean;
-  showSearch?: boolean;
-  searchHandler?: () => void;
-  required?: boolean;
-  helperText?: boolean | string;
-  isLoading?: boolean;
-  disabled?: boolean;
+  label: string
+  value: string
+  onChange: ChangeEventHandler<HTMLInputElement>
+  size?: 'small' | 'medium'
+  maxLength?: number
+  type?: string
+  error?: boolean
+  showSearch?: boolean
+  searchHandler?: () => void
+  required?: boolean
+  helperText?: boolean | string
+  isLoading?: boolean
+  disabled?: boolean
 }) => {
   const renderAdornment = () => {
     if (isLoading) {
-      return <CircularProgress size={16} color="inherit" />;
+      return <CircularProgress size={16} color="inherit" />
     }
 
     if (showSearch) {
@@ -49,10 +44,10 @@ const MyInputField = ({
             <SearchIcon />
           </IconButton>
         </InputAdornment>
-      );
+      )
     }
-    return null;
-  };
+    return null
+  }
 
   return (
     <TextField
@@ -71,15 +66,15 @@ const MyInputField = ({
           endAdornment: renderAdornment(),
         },
         htmlInput: {
-          autoComplete: "off",
-          autoCorrect: "off",
-          autoCapitalize: "off",
-          spellCheck: "false",
+          autoComplete: 'off',
+          autoCorrect: 'off',
+          autoCapitalize: 'off',
+          spellCheck: 'false',
           maxLength: { maxLength },
         },
       }}
     />
-  );
-};
+  )
+}
 
-export default MyInputField;
+export default MyInputField

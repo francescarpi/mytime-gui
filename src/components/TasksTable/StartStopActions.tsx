@@ -1,8 +1,8 @@
-import { Tooltip, IconButton } from "@mui/material";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import StopCircleIcon from "@mui/icons-material/StopCircle";
+import { Tooltip, IconButton } from '@mui/material'
+import PlayCircleIcon from '@mui/icons-material/PlayCircle'
+import StopCircleIcon from '@mui/icons-material/StopCircle'
 
-import { Task } from "../../hooks/useTasks";
+import { Task } from '../../hooks/useTasks'
 
 const StartStopActions = ({
   task,
@@ -10,15 +10,15 @@ const StartStopActions = ({
   stopTask,
   setQuery,
 }: {
-  task: Task;
-  addTask: CallableFunction;
-  stopTask: CallableFunction;
-  setQuery: CallableFunction;
+  task: Task
+  addTask: CallableFunction
+  stopTask: CallableFunction
+  setQuery: CallableFunction
 }) => {
   const playTask = () => {
-    addTask(task.project, task.desc, task.external_id);
-    setQuery("");
-  };
+    addTask(task.project, task.desc, task.external_id)
+    setQuery('')
+  }
 
   return task.end ? (
     <Tooltip title="Start task" placement="top">
@@ -32,6 +32,6 @@ const StartStopActions = ({
         <StopCircleIcon />
       </IconButton>
     </Tooltip>
-  );
-};
-export default StartStopActions;
+  )
+}
+export default StartStopActions

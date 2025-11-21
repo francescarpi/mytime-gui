@@ -1,4 +1,4 @@
-import { useEffect, useCallback, RefObject } from "react";
+import { useEffect, useCallback, RefObject } from 'react'
 
 const useKeyboard = (
   setPreviousDate: CallableFunction,
@@ -8,41 +8,41 @@ const useKeyboard = (
 ) => {
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if ((e.target as HTMLInputElement).tagName.toLowerCase() === "input") {
-        return;
+      if ((e.target as HTMLInputElement).tagName.toLowerCase() === 'input') {
+        return
       }
 
       if (e.ctrlKey) {
         switch (e.code) {
-          case "KeyF":
-            searchInputRef.current?.focus();
-            break;
+          case 'KeyF':
+            searchInputRef.current?.focus()
+            break
         }
       } else {
         switch (e.code) {
-          case "ArrowLeft":
-            setPreviousDate();
-            break;
-          case "ArrowRight":
-            setNextDate();
-            break;
-          case "ArrowDown":
-            setToday();
-            break;
+          case 'ArrowLeft':
+            setPreviousDate()
+            break
+          case 'ArrowRight':
+            setNextDate()
+            break
+          case 'ArrowDown':
+            setToday()
+            break
         }
       }
     },
     [setNextDate, setPreviousDate, setToday, searchInputRef],
-  );
+  )
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown)
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [handleKeyDown]);
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [handleKeyDown])
 
-  return {};
-};
+  return {}
+}
 
-export default useKeyboard;
+export default useKeyboard

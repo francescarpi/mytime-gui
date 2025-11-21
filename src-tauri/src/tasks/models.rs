@@ -61,6 +61,23 @@ pub struct GroupedTask {
     pub project: Option<String>,
 }
 
+#[derive(Serialize, Debug, Queryable, QueryableByName, Deserialize)]
+#[diesel()]
+pub struct SummaryTask {
+    #[diesel(sql_type = Text)]
+    pub id: String,
+    #[diesel(sql_type = Integer)]
+    pub duration: i32,
+    #[diesel(sql_type = Text)]
+    pub desc: String,
+    #[diesel(sql_type = Date)]
+    pub date: NaiveDate,
+    #[diesel(sql_type = Text)]
+    pub ids: ListIds,
+    #[diesel(sql_type = Nullable<Text>)]
+    pub project: Option<String>,
+}
+
 #[derive(Deserialize, Queryable, QueryableByName, Debug, Serialize)]
 #[diesel()]
 pub struct DatesWithTasks {

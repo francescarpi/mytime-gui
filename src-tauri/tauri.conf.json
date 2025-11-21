@@ -14,8 +14,7 @@
         "title": "MyTime",
         "hiddenTitle": true,
         "width": 1200,
-        "height": 700,
-        "titleBarStyle": "Overlay"
+        "height": 700
       }
     ],
     "security": {
@@ -37,9 +36,7 @@
   "plugins": {
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEE4MTE5MkRGQTNERjc4MEYKUldRUGVOK2ozNUlScU9XMmtQUHh2VVdERjNNRWh6bktJNE85UXh2OWFHbzlrbkJzUjFHTGxXeU4K",
-      "endpoints": [
-        "https://github.com/francescarpi/mytime-gui/releases/latest/download/latest.json"
-      ]
+      "endpoints": ["https://github.com/francescarpi/mytime-gui/releases/latest/download/latest.json"]
     }
   }
 }

@@ -107,6 +107,13 @@ pub fn group_tasks(conn: State<'_, DbConn>) -> Value {
 }
 
 #[command]
+pub fn summary_tasks(conn: State<'_, DbConn>) -> Value {
+    let mut db = conn.0.lock().unwrap();
+    let tasks = TasksRepository::summary_tasks(&mut db).unwrap();
+    json!(tasks)
+}
+
+#[command]
 pub fn last_task(conn: State<'_, DbConn>) -> Value {
     let mut db = conn.0.lock().unwrap();
     let task = TasksRepository::last_task(&mut db);
@@ -148,4 +155,14 @@ pub fn favourites(conn: State<'_, DbConn>) -> Value {
     let mut db = conn.0.lock().unwrap();
     let tasks = TasksRepository::favourites(&mut db).unwrap();
     json!(tasks)
+}
+
+#[command]
+pub async fn mark_tasks_as_reported(
+    ids: Vec<i32>,
+    conn: State<'_, DbConn>,
+) -> Result<Value, Value> {
+    let mut db = conn.0.lock().unwrap();
+    let response = TasksRepository::mark_tasks_as_reported(&mut db, &ids);
+    Ok(json!(response.is_ok()))
 }

@@ -9,14 +9,14 @@ import {
   TableHead,
   TableRow,
   Button,
-} from "@mui/material";
+} from '@mui/material'
 
-import { Task } from "../../hooks/useTasks";
-import { formatDuration, dateToStrTime } from "../../utils/dates";
-import { useConfirm } from "material-ui-confirm";
-import { StyledBox } from "../../styles/modal";
-import EditDeleteActions from "./EditDeleteActions";
-import FavoriteAction from "./FavouriteAction";
+import { Task } from '../../hooks/useTasks'
+import { formatDuration, dateToStrTime } from '../../utils/dates'
+import { useConfirm } from 'material-ui-confirm'
+import { StyledBox } from '../../styles/modal'
+import EditDeleteActions from './EditDeleteActions'
+import FavoriteAction from './FavouriteAction'
 
 const GroupedModal = ({
   task,
@@ -25,18 +25,16 @@ const GroupedModal = ({
   setTaskToEdit,
   toggleFavourite,
 }: {
-  task: Task | null;
-  onClose: CallableFunction;
-  deleteTask: CallableFunction;
-  setTaskToEdit: CallableFunction;
-  toggleFavourite: CallableFunction;
+  task: Task | null
+  onClose: CallableFunction
+  deleteTask: CallableFunction
+  setTaskToEdit: CallableFunction
+  toggleFavourite: CallableFunction
 }) => {
-  const confirm = useConfirm();
+  const confirm = useConfirm()
   const deleteHandler = (id: number) => {
-    confirm({ description: "Are you sure you want to delete this task?" }).then(
-      () => deleteTask(id),
-    );
-  };
+    confirm({ description: 'Are you sure you want to delete this task?' }).then(() => deleteTask(id))
+  }
   return (
     <Modal open={Boolean(task)} onClose={() => onClose()}>
       <StyledBox width={600}>
@@ -56,24 +54,14 @@ const GroupedModal = ({
               {task?.children?.map((child) => (
                 <TableRow key={`${child.id}-${child.reported}-${child.end}`}>
                   <TableCell align="center">
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <FavoriteAction
-                        task={child}
-                        sx={{ mr: 1 }}
-                        toggle={toggleFavourite}
-                      />
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <FavoriteAction task={child} sx={{ mr: 1 }} toggle={toggleFavourite} />
                       {child.id.toString()}
                     </Box>
                   </TableCell>
-                  <TableCell align="right">
-                    {dateToStrTime(child.start)}
-                  </TableCell>
-                  <TableCell align="right">
-                    {child.end ? dateToStrTime(child.end) : ""}
-                  </TableCell>
-                  <TableCell align="right">
-                    {formatDuration(child.duration as number)}
-                  </TableCell>
+                  <TableCell align="right">{dateToStrTime(child.start)}</TableCell>
+                  <TableCell align="right">{child.end ? dateToStrTime(child.end) : ''}</TableCell>
+                  <TableCell align="right">{formatDuration(child.duration as number)}</TableCell>
                   <TableCell align="right">
                     {!task.reported && (
                       <EditDeleteActions
@@ -88,14 +76,14 @@ const GroupedModal = ({
             </TableBody>
           </Table>
         </TableContainer>
-        <Box sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}>
+        <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
           <Button variant="contained" onClick={() => onClose()}>
             Close
           </Button>
         </Box>
       </StyledBox>
     </Modal>
-  );
-};
+  )
+}
 
-export default GroupedModal;
+export default GroupedModal

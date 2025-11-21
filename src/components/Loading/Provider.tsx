@@ -1,13 +1,13 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState } from 'react'
 
-import { Typography, CircularProgress, Backdrop } from "@mui/material";
+import { Typography, CircularProgress, Backdrop } from '@mui/material'
 
-import LoadingContext from "./Context";
+import LoadingContext from './Context'
 
 const LoadingProvider = ({ children }: { children: ReactNode }) => {
-  const [text, setText] = useState<string>("Loading...");
-  const [visible, setVisible] = useState<boolean>(false);
-  const [progress, setProgress] = useState<string>("0%");
+  const [text, setText] = useState<string>('Loading...')
+  const [visible, setVisible] = useState<boolean>(false)
+  const [progress, setProgress] = useState<string>('0%')
 
   return (
     <LoadingContext.Provider
@@ -23,10 +23,10 @@ const LoadingProvider = ({ children }: { children: ReactNode }) => {
       <Backdrop
         open={visible}
         sx={{
-          color: "#fff",
+          color: '#fff',
           zIndex: (theme) => theme.zIndex.drawer + 1,
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
           gap: 2,
         }}
       >
@@ -36,7 +36,7 @@ const LoadingProvider = ({ children }: { children: ReactNode }) => {
       </Backdrop>
       {children}
     </LoadingContext.Provider>
-  );
-};
+  )
+}
 
-export default LoadingProvider;
+export default LoadingProvider
