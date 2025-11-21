@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react'
 
 import {
   Table,
@@ -9,15 +9,15 @@ import {
   TableRow,
   Paper,
   Button,
-} from "@mui/material";
+} from '@mui/material'
 
-import { Task } from "../../hooks/useTasks";
-import { formatDuration } from "../../utils/dates";
-import GroupedModal from "./GroupedModal";
-import SyncIndicator from "./SyncIndicator";
-import CopyToClipboardBtn from "../CopyToClipboardBtn";
-import StartStopActions from "./StartStopActions";
-import ProjDescExtId from "./ProjDescExtId";
+import { Task } from '../../hooks/useTasks'
+import { formatDuration } from '../../utils/dates'
+import GroupedModal from './GroupedModal'
+import SyncIndicator from './SyncIndicator'
+import CopyToClipboardBtn from '../CopyToClipboardBtn'
+import StartStopActions from './StartStopActions'
+import ProjDescExtId from './ProjDescExtId'
 
 const Grouped = ({
   tasks,
@@ -31,29 +31,29 @@ const Grouped = ({
   copyStringToClipboard,
   setQuery,
 }: {
-  tasks: Task[];
-  addTask: CallableFunction;
-  stopTask: CallableFunction;
-  copyToClipboard: CallableFunction;
-  deleteTask: CallableFunction;
-  setTaskToEdit: CallableFunction;
-  dispatchDefaultAddTaskValues: CallableFunction;
-  toggleFavourite: CallableFunction;
-  copyStringToClipboard: CallableFunction;
-  setQuery: CallableFunction;
+  tasks: Task[]
+  addTask: CallableFunction
+  stopTask: CallableFunction
+  copyToClipboard: CallableFunction
+  deleteTask: CallableFunction
+  setTaskToEdit: CallableFunction
+  dispatchDefaultAddTaskValues: CallableFunction
+  toggleFavourite: CallableFunction
+  copyStringToClipboard: CallableFunction
+  setQuery: CallableFunction
 }) => {
-  const [taskDetails, setTaskDetails] = useState<Task | null>(null);
+  const [taskDetails, setTaskDetails] = useState<Task | null>(null)
 
   useEffect(() => {
     if (taskDetails) {
-      const existing = tasks.find((t) => t.id === taskDetails.id);
+      const existing = tasks.find((t) => t.id === taskDetails.id)
       if (existing) {
-        setTaskDetails(existing);
+        setTaskDetails(existing)
       } else {
-        setTaskDetails(null);
+        setTaskDetails(null)
       }
     }
-  }, [tasks, taskDetails]);
+  }, [tasks, taskDetails])
 
   return (
     <>
@@ -81,18 +81,13 @@ const Grouped = ({
           </TableHead>
           <TableBody>
             {tasks.map((task) => (
-              <TableRow
-                key={`${task.id}-${task.reported}-${task.end}`}
-                data-testid="task-row"
-              >
+              <TableRow key={`${task.id}-${task.reported}-${task.end}`} data-testid="task-row">
                 <ProjDescExtId
                   task={task}
                   dispatchDefaultAddTaskValues={dispatchDefaultAddTaskValues}
                   copyStringToClipboard={copyStringToClipboard}
                 />
-                <TableCell align="right">
-                  {formatDuration(task.duration as number)}
-                </TableCell>
+                <TableCell align="right">{formatDuration(task.duration as number)}</TableCell>
                 <TableCell align="center">
                   <SyncIndicator task={task} />
                 </TableCell>
@@ -108,12 +103,7 @@ const Grouped = ({
                 </TableCell>
                 <TableCell align="right">
                   <CopyToClipboardBtn onClick={() => copyToClipboard(task)} />
-                  <StartStopActions
-                    task={task}
-                    addTask={addTask}
-                    stopTask={stopTask}
-                    setQuery={setQuery}
-                  />
+                  <StartStopActions task={task} addTask={addTask} stopTask={stopTask} setQuery={setQuery} />
                 </TableCell>
               </TableRow>
             ))}
@@ -121,7 +111,7 @@ const Grouped = ({
         </Table>
       </TableContainer>
     </>
-  );
-};
+  )
+}
 
-export default Grouped;
+export default Grouped

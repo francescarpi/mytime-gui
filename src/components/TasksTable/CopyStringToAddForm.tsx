@@ -1,14 +1,14 @@
-import { IconButton } from "@mui/material";
-import UpgradeIcon from "@mui/icons-material/Upgrade";
+import { IconButton } from '@mui/material'
+import UpgradeIcon from '@mui/icons-material/Upgrade'
 
 const CopyStringToAddForm = ({
   dispatchDefaultAddTaskValues,
   type,
   value,
 }: {
-  dispatchDefaultAddTaskValues: CallableFunction;
-  type: string;
-  value: string;
+  dispatchDefaultAddTaskValues: CallableFunction
+  type: string
+  value: string
 }) => (
   <IconButton
     size="small"
@@ -21,6 +21,6 @@ const CopyStringToAddForm = ({
   >
     <UpgradeIcon />
   </IconButton>
-);
+)
 
-export default CopyStringToAddForm;
+export default CopyStringToAddForm

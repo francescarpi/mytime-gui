@@ -1,19 +1,19 @@
-import { createContext } from "react";
+import { createContext } from 'react'
 
 const LoadingContext = createContext<{
-  text: string;
-  progress: string;
-  visible: boolean;
-  setVisible: (visible: boolean) => void;
-  setText: (text: string) => void;
-  setProgress: (text: string) => void;
+  text: string
+  progress: string
+  visible: boolean
+  setVisible: (visible: boolean) => void
+  setText: (text: string) => void
+  setProgress: (text: string) => void
 }>({
-  text: "Loading...",
-  progress: "0%",
+  text: 'Loading...',
+  progress: '0%',
   visible: false,
   setVisible: () => {},
   setText: () => {},
   setProgress: () => {},
-});
+})
 
-export default LoadingContext;
+export default LoadingContext

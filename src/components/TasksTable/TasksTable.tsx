@@ -1,12 +1,12 @@
-import { useContext } from "react";
+import { useContext } from 'react'
 
-import { Box } from "@mui/material";
+import { Box } from '@mui/material'
 
-import Chronological from "./Chronological";
-import Grouped from "./Grouped";
-import { Task } from "../../hooks/useTasks";
-import { SettingsContext } from "../Settings/Provider";
-import { ViewType } from "../../hooks/useSettings";
+import Chronological from './Chronological'
+import Grouped from './Grouped'
+import { Task } from '../../hooks/useTasks'
+import { SettingsContext } from '../Settings/Provider'
+import { ViewType } from '../../hooks/useSettings'
 
 const TasksTable = ({
   tasks,
@@ -22,21 +22,21 @@ const TasksTable = ({
   copyStringToClipboard,
   setQuery,
 }: {
-  tasks: Task[];
-  groupedTasks: Task[];
-  addTask: CallableFunction;
-  stopTask: CallableFunction;
-  copyToClipboard: CallableFunction;
-  deleteTask: CallableFunction;
-  setTaskToEdit: CallableFunction;
-  dispatchDefaultAddTaskValues: CallableFunction;
-  searchMode: boolean;
-  toggleFavourite: CallableFunction;
-  copyStringToClipboard: CallableFunction;
-  setQuery: CallableFunction;
+  tasks: Task[]
+  groupedTasks: Task[]
+  addTask: CallableFunction
+  stopTask: CallableFunction
+  copyToClipboard: CallableFunction
+  deleteTask: CallableFunction
+  setTaskToEdit: CallableFunction
+  dispatchDefaultAddTaskValues: CallableFunction
+  searchMode: boolean
+  toggleFavourite: CallableFunction
+  copyStringToClipboard: CallableFunction
+  setQuery: CallableFunction
 }) => {
-  const settingsContext = useContext(SettingsContext);
-  const isViewGrouped = settingsContext.setting?.view_type === ViewType.Grouped;
+  const settingsContext = useContext(SettingsContext)
+  const isViewGrouped = settingsContext.setting?.view_type === ViewType.Grouped
   const props = {
     tasks: isViewGrouped && !searchMode ? groupedTasks : tasks,
     addTask,
@@ -48,24 +48,20 @@ const TasksTable = ({
     toggleFavourite,
     copyStringToClipboard,
     setQuery,
-  };
+  }
   return (
     <Box
       sx={{
-        overflowY: "auto",
-        overflowX: "hidden",
-        width: "100%",
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        width: '100%',
         height: 350,
       }}
       data-testid="tasks-table"
     >
-      {isViewGrouped && !searchMode ? (
-        <Grouped {...props} />
-      ) : (
-        <Chronological {...props} />
-      )}
+      {isViewGrouped && !searchMode ? <Grouped {...props} /> : <Chronological {...props} />}
     </Box>
-  );
-};
+  )
+}
 
-export default TasksTable;
+export default TasksTable

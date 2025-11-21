@@ -1,17 +1,17 @@
-import { Grid } from "@mui/material";
+import { Grid } from '@mui/material'
 
 interface Shortcut {
-  key: string;
-  action: string;
+  key: string
+  action: string
 }
 
 const Shortcuts = () => {
   const shortcuts: Shortcut[] = [
-    { key: "Ctrl+f", action: "Search tasks" },
-    { key: "Left", action: "Go to previous day" },
-    { key: "Right", action: "Go to next day" },
-    { key: "Down", action: "Go to today" },
-  ];
+    { key: 'Ctrl+f', action: 'Search tasks' },
+    { key: 'Left', action: 'Go to previous day' },
+    { key: 'Right', action: 'Go to next day' },
+    { key: 'Down', action: 'Go to today' },
+  ]
 
   return (
     <Grid container spacing={2}>
@@ -23,7 +23,7 @@ const Shortcuts = () => {
         </Grid>
       ))}
     </Grid>
-  );
-};
+  )
+}
 
-export default Shortcuts;
+export default Shortcuts

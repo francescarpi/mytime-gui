@@ -1,15 +1,15 @@
-import { IconButton, Tooltip } from "@mui/material";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import { SxProps, Theme } from "@mui/material/styles";
+import { IconButton, Tooltip } from '@mui/material'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import { SxProps, Theme } from '@mui/material/styles'
 
 const CopyToClipboardBtn = ({
   onClick,
-  tooltip = "Copy to clipboard",
+  tooltip = 'Copy to clipboard',
   sx,
 }: {
-  onClick: CallableFunction;
-  tooltip?: string;
-  sx?: SxProps<Theme>;
+  onClick: CallableFunction
+  tooltip?: string
+  sx?: SxProps<Theme>
 }) => {
   return (
     <Tooltip title={tooltip} placement="top" sx={sx}>
@@ -17,7 +17,7 @@ const CopyToClipboardBtn = ({
         <ContentCopyIcon />
       </IconButton>
     </Tooltip>
-  );
-};
+  )
+}
 
-export default CopyToClipboardBtn;
+export default CopyToClipboardBtn

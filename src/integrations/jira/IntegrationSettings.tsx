@@ -1,20 +1,20 @@
-import React from "react";
-import Integration from "../../components/Settings/Integration";
-import { Setting } from "../../hooks/useSettings";
-import { Grid } from "@mui/material";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-import InfoIcon from "@mui/icons-material/Info";
-import Tooltip from "@mui/material/Tooltip";
-import Link from "@mui/material/Link";
-import MyInputField from "../../components/atoms/MyInputField";
+import React from 'react'
+import Integration from '../../components/Settings/Integration'
+import { Setting } from '../../hooks/useSettings'
+import { Grid } from '@mui/material'
+import TextField from '@mui/material/TextField'
+import InputAdornment from '@mui/material/InputAdornment'
+import InfoIcon from '@mui/icons-material/Info'
+import Tooltip from '@mui/material/Tooltip'
+import Link from '@mui/material/Link'
+import MyInputField from '../../components/atoms/MyInputField'
 
 const JiraIntegrationSettings = ({
   setting,
   setSetting,
 }: {
-  setting: Setting | null;
-  setSetting: CallableFunction;
+  setting: Setting | null
+  setSetting: CallableFunction
 }) => {
   const onChangeUsername = (e: any) =>
     setSetting({
@@ -23,7 +23,7 @@ const JiraIntegrationSettings = ({
         ...setting?.integration_config,
         email: e.target.value,
       },
-    });
+    })
 
   const onChangeIntegrationToken = (e: any) =>
     setSetting({
@@ -32,14 +32,14 @@ const JiraIntegrationSettings = ({
         ...setting?.integration_config,
         token: e.target.value,
       },
-    });
+    })
 
   return (
     <Integration setting={setting} setSetting={setSetting}>
       <Grid size={6}>
         <MyInputField
           label="Username (email)"
-          value={setting?.integration_config?.email || ""}
+          value={setting?.integration_config?.email || ''}
           onChange={onChangeUsername}
           maxLength={100}
           type="email"
@@ -50,7 +50,7 @@ const JiraIntegrationSettings = ({
         <TextField
           label="Token"
           fullWidth
-          value={setting?.integration_config?.token || ""}
+          value={setting?.integration_config?.token || ''}
           onChange={onChangeIntegrationToken}
           type="password"
           slotProps={{
@@ -61,13 +61,13 @@ const JiraIntegrationSettings = ({
                     title={
                       <React.Fragment>
                         <div>
-                          Go{" "}
+                          Go{' '}
                           <Link
                             href="https://id.atlassian.com/manage-profile/security/api-tokens"
                             target="_blank"
                           >
                             here
-                          </Link>{" "}
+                          </Link>{' '}
                           to generate a token
                         </div>
                       </React.Fragment>
@@ -79,17 +79,17 @@ const JiraIntegrationSettings = ({
               ),
             },
             htmlInput: {
-              autoComplete: "off",
-              autoCorrect: "off",
-              autoCapitalize: "off",
-              spellCheck: "false",
+              autoComplete: 'off',
+              autoCorrect: 'off',
+              autoCapitalize: 'off',
+              spellCheck: 'false',
               maxLength: 255,
             },
           }}
         />
       </Grid>
     </Integration>
-  );
-};
+  )
+}
 
-export default JiraIntegrationSettings;
+export default JiraIntegrationSettings

@@ -1,33 +1,33 @@
-import { MuiColorInput } from "mui-color-input";
-import { Grid } from "@mui/material";
+import { MuiColorInput } from 'mui-color-input'
+import { Grid } from '@mui/material'
 
-import { Setting } from "../../hooks/useSettings";
+import { Setting } from '../../hooks/useSettings'
 
 const Generic = ({
   setting,
   setSetting,
   dispatchTheme,
 }: {
-  setting: Setting | null;
-  setSetting: CallableFunction;
-  dispatchTheme: CallableFunction;
+  setting: Setting | null
+  setSetting: CallableFunction
+  dispatchTheme: CallableFunction
 }) => {
   const onChangeTheme = (color: string) => {
-    setSetting({ ...setting, theme: color });
-    dispatchTheme({ type: "previewPrimary", primary: color });
-  };
+    setSetting({ ...setting, theme: color })
+    dispatchTheme({ type: 'previewPrimary', primary: color })
+  }
 
   const onChangeThemeSecondary = (color: string) => {
-    setSetting({ ...setting, theme_secondary: color });
-    dispatchTheme({ type: "previewSecondary", secondary: color });
-  };
+    setSetting({ ...setting, theme_secondary: color })
+    dispatchTheme({ type: 'previewSecondary', secondary: color })
+  }
 
   return (
     <Grid container spacing={2}>
       <Grid size={6}>
         <MuiColorInput
           format="hex"
-          value={setting?.theme || "#1976d2"}
+          value={setting?.theme || '#1976d2'}
           label="Primary"
           fullWidth
           onChange={onChangeTheme}
@@ -36,14 +36,14 @@ const Generic = ({
       <Grid size={6}>
         <MuiColorInput
           format="hex"
-          value={setting?.theme_secondary || "#ce93d8"}
+          value={setting?.theme_secondary || '#ce93d8'}
           label="Secondary"
           fullWidth
           onChange={onChangeThemeSecondary}
         />
       </Grid>
     </Grid>
-  );
-};
+  )
+}
 
-export default Generic;
+export default Generic

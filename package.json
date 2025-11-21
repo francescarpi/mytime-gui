@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "test": "vitest"
+    "test": "vitest",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@fontsource/roboto": "5.2.8",
@@ -25,6 +26,7 @@
     "material-ui-confirm": "4.0.0",
     "mui-color-input": "7.0.0",
     "notistack": "3.0.2",
+    "prettier": "^3.6.2",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "semver": "7.7.3"
@@ -41,5 +43,21 @@
     "typescript": "5.9.3",
     "vite": "7.2.4",
     "vitest": "4.0.12"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "singleQuote": true,
+    "printWidth": 110,
+    "useTabs": false,
+    "semi": false,
+    "overrides": [
+      {
+        "files": "*.ts",
+        "options": {
+          "tabWidth": 2,
+          "semi": false
+        }
+      }
+    ]
   }
 }

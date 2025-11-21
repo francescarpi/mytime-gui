@@ -1,18 +1,18 @@
-import { Tooltip, IconButton } from "@mui/material";
-import { SxProps, Theme } from "@mui/material/styles";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
+import { Tooltip, IconButton } from '@mui/material'
+import { SxProps, Theme } from '@mui/material/styles'
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder'
+import BookmarkIcon from '@mui/icons-material/Bookmark'
 
-import { Task } from "../../hooks/useTasks";
+import { Task } from '../../hooks/useTasks'
 
 const FavoriteAction = ({
   task,
   sx,
   toggle,
 }: {
-  task: Task;
-  sx: SxProps<Theme>;
-  toggle: CallableFunction;
+  task: Task
+  sx: SxProps<Theme>
+  toggle: CallableFunction
 }) => {
   return (
     <Tooltip title="Mark as favourite" placement="top">
@@ -20,7 +20,7 @@ const FavoriteAction = ({
         {task.favourite ? <BookmarkIcon /> : <BookmarkBorderIcon />}
       </IconButton>
     </Tooltip>
-  );
-};
+  )
+}
 
-export default FavoriteAction;
+export default FavoriteAction

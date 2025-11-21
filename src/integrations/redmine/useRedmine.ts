@@ -1,28 +1,28 @@
-import { useState, useEffect, useReducer } from "react";
-import { invoke } from "@tauri-apps/api/core";
+import { useState, useEffect, useReducer } from 'react'
+import { invoke } from '@tauri-apps/api/core'
 
 export interface RedmineActivity {
-  id: number;
-  name: string;
+  id: number
+  name: string
 }
 
 const projectActivitiesReducer = (
   state: {
     [key: string]: {
-      activities: RedmineActivity[];
-      loading: boolean;
-      error: boolean;
-    };
+      activities: RedmineActivity[]
+      loading: boolean
+      error: boolean
+    }
   },
   action: any,
 ) => {
   switch (action.type) {
-    case "init":
+    case 'init':
       return {
         ...state,
         [action.id]: { activities: [], loading: true, error: false },
-      };
-    case "success":
+      }
+    case 'success':
       return {
         ...state,
         [action.id]: {
@@ -30,58 +30,55 @@ const projectActivitiesReducer = (
           loading: false,
           error: false,
         },
-      };
-    case "error":
+      }
+    case 'error':
       return {
         ...state,
         [action.id]: { activities: [], loading: false, error: true },
-      };
+      }
   }
-  return state;
-};
+  return state
+}
 
 const useRedmine = () => {
-  const [activities, setActivities] = useState<RedmineActivity[]>([]);
-  const [projectActivities, dispatchProjectActivities] = useReducer(
-    projectActivitiesReducer,
-    {},
-  );
+  const [activities, setActivities] = useState<RedmineActivity[]>([])
+  const [projectActivities, dispatchProjectActivities] = useReducer(projectActivitiesReducer, {})
 
   const loadRedmineActivities = () =>
-    invoke("activities").then((res) => {
+    invoke('activities').then((res) => {
       const actv = (res as any).map((a: any) => ({
         id: a.id,
         name: a.name,
-      })) as RedmineActivity[];
-      actv.sort((a, b) => a.name.localeCompare(b.name));
-      setActivities(actv);
-    });
+      })) as RedmineActivity[]
+      actv.sort((a, b) => a.name.localeCompare(b.name))
+      setActivities(actv)
+    })
 
   useEffect(() => {
-    loadRedmineActivities();
-  }, []);
+    loadRedmineActivities()
+  }, [])
 
   const loadRedmineProjectActivities = async (externalId: string) => {
-    dispatchProjectActivities({ type: "init", id: externalId });
-    return invoke("project_activities", { externalId })
+    dispatchProjectActivities({ type: 'init', id: externalId })
+    return invoke('project_activities', { externalId })
       .then((res: any) => {
         dispatchProjectActivities({
-          type: "success",
+          type: 'success',
           id: externalId,
           activities: res as RedmineActivity[],
-        });
+        })
       })
       .catch(() => {
-        dispatchProjectActivities({ type: "error", id: externalId });
-      });
-  };
+        dispatchProjectActivities({ type: 'error', id: externalId })
+      })
+  }
 
   return {
     activities,
     loadRedmineActivities,
     projectActivities,
     loadRedmineProjectActivities,
-  };
-};
+  }
+}
 
-export default useRedmine;
+export default useRedmine

@@ -1,21 +1,21 @@
-import { Box, Button, Link } from "@mui/material";
-import { invoke } from "@tauri-apps/api/core";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import GradingIcon from "@mui/icons-material/Grading";
-import { Grid } from "@mui/material";
+import { Box, Button, Link } from '@mui/material'
+import { invoke } from '@tauri-apps/api/core'
+import GitHubIcon from '@mui/icons-material/GitHub'
+import GradingIcon from '@mui/icons-material/Grading'
+import { Grid } from '@mui/material'
 
-import useInfo from "../../hooks/useInfo";
+import useInfo from '../../hooks/useInfo'
 
 const Info = () => {
-  const { info } = useInfo();
+  const { info } = useInfo()
 
   if (!info) {
-    return <Box>Loading...</Box>;
+    return <Box>Loading...</Box>
   }
 
   const showFolder = () => {
-    invoke("show_in_folder", { path: info.db_path });
-  };
+    invoke('show_in_folder', { path: info.db_path })
+  }
 
   return (
     <Box>
@@ -61,7 +61,7 @@ const Info = () => {
         </Grid>
       </Grid>
     </Box>
-  );
-};
+  )
+}
 
-export default Info;
+export default Info

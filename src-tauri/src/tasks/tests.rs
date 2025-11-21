@@ -331,4 +331,61 @@ mod tests {
         assert!(got.is_ok());
         assert_eq!(got.unwrap().desc, "Test task");
     }
+
+    #[test]
+    fn summary_tasks() {
+        // Setup
+        let mut c = get_db_connection();
+        let today = Local::now().naive_local().date();
+
+        let task1 = TasksRepository::add_task(
+            &mut c,
+            "Task 1".to_string(),
+            None,
+            Some("Proj 1".to_string()),
+        )
+        .unwrap();
+        let task2 = TasksRepository::add_task(
+            &mut c,
+            "Task 1".to_string(),
+            None,
+            Some("Proj 1".to_string()),
+        )
+        .unwrap();
+        let task3 = TasksRepository::add_task(
+            &mut c,
+            "Task 2".to_string(),
+            None,
+            Some("Proj 2".to_string()),
+        )
+        .unwrap();
+
+        TasksRepository::stop(&mut c, task1.id).unwrap();
+        TasksRepository::stop(&mut c, task2.id).unwrap();
+        TasksRepository::stop(&mut c, task3.id).unwrap();
+
+        assert_eq!(TasksRepository::are_tasks_running(&mut c), false);
+
+        // Test
+        let tasks = TasksRepository::summary_tasks(&mut c).unwrap();
+
+        assert_eq!(tasks.len(), 2);
+
+        assert_eq!(tasks[0].id, "1-2");
+        assert!(tasks[0].duration >= 0);
+        assert_eq!(tasks[0].desc, "Task 1");
+        assert_eq!(tasks[0].date, today);
+        assert_eq!(tasks[0].ids.0.len(), 2);
+        assert_eq!(tasks[0].ids.0[0], task1.id);
+        assert_eq!(tasks[0].ids.0[1], task2.id);
+        assert_eq!(tasks[0].project, Some("Proj 1".to_string()));
+
+        assert_eq!(tasks[1].id, "3");
+        assert!(tasks[1].duration >= 0);
+        assert_eq!(tasks[1].desc, "Task 2");
+        assert_eq!(tasks[1].date, today);
+        assert_eq!(tasks[1].ids.0.len(), 1);
+        assert_eq!(tasks[1].ids.0[0], task3.id);
+        assert_eq!(tasks[1].project, Some("Proj 2".to_string()));
+    }
 }

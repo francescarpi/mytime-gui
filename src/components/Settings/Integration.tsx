@@ -1,25 +1,25 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react'
 
-import { Box, InputLabel, MenuItem, FormControl } from "@mui/material";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { Grid } from "@mui/material";
+import { Box, InputLabel, MenuItem, FormControl } from '@mui/material'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import { Grid } from '@mui/material'
 
-import { Setting } from "../../hooks/useSettings";
-import MyInputField from "../atoms/MyInputField";
+import { Setting } from '../../hooks/useSettings'
+import MyInputField from '../atoms/MyInputField'
 
 const Integration = ({
   setting,
   setSetting,
   children,
 }: {
-  setting: Setting | null;
-  setSetting: CallableFunction;
-  children?: ReactNode;
+  setting: Setting | null
+  setSetting: CallableFunction
+  children?: ReactNode
 }) => {
   const onChangeIntegration = (e: SelectChangeEvent) => {
-    const integration = e.target.value === "Disabled" ? null : e.target.value;
-    setSetting({ ...setting, integration });
-  };
+    const integration = e.target.value === 'Disabled' ? null : e.target.value
+    setSetting({ ...setting, integration })
+  }
 
   const onChangeIntegrationUrl = (e: any) =>
     setSetting({
@@ -28,7 +28,7 @@ const Integration = ({
         ...setting?.integration_config,
         url: e.target.value,
       },
-    });
+    })
 
   return (
     <Box>
@@ -40,19 +40,19 @@ const Integration = ({
               labelId="integrationType"
               id="integrationType"
               label="Type"
-              value={(setting?.integration as string) || "Disabled"}
+              value={(setting?.integration as string) || 'Disabled'}
               onChange={onChangeIntegration}
             >
-              <MenuItem value={"Disabled"}>Disabled</MenuItem>
-              <MenuItem value={"Redmine"}>Redmine</MenuItem>
-              <MenuItem value={"Jira"}>Jira</MenuItem>
+              <MenuItem value={'Disabled'}>Disabled</MenuItem>
+              <MenuItem value={'Redmine'}>Redmine</MenuItem>
+              <MenuItem value={'Jira'}>Jira</MenuItem>
             </Select>
           </FormControl>
         </Grid>
         <Grid size={6}>
           <MyInputField
             label="URL"
-            value={setting?.integration_config?.url || ""}
+            value={setting?.integration_config?.url || ''}
             onChange={onChangeIntegrationUrl}
             maxLength={200}
             size="medium"
@@ -61,7 +61,7 @@ const Integration = ({
         {children}
       </Grid>
     </Box>
-  );
-};
+  )
+}
 
-export default Integration;
+export default Integration

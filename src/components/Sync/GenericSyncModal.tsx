@@ -10,12 +10,12 @@ import {
   TableRow,
   Button,
   Alert,
-} from "@mui/material";
+} from '@mui/material'
 
-import TaskIcon from "./TaskIcon";
-import { formatDuration } from "../../utils/dates";
-import { StyledBox } from "../../styles/modal";
-import { SyncProps } from "./types";
+import TaskIcon from './TaskIcon'
+import { formatDuration } from '../../utils/dates'
+import { StyledBox } from '../../styles/modal'
+import { SyncProps } from './types'
 
 const GenericSyncModal = (props: SyncProps) => {
   const {
@@ -30,10 +30,10 @@ const GenericSyncModal = (props: SyncProps) => {
     slotTableRow,
     disableSend,
     disableClose,
-  } = props;
+  } = props
 
   if (!opened) {
-    return null;
+    return null
   }
 
   return (
@@ -46,8 +46,7 @@ const GenericSyncModal = (props: SyncProps) => {
           {slotHeader}
           {tasks.length === 0 && (
             <Alert severity="warning" variant="outlined" sx={{ mb: 2 }}>
-              No tasks to send. Only finished tasks with an external ID can be
-              reported.
+              No tasks to send. Only finished tasks with an external ID can be reported.
             </Alert>
           )}
           <TableContainer sx={{ maxHeight: 350 }}>
@@ -57,10 +56,10 @@ const GenericSyncModal = (props: SyncProps) => {
                   <TableCell align="left">Description</TableCell>
                   <TableCell align="left">Date</TableCell>
                   <TableCell align="right">Duration</TableCell>
-                  <TableCell align="right" sx={{ textWrap: "nowrap" }}>
+                  <TableCell align="right" sx={{ textWrap: 'nowrap' }}>
                     External Id
                   </TableCell>
-                  <TableCell align="right" sx={{ textWrap: "nowrap" }}>
+                  <TableCell align="right" sx={{ textWrap: 'nowrap' }}>
                     Task Ids
                   </TableCell>
                   {slotTableHeader}
@@ -71,16 +70,14 @@ const GenericSyncModal = (props: SyncProps) => {
                 {tasks.map((task) => (
                   <TableRow key={task.id}>
                     <TableCell align="left">
-                      {task.project && "[" + task.project + "]"} {task.desc}
+                      {task.project && '[' + task.project + ']'} {task.desc}
                     </TableCell>
-                    <TableCell align="left" sx={{ textWrap: "nowrap" }}>
+                    <TableCell align="left" sx={{ textWrap: 'nowrap' }}>
                       {task.date}
                     </TableCell>
-                    <TableCell align="right">
-                      {formatDuration(task.duration)}
-                    </TableCell>
+                    <TableCell align="right">{formatDuration(task.duration)}</TableCell>
                     <TableCell align="right">{task.external_id}</TableCell>
-                    <TableCell align="right">{task.ids.join(", ")}</TableCell>
+                    <TableCell align="right">{task.ids.join(', ')}</TableCell>
                     {slotTableRow && slotTableRow(task)}
                     <TableCell align="center">
                       <TaskIcon task={task} success={success} />
@@ -90,22 +87,12 @@ const GenericSyncModal = (props: SyncProps) => {
               </TableBody>
             </Table>
           </TableContainer>
-          <Box sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}>
-            <Button
-              variant="contained"
-              onClick={() => onClose()}
-              color="secondary"
-              disabled={disableClose}
-            >
+          <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+            <Button variant="contained" onClick={() => onClose()} color="secondary" disabled={disableClose}>
               Close
             </Button>
             {tasks.length > 0 && (
-              <Button
-                variant="contained"
-                sx={{ ml: 2 }}
-                onClick={() => sendHandler()}
-                disabled={disableSend}
-              >
+              <Button variant="contained" sx={{ ml: 2 }} onClick={() => sendHandler()} disabled={disableSend}>
                 Send
               </Button>
             )}
@@ -113,7 +100,7 @@ const GenericSyncModal = (props: SyncProps) => {
         </Box>
       </StyledBox>
     </Modal>
-  );
-};
+  )
+}
 
-export default GenericSyncModal;
+export default GenericSyncModal

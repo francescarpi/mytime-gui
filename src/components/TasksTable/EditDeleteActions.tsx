@@ -1,17 +1,17 @@
-import { Tooltip, IconButton } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import { Tooltip, IconButton } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
 
-import { Task } from "../../hooks/useTasks";
+import { Task } from '../../hooks/useTasks'
 
 const EditDeleteActions = ({
   task,
   deleteHandler,
   setTaskToEdit,
 }: {
-  task: Task;
-  deleteHandler: CallableFunction;
-  setTaskToEdit: CallableFunction;
+  task: Task
+  deleteHandler: CallableFunction
+  setTaskToEdit: CallableFunction
 }) => {
   return (
     <>
@@ -26,7 +26,7 @@ const EditDeleteActions = ({
         </IconButton>
       </Tooltip>
     </>
-  );
-};
+  )
+}
 
-export default EditDeleteActions;
+export default EditDeleteActions
