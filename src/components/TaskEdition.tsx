@@ -4,7 +4,7 @@ import { Modal, Typography, Button, Box } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import Grid from "@mui/material/Grid2";
+import { Grid } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import { useSnackbar } from "notistack";
 

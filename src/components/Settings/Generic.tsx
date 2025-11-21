@@ -1,5 +1,5 @@
 import { MuiColorInput } from "mui-color-input";
-import Grid from "@mui/material/Grid2";
+import { Grid } from "@mui/material";
 
 import { Setting } from "../../hooks/useSettings";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import Integration from "../../components/Settings/Integration";
 import { Setting } from "../../hooks/useSettings";
-import Grid from "@mui/material/Grid2";
+import { Grid } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import InfoIcon from "@mui/icons-material/Info";

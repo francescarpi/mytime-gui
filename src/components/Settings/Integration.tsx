@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 import { Box, InputLabel, MenuItem, FormControl } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Grid from "@mui/material/Grid2";
+import { Grid } from "@mui/material";
 
 import { Setting } from "../../hooks/useSettings";
 import MyInputField from "../atoms/MyInputField";
