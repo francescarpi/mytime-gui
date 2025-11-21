@@ -5,7 +5,6 @@ import {
   useState,
   useCallback,
   ChangeEvent,
-  KeyboardEventHandler,
 } from "react";
 
 import {
@@ -141,7 +140,7 @@ const Layout = ({
               }}
               value={query}
               onChange={debounce((e) => setSearchQuery(e.target.value), 500)}
-              onKeyDown={(e: KeyboardEventHandler) => onSearchKeyPress(e)}
+              onKeyDown={(e) => onSearchKeyPress(e)}
             />
           </Search>
           <IconButton

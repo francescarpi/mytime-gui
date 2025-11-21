@@ -35,7 +35,7 @@ const DateSelector = ({
   const { datesWidthTasks, setMonth } = useCalendar();
 
   const dayComponent = (
-    props: PickersDayProps<Dayjs> & { dates?: string[] },
+    props: PickersDayProps & { dates?: string[] },
   ) => {
     return (
       <StyledBadge
