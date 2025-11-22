@@ -58,32 +58,34 @@ const Layout = ({
   const handleUpdate = useCallback(() => {
     confirm({
       description: 'Do you want download and install the next version?',
-    }).then(() => {
-      // TODO: should we move this logic inside a hook?
-      setText('Installing new version...')
-      setVisible(true)
-      let totalSize = 0
-      let downloadedSize = 0
-      let progress = 0
-      newVersion
-        ?.downloadAndInstall((downloadProgress) => {
-          switch (downloadProgress.event) {
-            case 'Started':
-              totalSize = downloadProgress.data.contentLength as number
-              break
-            case 'Progress':
-              downloadedSize += downloadProgress.data.chunkLength
-              progress = totalSize ? Math.round((downloadedSize / totalSize) * 100) : 0
-              setProgress(`${progress}%`)
-              break
-            case 'Finished':
-              setProgress('Relaunching...')
-              break
-          }
-        })
-        .then(() => {
-          relaunch()
-        })
+    }).then(({ confirmed }) => {
+      if (confirmed) {
+        // TODO: should we move this logic inside a hook?
+        setText('Installing new version...')
+        setVisible(true)
+        let totalSize = 0
+        let downloadedSize = 0
+        let progress = 0
+        newVersion
+          ?.downloadAndInstall((downloadProgress) => {
+            switch (downloadProgress.event) {
+              case 'Started':
+                totalSize = downloadProgress.data.contentLength as number
+                break
+              case 'Progress':
+                downloadedSize += downloadProgress.data.chunkLength
+                progress = totalSize ? Math.round((downloadedSize / totalSize) * 100) : 0
+                setProgress(`${progress}%`)
+                break
+              case 'Finished':
+                setProgress('Relaunching...')
+                break
+            }
+          })
+          .then(() => {
+            relaunch()
+          })
+      }
     })
   }, [newVersion])
 
