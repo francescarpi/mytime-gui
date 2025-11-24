@@ -94,7 +94,7 @@ const App = () => {
               }}
             >
               <SyncWrapper opened={openSync} onClose={() => setOpenSync(false)} refreshTasks={refresh} />
-              <Summary open={openSummary} onClose={() => setOpenSummary(false)} />
+              <Summary open={openSummary} onClose={() => setOpenSummary(false)} refreshTasks={refresh} />
               <TaskEdition task={taskToEdit} onClose={() => setTaskToEdit(null)} onEdit={editTask} />
               <Layout
                 setToday={setToday}

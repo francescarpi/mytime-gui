@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo, useCallback } from 'react'
 import { invoke } from '@tauri-apps/api/core'
 import { type ISummaryTask } from './types'
 
-export function useSummary(open: boolean) {
+export function useSummary(open: boolean, refreshTasks: () => void) {
   const [tasks, setTasks] = useState<ISummaryTask[]>([])
   const [tasksSelected, setTasksSelected] = useState<ISummaryTask[]>([])
   const [saving, setSaving] = useState(false)
@@ -45,8 +45,9 @@ export function useSummary(open: boolean) {
       }
       load()
       setTasksSelected([])
+      refreshTasks()
     })
-  }, [tasksSelected, load])
+  }, [tasksSelected, load, refreshTasks])
 
   return { tasks, handleCheck, duration, tasksSelected, handleMarkAsReported, saving }
 }

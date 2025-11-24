@@ -5,8 +5,11 @@ import { SummaryTable } from './components'
 import * as S from './styles'
 import { formatDuration } from '../../utils/dates'
 
-export function Summary({ open, onClose }: IProps) {
-  const { tasks, duration, handleCheck, tasksSelected, handleMarkAsReported, saving } = useSummary(open)
+export function Summary({ open, onClose, refreshTasks }: IProps) {
+  const { tasks, duration, handleCheck, tasksSelected, handleMarkAsReported, saving } = useSummary(
+    open,
+    refreshTasks,
+  )
 
   return (
     <Modal open={open} onClose={onClose}>
