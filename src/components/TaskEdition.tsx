@@ -61,7 +61,7 @@ const TaskEdition = ({
       ...(task as Task),
       project,
       desc: description,
-      externalId,
+      externalId: externalId || null,
       start: start.format('HH:mm'),
       end: end ? end.format('HH:mm') : null,
     }
@@ -113,6 +113,7 @@ const TaskEdition = ({
                   value={externalId}
                   onChange={(e) => setExternalId(e.target.value)}
                   maxLength={50}
+                  required={false}
                 />
               </Grid>
               <Grid size={2}>

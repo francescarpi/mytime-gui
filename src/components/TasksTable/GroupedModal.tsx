@@ -67,9 +67,9 @@ const GroupedModal = ({
                   <TableCell align="right">{child.end ? dateToStrTime(child.end) : ''}</TableCell>
                   <TableCell align="right">{formatDuration(child.duration as number)}</TableCell>
                   <TableCell align="right">
-                    {!task.reported && (
+                    {!child.reported && (
                       <EditDeleteActions
-                        task={task}
+                        task={child}
                         deleteHandler={deleteHandler}
                         setTaskToEdit={setTaskToEdit}
                       />
