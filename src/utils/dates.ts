@@ -4,14 +4,24 @@ const locale = 'en-GB'
  * Given a duration represented in seconds and returns a string with hours and minutes.
  * Example: 7552 => 2h6m
  */
-export const formatDuration = (duration: number): string => {
-  const hours = Math.floor(duration / 3600)
-  const minutes = Math.floor((duration % 3600) / 60)
-  const parts = [`${hours}h`]
-  if (minutes) {
-    parts.push(`${minutes}m`)
+export const formatDuration = (seconds: number, showSign?: boolean): string => {
+  const hours = Math.floor(seconds / 3600)
+  let minutes = Math.floor((seconds % 3600) / 60)
+  let sign = showSign ? '-' : ''
+
+  if (hours != 0 && minutes < 0 && showSign) {
+    sign = '+'
   }
-  return parts.join('')
+
+  if (hours === 0) {
+    return `${sign}${minutes}m`
+  }
+
+  if (minutes === 0) {
+    return `${sign}${hours}h`
+  }
+
+  return `${sign}${hours}h${minutes}m`
 }
 
 /**
