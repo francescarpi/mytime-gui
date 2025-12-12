@@ -6,7 +6,9 @@ import { formatDuration } from '../../utils/dates'
 const GoalProgress = ({ sx, goal, value }: { sx?: SxProps<Theme>; goal: number; value: number }) => {
   const percentage = goal === 0 ? 0 : (value * 100) / goal
   const color = percentage < 100 ? 'error' : 'success'
-  const extra = goal - value
+
+  const extraSign = value >= goal ? '+' : '-'
+  const extra = formatDuration(Math.abs(value - goal))
 
   return (
     <Box sx={{ ...sx, position: 'relative' }}>
@@ -29,7 +31,8 @@ const GoalProgress = ({ sx, goal, value }: { sx?: SxProps<Theme>; goal: number; 
         }}
       >
         <Typography variant="subtitle2">
-          {formatDuration(value)} of {formatDuration(goal)} ({formatDuration(extra, true)})
+          {formatDuration(value)} of {formatDuration(goal)} ({extraSign}
+          {extra})
         </Typography>
       </Box>
     </Box>
